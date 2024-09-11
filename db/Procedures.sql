@@ -330,3 +330,24 @@ END$$
 --  VEHICULOS
 -- MARCAS
 -- SUBCATEGORIAS
+-- BUSQUEDAS 
+DELIMITER $$
+CREATE PROCEDURE sp_buscardistrito(IN _distrito VARCHAR(100))
+BEGIN
+IF TRIM(_distrito) <> '' THEN
+SELECT
+    d.distrito AS distrito,
+    p.provincia AS provincia,
+    dep.departamento AS departamento
+FROM
+    distritos d
+JOIN
+    provincias p ON d.idprovincia = p.idprovincia
+JOIN
+    departamentos dep ON p.iddepartamento = dep.iddepartamento
+WHERE
+    d.distrito LIKE  CONCAT('%', TRIM(_distrito),'%');
+END IF;
+END$$
+ 
+ CALL sp_buscardistrito('ujio');

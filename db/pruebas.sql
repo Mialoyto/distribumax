@@ -8,9 +8,11 @@ select * from id prprovincias where provincia = 'Chincha';
 select * from distritos;
 select * from marcas;
 select * from personas;
+select * from clientes;
 select * from usuarios;
 SELECT * FROM productos;
 SELECT * FROM  tipo_documento;
+SELECT * FROM empresas;
 delete from personas where idpersonanrodoc = '';
 
 -- CONSULTAS

@@ -55,6 +55,12 @@ INSERT INTO marcas (marca) VALUES
 ('Colgate'),
 ('Huggies');
 
+INSERT INTO roles (rol) VALUES 
+('Administrador'), 
+('Usuario'), 
+('Moderador'), 
+('Invitado');
+
 
 
 

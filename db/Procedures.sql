@@ -112,7 +112,27 @@ BEGIN
 	INSERT INTO usuarios 
     (idpersona, idrol, nombre_usuario, password_usuario) 
     VALUES (_idpersona, _idrol, _nombre_usuario, _password_usuario);
+    SELECT LAST_INSERT_ID() AS idusuario;
 END$$
+
+-- login 
+DELIMITER $$
+drop procedure if exists sp_usuario_login;
+CREATE PROCEDURE sp_usuario_login(IN _nombre_usuario	VARCHAR(100))
+BEGIN
+SELECT
+	USU.idusuario,
+    PER.appaterno,
+    PER.apmaterno,
+    PER.nombres,
+    ROL.rol,
+    USU.nombre_usuario,
+    USU.password_usuario
+    FROM usuarios USU
+	INNER JOIN personas PER ON USU.idpersona = PER.idpersonanrodoc
+    INNER JOIN roles ROL	ON USU.idrol = ROL.idrol
+    WHERE USU.nombre_usuario = _nombre_usuario AND USU.estado=1;
+END$$;
 
 -- Actualizar 
 DELIMITER $$
@@ -137,13 +157,13 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_desactivar_usuario;
 CREATE PROCEDURE sp_desactivar_usuario(
      IN  _estado	BIT,
-    IN 	_idusuario INT
+    IN 	_nombre_usuario VARCHAR(100)
     )
 BEGIN
 	UPDATE usuarios
 		SET
 			estado = _estado
-		WHERE idusuario = _idusuario;
+		WHERE _nombre_usuario = nombre_usuario;
 END$$
 
 -- PROCEDURE DE PRODCUTOS ********************************************************************************************

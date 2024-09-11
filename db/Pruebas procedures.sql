@@ -24,8 +24,6 @@
 CALL sp_actualizar_persona (1,99,'Juan','Castilla','Maraví',null,'Av.Chacarita #123','26558000');
 CALL sp_actualizar_persona (3,99,'Messi','Castilla','Maraví','910657765','Psj. Felicidad #420','26558001');
 
-CALL sp_desactivar_persona(0,'73217990');
-
 /****************************************************************************************************/
 
  
@@ -93,6 +91,5 @@ CALL sp_buscarpersonadoc (1,'87654321');
 
 CALL sp_actualizar_usuario('usuario1','usuario1',3);
 /****************************************************************************************************************/
- /**PRUEBAS PROCEDIMIENTOS OK ✔️  PROMOCIONES **/
--- REGISTRAR PROMOCIONES
-CALL sp_promocion_registrar(1,1, 'Promoción de Verano', '2024-09-10 00:00:00', '2024-09-20 23:59:59', 20.00, 1);
+  
+

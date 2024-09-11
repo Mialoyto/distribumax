@@ -478,4 +478,3 @@ WHERE
 END IF;
 END$$
  
- CALL sp_buscardistrito('ujio');

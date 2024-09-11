@@ -20,7 +20,6 @@ class Persona extends Conexion
     // registrar persona
     public function addPersona($params = []): string
     {
-
         try {
             $id = '';
             $tsql = "CALL spu_registrar_personas (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -38,11 +37,7 @@ class Persona extends Conexion
                 )
             );
             $row = $query->fetch(PDO::FETCH_ASSOC);
-
-            if (!empty($row['id'])) {
-                $id = $row['id'];
-                return $id;
-            }
+            $id = $row["id"];
         } catch (Exception $e) {
             error_log("Error al registrar a la persona" . $e->getMessage());
         }
@@ -91,7 +86,6 @@ class Persona extends Conexion
             );
             $estado = $cmd->fetch(PDO::FETCH_ASSOC);
             return isset($estado['filas_afectadas']) && $estado['filas_afectadas'] > 0;
-            
         } catch (Exception $e) {
             die($e->getMessage());
         }

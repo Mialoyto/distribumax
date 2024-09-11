@@ -64,17 +64,20 @@
             document.querySelector("#form-login").addEventListener("submit", (event) => {
                 event.preventDefault();
                 // Datos a enviar
-                const params = new URLSearchParams();
-                params.append("operacion", "login");
-                params.append("email", document.querySelector("#nombre_usuario").value);
-                params.append("claveacceso", document.querySelector("#inputPassword").value);
+                const fomrData = new FormData();
+                fomrData.append("operation", "login");
+                fomrData.append("nombre_usuario", document.querySelector("#nombre_usuario").value);
+                fomrData.append("password_usuario", document.querySelector("#inputPassword").value);
 
-                fetch(`controllers/usuario.controller.php?${params}`)
-                    .then(Response => Response.json())
-                    .then(acceso => {
-                        console.log(acceso);
-                        if (!acceso.permitido) {
-                            alert(acceso.status);
+                fetch(`controller/usuario.controller.php`,{
+                    method: 'POST',
+                    body:fomrData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (!data.acceso) {
+                            alert(data.status);
                         } else {
                             window.location.href = `./dashboard.php`;
                         }

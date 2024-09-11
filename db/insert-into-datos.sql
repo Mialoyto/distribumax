@@ -122,4 +122,6 @@ INSERT INTO productos (idmarca, idsubcategoria, nombreproducto, descripcion, pre
 (8, 18, 'Pedigree Gatos Cachorros 1.5kg', 'Alimento nutritivo para gatitos', 25.00, 'MASC002GAT');
 
 
+INSERT INTO tipos_promociones (tipopromocion, descripcion)
+VALUES ('Descuento de Temporada', 'Descuento especial aplicado durante la temporada de invierno.');
 

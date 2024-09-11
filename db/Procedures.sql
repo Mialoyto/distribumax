@@ -394,10 +394,61 @@ BEGIN
     (_idpedido, _idusuario, _idcliente, _fecha_pedido, _estado);
 END$$
 
+-- ACTUALIZAR PEDIDOS
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_pedido(
+	IN _idpedido        INT,
+    IN _idusuario       INT,
+    IN _idcliente       INT,
+    IN _fecha_pedido    DATETIME,
+    IN _estado          ENUM('Pendiente', 'Enviado', 'Cancelado', 'Entregado')
+)
+BEGIN
+	UPDATE pedidos
+		SET 
+			idpedido =_idpedido,
+			idusuario =_idusuario,
+			idcliente =_idcliente,
+			fecha_pedido =_fecha_pedido,
+            estado = _estado,
+			update_at=now()
+        WHERE idpedido =_idpedido;
+END$$
 
--- PEDIDOS
--- KARDEX
--- PROMOCIONES
+-- DESACTIVAR PEDIDO
+DELIMITER $$
+CREATE PROCEDURE sp_estado_pedido(
+IN  _estado BIT,
+IN  _idpedido INT 
+)
+BEGIN
+	UPDATE pedidos SET
+      estado=_estado
+      WHERE idpedido =_idpedido;
+END$$
+
+
+-- KARDEX (NO LO ENTIENDO MUY BIEN, QUEDA PENDIENTE)
+
+
+-- REGISTRAR PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_promocion_registrar(
+	IN _idpromocion      	INT,
+    IN _idtipopromocion       INT,
+    IN _descripcion       	  VARCHAR(250),
+    IN _fechaincio    		  DATETIME,
+    IN _fechafin			  DATETIME,
+    IN _valor_descuento  	  DECIMAL(8, 2),
+    IN _estado				  BIT
+)
+BEGIN
+    INSERT INTO promociones
+    (idpromocion,idtipopromocion, descripcion, fechaincio, fechafin, valor_descuento, estado) 
+    VALUES 
+    (_idpromocion,_idtipopromocion, _descripcion, _fechaincio, _fechafin, _valor_descuento, _estado);
+END$$
+
 -- TIPOS DE PROMOCIONES
 -- DESPACHO
 -- TIPO DE COMPROBANTE

@@ -58,19 +58,26 @@ CALL sp_estado_empresa(0, 1);
 CALL sp_cliente_registrar(26558000,1,'Empresa');
 
 -- ACTUALIZAR CLIENTES
-CALL sp_actualizar_cliente(4,12345678,1,'Persona');
+CALL sp_actualizar_cliente(4,26558001,1,'Persona');
 
+-- DESACTIVAR CLIENTES
+CALL sp_estado_cliente(0, 3);
 
- 
-
-
+ /*************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  PROOVEDORES**/
 -- REISTRAR PROOVEDORES
 CALL sp_proovedor_registrar(1,1,'Dkasa', 'José Carlos', '932143290', 'Av. el Porvenir', 'jose@gmail.com');
 
-SELECT * FROM proveedores;
--- Segundo insert utilizando el procedimiento almacenado
+-- ACTUALIZAR PROOVEDORES
+CALL sp_actualizar_proovedor(1,1,'Clorina','Jose Daniel', '973323783', 'Av. José Olaya', 'dani@gmail.com');
 
+-- DESCTIVAR A UN PROOVEDOR
+CALL sp_estado_proovedor(0, 1);
 
+ /*************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  PEDIDOS**/
+-- REGISTRAR PEDIDOS
+CALL sp_pedido_registrar(1, 1, 5, '2024-04-05 19:41:00', 'Pendiente');
 
 select * from personas;
 CALL sp_desactivar_persona(0,'73217990');

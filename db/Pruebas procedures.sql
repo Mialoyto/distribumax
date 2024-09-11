@@ -1,5 +1,4 @@
  USE distribuMax;
- 
  /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
  CALL spu_registrar_personas(
 	1,           -- Tipo de documento (dni)
@@ -28,12 +27,14 @@ CALL sp_buscarpersonadoc (1,'26558000');
 
  
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/
-CALL sp_registrar_usuario('26558000',1,'admin','admin');
-CALL sp_registrar_usuario('26558001',1,'admin1','admin');
+-- CALL sp_registrar_usuario('26558000',1,'admin','admin');
+-- CALL sp_registrar_usuario('26558001',1,'admin1','admin');
 CALL sp_usuario_login ('admin');
 CALL sp_desactivar_usuario(1,'admin');
 
- /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
+/*****************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  EMPRESAS**/
+-- REGISTRAR EMPRESA ️✔️
 CALL sp_empresa_registrar(
 	1,
 	1,
@@ -42,19 +43,18 @@ CALL sp_empresa_registrar(
     'santafe@gmail.com',
     '987654321'
 );
+
+-- ACTUALIZAR EMPRESA ✔️
 CALL sp_actualizar_empresa (1,1,'Dijisa','Panamericana #234','dijisa@gmail.com','932123029');
--- -------------------------------------------------
--- REGISTRAR EMPRESAS
 
+-- DESACTIVAR ESTADO EMPRESA ✔️
+CALL sp_estado_empresa(0, 1);
 
-SELECT * FROM clientes;
-SELECT * FROM personas;
-SELECT * FROM empresas;
--- ACTUALIZAR EMPRESA
+/*************************************************************************************************/
 
-
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  CLIENTES**/
 -- REGISTRAR CLIENTES 
-CALL sp_cliente_registrar(12345678,1,'Empresa');
+CALL sp_cliente_registrar(26558000,1,'Empresa');
 
 -- ACTUALIZAR CLIENTES
 CALL sp_actualizar_cliente(4,12345678,1,'Persona');
@@ -77,7 +77,7 @@ CALL sp_desactivar_persona(0,'73217990');
 
 
 /****Usuarios*********/
-
+CALL sp_buscarpersonadoc (1,'87654321');
 
 CALL sp_actualizar_usuario('usuario1','usuario1',3);
 /****************************************************************************************************************/

@@ -72,7 +72,7 @@ BEGIN
         
         select row_count() as filas_afectadas;
 END $$
-DELIMITER $$;
+
 
 -- BUSCAR PERSONA POR DOCUMENTO
 DELIMITER $$
@@ -95,8 +95,6 @@ BEGIN
 		WHERE PER.idtipodocumento = _idtipodocumento
         AND PER.idpersonanrodoc = _idpersonanrodoc;
 END $$
-
-
 
 -- PROCEDIMIENTOS PARA USUARIOS ********************************************************************************************
 -- USUARIOS
@@ -270,21 +268,18 @@ END$$
 
 -- DESACTIVAR ESTADO EMPRESA
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_estado_empresa;
 CREATE PROCEDURE sp_estado_empresa(
 IN  _estado BIT,
 IN  _idempresaruc INT 
 )
 BEGIN
-	UPDATE productos SET
+	UPDATE empresas SET
       estado=_estado
       WHERE idempresaruc=_idempresaruc;
 END$$
-
 -- PROCEDURE DE CLIENTES ********************************************************************************************
 -- REGISTRAR CLIENTES
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_cliente_registrar;
 CREATE PROCEDURE sp_cliente_registrar(
 	IN _idpersona INT,
     IN _idempresa INT,
@@ -296,7 +291,6 @@ BEGIN
     VALUES 
     (_idpersona, _idempresa, _tipo_cliente);
 END$$
-DELIMITER ;
 
 -- ACTUALIZAR CLIENTES
 DELIMITER $$

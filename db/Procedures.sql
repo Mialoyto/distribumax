@@ -1,10 +1,7 @@
 USE distribuMax;
-/*******************************************************************
-*	NOTA: CAMBIE EL TIPO DE DATO DE idpersonanrodoc A => CHAR(11)
-*  	PORQUE SI ES ENTERO LOS CERO A LA IZQUIERDA NO LOS CAPTURAS
-********************************************************************/
+
 -- PROCEDIMIENTOS PARA TABLA PERSONAS ------------------------------------------------------------------------
--- REGISTRAR 
+/* REGISTRAR  ✔️ */
 DELIMITER $$
 DROP PROCEDURE IF EXISTS spu_registrar_personas;
 CREATE PROCEDURE spu_registrar_personas(
@@ -33,7 +30,7 @@ BEGIN
         SELECT _idpersonanrodoc AS id;
 END$$
 
--- ACTUALIZAR 
+/* ACTUALIZAR  ✔️ */
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_actualizar_persona;
 CREATE PROCEDURE sp_actualizar_persona(
@@ -60,7 +57,7 @@ BEGIN
 		WHERE idpersonanrodoc = _idpersonanrodoc;
 END$$
 
--- DESACTIVAR PERSONA ------------------------------------
+-- DESACTIVAR PERSONA 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_desactivar_persona;
 CREATE PROCEDURE sp_desactivar_persona(
@@ -77,7 +74,7 @@ BEGIN
 END $$
 DELIMITER $$;
 
--- BUSCAR PERSONA POR DOCUMENTO ----------------------------------
+-- BUSCAR PERSONA POR DOCUMENTO
 DELIMITER $$
 drop procedure if exists sp_buscarpersonadoc;
 CREATE PROCEDURE sp_buscarpersonadoc(
@@ -99,19 +96,22 @@ BEGIN
         AND PER.idpersonanrodoc = _idpersonanrodoc;
 END $$
 CALL sp_buscarpersonadoc (1,'87654321');
--- PROCEDIMIENTOS PARA USUARIOS ------------------------------------------------------------------------
+
+
+-- PROCEDIMIENTOS PARA USUARIOS ********************************************************************************************
 -- USUARIOS
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_registrar_usuario;
 CREATE PROCEDURE sp_registrar_usuario(
-   IN     _idpersona			INT,
-   IN     _nombre_usuario		VARCHAR(100),
-   IN     _password_usuario		VARCHAR(150)	
+   IN   _idpersona			VARCHAR(11),
+   IN 	_idrol				INT,
+   IN   _nombre_usuario		VARCHAR(100),
+   IN   _password_usuario	VARCHAR(150)	
 )
 BEGIN
 	INSERT INTO usuarios 
-    (idpersona,nombre_usuario,password_usuario) 
-    VALUES (_idpersona,_nombre_usuario,_password_usuario);
+    (idpersona, idrol, nombre_usuario, password_usuario) 
+    VALUES (_idpersona, _idrol, _nombre_usuario, _password_usuario);
 END$$
 
 -- Actualizar 
@@ -146,8 +146,7 @@ BEGIN
 		WHERE idusuario = _idusuario;
 END$$
 
-
--- PROCEDURE DE PRODCUTOS ------------------------------------------------------------------------
+-- PROCEDURE DE PRODCUTOS ********************************************************************************************
 -- REGISTRAR PRODUCTOS
 
 DELIMITER $$
@@ -206,7 +205,7 @@ BEGIN
 END$$
 
 
--- PROCEDURE DE EMPRESAS ------------------------------------------------------------------------
+-- PROCEDURE DE EMPRESAS ********************************************************************************************
 -- REGISTRAR EMPRESAS 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_empresa_registrar;
@@ -262,7 +261,7 @@ BEGIN
       WHERE idempresaruc=_idempresaruc;
 END$$
 
--- PROCEDURE DE CLIENTES ------------------------------------------------------------------------
+-- PROCEDURE DE CLIENTES ********************************************************************************************
 -- REGISTRAR CLIENTES
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_cliente_registrar;

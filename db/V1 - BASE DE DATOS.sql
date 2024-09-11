@@ -183,6 +183,7 @@ DROP TABLES IF EXISTS usuarios;
 CREATE TABLE usuarios(
 		idusuario			INT	PRIMARY KEY AUTO_INCREMENT,
         idpersona			CHAR(11) NOT NULL,
+        idrol				INT NOT NULL,
         nombre_usuario		VARCHAR(100)	NOT NULL,
         password_usuario	VARCHAR(150)		NOT NULL,
         
@@ -191,19 +192,6 @@ CREATE TABLE usuarios(
 		estado			BIT DEFAULT 1,
         CONSTRAINT fk_idpersona_usua FOREIGN KEY(idpersona) REFERENCES personas(idpersonanrodoc),
         CONSTRAINT uk_nombre_usuario_usua UNIQUE(nombre_usuario)
-)ENGINE = INNODB;
-
-DROP TABLES IF EXISTS roles_usuarios;
-CREATE TABLE roles_usuarios(
-	idrolusuario	INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	idusuario		INT NOT NULL,
-	idrol			INT NOT NULL,
-    
-	create_at		DATETIME NOT NULL DEFAULT NOW(),
-	update_at		DATETIME NULL,
-	estado			BIT DEFAULT 1,
-	CONSTRAINT fk_idusuario_rol_usu FOREIGN KEY(idusuario) REFERENCES usuarios(idusuario),
-	CONSTRAINT fk_rol_rol_usu FOREIGN KEY(idrol) REFERENCES roles(idrol) 
 )ENGINE = INNODB;
 
 DROP TABLES IF EXISTS clientes;

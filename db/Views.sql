@@ -5,6 +5,7 @@ CREATE VIEW view_tipos_documentos  AS
         FROM tipo_documento ORDER BY documento ASC;
         
    --     select * from view_tipos_documentos
+   /*
 DELIMITER $$
 CREATE PROCEDURE sp_provincias( IN _iddepartamento  INT)
 BEGIN
@@ -44,4 +45,4 @@ WHERE
     d.distrito = 'Chincha Alta';
 
       
-         -- CREATE VIEW AS
+         -- CREATE VIEW AS*/

@@ -1,6 +1,6 @@
 <?php 
  
-   $host="http://localhost/distribumaxloy" ;
+   $host="http://localhost/distribumax" ;
  ?>
 <!DOCTYPE html>
 <html lang="es">

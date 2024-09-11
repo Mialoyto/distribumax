@@ -95,7 +95,7 @@ BEGIN
 		WHERE PER.idtipodocumento = _idtipodocumento
         AND PER.idpersonanrodoc = _idpersonanrodoc;
 END $$
-CALL sp_buscarpersonadoc (1,'87654321');
+
 
 
 -- PROCEDIMIENTOS PARA USUARIOS ********************************************************************************************
@@ -336,6 +336,7 @@ CREATE PROCEDURE sp_buscardistrito(IN _distrito VARCHAR(100))
 BEGIN
 IF TRIM(_distrito) <> '' THEN
 SELECT
+	d.iddistrito AS iddistrito,
     d.distrito AS distrito,
     p.provincia AS provincia,
     dep.departamento AS departamento
@@ -350,4 +351,3 @@ WHERE
 END IF;
 END$$
  
- CALL sp_buscardistrito('ujio');

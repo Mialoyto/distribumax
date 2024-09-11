@@ -24,7 +24,7 @@
 
 CALL sp_actualizar_persona (1,99,'Juan','Castilla','Maraví',null,'Av.Chacarita #123','26558000');
 CALL sp_actualizar_persona (3,99,'Messi','Castilla','Maraví','910657765','Psj. Felicidad #420','26558001');
-
+CALL sp_buscarpersonadoc (1,'26558000');
 
  
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/
@@ -81,5 +81,5 @@ CALL sp_desactivar_persona(0,'73217990');
 
 CALL sp_actualizar_usuario('usuario1','usuario1',3);
 /****************************************************************************************************************/
-  
+   CALL sp_buscardistrito('chincha');
 

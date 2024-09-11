@@ -9,6 +9,7 @@ select * from distritos;
 select * from marcas;
 select * from personas;
 select * from usuarios;
+delete from usuarios where idpersona = '26558000';
 SELECT * FROM productos;
 SELECT * FROM  tipo_documento;
 delete from personas where idpersonanrodoc = '';

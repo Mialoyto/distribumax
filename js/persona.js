@@ -1,18 +1,15 @@
-document.addEventListener("DOMContentLoaded", () =>{
-    const dni = document.querySelector("#idpersonanrodoc");
-    const doc = document.querySelector("#idtipodocumento");
-    let iddoc = doc.value;
-    // capturar tipo de documento
-    
-    doc.addEventListener('change', function(){
-        iddoc = this.value;
-        console.log(iddoc)
-    })
-    
+document.addEventListener("DOMContentLoaded", () => {
+  const dni = document.querySelector("#idpersonanrodoc");
+  const doc = document.querySelector("#idtipodocumento");
+  // let iddoc = doc.value;
+  // capturar tipo de documento
 
-    async function searchDoc() {
-        const params = new URLSearchParams();
-        params.append('idtipodocumento',iddoc)
-        
-    }
-})
+  doc.addEventListener("change", () => {
+    iddoc = doc.value;
+    console.log(iddoc);
+  });
+
+  /* dni.addEventListener('changue', () =>{
+
+    }) */
+});

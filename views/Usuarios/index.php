@@ -27,7 +27,7 @@ require_once '../../header.php';
                         <div class="col-md-8 mb-3">
                             <label for="idpersonanrodoc" class="form-label">Número de Documento</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="idpersonanrodoc" name="idpersonanrodoc" required>
+                                <input type="text" class="form-control" id="btnbuscardni" name="idpersonanrodoc" pattern="[0-9]+" required>
                                 <button class="btn btn-outline-secondary" type="button">Verificar</button>
                             </div>
                         </div>

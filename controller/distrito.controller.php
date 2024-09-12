@@ -15,7 +15,11 @@ switch ($verbo) {
                     $response = $distrito->searchDistrito($datosEnviar);
                     echo json_encode($response);
                     break;
+                case 'getAll':   
+                        echo json_encode($distrito->getAll());
+                break;
             }
         }
+
         break;
 }

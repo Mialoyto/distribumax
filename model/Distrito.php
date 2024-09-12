@@ -23,4 +23,14 @@ class Distrito extends Conexion
             die($e->getMessage());
         }
     }
+    public function getAll(){
+        try{
+            $sql="SELECT * FROM view_distritos";
+            $query=$this->pdo->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }

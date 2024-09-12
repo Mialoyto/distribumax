@@ -136,6 +136,29 @@ CALL sp_metodo_pago_registrar('Grettel');
 
 CALL sp_actualizar_metodo_pago();
 
+/****************************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  MARCA **/
+-- REGISTRAR MARCA
+CALL sp_registrar_marca('Field');
+
+-- ACTUALIZAR MARCA
+CALL sp_actualizar_marca(1, 'Lays');
+
+/****************************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  SUBCATEGORIA **/
+-- REGISTRAR SUBCATEGORIA
+CALL sp_registrar_subcategoria(1, 'Limpieza');
+
+-- ACTUALIZAR SUBCATEGORIA
+CALL sp_actualizar_subcategoria(1, 1, 'Conserva');
+
+/****************************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  MARCA **/
+
+
+CALL sp_actualizar_metodo_pago();
+
+
 /****Usuarios*********/
 CALL sp_buscarpersonadoc (1,'87654321');
 

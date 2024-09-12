@@ -637,11 +637,106 @@ BEGIN
 END$$
 
 -- REGISTRAR VEHICULOS
+DELIMITER $$
+CREATE PROCEDURE sp_registrar_vehiculo(
+    IN _idusuario INT,
+    IN _marca_vehiculo VARCHAR(100),
+    IN _modelo VARCHAR(100),
+    IN _placa VARCHAR(20),
+    IN _capacidad SMALLINT,
+    IN _condicion ENUM('operativo', 'taller', 'averiado')
+)
+BEGIN
+    INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
+    VALUES (_idusuario, _marca_vehiculo, _modelo, _placa, _capacidad, _condicion);
+END$$
+
+-- ACTUALIZAR VEHICULOS
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_vehiculo(
+    IN _idvehiculo INT,
+    IN _idusuario INT,
+    IN _marca_vehiculo VARCHAR(100),
+    IN _modelo VARCHAR(100),
+    IN _placa VARCHAR(20),
+    IN _capacidad SMALLINT,
+    IN _condicion ENUM('operativo', 'taller', 'averiado')
+)
+BEGIN
+    UPDATE vehiculos
+    SET idusuario = _idusuario,
+        marca_vehiculo = _marca_vehiculo,
+        modelo = _modelo,
+        placa = _placa,
+        capacidad = _capacidad,
+        condicion = _condicion,
+        update_at = NOW()
+    WHERE idvehiculo = _idvehiculo;
+END$$
+
+-- REGISTRAR MARCAS
+DELIMITER $$
+CREATE PROCEDURE sp_registrar_marca(
+    IN _marca VARCHAR(150)
+)
+BEGIN
+    INSERT INTO marcas (marca) 
+    VALUES (_marca);
+END$$
+
+-- ACTUALIZAR MARCAS
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_marca(
+    IN _idmarca INT,
+    IN _marca VARCHAR(150)
+)
+BEGIN
+    UPDATE marcas
+    SET marca = _marca,
+        update_at = NOW()
+    WHERE idmarca = _idmarca;
+END$$
+
+-- REGISTRAR SUBCATEGORIAS
+DELIMITER $$
+CREATE PROCEDURE sp_registrar_subcategoria(
+    IN _idcategoria INT,
+    IN _subcategoria VARCHAR(150)
+)
+BEGIN
+    INSERT INTO subcategorias (idcategoria, subcategoria)
+    VALUES (_idcategoria, _subcategoria);
+END$$
 
 
--- MARCAS
--- SUBCATEGORIAS
--- BUSQUEDAS 
+-- ACTUALIZAR SUBCATEGORIAS
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_subcategoria(
+    IN _idsubcategoria INT,
+    IN _idcategoria INT,
+    IN _subcategoria VARCHAR(150)
+)
+BEGIN
+    UPDATE subcategorias
+    SET idcategoria = _idcategoria,
+        subcategoria = _subcategoria,
+        update_at = NOW()
+    WHERE idsubcategoria = _idsubcategoria;
+END$$
+
+-- REGISTRAR BUSQUEDAS DE VEHICULOS
+DELIMITER $$
+CREATE PROCEDURE sp_buscar_vehiculos(
+    IN _marca_vehiculo VARCHAR(100),
+    IN _modelo VARCHAR(100)
+)
+BEGIN
+    SELECT * FROM vehiculos
+    WHERE (marca_vehiculo = _marca_vehiculo OR _marca_vehiculo IS NULL)
+      AND (modelo = _modelo OR _modelo IS NULL);
+END$$
+
+
 DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(IN _distrito VARCHAR(100))
 BEGIN

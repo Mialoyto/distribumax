@@ -125,3 +125,21 @@ INSERT INTO productos (idmarca, idsubcategoria, nombreproducto, descripcion, pre
 INSERT INTO tipos_promociones (tipopromocion, descripcion)
 VALUES ('Descuento de Temporada', 'Descuento especial aplicado durante la temporada de invierno.');
 
+-- Registrando 2 metodos de pago
+INSERT INTO metodos_pago (metodopago, estado)
+VALUES
+    ('Tarjeta de Crédito', 1),   -- Primer método de pago
+    ('Transferencia Bancaria', 1); -- Segundo método de pago
+
+
+-- Registrando vehiculos (2 vehiculos)
+INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion, estado)
+VALUES
+    (1, 'Toyota', 'Corolla', 'ABC123', 5, 'operativo', 'Activo'),
+    (1, 'Honda', 'Civic', 'XYZ789', 5, 'operativo', 'Activo');
+
+-- Registrando ventas (2 ventas)
+INSERT INTO ventas (idpedido,idmetodopago,idtipocomprobante,fecha_venta,subtotal,descuento,igv,total_venta,create_at,update_at,estado) 
+VALUES
+	(1,1,1,NOW(),100.00,10.00,18.00,108.00,NOW(),NULL,1),
+	(2,2,2,NOW(),200.00,20.00,36.00,216.00,NOW(),NULL,1);

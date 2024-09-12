@@ -9,7 +9,7 @@ require_once '../../header.php';
             </div>
             <div class="card-body">
                 <!-- Formulario de Registro de Empresa -->
-                <form method="POST" action="#">
+                <form method="POST" action="#" id="form-registrar-empresa">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="idempresaruc" class="form-label">RUC</label>
@@ -41,9 +41,7 @@ require_once '../../header.php';
                             <label for="iddistrito" class="form-label">Distrito</label>
                             <select class="form-control" id="iddistrito" name="iddistrito" required>
                                 <option value="">Seleccione un distrito</option>
-                                <option value="1">Distrito 1</option>
-                                <option value="2">Distrito 2</option>
-                                <option value="3">Distrito 3</option>
+                                
                                 <!-- Agrega más opciones según sea necesario -->
                             </select>
                         </div>
@@ -51,7 +49,7 @@ require_once '../../header.php';
 
                     <!-- Botones -->
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary me-2">Registrar</button>
+                        <button type="submit" class="btn btn-primary me-2" id="btn-registrar-empresa">Registrar</button>
                         <button type="reset" class="btn btn-secondary">Cancelar</button>
                     </div>
                 </form>
@@ -59,7 +57,7 @@ require_once '../../header.php';
         </div>
     </div>
 
- 
+<script src="../../js/empresas.js"></script>
 
 <?php
 require_once '../../footer.php';

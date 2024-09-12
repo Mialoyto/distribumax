@@ -247,7 +247,7 @@ DELIMITER ;
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_actualizar_empresa;
 CREATE PROCEDURE sp_actualizar_empresa(
-IN _idempresaruc VARCHAR(11),
+IN _idempresaruc        INT,
 IN _iddistrito         	INT,
 IN _razonsocial  		VARCHAR(100),
 IN _direccion 			VARCHAR(100),

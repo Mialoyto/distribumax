@@ -72,7 +72,7 @@ BEGIN
         
         select row_count() as filas_afectadas;
 END $$
-DELIMITER $$;
+
 
 -- BUSCAR PERSONA POR DOCUMENTO
 DELIMITER $$
@@ -95,8 +95,6 @@ BEGIN
 		WHERE PER.idtipodocumento = _idtipodocumento
         AND PER.idpersonanrodoc = _idpersonanrodoc;
 END $$
-CALL sp_buscarpersonadoc (1,'87654321');
-
 
 -- PROCEDIMIENTOS PARA USUARIOS ********************************************************************************************
 -- USUARIOS
@@ -249,7 +247,7 @@ DELIMITER ;
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_actualizar_empresa;
 CREATE PROCEDURE sp_actualizar_empresa(
-IN _idempresaruc VARCHAR(11),
+IN _idempresaruc 		INT,
 IN _iddistrito         	INT,
 IN _razonsocial  		VARCHAR(100),
 IN _direccion 			VARCHAR(100),
@@ -270,21 +268,18 @@ END$$
 
 -- DESACTIVAR ESTADO EMPRESA
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_estado_empresa;
 CREATE PROCEDURE sp_estado_empresa(
 IN  _estado BIT,
 IN  _idempresaruc INT 
 )
 BEGIN
-	UPDATE productos SET
+	UPDATE empresas SET
       estado=_estado
       WHERE idempresaruc=_idempresaruc;
 END$$
-
 -- PROCEDURE DE CLIENTES ********************************************************************************************
 -- REGISTRAR CLIENTES
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_cliente_registrar;
 CREATE PROCEDURE sp_cliente_registrar(
 	IN _idpersona INT,
     IN _idempresa INT,
@@ -296,11 +291,9 @@ BEGIN
     VALUES 
     (_idpersona, _idempresa, _tipo_cliente);
 END$$
-DELIMITER ;
 
 -- ACTUALIZAR CLIENTES
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_actualizar_cliente;
 CREATE PROCEDURE sp_actualizar_cliente(
 IN _idcliente 			INT,
 IN _idpersona        	INT,
@@ -318,24 +311,438 @@ BEGIN
         WHERE idcliente=_idcliente;
 END$$
 
--- PROOVEDORES
--- PEDIDOS
--- KARDEX
--- PROMOCIONES
--- TIPOS DE PROMOCIONES
--- DESPACHO
--- TIPO DE COMPROBANTE
--- COMPROBANTES
--- METODO DE PAGO
---  VEHICULOS
--- MARCAS
--- SUBCATEGORIAS
--- BUSQUEDAS 
+-- DESACTIVAR CLIENTE
+DELIMITER $$
+CREATE PROCEDURE sp_estado_cliente(
+IN  _estado BIT,
+IN  _idcliente INT 
+)
+BEGIN
+	UPDATE clientes SET
+      estado=_estado
+      WHERE idcliente=_idcliente;
+END$$
+
+-- REGISTRAR PROOVEDORES
+DELIMITER $$
+CREATE PROCEDURE sp_proovedor_registrar(
+	IN _idproveedor 			INT,
+    IN _idempresa 				INT,
+    IN _nombre_proveedor		VARCHAR(50),
+    IN _contacto_principal		VARCHAR(50),
+    IN _telefono_contacto		CHAR(9),
+    IN _direccion				VARCHAR(100),
+    IN _email               	VARCHAR(100)
+)
+BEGIN
+    INSERT INTO proveedores
+    (idproveedor, idempresa, nombre_proveedor, contacto_principal, telefono_contacto, direccion, email) 
+    VALUES 
+    (_idproveedor, _idempresa, _nombre_proveedor, _contacto_principal, _telefono_contacto, _direccion, _email);
+END$$
+
+-- ACTUALIZAR PROVEEDORES
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_proovedor(
+	IN _idproveedor 			INT,
+    IN _idempresa 				INT,
+    IN _nombre_proveedor		VARCHAR(50),
+    IN _contacto_principal		VARCHAR(50),
+    IN _telefono_contacto		CHAR(9),
+    IN _direccion				VARCHAR(100),
+    IN _email               	VARCHAR(100)
+)
+BEGIN
+	UPDATE proveedores
+		SET 
+			idproveedor =_idproveedor,
+			idempresa =_idempresa,
+			nombre_proveedor =_nombre_proveedor,
+			contacto_principal =_contacto_principal,
+            telefono_contacto = _telefono_contacto,
+            direccion = _direccion,
+            email = _email,
+			update_at=now()
+        WHERE idproveedor =_idproveedor;
+END$$
+
+-- DESACTIVAR PROOVEDOR
+DELIMITER $$
+CREATE PROCEDURE sp_estado_proovedor(
+IN  _estado BIT,
+IN  _idproveedor INT 
+)
+BEGIN
+	UPDATE proveedores SET
+      estado=_estado
+      WHERE idproveedor =_idproveedor;
+END$$
+
+--  REGISTRAR PEDIDOS
+DELIMITER $$
+CREATE PROCEDURE sp_pedido_registrar(
+    IN _idpedido        INT,
+    IN _idusuario       INT,
+    IN _idcliente       INT,
+    IN _fecha_pedido    DATETIME,
+    IN _estado          ENUM('Pendiente', 'Enviado', 'Cancelado', 'Entregado')
+)
+BEGIN
+    INSERT INTO pedidos
+    (idpedido, idusuario, idcliente, fecha_pedido, estado) 
+    VALUES 
+    (_idpedido, _idusuario, _idcliente, _fecha_pedido, _estado);
+END$$
+
+-- ACTUALIZAR PEDIDOS
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_pedido(
+	IN _idpedido        INT,
+    IN _idusuario       INT,
+    IN _idcliente       INT,
+    IN _fecha_pedido    DATETIME,
+    IN _estado          ENUM('Pendiente', 'Enviado', 'Cancelado', 'Entregado')
+)
+BEGIN
+	UPDATE pedidos
+		SET 
+			idpedido =_idpedido,
+			idusuario =_idusuario,
+			idcliente =_idcliente,
+			fecha_pedido =_fecha_pedido,
+            estado = _estado,
+			update_at=now()
+        WHERE idpedido =_idpedido;
+END$$
+
+-- DESACTIVAR PEDIDO
+DELIMITER $$
+CREATE PROCEDURE sp_estado_pedido(
+IN  _estado BIT,
+IN  _idpedido INT 
+)
+BEGIN
+	UPDATE pedidos SET
+      estado=_estado
+      WHERE idpedido =_idpedido;
+END$$
+
+
+-- KARDEX (NO LO ENTIENDO MUY BIEN, QUEDA PENDIENTE)
+
+
+-- REGISTRAR PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_promocion_registrar(
+	IN _idpromocion      	INT,
+    IN _idtipopromocion       INT,
+    IN _descripcion       	  VARCHAR(250),
+    IN _fechaincio    		  DATETIME,
+    IN _fechafin			  DATETIME,
+    IN _valor_descuento  	  DECIMAL(8, 2),
+    IN _estado				  BIT
+)
+BEGIN
+    INSERT INTO promociones
+    (idpromocion,idtipopromocion, descripcion, fechaincio, fechafin, valor_descuento, estado) 
+    VALUES 
+    (_idpromocion,_idtipopromocion, _descripcion, _fechaincio, _fechafin, _valor_descuento, _estado);
+END$$
+
+-- ACTUALIZAR PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_promocion(
+	IN _idpromocion      	INT,
+	IN _idtipopromocion    	INT,
+	IN _descripcion      	VARCHAR(250),
+    IN _fechaincio			DATETIME,
+    IN _fechafin			DATETIME,
+	IN _valor_descuento  	DECIMAL(8, 2),
+	IN _estado					BIT
+)
+BEGIN
+	UPDATE promociones
+		SET 
+			idpromocion =_idpromocion,
+			idtipopromocion =_idtipopromocion,
+			descripcion =_descripcion,
+			fechaincio =_fechaincio,
+            fechafin = _fechafin,
+            valor_descuento = _valor_descuento,
+            estado = _estado,
+			update_at=now()
+        WHERE idpromocion =_idpromocion;
+END$$
+
+-- DESACTIVAR PROMOCIÓN
+DELIMITER $$
+CREATE PROCEDURE sp_estado_promocion(
+IN  _estado BIT,
+IN  _idpromocion INT 
+)
+BEGIN
+	UPDATE promociones SET
+      estado=_estado
+      WHERE idpromocion =_idpromocion;
+END$$
+
+-- REGISTRAR TIPO DE PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_tipo_promocion_registrar(
+    IN _tipopromocion       VARCHAR(150),
+    IN _descripcion         VARCHAR(250),
+    IN _estado              BIT
+)
+BEGIN
+    INSERT INTO tipos_promociones (tipopromocion, descripcion, estado) 
+    VALUES (_tipopromocion, _descripcion, _estado);
+END$$
+
+-- ACTUALIZAR TIPO DE PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_tipo_promocion(
+	IN _idtipopromocion INT,
+    IN _tipopromocion   VARCHAR(150),
+    IN _descripcion     VARCHAR(250),
+ 	IN _estado			BIT
+)
+BEGIN
+	UPDATE tipos_promociones
+		SET
+			idtipopromocion =_idtipopromocion,
+            tipopromocion = _tipopromocion,
+			descripcion =_descripcion,
+            estado = _estado,
+			update_at=now()
+        WHERE idtipopromocion =_idtipopromocion;
+END$$
+
+-- DESACTIVAR TIPO DE PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_estado_tipo_promocion(
+IN  _estado BIT,
+IN  _idtipopromocion INT 
+)
+BEGIN
+	UPDATE tipos_promociones SET
+      estado=_estado
+      WHERE idtipopromocion =_idtipopromocion;
+END$$
+
+-- REGISTRAR DESPACHO
+DELIMITER $$
+CREATE PROCEDURE sp_despacho_registrar(
+    IN _idvehiculo 		INT,
+    IN _idusuario 		INT,
+    IN _fecha_despacho	DATE,
+	IN _estado          BIT	-- 1 : pendiente	0: despachado
+)
+BEGIN
+    INSERT INTO despacho (idvehiculo, idusuario,fecha_despacho, estado) 
+    VALUES (_idvehiculo, _idusuario, _fecha_despacho, _estado);
+END$$
+
+-- ACTUALIZAR DESPACHO
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_despacho(
+	IN _iddespacho		INT,
+	IN _idvehiculo 		INT,
+    IN _fecha_despacho	DATE,
+    IN _estado          BIT	-- 1 : pendiente	0: despachado
+)
+BEGIN
+	UPDATE despacho
+		SET
+			iddespacho =_iddespacho,
+            idvehiculo = _idvehiculo,
+			fecha_despacho =_fecha_despacho,
+            estado = _estado,
+			update_at=now()
+        WHERE iddespacho =_iddespacho;
+END$$
+
+-- REGISTRAR TIPO DE COMPROBANTES
+DELIMITER $$
+CREATE PROCEDURE sp_tipo_comprobantes_registrar(
+    IN _comprobantepago		VARCHAR(150),
+	IN _estado					BIT
+)
+BEGIN
+    INSERT INTO tipo_comprobante_pago (comprobantepago, estado) 
+    VALUES (_comprobantepago, _estado);
+END$$
+
+-- ACTUALIZAR TIPO DE COMPROBANTES
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_tipo_comprobantes(
+	IN _idtipocomprobante			INT,
+	IN _comprobantepago		VARCHAR(150),
+	IN _estado					BIT
+)
+BEGIN
+	UPDATE tipo_comprobante_pago
+		SET
+			idtipocomprobante =_idtipocomprobante,
+            comprobantepago = _comprobantepago,
+            estado = _estado,
+			update_at=now()
+        WHERE idtipocomprobante =_idtipocomprobante;
+END$$
+
+-- REGISTRAR COMPROBANTES
+DELIMITER $$
+CREATE PROCEDURE sp_comprobantes_registrar(
+    IN _idventa 		INT,
+	IN _estado          BIT-- 	1: EMITIDO 	0: CANCELADO
+)
+BEGIN
+    INSERT INTO comprobantes (idventa, estado) 
+    VALUES (_idventa , _estado);
+END$$
+
+-- ACTUALIZAR COMPROBANTES 
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_comprobantes(
+	IN _idcomprobante			INT,
+	IN _estado					BIT
+)
+BEGIN
+	UPDATE comprobantes
+		SET
+            estado = _estado
+        WHERE idcomprobante =_idcomprobante;
+END$$
+
+-- REGISTRAR METODO DE PAGO
+DELIMITER $$
+CREATE PROCEDURE sp_metodo_pago_registrar(
+    IN _metodopago		VARCHAR(150)
+)
+BEGIN
+    INSERT INTO metodos_pago (metodopago) 
+    VALUES (_metodopago);
+END$$
+
+-- ACTUALIZAR METODO DE PAGO
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_metodo_pago(
+	IN _idmetodopago			INT,
+	IN _estado					BIT
+)
+BEGIN
+	UPDATE comprobantes
+		SET
+            estado = _estado
+        WHERE idmetodopago =_idmetodopago;
+END$$
+
+-- REGISTRAR VEHICULOS
+DELIMITER $$
+CREATE PROCEDURE sp_registrar_vehiculo(
+    IN _idusuario INT,
+    IN _marca_vehiculo VARCHAR(100),
+    IN _modelo VARCHAR(100),
+    IN _placa VARCHAR(20),
+    IN _capacidad SMALLINT,
+    IN _condicion ENUM('operativo', 'taller', 'averiado')
+)
+BEGIN
+    INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
+    VALUES (_idusuario, _marca_vehiculo, _modelo, _placa, _capacidad, _condicion);
+END$$
+
+-- ACTUALIZAR VEHICULOS
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_vehiculo(
+    IN _idvehiculo INT,
+    IN _idusuario INT,
+    IN _marca_vehiculo VARCHAR(100),
+    IN _modelo VARCHAR(100),
+    IN _placa VARCHAR(20),
+    IN _capacidad SMALLINT,
+    IN _condicion ENUM('operativo', 'taller', 'averiado')
+)
+BEGIN
+    UPDATE vehiculos
+    SET idusuario = _idusuario,
+        marca_vehiculo = _marca_vehiculo,
+        modelo = _modelo,
+        placa = _placa,
+        capacidad = _capacidad,
+        condicion = _condicion,
+        update_at = NOW()
+    WHERE idvehiculo = _idvehiculo;
+END$$
+
+-- REGISTRAR MARCAS
+DELIMITER $$
+CREATE PROCEDURE sp_registrar_marca(
+    IN _marca VARCHAR(150)
+)
+BEGIN
+    INSERT INTO marcas (marca) 
+    VALUES (_marca);
+END$$
+
+-- ACTUALIZAR MARCAS
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_marca(
+    IN _idmarca INT,
+    IN _marca VARCHAR(150)
+)
+BEGIN
+    UPDATE marcas
+    SET marca = _marca,
+        update_at = NOW()
+    WHERE idmarca = _idmarca;
+END$$
+
+-- REGISTRAR SUBCATEGORIAS
+DELIMITER $$
+CREATE PROCEDURE sp_registrar_subcategoria(
+    IN _idcategoria INT,
+    IN _subcategoria VARCHAR(150)
+)
+BEGIN
+    INSERT INTO subcategorias (idcategoria, subcategoria)
+    VALUES (_idcategoria, _subcategoria);
+END$$
+
+
+-- ACTUALIZAR SUBCATEGORIAS
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_subcategoria(
+    IN _idsubcategoria INT,
+    IN _idcategoria INT,
+    IN _subcategoria VARCHAR(150)
+)
+BEGIN
+    UPDATE subcategorias
+    SET idcategoria = _idcategoria,
+        subcategoria = _subcategoria,
+        update_at = NOW()
+    WHERE idsubcategoria = _idsubcategoria;
+END$$
+
+-- REGISTRAR BUSQUEDAS DE VEHICULOS
+DELIMITER $$
+CREATE PROCEDURE sp_buscar_vehiculos(
+    IN _marca_vehiculo VARCHAR(100),
+    IN _modelo VARCHAR(100)
+)
+BEGIN
+    SELECT * FROM vehiculos
+    WHERE (marca_vehiculo = _marca_vehiculo OR _marca_vehiculo IS NULL)
+      AND (modelo = _modelo OR _modelo IS NULL);
+END$$
+
+
 DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(IN _distrito VARCHAR(100))
 BEGIN
 IF TRIM(_distrito) <> '' THEN
 SELECT
+	d.iddistrito AS iddistrito,
     d.distrito AS distrito,
     p.provincia AS provincia,
     dep.departamento AS departamento
@@ -350,4 +757,3 @@ WHERE
 END IF;
 END$$
  
- CALL sp_buscardistrito('ujio');

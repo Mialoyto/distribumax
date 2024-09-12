@@ -9,28 +9,40 @@ $input = file_get_contents('php://input');
 
 switch ($verbo) {
     case 'GET':
-            $datosEnviar = [
-                'idtipodocumento' => $_GET['idtipodocumento'],
-                'idpersonanrodoc' => $_GET['idpersonanrodoc']
-            ];
-            $send = $persona->getByID($datosEnviar);
-            echo json_encode($send);
-        break;
+        if (isset($_GET['operation'])) {
+            switch ($_GET['operation']) {
+                case 'searchById': {
+                        $datosEnviar = [
+                            'idtipodocumento' => $_GET['idtipodocumento'],
+                            'idpersonanrodoc' => $_GET['idpersonanrodoc']
+                        ];
+                        $send = $persona->getByID($datosEnviar);
+                        echo json_encode($send);
+                        break;
+                    }
+            }
+        }
     case 'POST':
-        $datosRecibidos = json_decode($input, true);
-        $datosEnviar = [
-            "idtipodocumento"   => $datosRecibidos['idtipodocumento'],
-            "idpersonanrodoc"   => $datosRecibidos['idpersonanrodoc'],
-            "iddistrito"        => $datosRecibidos['iddistrito'],
-            "nombres"           => $datosRecibidos['nombres'],
-            "appaterno"         => $datosRecibidos['appaterno'],
-            "apmaterno"         => $datosRecibidos['apmaterno'],
-            "telefono"          => $datosRecibidos['telefono'],
-            "direccion"         => $datosRecibidos['direccion']
-        ];
-        $id = $persona->addPersona($datosEnviar);
-        $resultado = ['id' => $id];
-        echo json_encode($resultado);
+        if (isset($_POST['operation'])) {
+            switch ($_POST['operation']) {
+                case 'addPersona':
+                    $datosRecibidos = json_decode($input, true);
+                    $datosEnviar = [
+                        "idtipodocumento"   => $datosRecibidos['idtipodocumento'],
+                        "idpersonanrodoc"   => $datosRecibidos['idpersonanrodoc'],
+                        "iddistrito"        => $datosRecibidos['iddistrito'],
+                        "nombres"           => $datosRecibidos['nombres'],
+                        "appaterno"         => $datosRecibidos['appaterno'],
+                        "apmaterno"         => $datosRecibidos['apmaterno'],
+                        "telefono"          => $datosRecibidos['telefono'],
+                        "direccion"         => $datosRecibidos['direccion']
+                    ];
+                    $id = $persona->addPersona($datosEnviar);
+                    $resultado = ['id' => $id];
+                    echo json_encode($resultado);
+                    break;
+            }
+        }
         break;
     case 'PUT':
         $datosRecibidos = json_decode($input, true);

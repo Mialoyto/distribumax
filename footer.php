@@ -13,5 +13,6 @@
 <script src="<?=$host?>/js/scripts.js"></script>
 <!-- <script src="<?=$host?>/js/persona.js"></script> -->
 <script src="<?=$host?>/js/usuarios.js"></script>
+<script src="<?=$host?>/js/persona.js"></script>
 
 

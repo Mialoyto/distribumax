@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // funcion que trae los tipos de documentos desde la base de datos
-  (() =>{
+/*   (() =>{
       fetch(`../../controller/documento.controller.php`)
           .then(response => response.json())
           .then(data =>{
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
               console.error(e);
           })
   })();
-
+ */
 
     // capturar tipo de documento
 

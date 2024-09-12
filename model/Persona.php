@@ -91,7 +91,7 @@ class Persona extends Conexion
         }
     }
 
-    public function getByID($params = [])
+    public function getById($params = [])
     {
         try {
             $tsql = "CALL sp_buscarpersonadoc (?, ?)";

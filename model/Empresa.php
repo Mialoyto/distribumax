@@ -32,11 +32,11 @@ class Empresas extends Conexion{
 }
   public function getAll() {
    try{
-    $query="SELECT * FROM empresas";
-    $cmd=$this->pdo->prepare($query);
-    $cmd->execute();
+    $sql="SELECT * FROM view_empresas";
+    $query=$this->pdo->prepare($sql);
+    $query->execute();
     
-    return $cmd->fetchAll(PDO::FETCH_ASSOC);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
 
    }catch(Exception $e){
     die($e->getCode());

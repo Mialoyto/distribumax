@@ -326,9 +326,8 @@ END$$
 -- REGISTRAR PROOVEDORES
 DELIMITER $$
 CREATE PROCEDURE sp_proovedor_registrar(
-	IN _idproveedor 			INT,
     IN _idempresa 				INT,
-    IN _nombre_proveedor		VARCHAR(50),
+    IN _proveedor		VARCHAR(50),
     IN _contacto_principal		VARCHAR(50),
     IN _telefono_contacto		CHAR(9),
     IN _direccion				VARCHAR(100),
@@ -336,9 +335,9 @@ CREATE PROCEDURE sp_proovedor_registrar(
 )
 BEGIN
     INSERT INTO proveedores
-    (idproveedor, idempresa, nombre_proveedor, contacto_principal, telefono_contacto, direccion, email) 
+    ( idempresa, proveedor, contacto_principal, telefono_contacto, direccion, email) 
     VALUES 
-    (_idproveedor, _idempresa, _nombre_proveedor, _contacto_principal, _telefono_contacto, _direccion, _email);
+    ( _idempresa, _proveedor, _contacto_principal, _telefono_contacto, _direccion, _email);
 END$$
 
 -- ACTUALIZAR PROVEEDORES

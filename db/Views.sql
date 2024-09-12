@@ -8,7 +8,13 @@ CREATE VIEW view_distritos  AS
 	SELECT iddistrito,distrito
         FROM distritos ORDER BY distrito ASC;
         
-SELECT * FROM view_distritos
+CREATE VIEW view_empresas AS
+SELECT idempresaruc, razonsocial
+FROM empresas
+ORDER BY razonsocial ASC;
+        
+SELECT * FROM view_empresas
+
    --     select * from view_tipos_documentos
 /**
 DELIMITER $$

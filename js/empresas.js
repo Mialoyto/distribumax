@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded",()=>{
    const direccion = document.querySelector("#direccion");
    const email   = document.querySelector("#email");
    const telefono = document.querySelector("#telefono");
-   btnregistrar=document.querySelector("#btn-registrar-empresa");
+  // btnregistrar=document.querySelector("#btn-registrar-empresa");
+
   (() =>{
       fetch(`../../controller/distrito.controller.php?operation=getAll`)
           .then(response => response.json())
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   
     const params = new FormData();
     params.append('operation','add');
+    
     params.append('idempresaruc',ruc.value);
     params.append('iddistrito',optionDis.value);
     params.append('razonsocial',razon.value);

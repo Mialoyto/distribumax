@@ -212,7 +212,7 @@ DROP TABLES IF EXISTS proveedores;
 CREATE TABLE proveedores(
 	idproveedor			 	INT	NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	idempresa				INT NOT NULL,
-	nombre_proveedor		VARCHAR(50)		NOT NULL,
+	proveedor				VARCHAR(100)    NOT NULL,
 	contacto_principal		VARCHAR(50)		NOT NULL,
 	telefono_contacto		CHAR(9)			NOT NULL,
 	direccion				VARCHAR(100)	NOT NULL,
@@ -222,7 +222,7 @@ CREATE TABLE proveedores(
 	update_at				DATETIME NULL,
 	estado					BIT DEFAULT 1,
 	CONSTRAINT fk_idempresa_prov FOREIGN KEY(idempresa) REFERENCES empresas(idempresaruc),
-    CONSTRAINT uk_nombre_proveedor UNIQUE(nombre_proveedor)
+    CONSTRAINT uk_nombre_proveedor UNIQUE(proveedor)
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS tipos_promociones;

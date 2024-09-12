@@ -11,12 +11,12 @@ switch ($verbo) {
     case 'GET':
         if (isset($_GET['operation'])) {
             switch ($_GET['operation']) {
-                case 'searchById': {
+                case 'searchDni': {
                         $datosEnviar = [
                             'idtipodocumento' => $_GET['idtipodocumento'],
                             'idpersonanrodoc' => $_GET['idpersonanrodoc']
                         ];
-                        $send = $persona->getByID($datosEnviar);
+                        $send = $persona->getById($datosEnviar);
                         echo json_encode($send);
                         break;
                     }

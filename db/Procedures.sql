@@ -449,12 +449,196 @@ BEGIN
     (_idpromocion,_idtipopromocion, _descripcion, _fechaincio, _fechafin, _valor_descuento, _estado);
 END$$
 
--- TIPOS DE PROMOCIONES
--- DESPACHO
--- TIPO DE COMPROBANTE
--- COMPROBANTES
--- METODO DE PAGO
---  VEHICULOS
+-- ACTUALIZAR PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_promocion(
+	IN _idpromocion      	INT,
+	IN _idtipopromocion    	INT,
+	IN _descripcion      	VARCHAR(250),
+    IN _fechaincio			DATETIME,
+    IN _fechafin			DATETIME,
+	IN _valor_descuento  	DECIMAL(8, 2),
+	IN _estado					BIT
+)
+BEGIN
+	UPDATE promociones
+		SET 
+			idpromocion =_idpromocion,
+			idtipopromocion =_idtipopromocion,
+			descripcion =_descripcion,
+			fechaincio =_fechaincio,
+            fechafin = _fechafin,
+            valor_descuento = _valor_descuento,
+            estado = _estado,
+			update_at=now()
+        WHERE idpromocion =_idpromocion;
+END$$
+
+-- DESACTIVAR PROMOCIÓN
+DELIMITER $$
+CREATE PROCEDURE sp_estado_promocion(
+IN  _estado BIT,
+IN  _idpromocion INT 
+)
+BEGIN
+	UPDATE promociones SET
+      estado=_estado
+      WHERE idpromocion =_idpromocion;
+END$$
+
+-- REGISTRAR TIPO DE PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_tipo_promocion_registrar(
+    IN _tipopromocion       VARCHAR(150),
+    IN _descripcion         VARCHAR(250),
+    IN _estado              BIT
+)
+BEGIN
+    INSERT INTO tipos_promociones (tipopromocion, descripcion, estado) 
+    VALUES (_tipopromocion, _descripcion, _estado);
+END$$
+
+-- ACTUALIZAR TIPO DE PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_tipo_promocion(
+	IN _idtipopromocion INT,
+    IN _tipopromocion   VARCHAR(150),
+    IN _descripcion     VARCHAR(250),
+ 	IN _estado			BIT
+)
+BEGIN
+	UPDATE tipos_promociones
+		SET
+			idtipopromocion =_idtipopromocion,
+            tipopromocion = _tipopromocion,
+			descripcion =_descripcion,
+            estado = _estado,
+			update_at=now()
+        WHERE idtipopromocion =_idtipopromocion;
+END$$
+
+-- DESACTIVAR TIPO DE PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_estado_tipo_promocion(
+IN  _estado BIT,
+IN  _idtipopromocion INT 
+)
+BEGIN
+	UPDATE tipos_promociones SET
+      estado=_estado
+      WHERE idtipopromocion =_idtipopromocion;
+END$$
+
+-- REGISTRAR DESPACHO
+DELIMITER $$
+CREATE PROCEDURE sp_despacho_registrar(
+    IN _idvehiculo 		INT,
+    IN _idusuario 		INT,
+    IN _fecha_despacho	DATE,
+	IN _estado          BIT	-- 1 : pendiente	0: despachado
+)
+BEGIN
+    INSERT INTO despacho (idvehiculo, idusuario,fecha_despacho, estado) 
+    VALUES (_idvehiculo, _idusuario, _fecha_despacho, _estado);
+END$$
+
+-- ACTUALIZAR DESPACHO
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_despacho(
+	IN _iddespacho		INT,
+	IN _idvehiculo 		INT,
+    IN _fecha_despacho	DATE,
+    IN _estado          BIT	-- 1 : pendiente	0: despachado
+)
+BEGIN
+	UPDATE despacho
+		SET
+			iddespacho =_iddespacho,
+            idvehiculo = _idvehiculo,
+			fecha_despacho =_fecha_despacho,
+            estado = _estado,
+			update_at=now()
+        WHERE iddespacho =_iddespacho;
+END$$
+
+-- REGISTRAR TIPO DE COMPROBANTES
+DELIMITER $$
+CREATE PROCEDURE sp_tipo_comprobantes_registrar(
+    IN _comprobantepago		VARCHAR(150),
+	IN _estado					BIT
+)
+BEGIN
+    INSERT INTO tipo_comprobante_pago (comprobantepago, estado) 
+    VALUES (_comprobantepago, _estado);
+END$$
+
+-- ACTUALIZAR TIPO DE COMPROBANTES
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_tipo_comprobantes(
+	IN _idtipocomprobante			INT,
+	IN _comprobantepago		VARCHAR(150),
+	IN _estado					BIT
+)
+BEGIN
+	UPDATE tipo_comprobante_pago
+		SET
+			idtipocomprobante =_idtipocomprobante,
+            comprobantepago = _comprobantepago,
+            estado = _estado,
+			update_at=now()
+        WHERE idtipocomprobante =_idtipocomprobante;
+END$$
+
+-- REGISTRAR COMPROBANTES
+DELIMITER $$
+CREATE PROCEDURE sp_comprobantes_registrar(
+    IN _idventa 		INT,
+	IN _estado          BIT-- 	1: EMITIDO 	0: CANCELADO
+)
+BEGIN
+    INSERT INTO comprobantes (idventa, estado) 
+    VALUES (_idventa , _estado);
+END$$
+
+-- ACTUALIZAR COMPROBANTES 
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_comprobantes(
+	IN _idcomprobante			INT,
+	IN _estado					BIT
+)
+BEGIN
+	UPDATE comprobantes
+		SET
+            estado = _estado
+        WHERE idcomprobante =_idcomprobante;
+END$$
+
+-- REGISTRAR METODO DE PAGO
+DELIMITER $$
+CREATE PROCEDURE sp_metodo_pago_registrar(
+    IN _metodopago		VARCHAR(150)
+)
+BEGIN
+    INSERT INTO metodos_pago (metodopago) 
+    VALUES (_metodopago);
+END$$
+
+-- ACTUALIZAR METODO DE PAGO
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_metodo_pago(
+	IN _idmetodopago			INT,
+	IN _estado					BIT
+)
+BEGIN
+	UPDATE comprobantes
+		SET
+            estado = _estado
+        WHERE idmetodopago =_idmetodopago;
+END$$
+
+-- REGISTRAR VEHICULOS
+
+
 -- MARCAS
 -- SUBCATEGORIAS
 -- BUSQUEDAS 

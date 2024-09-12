@@ -48,4 +48,5 @@ class Usuario extends Conexion
         }
         return $idusuario;
     }
+
 }

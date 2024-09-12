@@ -3,6 +3,12 @@ USE distribumax;
 -- --------------------------------------------------------------------------------------------------------------------------------
 -- NOTA : ESTO SOLO SON PRUEBAS DE CONSULTAS
 SELECT * FROM subcategorias;
+SELECT * FROM ventas;
+SELECT * FROM despacho;
+SELECT * FROM comprobantes;
+SELECT * FROM tipo_comprobante_pago;
+select * from vehiculos;
+SELECT * FROM usuarios;
 select * from departamentos;
 select * from id prprovincias where provincia = 'Chincha';
 select * from distritos;
@@ -10,6 +16,7 @@ select * from marcas;
 select * from personas;
 select * from clientes;
 select * from pedidos;
+select * from metodos_pago;
 select * from promociones;
 select * from tipos_promociones;
 select * from usuarios;
@@ -18,6 +25,8 @@ SELECT * FROM productos;
 SELECT * FROM  tipo_documento;
 SELECT * FROM empresas;
 SELECT * FROM proveedores;
+SHOW COLUMNS FROM tipos_promociones;
+
 delete from personas where idpersonanrodoc = '';
 
 -- CONSULTAS

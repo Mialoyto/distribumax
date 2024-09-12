@@ -77,7 +77,7 @@ CALL sp_estado_proovedor(0, 1);
  /*************************************************************************************************/
  /**PRUEBAS PROCEDIMIENTOS OK ✔️  PEDIDOS**/
 -- REGISTRAR PEDIDOS
-CALL sp_pedido_registrar(1, 1, 3, '2024-04-05 19:41:00', 'Pendiente');
+CALL sp_pedido_registrar(2, 1, 3, '2024-04-05 19:41:00', 'Pendiente');
 
 -- ACTUALIZAR PEDIDOS
 CALL sp_actualizar_pedido(1,1,3,'2024-04-05 19:41:00', 'Entregado');
@@ -85,6 +85,56 @@ CALL sp_actualizar_pedido(1,1,3,'2024-04-05 19:41:00', 'Entregado');
 -- DESACTIVAR PEDIDO ¿?
 CALL sp_estado_pedido(0,1);
 /****************************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  PROMOCIONES**/
+-- REGISTRAR PROMOCIONES
+CALL sp_promocion_registrar(1,1, 'Promoción de Verano', '2024-09-10 00:00:00', '2024-09-20 23:59:59', 20.00, 1);
+
+-- ACTUALIZAR PROMOCIONES
+CALL sp_actualizar_promocion(1,1,'Promoción de Invierno', '2024-09-12 00:00:00', '2024-09-21',21.00,1);
+
+-- DESACTIVAR PROMOCION
+CALL sp_estado_promocion(1,0);
+
+/****************************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  TIPO DE PROMOCIONES**/
+-- REGISTRAR TIPOS DE PROMOCIONES
+CALL sp_tipo_promocion_registrar('Descuento de Invierno', 'Descuento especial para la temporada de invierno.', 1);
+
+-- ACTUALIZAR TIPOS DE PROMOCIONES
+CALL sp_actualizar_tipo_promocion(1,'Descuento de Verano', 'Descuento para temporada de verano',0);
+
+-- DESACTIVAR TIPO DE PROMOCIONES
+CALL sp_estado_tipo_promocion(0, 2);
+
+/****************************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  DESPACHOS**/ -- EL ACTUALIZAR DESPACHO NO LO ACTUALIZA CORRECTAMENTE
+-- REGISTRAR DESPACHOS
+CALL sp_despacho_registrar(9,1,'2024-09-11',1);
+
+-- ACTUALIZAR DESPACHO
+CALL sp_actualizar_despacho(9,1,'2024-09-10',0);
+
+/****************************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  TIPO COMPROBANTE DE PAGO**/
+-- REGISTRAR TIPO COMPROBANTE DE PAGO
+CALL sp_tipo_comprobantes_registrar('Factura Electrónica',1);
+-- ACTUALIZAR TIPO COMPROBANTE DE PAGO
+CALL sp_actualizar_tipo_comprobantes(2,'Factura Electrònica',0);
+
+/****************************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  COMPROBANTE **/
+-- REGISTRAR COMPROBANTES
+CALL sp_comprobantes_registrar(5,0);
+
+-- ACTUALIZAR COMPROBANTES
+CALL sp_actualizar_comprobantes(2,0);
+
+/****************************************************************************************************************/
+ /**PRUEBAS PROCEDIMIENTOS OK ✔️  METODO DE PAGO **/
+-- REGISTRAR METODO DE PAGO
+CALL sp_metodo_pago_registrar('Grettel');
+
+CALL sp_actualizar_metodo_pago();
 
 /****Usuarios*********/
 CALL sp_buscarpersonadoc (1,'87654321');

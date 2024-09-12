@@ -19,6 +19,29 @@ if(isset($_POST['operation'])){
             ];
             echo json_encode($proveedor->addProveedor($datos));
         break;
+        case 'upProveedor':
+
+            $datos = [
+                'idempresa'          => $_POST['idempresa'],
+                'proveedor'          => $_POST['proveedor'],
+                'contacto_principal' => $_POST['contacto_principal'],
+                'telefono_contacto'  => $_POST['telefono_contacto'],
+                'direccion'          => $_POST['direccion'],
+                'email'              => $_POST['email'],
+                'idproveedor'        => $_POST['idproveedor']
+            ];
+            echo json_encode($proveedor->upProveedor($datos));
+        break;
+        
+        case 'upEstado':
+
+            $datos=[
+                'estado'     =>$_POST['estado'],
+                'idproveedor'=>$_POST['idproveedor']
+            ];
+            echo json_encode($proveedor->upEstado($datos));
+        break;
+        
     }
 }
 

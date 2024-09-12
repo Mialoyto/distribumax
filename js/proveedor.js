@@ -10,7 +10,10 @@ document.addEventListener("DOMContentLoaded",()=>{
    const email         =document.querySelector("#email");
    const direccion     =document.querySelector("#direccion");
    const contentable =document.querySelector("#table-proveedores tbody");
-    (() =>{
+   const formactualizar = document.querySelector("#form-actualizar-proveedor"); 
+   const idproveedor=document.querySelector("#idproveedor"); 
+
+   (() =>{
         fetch(`../../controller/empresa.controller.php?operation=getAll`)
             .then(response => response.json())
             .then(data =>{
@@ -39,7 +42,11 @@ document.addEventListener("DOMContentLoaded",()=>{
                     <td>${row.telefono_contacto}</td>
                     <td>${row.email}</td>
                     <td>${row.direccion}</td>
-           
+                    <td class="text-center">
+                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#actualizarProveedorModal" onclick="cargarDatosActualizar(${row.idproveedor})">
+                        <i class="fa fa-edit"></i> Actualizar
+                    </button>
+                   
                 </tr>
                 `
             });
@@ -86,4 +93,33 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
     
 
+    formactualizar.addEventListener("submit",(event)=>{
+        
+        const parametros = new FormData();
+        parametros.append('operation','upProveedor');
+        parametros.append('idempresa',optionEmp.value);
+        parametros.append('proveedor',proveedor.value);
+        parametros.append('contacto_principal',contacto.value);
+        parametros.append('telefono_contacto',telsecundario.value);
+        parametros.append('direccion',direccion.value);
+        parametros.append('email',email.value);
+        parametros.append('idproveedor',idproveedor.value);
+
+        const options ={
+            'method': 'POST',
+            'body': params
+        };
+
+        fetch(`../../controller/proveedor.controller.php`,options)
+        .then(response=>response.json())
+        .then(datos=>{
+              alert("se actualizo")
+                })
+        .catch(e=>{
+            console.error(e)
+        })
+    });
+
 })
+    
+

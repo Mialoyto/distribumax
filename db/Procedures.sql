@@ -247,7 +247,7 @@ DELIMITER ;
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_actualizar_empresa;
 CREATE PROCEDURE sp_actualizar_empresa(
-IN _idempresaruc        INT,
+IN _idempresaruc 		INT,
 IN _iddistrito         	INT,
 IN _razonsocial  		VARCHAR(100),
 IN _direccion 			VARCHAR(100),
@@ -294,7 +294,6 @@ END$$
 
 -- ACTUALIZAR CLIENTES
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_actualizar_cliente;
 CREATE PROCEDURE sp_actualizar_cliente(
 IN _idcliente 			INT,
 IN _idpersona        	INT,
@@ -312,10 +311,144 @@ BEGIN
         WHERE idcliente=_idcliente;
 END$$
 
--- PROOVEDORES
--- PEDIDOS
--- KARDEX
--- PROMOCIONES
+-- DESACTIVAR CLIENTE
+DELIMITER $$
+CREATE PROCEDURE sp_estado_cliente(
+IN  _estado BIT,
+IN  _idcliente INT 
+)
+BEGIN
+	UPDATE clientes SET
+      estado=_estado
+      WHERE idcliente=_idcliente;
+END$$
+
+-- REGISTRAR PROOVEDORES
+DELIMITER $$
+CREATE PROCEDURE sp_proovedor_registrar(
+	IN _idproveedor 			INT,
+    IN _idempresa 				INT,
+    IN _nombre_proveedor		VARCHAR(50),
+    IN _contacto_principal		VARCHAR(50),
+    IN _telefono_contacto		CHAR(9),
+    IN _direccion				VARCHAR(100),
+    IN _email               	VARCHAR(100)
+)
+BEGIN
+    INSERT INTO proveedores
+    (idproveedor, idempresa, nombre_proveedor, contacto_principal, telefono_contacto, direccion, email) 
+    VALUES 
+    (_idproveedor, _idempresa, _nombre_proveedor, _contacto_principal, _telefono_contacto, _direccion, _email);
+END$$
+
+-- ACTUALIZAR PROVEEDORES
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_proovedor(
+	IN _idproveedor 			INT,
+    IN _idempresa 				INT,
+    IN _nombre_proveedor		VARCHAR(50),
+    IN _contacto_principal		VARCHAR(50),
+    IN _telefono_contacto		CHAR(9),
+    IN _direccion				VARCHAR(100),
+    IN _email               	VARCHAR(100)
+)
+BEGIN
+	UPDATE proveedores
+		SET 
+			idproveedor =_idproveedor,
+			idempresa =_idempresa,
+			nombre_proveedor =_nombre_proveedor,
+			contacto_principal =_contacto_principal,
+            telefono_contacto = _telefono_contacto,
+            direccion = _direccion,
+            email = _email,
+			update_at=now()
+        WHERE idproveedor =_idproveedor;
+END$$
+
+-- DESACTIVAR PROOVEDOR
+DELIMITER $$
+CREATE PROCEDURE sp_estado_proovedor(
+IN  _estado BIT,
+IN  _idproveedor INT 
+)
+BEGIN
+	UPDATE proveedores SET
+      estado=_estado
+      WHERE idproveedor =_idproveedor;
+END$$
+
+--  REGISTRAR PEDIDOS
+DELIMITER $$
+CREATE PROCEDURE sp_pedido_registrar(
+    IN _idpedido        INT,
+    IN _idusuario       INT,
+    IN _idcliente       INT,
+    IN _fecha_pedido    DATETIME,
+    IN _estado          ENUM('Pendiente', 'Enviado', 'Cancelado', 'Entregado')
+)
+BEGIN
+    INSERT INTO pedidos
+    (idpedido, idusuario, idcliente, fecha_pedido, estado) 
+    VALUES 
+    (_idpedido, _idusuario, _idcliente, _fecha_pedido, _estado);
+END$$
+
+-- ACTUALIZAR PEDIDOS
+DELIMITER $$
+CREATE PROCEDURE sp_actualizar_pedido(
+	IN _idpedido        INT,
+    IN _idusuario       INT,
+    IN _idcliente       INT,
+    IN _fecha_pedido    DATETIME,
+    IN _estado          ENUM('Pendiente', 'Enviado', 'Cancelado', 'Entregado')
+)
+BEGIN
+	UPDATE pedidos
+		SET 
+			idpedido =_idpedido,
+			idusuario =_idusuario,
+			idcliente =_idcliente,
+			fecha_pedido =_fecha_pedido,
+            estado = _estado,
+			update_at=now()
+        WHERE idpedido =_idpedido;
+END$$
+
+-- DESACTIVAR PEDIDO
+DELIMITER $$
+CREATE PROCEDURE sp_estado_pedido(
+IN  _estado BIT,
+IN  _idpedido INT 
+)
+BEGIN
+	UPDATE pedidos SET
+      estado=_estado
+      WHERE idpedido =_idpedido;
+END$$
+
+
+-- KARDEX (NO LO ENTIENDO MUY BIEN, QUEDA PENDIENTE)
+
+
+-- REGISTRAR PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_promocion_registrar(
+	IN _idpromocion      	INT,
+    IN _idtipopromocion       INT,
+    IN _descripcion       	  VARCHAR(250),
+    IN _fechaincio    		  DATETIME,
+    IN _fechafin			  DATETIME,
+    IN _valor_descuento  	  DECIMAL(8, 2),
+    IN _estado				  BIT
+)
+BEGIN
+    INSERT INTO promociones
+    (idpromocion,idtipopromocion, descripcion, fechaincio, fechafin, valor_descuento, estado) 
+    VALUES 
+    (_idpromocion,_idtipopromocion, _descripcion, _fechaincio, _fechafin, _valor_descuento, _estado);
+END$$
+
 -- TIPOS DE PROMOCIONES
 -- DESPACHO
 -- TIPO DE COMPROBANTE
@@ -345,4 +478,3 @@ WHERE
 END IF;
 END$$
  
- CALL sp_buscardistrito('ujio');

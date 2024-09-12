@@ -9,10 +9,15 @@ select * from distritos;
 select * from marcas;
 select * from personas;
 select * from clientes;
+select * from pedidos;
+select * from promociones;
+select * from tipos_promociones;
 select * from usuarios;
+delete from usuarios where idpersona = '26558000';
 SELECT * FROM productos;
 SELECT * FROM  tipo_documento;
 SELECT * FROM empresas;
+SELECT * FROM proveedores;
 delete from personas where idpersonanrodoc = '';
 
 -- CONSULTAS

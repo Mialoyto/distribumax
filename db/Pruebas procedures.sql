@@ -54,7 +54,7 @@ SELECT * FROM empresas;
 
 
 -- REGISTRAR CLIENTES 
-CALL sp_cliente_registrar(12345678,1,'Empresa');
+CALL sp_cliente_registrar(26558000,1,'Empresa');
 
 -- ACTUALIZAR CLIENTES
 CALL sp_actualizar_cliente(4,12345678,1,'Persona');

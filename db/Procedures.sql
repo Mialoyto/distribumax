@@ -268,6 +268,7 @@ END$$
 
 -- DESACTIVAR ESTADO EMPRESA
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_estado_empresa;
 CREATE PROCEDURE sp_estado_empresa(
 IN  _estado BIT,
 IN  _idempresaruc INT 
@@ -280,6 +281,7 @@ END$$
 -- PROCEDURE DE CLIENTES ********************************************************************************************
 -- REGISTRAR CLIENTES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_cliente_registrar;
 CREATE PROCEDURE sp_cliente_registrar(
 	IN _idpersona INT,
     IN _idempresa INT,
@@ -294,6 +296,7 @@ END$$
 
 -- ACTUALIZAR CLIENTES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_cliente;
 CREATE PROCEDURE sp_actualizar_cliente(
 IN _idcliente 			INT,
 IN _idpersona        	INT,
@@ -313,6 +316,7 @@ END$$
 
 -- DESACTIVAR CLIENTE
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_estado_cliente;
 CREATE PROCEDURE sp_estado_cliente(
 IN  _estado BIT,
 IN  _idcliente INT 
@@ -325,6 +329,7 @@ END$$
 
 -- REGISTRAR PROOVEDORES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_proovedor_registrar;
 CREATE PROCEDURE sp_proovedor_registrar(
     IN _idempresa 				INT,
     IN _proveedor		VARCHAR(50),
@@ -342,6 +347,7 @@ END$$
 
 -- ACTUALIZAR PROVEEDORES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_proovedor;
 CREATE PROCEDURE sp_actualizar_proovedor(
 	IN _idproveedor 			INT,
     IN _idempresa 				INT,
@@ -366,6 +372,7 @@ END$$
 
 -- DESACTIVAR PROOVEDOR
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_estado_proovedor;
 CREATE PROCEDURE sp_estado_proovedor(
 IN  _estado BIT,
 IN  _idproveedor INT 
@@ -378,6 +385,7 @@ END$$
 
 --  REGISTRAR PEDIDOS
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_pedido_registrar;
 CREATE PROCEDURE sp_pedido_registrar(
     IN _idpedido        INT,
     IN _idusuario       INT,
@@ -394,6 +402,7 @@ END$$
 
 -- ACTUALIZAR PEDIDOS
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_pedido;
 CREATE PROCEDURE sp_actualizar_pedido(
 	IN _idpedido        INT,
     IN _idusuario       INT,
@@ -415,6 +424,7 @@ END$$
 
 -- DESACTIVAR PEDIDO
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_estado_pedido;
 CREATE PROCEDURE sp_estado_pedido(
 IN  _estado BIT,
 IN  _idpedido INT 
@@ -431,6 +441,7 @@ END$$
 
 -- REGISTRAR PROMOCIONES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_promocion_registrar;
 CREATE PROCEDURE sp_promocion_registrar(
 	IN _idpromocion      	INT,
     IN _idtipopromocion       INT,
@@ -449,6 +460,7 @@ END$$
 
 -- ACTUALIZAR PROMOCIONES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_promocion;
 CREATE PROCEDURE sp_actualizar_promocion(
 	IN _idpromocion      	INT,
 	IN _idtipopromocion    	INT,
@@ -474,6 +486,7 @@ END$$
 
 -- DESACTIVAR PROMOCIÓN
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_estado_promocion;
 CREATE PROCEDURE sp_estado_promocion(
 IN  _estado BIT,
 IN  _idpromocion INT 
@@ -486,6 +499,7 @@ END$$
 
 -- REGISTRAR TIPO DE PROMOCIONES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_tipo_promocion_registrar;
 CREATE PROCEDURE sp_tipo_promocion_registrar(
     IN _tipopromocion       VARCHAR(150),
     IN _descripcion         VARCHAR(250),
@@ -498,6 +512,7 @@ END$$
 
 -- ACTUALIZAR TIPO DE PROMOCIONES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_tipo_promocion;
 CREATE PROCEDURE sp_actualizar_tipo_promocion(
 	IN _idtipopromocion INT,
     IN _tipopromocion   VARCHAR(150),
@@ -517,6 +532,7 @@ END$$
 
 -- DESACTIVAR TIPO DE PROMOCIONES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_estado_tipo_promocion;
 CREATE PROCEDURE sp_estado_tipo_promocion(
 IN  _estado BIT,
 IN  _idtipopromocion INT 
@@ -529,6 +545,7 @@ END$$
 
 -- REGISTRAR DESPACHO
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_despacho_registrar;
 CREATE PROCEDURE sp_despacho_registrar(
     IN _idvehiculo 		INT,
     IN _idusuario 		INT,
@@ -542,6 +559,7 @@ END$$
 
 -- ACTUALIZAR DESPACHO
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_despacho;
 CREATE PROCEDURE sp_actualizar_despacho(
 	IN _iddespacho		INT,
 	IN _idvehiculo 		INT,
@@ -561,6 +579,7 @@ END$$
 
 -- REGISTRAR TIPO DE COMPROBANTES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_tipo_comprobantes_registrar;
 CREATE PROCEDURE sp_tipo_comprobantes_registrar(
     IN _comprobantepago		VARCHAR(150),
 	IN _estado					BIT
@@ -572,6 +591,7 @@ END$$
 
 -- ACTUALIZAR TIPO DE COMPROBANTES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_tipo_comprobantes;
 CREATE PROCEDURE sp_actualizar_tipo_comprobantes(
 	IN _idtipocomprobante			INT,
 	IN _comprobantepago		VARCHAR(150),
@@ -589,6 +609,7 @@ END$$
 
 -- REGISTRAR COMPROBANTES
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_comprobantes_registrar;
 CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		INT,
 	IN _estado          BIT-- 	1: EMITIDO 	0: CANCELADO
@@ -600,6 +621,7 @@ END$$
 
 -- ACTUALIZAR COMPROBANTES 
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_comprobantes;
 CREATE PROCEDURE sp_actualizar_comprobantes(
 	IN _idcomprobante			INT,
 	IN _estado					BIT
@@ -613,6 +635,7 @@ END$$
 
 -- REGISTRAR METODO DE PAGO
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_metodo_pago_registrar;
 CREATE PROCEDURE sp_metodo_pago_registrar(
     IN _metodopago		VARCHAR(150)
 )
@@ -623,6 +646,7 @@ END$$
 
 -- ACTUALIZAR METODO DE PAGO
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_metodo_pago;
 CREATE PROCEDURE sp_actualizar_metodo_pago(
 	IN _idmetodopago			INT,
 	IN _estado					BIT
@@ -636,6 +660,7 @@ END$$
 
 -- REGISTRAR VEHICULOS
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_registrar_vehiculo;
 CREATE PROCEDURE sp_registrar_vehiculo(
     IN _idusuario INT,
     IN _marca_vehiculo VARCHAR(100),
@@ -651,6 +676,7 @@ END$$
 
 -- ACTUALIZAR VEHICULOS
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_vehiculo;
 CREATE PROCEDURE sp_actualizar_vehiculo(
     IN _idvehiculo INT,
     IN _idusuario INT,
@@ -674,6 +700,7 @@ END$$
 
 -- REGISTRAR MARCAS
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_registrar_marca;
 CREATE PROCEDURE sp_registrar_marca(
     IN _marca VARCHAR(150)
 )
@@ -684,6 +711,7 @@ END$$
 
 -- ACTUALIZAR MARCAS
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_marca;
 CREATE PROCEDURE sp_actualizar_marca(
     IN _idmarca INT,
     IN _marca VARCHAR(150)
@@ -697,6 +725,7 @@ END$$
 
 -- REGISTRAR SUBCATEGORIAS
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_registrar_subcategoria;
 CREATE PROCEDURE sp_registrar_subcategoria(
     IN _idcategoria INT,
     IN _subcategoria VARCHAR(150)
@@ -709,6 +738,7 @@ END$$
 
 -- ACTUALIZAR SUBCATEGORIAS
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_actualizar_subcategoria;
 CREATE PROCEDURE sp_actualizar_subcategoria(
     IN _idsubcategoria INT,
     IN _idcategoria INT,
@@ -724,6 +754,7 @@ END$$
 
 -- REGISTRAR BUSQUEDAS DE VEHICULOS
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_buscar_vehiculos;
 CREATE PROCEDURE sp_buscar_vehiculos(
     IN _marca_vehiculo VARCHAR(100),
     IN _modelo VARCHAR(100)
@@ -736,7 +767,10 @@ END$$
 
 
 DELIMITER $$
-CREATE PROCEDURE sp_buscardistrito(IN _distrito VARCHAR(100))
+DROP PROCEDURE IF EXISTS sp_buscardistrito;
+CREATE PROCEDURE sp_buscardistrito(
+IN _distrito VARCHAR(100)
+)
 BEGIN
 IF TRIM(_distrito) <> '' THEN
 SELECT

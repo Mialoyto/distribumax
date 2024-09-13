@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                     tagOption.value = element.idempresaruc;
                     tagOption.innerText= element.razonsocial;
                     optionEmp.appendChild(tagOption);
-                });
+                })
             })
             .catch(e =>{
                 console.error(e);
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             datos.forEach(row=>{
                 contentable.innerHTML+=`
                 <tr>
-                    <td>${row.idempresa.razonsocial}</td>
+                    <td>${row.razonsocial}</td>
                     <td>${row.proveedor}</td>
                     <td>${row.contacto_principal}</td>
                     <td>${row.telefono_contacto}</td>
@@ -57,6 +57,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     })();
 
     formproveedor.addEventListener("submit",(event)=>{
+
+  
+
         const params = new FormData();
         params.append('operation','addProveedor');
         params.append('idempresa',optionEmp.value);
@@ -94,7 +97,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     
 
     formactualizar.addEventListener("submit",(event)=>{
-        
+       
         const parametros = new FormData();
         parametros.append('operation','upProveedor');
         parametros.append('idempresa',optionEmp.value);

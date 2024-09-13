@@ -46,7 +46,7 @@ require_once '../../header.php';
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="idempresa" class="form-label">Empresa</label>
-                            <select class="form-control" id="idempresa" name="idempresa" required>
+                            <select class="form-control" id="idempresaruc" name="" required>
                                 <option value="">Seleccione una empresa</option>
                                 <!-- Las opciones se cargarán dinámicamente con JavaScript -->
                             </select>
@@ -105,7 +105,7 @@ require_once '../../header.php';
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="idempresa_update" class="form-label">Empresa</label>
-                            <select class="form-control" id="idempresaruc" name="idempresa" required>
+                            <select class="form-control" id="idempresaruc" value=""  required>
                                 <option value="">Seleccione una empresa</option>
                                 <!-- Las opciones se cargarán dinámicamente con JavaScript -->
                             </select>

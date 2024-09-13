@@ -74,7 +74,23 @@ require_once '../../header.php';
     </div>
 </div>
 
-<script src="../../js/clientes.js"></script>
+<script src="<?=$host?>/js/documento.js"></script>
+<script>
+    // Manejar el cambio entre los campos de Persona y Empresa
+    document.getElementById('tipo_cliente').addEventListener('change', function () {
+        var tipoCliente = this.value;
+        if (tipoCliente === 'Persona') {
+            document.getElementById('personaFields').style.display = 'block';
+            document.getElementById('empresaFields').style.display = 'none';
+        } else if (tipoCliente === 'Empresa') {
+            document.getElementById('personaFields').style.display = 'none';
+            document.getElementById('empresaFields').style.display = 'block';
+        }
+    });
+
+    
+   
+</script>
 
 <?php
 require_once '../../footer.php';

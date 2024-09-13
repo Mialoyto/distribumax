@@ -11,7 +11,7 @@ require_once '../../header.php';
 
                 <!-- Sección de Registro de Tipos de Promociones -->
                 <h5 class="mb-4">Registro de Tipo de Promoción</h5>
-                <form method="POST" action="#">
+                <form method="POST" action="#" id="form-promocion">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="tipopromocion" class="form-label">Tipo de Promoción</label>
@@ -19,7 +19,7 @@ require_once '../../header.php';
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="descripcion_tipo" class="form-label">Descripción</label>
-                            <input type="text" class="form-control" id="descripcion_tipo" name="descripcion_tipo" required>
+                            <input type="text" class="form-control" id="descripcion" name="descripcion_tipo" required>
                         </div>
                     </div>
 
@@ -41,9 +41,7 @@ require_once '../../header.php';
                             <label for="idtipopromocion" class="form-label">Tipo de Promoción</label>
                             <select class="form-control" id="idtipopromocion" name="idtipopromocion" required>
                                 <option value="">Seleccione un tipo de promoción</option>
-                                <option value="1">Promoción 1</option>
-                                <option value="2">Promoción 2</option>
-                                <option value="3">Promoción 3</option>
+                               
                                 <!-- Agrega más opciones según sea necesario -->
                             </select>
                         </div>
@@ -115,6 +113,7 @@ require_once '../../header.php';
             </div>
         </div>
     </div>
+<script src="../../js/promociones.js"> </script>
 <?php
 require_once '../../footer.php';
 ?>

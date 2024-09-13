@@ -27,7 +27,7 @@ SELECT * FROM empresas;
 SELECT * FROM proveedores;
 SHOW COLUMNS FROM tipos_promociones;
 
-delete from personas where idpersonanrodoc = '';
+delete from usuarios where idpersona = '26558000';
 
 -- CONSULTAS
 select * from provincias where provincia = 'Chincha';

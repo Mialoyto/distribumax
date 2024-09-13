@@ -28,7 +28,7 @@ require_once '../../header.php';
                         <label for="idpersonanrodoc" class="form-label">Número de Documento</label>
                         <div class="input-group">
                             <input type="number" class="form-control" id="idpersonanrodoc" name="idpersonanrodoc" required>
-                            <button class="btn btn-outline-secondary" type="button">Verificar</button>
+                            <button class="btn btn-outline-secondary" type="button" id="btnbuscardni">Verificar</button>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@ require_once '../../header.php';
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label for="iddistrito" class="form-label">Distrito</label>
-                            <input type="number" class="form-control" id="iddistrito" name="iddistrito" required>
+                            <input type="text" class="form-control" id="iddistrito" name="iddistrito" required>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="nombres" class="form-label">Nombres</label>
@@ -55,7 +55,7 @@ require_once '../../header.php';
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="telefono" class="form-label">Teléfono</label>
-                            <input type="text" class="form-control" id="telefono" name="telefono">
+                            <input type="text" class="form-control" id="telefono" name="telefono" pattern="[0-9]+"  inputmode="numeric">
                         </div>
                     </div>
 
@@ -94,5 +94,7 @@ require_once '../../header.php';
 </div>
 
 <?php
+
 require_once '../../footer.php';
 ?>
+<script src="<?=$host?>/js/persona.js"></script>

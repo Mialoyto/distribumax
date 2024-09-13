@@ -120,7 +120,6 @@ require_once '../../header.php';
     </div>
 </div>
 
-<script src="<?=$host?>/js/documento.js"></script>
 <script>
     // Manejar el cambio entre los campos de Persona y Empresa
     document.getElementById('tipo_cliente').addEventListener('change', function () {

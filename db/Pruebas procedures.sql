@@ -12,8 +12,8 @@
 	'Calle Falsa 123' -- Dirección
 );
  CALL spu_registrar_personas(
-	1,           -- Tipo de documento (dni)
-	'26558001',       -- Número de documento
+	3,           -- Tipo de documento (dni)
+	'26558002',       -- Número de documento
 	954,            -- ID del distrito
 	'Juan',          -- Nombres
 	'Levano',     -- Apellido paterno

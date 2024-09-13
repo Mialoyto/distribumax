@@ -28,7 +28,13 @@ class Proveedor extends Conexion{
     }
     public function getAll(){
         try{
-            $sql="SELECT * FROM proveedores;";
+            $sql="SELECT 
+                    empresas.idempresaruc,empresas.razonsocial,
+		            proveedores.idproveedor, proveedores.proveedor,proveedores.contacto_principal,proveedores.telefono_contacto,
+                    proveedores.direccion,proveedores.email
+                  FROM proveedores 
+                  INNER JOIN empresas 
+                  ON empresas.idempresaruc = proveedores.idempresa;";
             $query=$this->pdo->prepare($sql);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -64,7 +70,7 @@ class Proveedor extends Conexion{
                 $params['idproveedor']
             ));
             
-           return $query->fetchAll(PDO::FETCH_ASSOC);
+           return $query;
         }catch(Exception $e){
             die($e->getMessage());
         }

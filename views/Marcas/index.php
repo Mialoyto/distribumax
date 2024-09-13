@@ -13,6 +13,24 @@ require_once '../../header.php';
                         <i class="fa fa-plus me-2"></i> Registrar Marca
                     </button>
                 </div>
+                <!-- Tabla de marcas -->
+                <div class="table-responsive">
+
+                    <table class="table table-striped table-bordered" id="table-marcas">
+                        <thead class="table-dark">
+                            <tr>
+                                
+                                <th scope="col">Nombre de la Marca</th>
+                                <th scope="col">Fecha de Registro</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                            <!-- Agrega más filas según sea necesario -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -31,7 +49,7 @@ require_once '../../header.php';
                 <div class="card border-0 rounded-lg">
                     <div class="card-body">
                         <!-- Formulario de Registro de Marca -->
-                        <form method="POST" action="#">
+                        <form method="POST" action="#" id="form-registrar-marca">
                             <div class="mb-3 position-relative">
                                 <label for="marca" class="form-label">Nombre de la Marca</label>
                                 <input type="text" class="form-control ps-5" id="marca" name="marca" required>
@@ -55,6 +73,7 @@ require_once '../../header.php';
     </div>
 </div>
 
+<script src="../../js/marca.js"></script>
 <?php
 require_once '../../footer.php';
 ?>

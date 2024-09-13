@@ -9,8 +9,9 @@ CREATE VIEW view_distritos  AS
         FROM distritos ORDER BY distrito ASC;
         
 CREATE VIEW view_empresas AS
-SELECT idempresaruc, razonsocial
-FROM empresas
+SELECT E.idempresaruc, E.razonsocial, E.direccion,E.email,E.telefono, D.iddistrito,D.distrito
+FROM empresas E
+INNER JOIN  distritos D ON E.iddistrito=D.iddistrito
 ORDER BY razonsocial ASC;
         
 SELECT * FROM view_empresas

@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded",()=>{
    const direccion = document.querySelector("#direccion");
    const email   = document.querySelector("#email");
    const telefono = document.querySelector("#telefono");
+   const contentable =document.querySelector("#table-empresas tbody");
   // btnregistrar=document.querySelector("#btn-registrar-empresa");
 
   (() =>{
@@ -24,7 +25,29 @@ document.addEventListener("DOMContentLoaded",()=>{
               console.error(e);
           })
   })();
-  
+
+  (()=>{
+    fetch(`../../controller/empresa.controller.php?operation=getAll`)
+        .then(response=>response.json())
+        .then(datos=>{
+            datos.forEach(row=>{
+                contentable.innerHTML+=`
+                <tr>
+                    <td>${row.idempresaruc}</td>
+                    <td>${row.razonsocial}</td>
+                    <td>${row.direccion}</td>
+                    <td>${row.email}</td>
+                    <td>${row.telefono}</td>
+                    <td>${row.distrito}</td>
+                   
+                </tr>
+                `
+            });
+        })
+        .catch(e=>{
+            console.error(e)
+        })  
+  })();
   formempresa.addEventListener("submit",(event)=>{
   
     const params = new FormData();

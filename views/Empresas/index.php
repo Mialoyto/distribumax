@@ -13,7 +13,7 @@ require_once '../../header.php';
     <!-- Tabla de empresas registradas -->
     <h3 class="text-center mb-4">Empresas Registradas</h3>
     <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle table-bordered shadow-sm">
+        <table class="table table-striped table-hover align-middle table-bordered shadow-sm" id="table-empresas">
             <thead class="table-dark text-center">
                 <tr>
                     <th>RUC</th>
@@ -25,22 +25,7 @@ require_once '../../header.php';
                 </tr>
             </thead>
             <tbody>
-                <tr class="text-center">
-                    <td>12345678901</td>
-                    <td>Empresa XYZ</td>
-                    <td>Calle Falsa 123</td>
-                    <td>correo@empresa.com</td>
-                    <td>987654321</td>
-                    <td>Distrito 1</td>
-                </tr>
-                <tr class="text-center">
-                    <td>10987654321</td>
-                    <td>Empresa ABC</td>
-                    <td>Avenida Siempre Viva 742</td>
-                    <td>contacto@empresaabc.com</td>
-                    <td>912345678</td>
-                    <td>Distrito 2</td>
-                </tr>
+                
                 <!-- Agrega más filas con datos dinámicos según sea necesario -->
             </tbody>
         </table>

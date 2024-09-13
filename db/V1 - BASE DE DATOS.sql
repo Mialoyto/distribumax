@@ -174,6 +174,7 @@ CREATE TABLE empresas(
         
         create_at		DATETIME NOT NULL DEFAULT NOW(),
 		update_at		DATETIME NULL,
+        inactive_at		DATETIME NULL,
 		estado			BIT DEFAULT 1,
         CONSTRAINT fk_distrito_emp FOREIGN KEY(iddistrito) REFERENCES distritos(iddistrito),
         CONSTRAINT uk_razonsocial_emp UNIQUE(razonsocial)
@@ -220,6 +221,7 @@ CREATE TABLE proveedores(
     
 	create_at				DATETIME NOT NULL DEFAULT NOW(),
 	update_at				DATETIME NULL,
+    inactive_at				DATETIME NULL,
 	estado					BIT DEFAULT 1,
 	CONSTRAINT fk_idempresa_prov FOREIGN KEY(idempresa) REFERENCES empresas(idempresaruc),
     CONSTRAINT uk_nombre_proveedor UNIQUE(proveedor)

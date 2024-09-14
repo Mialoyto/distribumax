@@ -29,8 +29,8 @@ require_once '../../header.php';
                 <!-- Aquí se agregarán dinámicamente los proveedores registrados -->
             </tbody>
         </table>
+        </div>
     </div>
-</div>
 
 <!-- Modal para el formulario de registro de proveedores -->
 <div class="modal fade" id="registroProveedorModal" tabindex="-1" aria-labelledby="registroProveedorModalLabel" aria-hidden="true">

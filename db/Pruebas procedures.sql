@@ -15,7 +15,7 @@
 	3,           -- Tipo de documento (dni)
 	'26558002',       -- Número de documento
 	954,            -- ID del distrito
-	'Juan',          -- Nombres
+	'pepito',          -- Nombres
 	'Levano',     -- Apellido paterno
 	'Martinez',        -- Apellido materno
 	NULL,           -- Teléfono (NULL)
@@ -82,5 +82,5 @@ CALL sp_desactivar_persona(0,'73217990');
 
 CALL sp_actualizar_usuario('usuario1','usuario1',3);
 /****************************************************************************************************************/
-  
+  call sp_buscardistrito ('chincha');
 

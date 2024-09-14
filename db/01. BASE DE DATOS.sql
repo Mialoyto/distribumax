@@ -8,9 +8,10 @@ CREATE TABLE departamentos(
         departamento	VARCHAR(250)	NOT NULL,
         create_at		DATETIME NOT NULL DEFAULT NOW(),
         update_at		DATETIME NULL,
-        estado			BIT DEFAULT 1,
+        estado			CHAR(1) DEFAULT "1",
         
-        CONSTRAINT uk_departamento_depa UNIQUE (departamento)
+        CONSTRAINT uk_departamento_depa UNIQUE (departamento),
+        CONSTRAINT fk_estado_depa CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS provincias;
@@ -21,8 +22,9 @@ CREATE TABLE provincias(
         
 		create_at		DATETIME NOT NULL DEFAULT NOW(),
         update_at		DATETIME NULL,
-        estado			BIT DEFAULT 1,
-        CONSTRAINT fk_iddepartamento_prov FOREIGN KEY(iddepartamento) REFERENCES departamentos(iddepartamento)
+        estado			CHAR(1) DEFAULT "1",
+        CONSTRAINT fk_iddepartamento_prov FOREIGN KEY(iddepartamento) REFERENCES departamentos(iddepartamento),
+        CONSTRAINT fk_estado_prov CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS distritos;
@@ -33,9 +35,10 @@ CREATE TABLE distritos(
         
         create_at		DATETIME NOT NULL DEFAULT NOW(),
         update_at		DATETIME NULL,
-        estado			BIT DEFAULT 1,
+        estado			CHAR(1) DEFAULT "1",
         
-        CONSTRAINT fk_idprovincia_dist FOREIGN KEY(idprovincia) REFERENCES provincias(idprovincia)
+        CONSTRAINT fk_idprovincia_dist FOREIGN KEY(idprovincia) REFERENCES provincias(idprovincia),
+        CONSTRAINT fk_estado_dist CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS marcas;
@@ -45,8 +48,9 @@ CREATE TABLE marcas(
         
         create_at		DATETIME NOT NULL DEFAULT NOW(),
         update_at		DATETIME NULL,
-        estado			BIT DEFAULT 1,
-        CONSTRAINT uk_marca UNIQUE(marca)
+        estado			CHAR(1) DEFAULT "1",
+        CONSTRAINT uk_marca UNIQUE(marca),
+        CONSTRAINT fk_estado_mar CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS categorias;
@@ -56,8 +60,9 @@ CREATE TABLE categorias(
         
         create_at		DATETIME NOT NULL DEFAULT NOW(),
         update_at		DATETIME NULL,
-        estado			BIT DEFAULT 1,
-        CONSTRAINT uk_categoria UNIQUE(categoria)
+        estado			CHAR(1) DEFAULT "1",
+        CONSTRAINT uk_categoria UNIQUE(categoria),
+        CONSTRAINT fk_estado_categ CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS subcategorias;
@@ -68,9 +73,10 @@ CREATE TABLE subcategorias(
 	
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-	estado			BIT DEFAULT 1,
+	estado			CHAR(1) DEFAULT "1",
 	CONSTRAINT fk_idcategoria_subc FOREIGN KEY (idcategoria) REFERENCES categorias(idcategoria),
-	CONSTRAINT uk_subcategoria UNIQUE(subcategoria)
+	CONSTRAINT uk_subcategoria UNIQUE(subcategoria),
+    CONSTRAINT fk_estado_subcat CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS tipo_comprobante_pago;
@@ -80,8 +86,9 @@ CREATE TABLE tipo_comprobante_pago(
     
     create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-	estado			BIT DEFAULT 1,
-    CONSTRAINT uk_comprobantepago UNIQUE(comprobantepago)    
+	estado			CHAR(1) DEFAULT "1",
+    CONSTRAINT uk_comprobantepago UNIQUE(comprobantepago),
+    CONSTRAINT fk_estado_tip_comp_pag CHECK(estado IN ("0", "1"))    
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS metodos_pago;
@@ -91,8 +98,9 @@ CREATE TABLE metodos_pago(
     
     create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-	estado			BIT DEFAULT 1,
-    CONSTRAINT uk_metodopago UNIQUE(metodopago)
+	estado			CHAR(1) DEFAULT "1",
+    CONSTRAINT uk_metodopago UNIQUE(metodopago),
+    CONSTRAINT fk_estado_met_pag CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS accesos;
@@ -102,8 +110,9 @@ CREATE TABLE accesos(
     
 	create_at	DATETIME NOT NULL DEFAULT NOW(),
 	update_at	DATETIME NULL,
-	estado		BIT DEFAULT 1,
-	CONSTRAINT uk_modulo UNIQUE(modulo)
+	estado		CHAR(1) DEFAULT "1",
+	CONSTRAINT uk_modulo UNIQUE(modulo),
+    CONSTRAINT fk_estado_acce CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS roles;
@@ -113,8 +122,9 @@ CREATE TABLE roles(
         
 	create_at	DATETIME NOT NULL DEFAULT NOW(),
 	update_at	DATETIME NULL,
-	estado		BIT DEFAULT 1,
-    CONSTRAINT uk_rol UNIQUE(rol)
+	estado		CHAR(1) DEFAULT "1",
+    CONSTRAINT uk_rol UNIQUE(rol),
+    CONSTRAINT fk_estado_rol CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS entidad_roles;
@@ -125,9 +135,10 @@ CREATE TABLE entidades_roles(
     
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-	estado			BIT DEFAULT 1,
+	estado			CHAR(1) DEFAULT "1",
 	CONSTRAINT fk_idrol_ent_rol FOREIGN KEY (idrol) REFERENCES roles(idrol),
-	CONSTRAINT fk_idacceso_ent_rol FOREIGN KEY (idacceso) REFERENCES accesos(idacceso)
+	CONSTRAINT fk_idacceso_ent_rol FOREIGN KEY (idacceso) REFERENCES accesos(idacceso),
+    CONSTRAINT fk_estado_ent_rol CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 
@@ -139,8 +150,9 @@ CREATE TABLE tipo_documento(
     
     create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-	estado			BIT DEFAULT 1,
-    CONSTRAINT uk_documento UNIQUE(documento)
+	estado			CHAR(1) DEFAULT "1",
+    CONSTRAINT uk_documento UNIQUE(documento),
+    CONSTRAINT fk_estado_tip_doc CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLES IF EXISTS personas;
@@ -154,13 +166,14 @@ CREATE TABLE personas(
 	telefono			CHAR(9)			NULL,
 	direccion			VARCHAR(250)	NOT NULL,
 	
-	create_at		DATETIME NOT NULL DEFAULT NOW(),
-	update_at		DATETIME NULL,
-	estado			BIT DEFAULT 1,
+	create_at		    DATETIME NOT NULL DEFAULT NOW(),
+	update_at		    DATETIME NULL,
+	estado			    CHAR(1) DEFAULT "1",
     CONSTRAINT fk_idtipodoc_pers FOREIGN KEY (idtipodocumento) REFERENCES tipo_documento (idtipodocumento),
 	CONSTRAINT fk_distrito_pers FOREIGN KEY(iddistrito) REFERENCES distritos(iddistrito),
 	CONSTRAINT uk_idpersonanrodoc_pers UNIQUE(idpersonanrodoc), 
-    CONSTRAINT ck_idpersonanrodoc_pers CHECK (idpersonanrodoc <>'')
+    CONSTRAINT ck_idpersonanrodoc_pers CHECK (idpersonanrodoc <>''),
+    CONSTRAINT fk_estado_pers CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLES IF EXISTS empresas;
@@ -175,9 +188,10 @@ CREATE TABLE empresas(
         create_at		DATETIME NOT NULL DEFAULT NOW(),
 		update_at		DATETIME NULL,
         inactive_at		DATETIME NULL,
-		estado			BIT DEFAULT 1,
+		estado			CHAR(1) DEFAULT "1",
         CONSTRAINT fk_distrito_emp FOREIGN KEY(iddistrito) REFERENCES distritos(iddistrito),
-        CONSTRAINT uk_razonsocial_emp UNIQUE(razonsocial)
+        CONSTRAINT uk_razonsocial_emp UNIQUE(razonsocial),
+        CONSTRAINT fk_estado_emp CHECK(estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS usuarios;
@@ -188,25 +202,27 @@ CREATE TABLE usuarios(
         nombre_usuario		VARCHAR(100)	NOT NULL,
         password_usuario	VARCHAR(150)		NOT NULL,
         
-		create_at		DATETIME NOT NULL DEFAULT NOW(),
-		update_at		DATETIME NULL,
-		estado			BIT DEFAULT 1,
+		create_at		    DATETIME NOT NULL DEFAULT NOW(),
+		update_at		    DATETIME NULL,
+		estado			    CHAR(1) DEFAULT "1",
         CONSTRAINT fk_idpersona_usua FOREIGN KEY(idpersona) REFERENCES personas(idpersonanrodoc),
-        CONSTRAINT uk_nombre_usuario_usua UNIQUE(nombre_usuario)
+        CONSTRAINT uk_nombre_usuario_usua UNIQUE(nombre_usuario),
+        CONSTRAINT fk_estado_usuario CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLES IF EXISTS clientes;
 CREATE TABLE clientes (
-    idcliente        INT  NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idpersona        CHAR(11)  NOT NULL,
-    idempresa        INT  NOT NULL,
-    tipo_cliente     ENUM('Persona', 'Empresa') NOT NULL,
+    idcliente       INT  NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    idpersona       CHAR(11)  NOT NULL,
+    idempresa       INT  NOT NULL,
+    tipo_cliente    ENUM('Persona', 'Empresa') NOT NULL,
     
-    create_at		DATETIME NOT NULL DEFAULT NOW(),
+    create_at       DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-	estado			BIT DEFAULT 1,
+	estado			CHAR(1) DEFAULT "1",
     CONSTRAINT fk_idpersona_cli FOREIGN KEY (idpersona) REFERENCES personas(idpersonanrodoc),
-    CONSTRAINT fk_idempresa_cli FOREIGN KEY (idempresa) REFERENCES empresas(idempresaruc)
+    CONSTRAINT fk_idempresa_cli FOREIGN KEY (idempresa) REFERENCES empresas(idempresaruc),
+    CONSTRAINT fk_estado_cli CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
 
 DROP TABLES IF EXISTS proveedores;
@@ -222,9 +238,10 @@ CREATE TABLE proveedores(
 	create_at				DATETIME NOT NULL DEFAULT NOW(),
 	update_at				DATETIME NULL,
     inactive_at				DATETIME NULL,
-	estado					BIT DEFAULT 1,
+	estado					CHAR(1) DEFAULT "1",
 	CONSTRAINT fk_idempresa_prov FOREIGN KEY(idempresa) REFERENCES empresas(idempresaruc),
-    CONSTRAINT uk_nombre_proveedor UNIQUE(proveedor)
+    CONSTRAINT uk_nombre_proveedor UNIQUE(proveedor),
+    CONSTRAINT fk_estado_proveedor CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS tipos_promociones;
@@ -235,8 +252,9 @@ CREATE TABLE tipos_promociones (
     
     create_at				DATETIME NOT NULL DEFAULT NOW(),
 	update_at				DATETIME NULL,
-	estado					BIT DEFAULT 1,
-    CONSTRAINT uk_tipopromocion UNIQUE(tipopromocion)
+	estado					CHAR(1) DEFAULT "1",
+    CONSTRAINT uk_tipopromocion UNIQUE(tipopromocion),
+    CONSTRAINT fk_estado_tip_prom  CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
 
 DROP TABLE IF EXISTS promociones;
@@ -248,11 +266,12 @@ CREATE TABLE promociones(
     fechafin			DATETIME NOT NULL,
 	valor_descuento  	DECIMAL(8, 2),
     
-    create_at		DATETIME NOT NULL DEFAULT NOW(),
-	update_at		DATETIME NULL,
-	estado			BIT DEFAULT 1,
+    create_at		    DATETIME NOT NULL DEFAULT NOW(),
+	update_at		    DATETIME NULL,
+	estado			    CHAR(1) DEFAULT "1",
 	CONSTRAINT fk_idtipopromociones FOREIGN KEY(idtipopromocion) REFERENCES tipos_promociones(idtipopromocion),
-    CONSTRAINT ck_valor_descuento CHECK (valor_descuento > 0)
+    CONSTRAINT ck_valor_descuento CHECK (valor_descuento > 0),
+    CONSTRAINT fk_estado_prom  CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
 
 DROP TABLE IF EXISTS productos;
@@ -272,7 +291,9 @@ CREATE TABLE productos (
     CONSTRAINT fk_sbcategoria_prod FOREIGN KEY(idsubcategoria) REFERENCES subcategorias(idsubcategoria),
     CONSTRAINT uk_nombreproducto  UNIQUE (nombreproducto),
     CONSTRAINT ck_preciounitario CHECK (preciounitario > 0),
-    CONSTRAINT uk_codigo         UNIQUE (codigo)
+    CONSTRAINT uk_codigo         UNIQUE (codigo),
+    CONSTRAINT fk_estado_prod  CHECK(estado IN ("0", "1"))
+    
 ) ENGINE=INNODB;
 
 DROP TABLE IF EXISTS detalle_promociones;
@@ -283,9 +304,10 @@ CREATE TABLE detalle_promociones(
         
 		create_at			DATETIME NOT NULL DEFAULT NOW(),
 		update_at			DATETIME NULL,
-        estado          	BIT DEFAULT 1,
+        estado          	CHAR(1) DEFAULT "1",
         CONSTRAINT id_promocion_deta_prom FOREIGN KEY(idpromocion) REFERENCES promociones(idpromocion), 
-        CONSTRAINT id_producto_deta_prom FOREIGN KEY(idproducto) REFERENCES productos(idproducto)
+        CONSTRAINT id_producto_deta_prom FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
+        CONSTRAINT fk_estado_deta_prom  CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS detalle_productos;
@@ -296,9 +318,10 @@ CREATE TABLE detalle_productos(
         
 		create_at				DATETIME NOT NULL DEFAULT NOW(),
 		update_at				DATETIME NULL,
-        estado          		BIT DEFAULT 1,
-        CONSTRAINT fk_idproveedor_deta_prov FOREIGN KEY(idproveedor) REFERENCES proveedores(idproveedor),
-        CONSTRAINT fk_idproducto_deta_prov FOREIGN KEY(idproducto) REFERENCES productos(idproducto)
+        estado          		CHAR(1) DEFAULT "1",
+        CONSTRAINT fk_idproveedor_deta_prod FOREIGN KEY(idproveedor) REFERENCES proveedores(idproveedor),
+        CONSTRAINT fk_idproducto_deta_prod FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
+        CONSTRAINT fk_estado_deta_prod  CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS precios_historicos;
@@ -309,9 +332,10 @@ CREATE TABLE precios_historicos(
         
 		create_at			DATETIME NOT NULL DEFAULT NOW(),
 		update_at			DATETIME NULL,
-        estado          	BIT DEFAULT 1,
+        estado          	CHAR(1) DEFAULT "1",
 		CONSTRAINT fk_idproducto_prec_hist FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
-        CONSTRAINT ck_precio_antiguo CHECK (precio_antiguo > 0)
+        CONSTRAINT ck_precio_antiguo CHECK (precio_antiguo > 0),
+        CONSTRAINT fk_estado_prec_hist   CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS pedidos;
@@ -323,9 +347,10 @@ CREATE TABLE pedidos (
     
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-    estado          ENUM('Pendiente', 'Enviado', 'Cancelado', 'Entregado') NOT NULL DEFAULT 'Pendiente',
+    estado          CHAR(10) NOT NULL DEFAULT 'Pendiente',
     CONSTRAINT fk_idusuario_pedi FOREIGN KEY (idusuario) REFERENCES usuarios(idusuario),
-    CONSTRAINT fk_idcliente_pedi FOREIGN KEY (idcliente) REFERENCES clientes(idcliente)
+    CONSTRAINT fk_idcliente_pedi FOREIGN KEY (idcliente) REFERENCES clientes(idcliente),
+    CONSTRAINT ck_estado_pedi CHECK (estado IN ('Pendiente', 'Enviado', 'Cancelado', 'Entregado'))
 ) ENGINE=INNODB;
 
 DROP TABLES IF EXISTS detalle_pedidos;
@@ -341,13 +366,14 @@ CREATE TABLE detalle_pedidos (
     
 	create_at			DATETIME NOT NULL DEFAULT NOW(),
 	update_at			DATETIME NULL,
-	estado          	BIT DEFAULT 1,
+	estado          	CHAR(1) DEFAULT "1",
     CONSTRAINT fk_idpedido_det_ped FOREIGN KEY (idpedido)   REFERENCES pedidos(idpedido),
     CONSTRAINT fk_idproducto_det_ped FOREIGN KEY (idproducto) REFERENCES productos(idproducto),
     CONSTRAINT ck_cantidad_producto CHECK (cantidad_producto > 0),
     CONSTRAINT ck_precio_unitario CHECK (precio_unitario > 0),
     CONSTRAINT ck_precio_descuento CHECK (precio_descuento >0),
-    CONSTRAINT ck_subtotal CHECK (subtotal > 0)
+    CONSTRAINT ck_subtotal CHECK (subtotal > 0),
+    CONSTRAINT fk_estado_det_ped CHECK(estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS kardex;
@@ -362,11 +388,12 @@ CREATE TABLE kardex(
     
 	create_at			DATETIME NOT NULL DEFAULT NOW(),
 	update_at			DATETIME NULL,
-	estado          	BIT DEFAULT 1,
+	estado          	CHAR(1) DEFAULT "1",
 	CONSTRAINT fk_idusuario_kardex FOREIGN KEY(idusuario) REFERENCES usuarios(idusuario),
 	CONSTRAINT fk_idproducto_kardex FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
     CONSTRAINT ck_stockactual CHECK (stockactual > 0),
-    CONSTRAINT ck_cantidad CHECK (cantidad > 0)
+    CONSTRAINT ck_cantidad CHECK (cantidad > 0),
+    CONSTRAINT fk_estado_kardex CHECK(estado IN ("0", "1"))
 )ENGINE  = INNODB;
 
 DROP TABLE IF EXISTS vehiculos;
@@ -381,10 +408,11 @@ CREATE TABLE vehiculos (
     
 	create_at			DATETIME NOT NULL DEFAULT NOW(),
 	update_at			DATETIME NULL,
-    estado           	ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo',
+    estado           	CHAR(10) NOT NULL DEFAULT 'Activo',
     CONSTRAINT fk_idusuario_vehi FOREIGN KEY (idusuario) REFERENCES usuarios(idusuario),
     CONSTRAINT uk_placa_vehi UNIQUE(placa),
-    CONSTRAINT ck_capacidad CHECK(capacidad > 0)
+    CONSTRAINT ck_capacidad_veh CHECK(capacidad > 0),
+    CONSTRAINT ck_estado_veh CHECK (estado IN('Activo', 'Inactivo'))
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS despacho;
@@ -396,9 +424,10 @@ CREATE TABLE despacho (
     
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-	estado          BIT DEFAULT 1,	-- 1 : pendiente	0: despachado
+	estado          CHAR(1) DEFAULT "1",	-- 1 : pendiente	0: despachado
     CONSTRAINT fk_idvehiculo_desp FOREIGN KEY (idvehiculo) REFERENCES vehiculos(idvehiculo),
-    CONSTRAINT fk_idusuario_desp FOREIGN KEY (idusuario) REFERENCES usuarios(idusuario)
+    CONSTRAINT fk_idusuario_desp FOREIGN KEY (idusuario) REFERENCES usuarios(idusuario),
+    CONSTRAINT fk_estado_desp   CHECK(estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS ventas;
@@ -415,10 +444,11 @@ CREATE TABLE ventas (
     
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-	estado          BIT DEFAULT 1,		-- 1: VENTA 	0: CANCELADO
+	estado          CHAR(1) DEFAULT "1",		-- 1: VENTA 	0: CANCELADO
     CONSTRAINT fk_idpedido_venta FOREIGN KEY (idpedido) REFERENCES pedidos(idpedido),
     CONSTRAINT fk_idmetodopago_venta FOREIGN KEY (idmetodopago) REFERENCES metodos_pago(idmetodopago),
     CONSTRAINT fk_idtipocomprobante_venta FOREIGN KEY (idtipocomprobante) REFERENCES tipo_comprobante_pago(idtipocomprobante),
+    CONSTRAINT fk_estado_venta   CHECK(estado IN ("0", "1")),
     CONSTRAINT ck_subtotal_venta CHECK(subtotal > 0),
     CONSTRAINT ck_descuento CHECK (descuento > 0),
     CONSTRAINT ck_igv CHECK(igv > 0),
@@ -432,8 +462,9 @@ CREATE TABLE comprobantes (
    
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-	estado          BIT DEFAULT 1, -- 	1: EMITIDO 	0: CANCELADO
-    CONSTRAINT fk_idventa_comp FOREIGN KEY (idventa) REFERENCES ventas(idventa)
+	estado          CHAR(1) DEFAULT "1", -- 	1: EMITIDO 	0: CANCELADO
+    CONSTRAINT fk_idventa_comp FOREIGN KEY (idventa) REFERENCES ventas(idventa),
+    CONSTRAINT fk_estado_comp   CHECK(estado IN ("0", "1"))
 ) ENGINE = INNODB;
 -- ------------------------------------------------------------------------------------------------------
 /*SELECT COUNT(*) 

@@ -1,4 +1,5 @@
 use distribumax;
+
 INSERT INTO provincias (iddepartamento, provincia) VALUES
 (1, 'Chachapoyas'),
 (1, 'Bagua'),
@@ -195,4 +196,5 @@ INSERT INTO provincias (iddepartamento, provincia) VALUES
 (25, 'Coronel Portillo'),
 (25, 'Padre Abad'),
 (25, 'Purús');
+
 select * from provincias;

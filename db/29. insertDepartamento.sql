@@ -1,4 +1,5 @@
 use distribumax;
+
 INSERT INTO departamentos (departamento) VALUES 
 ('Amazonas'),
 ('Áncash'),

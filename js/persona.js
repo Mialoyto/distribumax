@@ -1,10 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   const btnbuscardni = document.querySelector("#btnbuscardni");
-  // const optionDoc = document.querySelector("#idtipodocumento");
-
-  // const searchDistritoInput  = document.querySelector("#searchDistrito");
-  // const lista = document.querySelector("#lista");
-
   // variables para renderizar o capturar datos de las personas
   const doc = document.querySelector("#idtipodocumento"); // tipo documento
   const dni = document.querySelector("#idpersonanrodoc"); // nro de documento
@@ -16,22 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const apmaterno = document.querySelector("#apmaterno");
   const telefono = document.querySelector("#telefono");
   const direccion = document.querySelector("#direccion");
-
   // datos de usuarios
   const nombre_usuario = document.querySelector("#nombre_usuario");
   const password_usuario = document.querySelector("#password_usuario");
   const optionRol = document.querySelector("#rol")
   const form = document.querySelector("#form-persona")
 
-  optionRol.addEventListener('change', () => {
-    const id = optionRol.value;
-    console.log(id)
-  })
-
   /* botones de formulario de usuarios */
   const btnRegistrar = document.querySelector("#btnRegistrarPersona");
-  const btnCancelat = document.querySelector("#btnCancelarRegistro");
-let idpersona = -1;
+  // const btnCancelat = document.querySelector("#btnCancelarRegistro");
+  let idpersona = -1;
   let dataNew = true;
   // funcion que trae los tipos de documentos desde la base de datos
   (() => {
@@ -122,9 +111,6 @@ let idpersona = -1;
       }
     }
   });
-
-
-
   // --------------------------------------------------------------------------------------------
 
   async function registrarPersona() {
@@ -138,11 +124,6 @@ let idpersona = -1;
     params.append('apmaterno', apmaterno.value)
     params.append('telefono', telefono.value)
     params.append('direccion', direccion.value)
-
-    for (let [key, value] of params.entries()) {
-      console.log(key, value);
-    }
-
     const options = {
       method: 'POST',
       body: params
@@ -151,21 +132,21 @@ let idpersona = -1;
     return id.json();
   }
 
-  async function registrarUsuario(idpersona){
-    if(optionRol.value.trim() ===''){
+  async function registrarUsuario(idpersona) {
+    if (optionRol.value.trim() === '') {
       alert("Seleccione un rol de usuario")
-      return {idusuario: -1}
-    }else{
+      return
+    } else {
       const params = new FormData();
-      params.append('operation','addUsuario');
+      params.append('operation', 'addUsuario');
       params.append('idpersona', idpersona);
-      params.append('idrol',optionRol.value);
-      params.append('nombre_usuario',nombre_usuario.value);
-      params.append('password_usuario',password_usuario.value);
+      params.append('nombre_usuario', nombre_usuario.value);
+      params.append('password_usuario', password_usuario.value);
+      params.append('idrol', optionRol.value);
 
       const options = {
         method: 'POST',
-        body : params
+        body: params
       }
 
       const idusuario = await fetch(`../../controller/usuario.controller.php`, options)
@@ -173,61 +154,40 @@ let idpersona = -1;
     }
   }
 
-  // btnRegistrar.addEventListener('click')
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    let response1;
-    let response2;
-    if(confirm("¿Guardar datos?")){
-      if(dataNew){
-        response1 = await registrarPersona();
-        idpersona = response1.id;
-        console.log(idpersona)
-      }if(idpersona == -1){
-        alert("No se guardo datos del colaborador")
-      }else{
-        response2 = await registrarUsuario(idpersona);
-        if(response2.idusuario == -1){
-          alert("verificar su nombre de usuario")
-        }else{
-          resetCampos();
-        }
-      }
-    }
-    // console.log(idpersona);
-    // registrarPersona()
-    resetCampos();
-  });
-
-
-
-
-  // -----
   // registrar persona
   function validarDoc(response) {
     if (response.length == 0) {
-      resetCampos();
+
+      addPersona(true);
+      addUsuario(true)
+      dataNew = true
+      idpersona = -1
+      iddistrito.focus()
 
     } else {
+      dataNew = false;
+      idpersona = response[0].idpersonanrodoc;
       iddistrito.value = response[0].distrito;
       nombres.value = response[0].nombres;
       appaterno.value = response[0].appaterno;
       apmaterno.value = response[0].apmaterno;
       telefono.value = response[0].telefono ? response[0].telefono : 'No registrado';
       direccion.value = response[0].direccion
-      selectedId = response[0].iddistrito; // Asegúrate de que el backend devuelve este campo
-      
+      selectedId = response[0].iddistrito;
+
       const option = document.createElement('option');
-      // option.value = selectedId;
       option.setAttribute('data-id', selectedId);
       option.innerText = response[0].distrito; // Usa el nombre del distrito
       dataList.appendChild(option);
-  
-      // Seleccionar la opción en el datalist
-     
       console.log('ID del distrito obtenido:', selectedId);
-      addPersona();
+
+      if (response[0].idusuario === null) {
+        addUsuario(true)
+      } else {
+        addPersona(false);
+        addUsuario(false);
+        alert("esta persona ya tiene un perfil");
+      }
     }
   }
 
@@ -244,32 +204,77 @@ let idpersona = -1;
   btnbuscardni.addEventListener("click", async () => {
     const response = await searchDni();
     console.log(response)
-    // console.log(response[0].distrito)
     validarDoc(response);
-
   })
-  function resetCampos() {
-      form.reset()
-      selectedId='';
-  }
 
-  function addPersona(add = false){
-    if(!add){
-      iddistrito.setAttribute("disabled",true)
-      nombres.setAttribute("disabled",true)
-      appaterno.setAttribute("disabled",true)
-      apmaterno.setAttribute("disabled",true)
-      telefono.setAttribute("disabled",true)
-      direccion.setAttribute("disabled",true)
-    }else{
-      iddistrito.setAttribute("disabled")
-      nombres.setAttribute("disabled")
-      appaterno.setAttribute("disabled")
-      apmaterno.setAttribute("disabled")
-      telefono.setAttribute("disabled")
-      direccion.setAttribute("disabled")
+  function addPersona(add = false) {
+    if (!add) {
+      iddistrito.setAttribute("disabled", true)
+      nombres.setAttribute("disabled", true)
+      appaterno.setAttribute("disabled", true)
+      apmaterno.setAttribute("disabled", true)
+      telefono.setAttribute("disabled", true)
+      direccion.setAttribute("disabled", true)
+      btnRegistrar.setAttribute('disabled', true)
+    } else {
+      iddistrito.removeAttribute("disabled")
+      nombres.removeAttribute("disabled")
+      appaterno.removeAttribute("disabled")
+      apmaterno.removeAttribute("disabled")
+      telefono.removeAttribute("disabled")
+      direccion.removeAttribute("disabled")
+      btnRegistrar.removeAttribute('disabled')
     }
   }
 
+  function addUsuario(add = false) {
+    if (!add) {
+      nombre_usuario.setAttribute('disabled', true)
+      password_usuario.setAttribute('disabled', true)
+      optionRol.setAttribute('disabled', true)
+    } else {
+      nombre_usuario.removeAttribute('disabled')
+      password_usuario.removeAttribute('disabled')
+      optionRol.removeAttribute('disabled')
+      btnRegistrar.removeAttribute('disabled')
+    }
+  }
+
+  // btnRegistrar.addEventListener('click')
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    btnRegistrar.disabled = true; 
+    let response1;
+    let response2;
+
+    if (confirm("¿Guardar datos?")) {
+      if (dataNew) {
+        response1 = await registrarPersona();
+        idpersona = response1.id;
+        console.log("ID persona :" , idpersona)
+        if (idpersona == -1) {
+          alert("No se guardo datos de la persona")
+          return;
+        }
+      }
+      const iduser = nombre_usuario.value.trim() != '' && password_usuario.value.trim() == '' && optionRol.value.trim() == ''
+      if (iduser) {
+        response2 = await registrarUsuario(idpersona);
+        if (response2.idusuario == -1) {
+          alert("verificar su nombre de usuario")
+        } else {
+          form.reset();
+          alert("datos de la persona y usuario guardados"); s
+        }
+      }
+    } else {
+      form.reset();
+      alert("datos de la persona guardados")
+    }
+    btnRegistrar.disabled = false; 
+  })
+  addPersona(false)
+  addUsuario(false)
 });
 

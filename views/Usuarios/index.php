@@ -80,13 +80,13 @@ require_once '../../header.php';
 
                     <div class="col-md-4 px-5 pt-3">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="nombre_usuario" required>
+                            <input type="text" class="form-control" id="nombre_usuario">
                             <label for="nombre_usuario">Nombre de Usuario</label>
                         </div>
                     </div>
                     <div class="col-md-4 px-5 pt-3">
                         <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="password_usuario" required>
+                            <input type="password" class="form-control" id="password_usuario">
                             <label for="password_usuario">Contraseña</label>
                         </div>
                     </div>
@@ -94,7 +94,7 @@ require_once '../../header.php';
                     <!-- otion de roles -->
                     <div class="col-md px-5 pt-3">
                         <div class="form-floating mb-3">
-                            <select name="rol" id="rol" class="form-select" required>
+                            <select name="rol" id="rol" class="form-select">
                                 <option>Seleccione un rol</option>
                                 <!-- asincronismo -->
                             </select>

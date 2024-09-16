@@ -73,7 +73,7 @@ SELECT * FROM proveedores;
 
 
 select * from personas;
-CALL sp_desactivar_persona(0,'26558000');
+CALL sp_desactivar_persona(0,'73217990');
 
 
 

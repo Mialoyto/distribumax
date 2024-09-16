@@ -22,3 +22,22 @@ BEGIN
         update_at = NOW()
     WHERE idmarca = _idmarca;
 END$$
+
+-- ELIMINAR MARCAS
+DELIMITER $$
+CREATE PROCEDURE sp_eliminar_marca(
+    IN _idmarca INT,
+    IN _estado 	CHAR(1)
+)
+BEGIN
+    UPDATE marcas
+    SET 
+        estado = _estado
+    WHERE idmarca = _idmarca;
+END$$
+
+-- LISTAR MARCAS
+CREATE VIEW vw_listar_marcas
+    SELECT marca FROM marcas
+    ORDER BY marca ASC
+    WHERE estado = '1';

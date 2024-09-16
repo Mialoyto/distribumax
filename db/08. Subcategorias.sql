@@ -25,3 +25,23 @@ BEGIN
         update_at = NOW()
     WHERE idsubcategoria = _idsubcategoria;
 END$$
+
+-- ELIMINAR SUBCATEGORIAS
+DELIMITER $$
+CREATE PROCEDURE sp_eliminar_subcategoria(
+    IN _idsubcategoria 	INT,
+    IN _estado          CHAR(1)
+)
+BEGIN
+    UPDATE subcategorias
+        SET 
+            estado = _estado
+        WHERE idsubcategoria = _idsubcategoria
+END$$
+
+-- LISTAR SUBCATEGORIAS
+
+CREATE VIEW vw_listar_subcategorias
+    SELECT subcategoria FROM subcategoriaS
+    ORDER BY subcategoria ASC
+    WHERE estado = '1';

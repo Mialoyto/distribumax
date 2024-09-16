@@ -18,9 +18,9 @@ switch ($verbo) {
                         ];
                         $send = $persona->getById($datosEnviar);
                         echo json_encode($send);
-                        break;
                     }
             }
+            break;
         }
     case 'POST':
         if (isset($_POST['operation'])) {
@@ -60,11 +60,14 @@ switch ($verbo) {
                         "idpersonanrodoc"   => $datosRecibidos['idpersonanrodoc']
                     ];
                     $estado = $persona->updatePersona($datosActualizar);
-                    $resultado = ['Actualizado' => $estado];
+                    if($estado){
+                        $resultado = ['Actualizado' => true];
+                    }else{
+                        $resultado = ['error' => 'No se pudo desactivar la persona.'];
+                    }
                     echo json_encode($resultado);
                     break;
                 case 'inactivePersona':
-                    //$datosRecibidos = json_decode(file_get_contents("php://input"), true);
                     $datoActualizar = [
                         "estado"            => $datosRecibidos["estado"],
                         "idpersonanrodoc"   => $datosRecibidos["idpersonanrodoc"]
@@ -79,60 +82,3 @@ switch ($verbo) {
     case 'DELETE':
         break;
 }
-
-
-
-
-
-/* if (isset($_POST['operation'])) {
-    switch ($_POST['operation']) {
-        case 'addPersona':
-
-            $datosEnviar = [
-                "idtipodocumento"   => $_POST['idtipodocumento'],
-                "idpersonanrodoc"   => $_POST['idpersonanrodoc'],
-                "iddistrito"        => $_POST['iddistrito'],
-                "nombres"           => $_POST['nombres'],
-                "appaterno"         => $_POST['appaterno'],
-                "apmaterno"         => $_POST['apmaterno'],
-                "telefono"          => $_POST['telefono'],
-                "direccion"         => $_POST['direccion']
-            ];
-            $id = $persona->addPersona($datosEnviar);
-            $resultado = ['id' => $id];
-            echo json_encode($resultado);
-            break;
-
-        case 'updatePersona':
-            $datosActualizar = [
-                "idtipodocumento"   => $_POST['idtipodocumento'],
-                "iddistrito"        => $_POST['iddistrito'],
-                "nombres"           => $_POST['nombres'],
-                "appaterno"         => $_POST['appaterno'],
-                "apmaterno"         => $_POST['apmaterno'],
-                "telefono"          => $_POST['telefono'],
-                "direccion"         => $_POST['direccion'],
-                "idpersonanrodoc"   => $_POST['idpersonanrodoc']
-            ];
-            $estado = $persona->updatePersona($datosActualizar);
-            $resultado = ['Actualizado' => $estado];
-            echo json_encode($resultado);
-            break;
-    }
-}
-
-if (isset($_PUT['operation'])) {
-    switch ($_PUT['operation']) {
-
-        case 'inactivePersona':
-            $datosRecibidos = json_decode(file_get_contents("php://input"), true);
-            $datoActualizar = [
-                "estado"            => $datosRecibidos["estado"],
-                "idpersonanrodoc"   => $datosRecibidos["idpersonanrodoc"]
-            ];
-            $estado = $persona->inactivePersona($datoActualizar);
-            $resultado = ['Actualizado' => $estado];
-            echo json_encode($resultado);
-            break;
-    }
-} */

@@ -74,7 +74,7 @@ class Persona extends Conexion
     // DESACTIVAR PERSONA
     public function inactivePersona($params = [])
     {
-        //$estado = false;
+        $estado = false;
         try {
             $tsql = "CALL sp_desactivar_persona (?,?)";
             $cmd = $this->pdo->prepare($tsql);
@@ -84,10 +84,10 @@ class Persona extends Conexion
                     $params["idpersonanrodoc"]
                 )
             );
-            $estado = $cmd->fetch(PDO::FETCH_ASSOC);
-            return isset($estado['filas_afectadas']) && $estado['filas_afectadas'] > 0;
-        } catch (Exception $e) {
-            die($e->getMessage());
+            $resultado  = $cmd->fetch(PDO::FETCH_ASSOC);
+            return isset($resultado['filas_afectadas']) && $resultado["filas_afectadas"] > 0;
+        } catch (Exception) {
+            return $estado;
         }
     }
 

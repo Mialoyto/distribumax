@@ -9,8 +9,8 @@ require_once '../../header.php';
             <h3 class="text-center">Registro de Personas</h3>
         </div>
         <div class="card-body">
-            <!-- Formulario de Registro -->
-            <form method="POST" action="registrar_persona.php">
+            <!-- FORMULARIO DE REGISTRO -->
+            <form method="POST" action="registrar_persona.php" autocomplete="off">
                 <!-- Sección de Información Personal -->
                 <h5 class="mb-4">
                     <i class="fas fa-id-card"></i> Información Personal
@@ -34,10 +34,14 @@ require_once '../../header.php';
                 </div>
 
                 <div class="row">
+
+                <!-- BUSCADOR PETICIONES -->
                     <div class="col-md-4 mb-3">
-                        <label for="iddistrito" class="form-label">Distrito</label>
-                            <input type="text" class="form-control" id="iddistrito" name="iddistrito" required>
+                        <label for="iddistrito" class="form-label">Buscar Distrito</label>
+                            <input type="text" class="form-control" id="searchDistrito" name="searchDistrito" required>
+                            <ul id="lista" class="list-group"></ul>
                     </div>
+                    <!-- FIN BUSCADOR PETICIONES -->
                     <div class="col-md-4 mb-3">
                         <label for="nombres" class="form-label">Nombres</label>
                         <input type="text" class="form-control" id="nombres" name="nombres" required>
@@ -89,6 +93,7 @@ require_once '../../header.php';
                     <button type="reset" class="btn btn-secondary">Cancelar</button>
                 </div>
             </form>
+            <!-- FORMULARIO DE REGISTRO -->
         </div>
     </div>
 </div>

@@ -13,7 +13,7 @@ require_once '../../header.php';
     <!-- Tabla de clientes registrados -->
     <h3 class="text-center mb-4">Clientes Registrados</h3>
     <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle table-bordered shadow-sm">
+        <table class="table table-striped table-hover align-middle table-bordered shadow-sm" id="table-clientes">
             <thead class="table-dark text-center">
                 <tr>
                     <th>Nombre Empresa</th>
@@ -23,19 +23,7 @@ require_once '../../header.php';
                 </tr>
             </thead>
             <tbody>
-                <td>Dijisa</td>
-                <td>Empresa</td>
-                <td>2024-05-23</td>
-                <td>Activo</td>
-                <?php
-                        // echo "<tr class='text-center'>";
-                        // echo "<td>" . $row["nombre_empresa"] . "</td>";
-                        // echo "<td>" . $row["tipo_cliente"] . "</td>";
-                        // echo "<td>" . $row["fecha_creacion"] . "</td>";
-                        // echo "<td>" . $row["estado"] . "</td>";
-                        // echo "</tr>";
-                ?>
-                </tr>
+                 <!-- Agrega más filas con datos dinámicos según sea necesario -->
             </tbody>
         </table>
     </div>
@@ -74,23 +62,7 @@ require_once '../../header.php';
     </div>
 </div>
 
-<script src="<?=$host?>/js/documento.js"></script>
-<script>
-    // Manejar el cambio entre los campos de Persona y Empresa
-    document.getElementById('tipo_cliente').addEventListener('change', function () {
-        var tipoCliente = this.value;
-        if (tipoCliente === 'Persona') {
-            document.getElementById('personaFields').style.display = 'block';
-            document.getElementById('empresaFields').style.display = 'none';
-        } else if (tipoCliente === 'Empresa') {
-            document.getElementById('personaFields').style.display = 'none';
-            document.getElementById('empresaFields').style.display = 'block';
-        }
-    });
-
-    
-   
-</script>
+<script src="../../js/cliente.js"></script>
 
 <?php
 require_once '../../footer.php';

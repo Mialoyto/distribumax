@@ -140,9 +140,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const params = new FormData();
       params.append('operation', 'addUsuario');
       params.append('idpersona', idpersona);
-      params.append('idrol', optionRol.value);
       params.append('nombre_usuario', nombre_usuario.value);
       params.append('password_usuario', password_usuario.value);
+      params.append('idrol', optionRol.value);
 
       const options = {
         method: 'POST',
@@ -244,12 +244,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    btnRegistrar.disabled = true; 
     let response1;
     let response2;
+
     if (confirm("¿Guardar datos?")) {
       if (dataNew) {
         response1 = await registrarPersona();
         idpersona = response1.id;
+        console.log("ID persona :" , idpersona)
         if (idpersona == -1) {
           alert("No se guardo datos de la persona")
           return;
@@ -269,6 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
       form.reset();
       alert("datos de la persona guardados")
     }
+    btnRegistrar.disabled = false; 
   })
   addPersona(false)
   addUsuario(false)

@@ -27,7 +27,7 @@ switch ($verbo) {
                         "password_usuario" => $_POST["password_usuario"]
                     ];
                     $idobtenido = $usuario->addUsuario($datosEnviar);
-                    echo json_encode(['idobtenido' => $idobtenido]);
+                    echo json_encode(['idusuario' => $idobtenido]);
                     break;
 
                 case 'login':

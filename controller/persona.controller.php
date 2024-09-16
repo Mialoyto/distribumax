@@ -26,16 +26,16 @@ switch ($verbo) {
         if (isset($_POST['operation'])) {
             switch ($_POST['operation']) {
                 case 'addPersona':
-                    $datosRecibidos = json_decode($input, true);
+                    // $datosRecibidos = json_decode($input, true);
                     $datosEnviar = [
-                        "idtipodocumento"   => $datosRecibidos['idtipodocumento'],
-                        "idpersonanrodoc"   => $datosRecibidos['idpersonanrodoc'],
-                        "iddistrito"        => $datosRecibidos['iddistrito'],
-                        "nombres"           => $datosRecibidos['nombres'],
-                        "appaterno"         => $datosRecibidos['appaterno'],
-                        "apmaterno"         => $datosRecibidos['apmaterno'],
-                        "telefono"          => $datosRecibidos['telefono'],
-                        "direccion"         => $datosRecibidos['direccion']
+                        "idtipodocumento"   => $_POST['idtipodocumento'],
+                        "idpersonanrodoc"   => $_POST['idpersonanrodoc'],
+                        "iddistrito"        => $_POST['iddistrito'],
+                        "nombres"           => $_POST['nombres'],
+                        "appaterno"         => $_POST['appaterno'],
+                        "apmaterno"         => $_POST['apmaterno'],
+                        "telefono"          => $_POST['telefono'],
+                        "direccion"         => $_POST['direccion']
                     ];
                     $id = $persona->addPersona($datosEnviar);
                     $resultado = ['id' => $id];

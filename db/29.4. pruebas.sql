@@ -20,6 +20,7 @@ select * from metodos_pago;
 select * from promociones;
 select * from tipos_promociones;
 select * from usuarios;
+select * from roles;
 delete from usuarios where idpersona = '26558000';
 SELECT * FROM productos;
 SELECT * FROM  tipo_documento;
@@ -28,11 +29,13 @@ SELECT * FROM proveedores;
 SHOW COLUMNS FROM tipos_promociones;
 
 delete from usuarios where idpersona = '26558000';
-
+select * from vw_listar_roles;
 -- CONSULTAS
 select * from provincias where provincia = 'Chincha';
 select count(distrito) from distritos where idprovincia = 97;
 select idprovincia, iddepartamento,  provincia from provincias where iddepartamento =11;
 select iddistrito,idprovincia, distrito from distritos where idprovincia = 99;
+
+
 
 

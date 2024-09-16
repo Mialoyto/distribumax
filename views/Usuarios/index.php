@@ -10,7 +10,7 @@ require_once '../../header.php';
         </div>
         <div class="card-body">
             <!-- FORMULARIO DE REGISTRO -->
-            <form method="POST" action="registrar_persona.php" autocomplete="off">
+            <form method="POST"   id="form-persona"autocomplete="off">
                 <!-- Sección de Información Personal -->
                 <h5 class="mb-4">
                     <i class="fas fa-id-card"></i> Información Personal
@@ -35,11 +35,12 @@ require_once '../../header.php';
 
                 <div class="row">
 
-                <!-- BUSCADOR PETICIONES -->
+                    <!-- BUSCADOR PETICIONES -->
                     <div class="col-md-4 mb-3">
-                        <label for="iddistrito" class="form-label">Buscar Distrito</label>
-                            <input type="text" class="form-control" id="searchDistrito" name="searchDistrito" required>
-                            <ul id="lista" class="list-group"></ul>
+                        <label for="datalistDistrito" class="form-label">Buscar Distrito</label>
+                        <input type="search" class="form-control" id="searchDistrito" list="datalistDistrito" required>
+                        <div class="error-container" style="display: none;"></div>
+                        <datalist id="datalistDistrito"></datalist>
                     </div>
                     <!-- FIN BUSCADOR PETICIONES -->
                     <div class="col-md-4 mb-3">
@@ -52,16 +53,16 @@ require_once '../../header.php';
                     </div>
                 </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="appmaterno" class="form-label">Apellido Materno</label>
-                            <input type="text" class="form-control" id="appmaterno" name="appmaterno" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="telefono" class="form-label">Teléfono</label>
-                            <input type="text" class="form-control" id="telefono" name="telefono" pattern="[0-9]+"  inputmode="numeric">
-                        </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="apmaterno" class="form-label">Apellido Materno</label>
+                        <input type="text" class="form-control" id="apmaterno" name="apmaterno" required>
                     </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono" name="telefono" pattern="[0-9]+" inputmode="numeric">
+                    </div>
+                </div>
 
                 <div class="mb-3">
                     <label for="direccion" class="form-label">Dirección</label>
@@ -77,20 +78,35 @@ require_once '../../header.php';
                 </h5>
                 <div class="row">
 
-                    <div class="col-md-4 mb-3">
-                        <label for="nombre_usuario" class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" id="nombre_usuario" name="nombre_usuario" required>
+                    <div class="col-md-4 px-5 pt-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="nombre_usuario" required>
+                            <label for="nombre_usuario">Nombre de Usuario</label>
+                        </div>
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="password_usuario" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password_usuario" name="password_usuario" required>
+                    <div class="col-md-4 px-5 pt-3">
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="password_usuario" required>
+                            <label for="password_usuario">Contraseña</label>
+                        </div>
+                    </div>
+
+                    <!-- otion de roles -->
+                    <div class="col-md px-5 pt-3">
+                        <div class="form-floating mb-3">
+                            <select name="rol" id="rol" class="form-select" required>
+                                <option>Seleccione un rol</option>
+                                <!-- asincronismo -->
+                            </select>
+                            <label form="rol">Rol</label>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Botones -->
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary me-2">Registrar</button>
-                    <button type="reset" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary me-2" id="btnRegistrarPersona">Registrar</button>
+                    <button type="reset" class="btn btn-secondary" id="btnCancelarRegistro">Cancelar</button>
                 </div>
             </form>
             <!-- FORMULARIO DE REGISTRO -->
@@ -102,4 +118,4 @@ require_once '../../header.php';
 
 require_once '../../footer.php';
 ?>
-<script src="<?=$host?>/js/persona.js"></script>
+<script src="<?= $host ?>/js/persona.js"></script>

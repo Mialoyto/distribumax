@@ -77,12 +77,14 @@ IN _idpersonanrodoc CHAR(11)
 )
 BEGIN
 	SELECT 
+		DIST.iddistrito,
 		DIST.distrito,
         PER.nombres,
         PER.appaterno,
         PER.apmaterno,
         PER.telefono,
-        PER.direccion
+        PER.direccion,
+        PER.idpersonanrodoc
         FROM personas PER
         INNER JOIN distritos DIST ON PER.iddistrito = DIST.iddistrito
         INNER JOIN tipo_documento TDOC ON PER.idtipodocumento = TDOC.idtipodocumento

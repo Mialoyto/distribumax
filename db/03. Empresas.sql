@@ -19,25 +19,29 @@ END$$
 -- ACTUALIZAR EMPRESAS
 DELIMITER $$
 CREATE PROCEDURE sp_actualizar_empresa(
-IN _idempresaruc 		INT,
-IN _iddistrito         	INT,
-IN _razonsocial  		VARCHAR(100),
-IN _direccion 			VARCHAR(100),
-IN _email 				VARCHAR(100),
-IN _telefono 			CHAR(9)
+    IN _iddistrito       INT,
+    IN _razonsocial      VARCHAR(100),
+    IN _direccion        VARCHAR(100),
+    IN _email            VARCHAR(100),
+    IN _telefono         CHAR(9),
+    IN _idempresaruc     INT
 )
 BEGIN
-	UPDATE empresas
-		SET 
-			iddistrito =_iddistrito,
-			razonsocial =_razonsocial,
-			direccion =_direccion,
-			email =_email,
-			telefono =_telefono,
-			update_at=now()
-        WHERE idempresaruc=_idempresaruc;
+    UPDATE empresas
+    SET 
+        iddistrito = _iddistrito,
+        razonsocial = _razonsocial,
+        direccion = _direccion,
+        email = _email,
+        telefono = _telefono,
+        update_at = NOW()
+    WHERE idempresaruc = _idempresaruc;
 END$$
+DELIMITER ;
 
+CALL sp_actualizar_empresa(5, 'Santa', 'Lomo Largo', 'santa@gmail.com', '123456789', 1234567891);
+
+select * from empresas
 -- Eliminar
 DELIMITER $$
 CREATE PROCEDURE sp_estado_empresa(

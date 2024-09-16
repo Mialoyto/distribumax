@@ -22,6 +22,8 @@ WHERE
 END IF;
 END$$
 
+call sp_buscardistrito('chincha');
+
 CREATE VIEW view_distritos  AS
 	SELECT iddistrito,distrito
         FROM distritos ORDER BY distrito ASC;

@@ -27,6 +27,10 @@ DROP PROCEDURE IF EXISTS sp_actualizar_proovedor;
 DROP PROCEDURE IF EXISTS sp_estado_proovedor;
 
 -- 07 Categorias
+DROP PROCEDURE IF EXISTS sp_registrar_categoria;
+DROP PROCEDURE IF EXISTS sp_actualizar_categoria;
+DROP PROCEDURE IF EXISTS sp_desactivar_categoria;
+DROP VIEW IF EXISTS vw_listar_categorias;
 
 -- 08 Subcategorias
 DROP PROCEDURE IF EXISTS sp_registrar_subcategoria;

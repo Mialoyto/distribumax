@@ -84,10 +84,12 @@ BEGIN
         PER.apmaterno,
         PER.telefono,
         PER.direccion,
-        PER.idpersonanrodoc
+        PER.idpersonanrodoc,
+        USU.idusuario
         FROM personas PER
         INNER JOIN distritos DIST ON PER.iddistrito = DIST.iddistrito
         INNER JOIN tipo_documento TDOC ON PER.idtipodocumento = TDOC.idtipodocumento
+        LEFT JOIN usuarios USU ON USU.idpersona = PER.idpersonanrodoc
 		WHERE PER.idtipodocumento = _idtipodocumento
         AND PER.idpersonanrodoc = _idpersonanrodoc;
 END $$

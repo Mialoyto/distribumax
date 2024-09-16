@@ -174,7 +174,6 @@ document.addEventListener("DOMContentLoaded", () => {
       telefono.value = response[0].telefono ? response[0].telefono : 'No registrado';
       direccion.value = response[0].direccion
       selectedId = response[0].iddistrito;
-      // console.log(idpersona);
 
       const option = document.createElement('option');
       option.setAttribute('data-id', selectedId);
@@ -201,10 +200,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const response = await fetch(`../../controller/persona.controller.php?${params}`)
     return response.json();
   }
-let response;
+;
   btnbuscardni.addEventListener("click", async () => {
-    response = await searchDni();
-    console.log(response[0])
+    const response = await searchDni();
+    // idpersona = response[0].idpersonanrodoc;
     validarDoc(response);
   })
 
@@ -250,28 +249,32 @@ let response;
     let response2;
 
     if (confirm("¿Guardar datos?")) {
+      console.log("estoy en la linea 254")
       if (dataNew) {
+        console.log("dentro del primer if")
         response1 = await registrarPersona();
         idpersona = response1.id;
         console.log("ID persona :" , idpersona)
+        alert("Datos de la persona registrada")
         if (idpersona == -1) {
           alert("No se guardo datos de la persona")
           return;
         }
       }
 
-      const iduser = nombre_usuario.value.trim() != '' && password_usuario.value.trim() == '' && optionRol.value.trim() == ''
+      const iduser = nombre_usuario.value.trim() != '' && password_usuario.value.trim() != '' && optionRol.value.trim() != ''
       if (iduser) {
+        console.log("dentro del segundo if")
         response2 = await registrarUsuario(idpersona);
         if (response2.idusuario == -1) {
           alert("verificar su nombre de usuario")
         } else {
           form.reset();
-          alert("datos de la persona y usuario guardados"); s
+          alert("datos de la persona y usuario guardados"); 
         }
       }
     } else {
-      form.reset();
+      
       alert("datos de la persona guardados")
     }
  

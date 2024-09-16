@@ -119,8 +119,6 @@ require_once '../../header.php';
                 <!-- Formulario de actualización de empresa dentro del modal -->
                 <form method="POST" action="#" id="form-actualizar-empresa">
 
-                    
-           
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="update-razonsocial" class="form-label">
@@ -164,7 +162,7 @@ require_once '../../header.php';
 
                     <!-- Botones -->
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary me-2">
+                        <button type="submit" class="btn btn-primary me-2" id="btnactualizar">
                             <i class="fa fa-save me-2"></i> Actualizar
                         </button>
                         <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">

@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const telefono = document.querySelector("#telefono");
     const estado = document.querySelector("#estado");
     const contentable = document.querySelector("#table-empresas tbody");
-    
+    //const btnactualizar=document.querySelector("#btnactualizar");
      distrito(optionDis);
      distrito(optionDis2);
     // Obtener distritos para el select
@@ -146,33 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     }
     
-    function cargarDatosEmpresa(idEmpresa) {
-            
-        const params = new FormData();
-        params.append('operation', 'getByID');
-        params.append('idempresaruc',idEmpresa );
-         console.log(idEmpresa);
-        const options = {
-            method: 'POST',
-            body: params
-        };
-          
-        fetch(`../../controller/empresa.controller.php`, options)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-
-                document.querySelector("#razonsocial-update").value=data.razonsocial;
-                document.querySelector("#direccion-update").value = data.direccion;
-                document.querySelector("#email-update").value = data.email;
-                document.querySelector("#telefono-update").value = data.telefono;
-                console.log(razonsocial);
-                
-            })
-            .catch(e => {
-                console.error(e);
-            });
-    };
+    
     // Registrar empresa
     formempresa.addEventListener("submit", (event) => {
         event.preventDefault(); // Evitar el comportamiento por defecto de recargar la página
@@ -207,8 +181,14 @@ document.addEventListener("DOMContentLoaded", () => {
     formactualizar.addEventListener("submit", (event) => {
         event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
 
-        const params = new FormData(formactualizar);
+        const params = new FormData();
         params.append('operation', 'upEmpresa'); // Cambia la operación a 'update'
+        params.append('iddistrito',document.querySelector("#iddistrito-update").value);
+        params.append('razonsocial',document.querySelector("#razonsocial-update").value);
+        params.append('direccion',document.querySelector("#direccion-update").value);
+        params.append('email',document.querySelector("#email-update").value);
+        params.append('telefono',document.querySelector("#telefono-update").value);
+        params.append('idempresaruc',btnsActualizar.value);
 
         const options = {
             method: 'POST',
@@ -216,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         fetch(`../../controller/empresa.controller.php`, options)
-            .then(response => response.json())
+            .then(response => response.text())
             .then(datos => {
                 alert("Empresa actualizada correctamente.");
                 location.reload(); // Recargar la página para reflejar los cambios
@@ -225,6 +205,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error(e);
             });
     });
+
+    
      
 
 });

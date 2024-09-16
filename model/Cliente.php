@@ -26,23 +26,39 @@ class Cliente extends Conexion
     }
   }
 
-  // Registrar clientes
-//   public function addCliente($params = []): string
-//   {
-//     try{
-//       $id = '';
-//       $tsql = "CALL sp_cliente_registrar (?,?,?)";
-//       $query = $this->pdo->prepare($tsql);
-//       $query->execute(
-//         array(
-//           $params["idpersona"],
-//           $params["idempresa"],
-//           $params["tipo_cliente"]
-//         )
-//       );
-//     } catch(Exception $e){
-//       error_log("Error al registrar al cliente" . $e->getMessage());
-//     }
-//     return $id;
-//   }
+  public function add($params = []): string
+  {
+    try{
+      $tsql = "CALL sp_cliente_registrar (?,?,?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(
+        array(
+          $params["idpersona"],
+          $params["idempresa"],
+          $params["tipo_cliente"]
+        )
+      );
+
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch(Exception $e){
+
+      die($e->getMessage());
+    }
+  }
+
+  public function UpdateCliente($params = []){
+    try{
+      $status = false;
+      $query = $this->pdo->prepare("CALL sp_actualizar_cliente(?,?,?,?)");
+      $status = $query->execute(array(
+        $params['idcliente'],
+        $params['idpersona'],
+        $params['idempresa'],
+        $params['tipo_cliente']
+      ));
+      return $status;
+    }catch(Exception $e){
+      die($e->getCode());
+    }
+  }
 }

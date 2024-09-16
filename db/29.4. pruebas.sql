@@ -14,12 +14,13 @@ select * from provincias where provincia = 'Chincha';
 select * from distritos;
 select * from marcas;
 select * from personas;
+select * from usuarios;
 select * from clientes;
 select * from pedidos;
 select * from metodos_pago;
 select * from promociones;
 select * from tipos_promociones;
-select * from usuarios;
+
 select * from roles;
 delete from usuarios where idpersona = '26558000';
 SELECT * FROM productos;

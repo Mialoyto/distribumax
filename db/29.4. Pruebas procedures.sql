@@ -25,7 +25,7 @@
 CALL sp_actualizar_persona (1,99,'Juan','Castilla','Maraví',null,'Av.Chacarita #123','26558000');
 CALL sp_actualizar_persona (3,99,'Messi','Castilla','Maraví','910657765','Psj. Felicidad #420','26558001');
 delete from usuarios where idusuario = 1;
-CALL sp_buscarpersonadoc (1,'26558000');
+CALL sp_buscarpersonadoc (1,'26558001');
 
  
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/

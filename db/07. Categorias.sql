@@ -1,17 +1,16 @@
 USE distribumax;
 
-DELIMITER $$
-
 -- REGISTRAR
-CREATE PROCEDUERE sp_registrar_categoria
+DELIMITER $$
+CREATE PROCEDURE sp_registrar_categoria
 ( IN _categoria  VARCHAR(150)) 
 BEGIN
     INSERT INTO categorias (categoria)
-        VALUES (_categoria)
+        VALUES (_categoria);
 END $$
 
 -- ACTUALIZAR
-CREATE PROCEDUERE sp_actualizar_categoria
+CREATE PROCEDURE sp_actualizar_categoria
 ( 
     IN _categoria  VARCHAR(150),
     IN _idcategoria INT
@@ -19,15 +18,16 @@ CREATE PROCEDUERE sp_actualizar_categoria
 BEGIN
     UPDATE categorias
     SET
-        categoria = _categoria
+        categoria = _categoria,
         update_at = NOW()
     WHERE idcategoria = _idcategoria;
 END $$
 
 -- ELIMINAR 
-CREATE PROCEDUERE sp_desactivar_categoria
+DELIMITER $$
+CREATE PROCEDURE sp_desactivar_categoria
 ( 
-    IN _estado CHAR(1)
+    IN _estado CHAR(1),
     IN _idcategoria INT
 ) 
 BEGIN
@@ -39,7 +39,7 @@ END $$
 
 
 -- LISTAR CATEGORIAS
-CREATE VIEW vw_listar_categorias
+CREATE VIEW vw_listar_categorias AS
     SELECT categoria FROM categorias
-    ORDER BY categoria ASC
-    WHERE estado = '1';
+    WHERE estado = '1'
+    ORDER BY categoria ASC;

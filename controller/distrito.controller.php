@@ -2,16 +2,17 @@
 
 require_once '../model/Distrito.php';
 
-header("Content-Type: application/json");
 $distrito = new Distrito();
+header("Content-Type: application/json");
 $verbo = $_SERVER["REQUEST_METHOD"];
+$input = file_get_contents('php://input');
 
 switch ($verbo) {
-    case 'GET':
-        if (isset($_GET['operation'])) {
-            switch ($_GET['operation']) {
+    case 'POST':
+        if (isset($_POST['operation'])) {
+            switch ($_POST['operation']) {
                 case 'searchDistrito':
-                    $datosEnviar = ["distrito" => $_GET["distrito"]];
+                    $datosEnviar = ["distrito" => $_POST["distrito"]];
                     $response = $distrito->searchDistrito($datosEnviar);
                     echo json_encode($response);
                     break;

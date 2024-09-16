@@ -1,3 +1,4 @@
+USE distribumax;
 -- Registrar 
 DELIMITER $$
 CREATE PROCEDURE sp_registrar_usuario(

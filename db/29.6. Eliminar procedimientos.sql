@@ -8,7 +8,7 @@ drop procedure if exists sp_buscarpersonadoc;
 DROP PROCEDURE IF EXISTS sp_empresa_registrar;
 DROP PROCEDURE IF EXISTS sp_actualizar_empresa;
 DROP PROCEDURE IF EXISTS sp_estado_empresa;
-DROP VIEW view_empresas;
+DROP VIEW IF EXISTS view_empresas;
 
 -- 04 usuarios
 drop procedure if exists sp_registrar_usuario;
@@ -94,10 +94,10 @@ DROP PROCEDURE IF EXISTS sp_actualizar_comprobantes;
 
 -- 27 distritos
 DROP PROCEDURE IF EXISTS sp_buscardistrito;
-DROP VIEW view_distritos;
+DROP VIEW IF EXISTS view_distritos;
 
 -- 28 Tipo Documentos 
-DROP VIEW view_tipos_documentos;
+DROP VIEW IF EXISTS view_tipos_documentos;
 
 
 

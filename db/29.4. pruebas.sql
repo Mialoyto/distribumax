@@ -10,7 +10,7 @@ SELECT * FROM tipo_comprobante_pago;
 select * from vehiculos;
 SELECT * FROM usuarios;
 select * from departamentos;
-select * from id prprovincias where provincia = 'Chincha';
+select * from provincias where provincia = 'Chincha';
 select * from distritos;
 select * from marcas;
 select * from personas;

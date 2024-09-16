@@ -133,10 +133,10 @@ VALUES
 
 
 -- Registrando vehiculos (2 vehiculos)
-INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion, estado)
+INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
 VALUES
-    (1, 'Toyota', 'Corolla', 'ABC123', 5, 'operativo', 'Activo'),
-    (1, 'Honda', 'Civic', 'XYZ789', 5, 'operativo', 'Activo');
+    (1, 'Toyota', 'Corolla', 'ABC123', 5, 'operativo' ),
+    (1, 'Honda', 'Civic', 'XYZ789', 5, 'operativo' );
 
 -- Registrando ventas (2 ventas)
 INSERT INTO ventas (idpedido,idmetodopago,idtipocomprobante,fecha_venta,subtotal,descuento,igv,total_venta,create_at,update_at,estado) 

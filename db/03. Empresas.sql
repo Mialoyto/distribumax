@@ -50,6 +50,37 @@ BEGIN
       WHERE idempresaruc=_idempresaruc;
 END$$
 
+DELIMITER $$
+CREATE PROCEDURE sp_filtrar_empresas_por_estado(
+    IN _estado CHAR(1)  -- 'A' para activas, 'I' para inactivas
+)
+BEGIN
+    SELECT 
+        E.idempresaruc, 
+        E.razonsocial, 
+        E.direccion, 
+        E.email, 
+        E.telefono, 
+        D.iddistrito, 
+        D.distrito,
+        CASE 
+            WHEN E.estado = '1' THEN 'Activo'
+            WHEN E.estado = '0' THEN 'Inactivo'
+         
+        END AS estado
+    FROM 
+        empresas E
+    INNER JOIN 
+        distritos D ON E.iddistrito = D.iddistrito
+    WHERE 
+        E.estado = _estado
+    ORDER BY 
+        E.razonsocial ASC;
+END$$
+DELIMITER ;
+
+CALL sp_filtrar_empresas_por_estado(1);
+SELECT * FROM empresas WHERE idempresaruc='1234567891' ;
 
 CREATE VIEW view_empresas AS
 SELECT E.idempresaruc, E.razonsocial, E.direccion,E.email,E.telefono, D.iddistrito,D.distrito

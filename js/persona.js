@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let i = 0; i < options.length; i++) {
       if (options[i].value === selectedDistrito) {
         selectedId = options[i].getAttribute('data-id');
-        console.log('ID del distrito seleccionado:', selectedId);
+        // console.log('ID del distrito seleccionado:', selectedId);
         break;
       }
     }
@@ -174,12 +174,13 @@ document.addEventListener("DOMContentLoaded", () => {
       telefono.value = response[0].telefono ? response[0].telefono : 'No registrado';
       direccion.value = response[0].direccion
       selectedId = response[0].iddistrito;
+      // console.log(idpersona);
 
       const option = document.createElement('option');
       option.setAttribute('data-id', selectedId);
       option.innerText = response[0].distrito; // Usa el nombre del distrito
       dataList.appendChild(option);
-      console.log('ID del distrito obtenido:', selectedId);
+      // console.log('ID del distrito obtenido:', selectedId);
 
       if (response[0].idusuario === null) {
         addUsuario(true)
@@ -200,10 +201,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const response = await fetch(`../../controller/persona.controller.php?${params}`)
     return response.json();
   }
-
+let response;
   btnbuscardni.addEventListener("click", async () => {
-    const response = await searchDni();
-    console.log(response)
+    response = await searchDni();
+    console.log(response[0])
     validarDoc(response);
   })
 
@@ -244,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    btnRegistrar.disabled = true; 
+    
     let response1;
     let response2;
 
@@ -258,6 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
       }
+
       const iduser = nombre_usuario.value.trim() != '' && password_usuario.value.trim() == '' && optionRol.value.trim() == ''
       if (iduser) {
         response2 = await registrarUsuario(idpersona);
@@ -272,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
       form.reset();
       alert("datos de la persona guardados")
     }
-    btnRegistrar.disabled = false; 
+ 
   })
   addPersona(false)
   addUsuario(false)

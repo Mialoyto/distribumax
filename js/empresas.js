@@ -109,11 +109,12 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`../../controller/empresa.controller.php`, options)
             .then(response => response.json())
             .then(data => {
+                document.querySelector("#idempresaruc-update").value=data.idempresaruc;
                 document.querySelector("#razonsocial-update").value = data.razonsocial;
                 document.querySelector("#direccion-update").value = data.direccion;
                 document.querySelector("#email-update").value = data.email;
                 document.querySelector("#telefono-update").value = data.telefono;
-                document.querySelector("#iddistrito-update").value = data.distrito;
+                document.querySelector("#searchDistrito").value = data.distrito;
             })
             .catch(e => {
                 console.error(e);
@@ -179,12 +180,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const params = new FormData();
         params.append('operation', 'upEmpresa'); // Cambia la operación a 'update'
-        params.append('iddistrito',document.querySelector("#iddistrito-update").value);
+        params.append('iddistrito',document.querySelector("#searchDistrito").value);
         params.append('razonsocial',document.querySelector("#razonsocial-update").value);
         params.append('direccion',document.querySelector("#direccion-update").value);
         params.append('email',document.querySelector("#email-update").value);
         params.append('telefono',document.querySelector("#telefono-update").value);
-        params.append('idempresaruc',btnsActualizar.value);
+        params.append('idempresaruc',document.querySelector("#idempresaruc-update").value);
 
         const options = {
             method: 'POST',

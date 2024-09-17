@@ -42,6 +42,7 @@
                 <!-- Formulario de actualización de empresa dentro del modal -->
                 <form method="POST" action="#" id="form-actualizar-empresa">
                   <div class="row">
+                    <input type="text" id="idempresaruc-update">
                     <div class="col-md-6 mb-3">
                       <div class="form-floating">
                         <input type="text" class="form-control" id="razonsocial-update" name="razonsocial" required>
@@ -82,12 +83,10 @@
                   <div class="row">
                     <div class="col-md-6 mb-3">
                       <div class="form-floating">
-                        <select class="form-select" id="iddistrito-update" name="iddistrito" required>
-                          <!-- Opciones de distritos se llenarán dinámicamente -->
-                        </select>
-                        <label for="iddistrito-update">
-                          <i class="fa fa-map-marker-alt me-2"></i> Distrito
-                        </label>
+                        <input type="search" class="form-control" id="searchDistrito" list="datalistDistrito" required>
+                        <div class="error-container" style="display: none;"></div>
+                        <label for="" class="form-label">Buscar Distrito</label>
+                        <datalist id="datalistDistrito"></datalist>
                       </div>
                     </div>
                   </div>

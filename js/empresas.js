@@ -1,37 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const optionDis = document.querySelector("#iddistrito");
-    const optionDis2=document.querySelector("#iddistrito-update")
-    const formempresa = document.querySelector("#form-registrar-empresa");
-    const formactualizar = document.querySelector("#form-actualizar-empresa");
     const ruc = document.querySelector("#idempresaruc");
-    const razon = document.querySelector("#razonsocial");
-    const direccion = document.querySelector("#direccion");
-    const email = document.querySelector("#email");
-    const telefono = document.querySelector("#telefono");
-    const estado = document.querySelector("#estado");
+    const formactualizar = document.querySelector("#form-actualizar-empresa");
     const contentable = document.querySelector("#table-empresas tbody");
     //const btnactualizar=document.querySelector("#btnactualizar");
-     distrito(optionDis);
-     distrito(optionDis2);
-    // Obtener distritos para el select
-    function distrito(iddistrito){
-        fetch(`../../controller/distrito.controller.php?operation=getAll`)
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(element => {
-                const tagOption = document.createElement('option');
-                tagOption.value = element.iddistrito;
-                tagOption.innerText = element.distrito;
-                iddistrito.appendChild(tagOption);
-            });
-        })
-        .catch(e => {
-            console.error(e);
-        });
-    }
-   
-
-    // Obtener empresas y agregar botones de actualizar y cambiar estado
+    
+    const iddistrito = document.querySelector("#searchDistrito");
+    const datalist   = document.querySelector("#datalistDistrito");
     (() => {
         fetch(`../../controller/empresa.controller.php?operation=getAll`)
             .then(response => response.json())
@@ -42,10 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     <tr>
                         <td>${row.idempresaruc}</td>
                         <td>${row.razonsocial}</td>
+                        <td>${row.distrito}</td>
                         <td>${row.direccion}</td>
                         <td>${row.email}</td>
                         <td>${row.telefono}</td>
-                        <td>${row.distrito}</td>
+            
                         <td class="text-center">
                             <button class="btn btn-warning btn-update" 
                             data-id="${row.idempresaruc}" 
@@ -67,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Asignar eventos a los botones de actualizar
                 const btnsActualizar = document.querySelectorAll(".btn-update");
-                const btnEstado = document.querySelectorAll(".btn-inactive");
+                
 
                 btnsActualizar.forEach(btn => {
                     btn.addEventListener("click", (event) => {
@@ -99,8 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error(e);
             });
     })();
-
-    // Función para cambiar el estado de la empresa
     function actualizarEstado(idempresa, nuevoEstado) {
         const params = new FormData();
         params.append('operation', 'upEstado');
@@ -140,42 +113,65 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector("#direccion-update").value = data.direccion;
                 document.querySelector("#email-update").value = data.email;
                 document.querySelector("#telefono-update").value = data.telefono;
+                document.querySelector("#iddistrito-update").value = data.distrito;
             })
             .catch(e => {
                 console.error(e);
             });
-    }
+    };
     
-    
-    // Registrar empresa
-    formempresa.addEventListener("submit", (event) => {
-        event.preventDefault(); // Evitar el comportamiento por defecto de recargar la página
+    let distrito='';
+    if(iddistrito){
+        iddistrito.addEventListener('input',event=>{
+            distrito=event.target.value;
+            mostraResultados();
+        })
+    };
+    const searchDistrito = async ()=>{
+        let searchData = new FormData();
+        searchData.append('operation','searchDistrito');
+        searchData.append('distrito',distrito);
+        const option={
+            method : 'POST',
+            body:searchData
+        }
+        try{
+            const response= await fetch(`../../controller/distrito.controller.php`,option)
+            return response.json();
+        }catch(e){
+            console.error(e);
+        }
+    };
 
-        const params = new FormData();
-        params.append('operation', 'add');
-        params.append('idempresaruc', ruc.value);
-        params.append('iddistrito', optionDis.value);
-        params.append('razonsocial', razon.value);
-        params.append('direccion', direccion.value);
-        params.append('email', email.value);
-        params.append('telefono', telefono.value);
-
-        const options = {
-            method: 'POST',
-            body: params
-        };
-
-        fetch(`../../controller/empresa.controller.php`, options)
-            .then(response => response.json())
-            .then(datos => {
-                if (confirm("¿Desea guardar los datos?")) {
-                    location.reload(); // Recargar la página
-                }
+    const mostraResultados =()=>{
+        searchDistrito()
+        .then(response=>{
+            datalist.innerHTML='';
+            response.forEach(item => {
+                const option = document.createElement('option');
+                option.setAttribute('data-id', item.iddistrito)
+                option.innerText=item.distrito;
+                datalist.appendChild(option);
             })
-            .catch(e => {
-                console.error(e);
-            });
+            console.log(response);
+        })
+    };
+    let selectedId;
+    iddistrito.addEventListener('change',event=>{
+        const selectedDistrito =event.target.value;
+        const options =datalist.children;
+        
+        for(let i =0; i<options.length;i++){
+            if(options[i].value===selectedDistrito){
+                selectedId=options[i].getAttribute('data-id');
+                console.log(selectedId);
+                break;
+            }
+        }
     });
+   
+    
+    
 
     // Actualizar empresa
     formactualizar.addEventListener("submit", (event) => {

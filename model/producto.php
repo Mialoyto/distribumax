@@ -14,8 +14,29 @@ class Productos extends Conexion{
 
   public function addProducto($params=[]){
     try{
+      $status=false;
       $query=$this->pdo->prepare("CALL sp_registrar_producto (?,?,?,?,?,?) ");
-      
+      $status=$query->execute(array(
+        $params['idmarca'],
+        $params['idsubcategoria'],
+        $params['nombreproducto'],
+        $params['descripcion'],
+        $params['codigo'],
+        $params['preciounitario']
+
+     ));
+     return $status;
+    
+    }catch(Exception $e){
+      die($e->getMessage());
+    }
+  }
+  public function getAll(){
+    try{
+      $sql="SELECT * FROM vw_listar_productos";
+      $query=$this->pdo->prepare($sql);
+      $query->execute();
+      return $query->fetchAll(PDO::FETCH_ASSOC);
     }catch(Exception $e){
       die($e->getMessage());
     }

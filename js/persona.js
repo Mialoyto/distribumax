@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function $(object = null) {
     return document.querySelector(object);
   }
-
+/* rama backup */
   const tipodoc = $("#tipo_documento");
   const nrodoc = $("#numero_documento");
   const btnBuscarDni = $("#buscar-dni");

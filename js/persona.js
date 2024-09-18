@@ -95,65 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(response);
       })
   }
-  /* fin del buscador */
-  let selectedId;
-  iddistrito.addEventListener('change', event => {
-    const selectedDistrito = event.target.value;
-    const options = dataList.children;
-
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].value === selectedDistrito) {
-        selectedId = options[i].getAttribute('data-id');
-        console.log('ID del distrito seleccionado:', selectedId);
-        break;
-      }
-    }
-  });
-  // --------------------------------------------------------------------------------------------
-
-  async function registrarPersona() {
-    const params = new FormData()
-    params.append('operation', 'addPersona')
-    params.append('idtipodocumento', doc.value)
-    params.append('idpersonanrodoc', dni.value)
-    params.append('iddistrito', selectedId)
-    params.append('nombres', nombres.value)
-    params.append('appaterno', appaterno.value)
-    params.append('apmaterno', apmaterno.value)
-    params.append('telefono', telefono.value)
-    params.append('direccion', direccion.value)
-    const options = {
-      method: 'POST',
-      body: params
-    }
-    const id = await fetch(`../../controller/persona.controller.php`, options);
-    return id.json();
-  }
-
-  async function registrarUsuario(idpersona) {
-    if (optionRol.value.trim() === '') {
-      alert("Seleccione un rol de usuario")
-      return
-    } else {
-      const params = new FormData();
-      params.append('operation', 'addUsuario');
-      params.append('idpersona', idpersona);
-      params.append('nombre_usuario', nombre_usuario.value);
-      params.append('password_usuario', password_usuario.value);
-      params.append('idrol', optionRol.value);
-
-      const options = {
-        method: 'POST',
-        body: params
-      }
-
-      const idusuario = await fetch(`../../controller/usuario.controller.php`, options)
-      return idusuario.json();
-    }
-  }
-
-  // registrar persona
-  function validarDoc(response) {
+  // validar documento ✔️
+  function validarDni(response) {
     if (response.length == 0) {
       $("#numero_documento").focus();
       idpersona = -1;
@@ -176,33 +119,11 @@ document.addEventListener("DOMContentLoaded", () => {
       option.value = response[0].distrito; // Usa el nombre del distrito
       dataList.appendChild(option);
       console.log('ID del distrito obtenido:', selectedId);
-
-      if (response[0].idusuario === null) {
-        addUsuario(true)
-      } else {
-        addPersona(false);
-        addUsuario(false);
-        alert("esta persona ya tiene un perfil");
-      }
+      addPersona(false);
     }
   }
 
-  async function searchDni() {
-    const params = new URLSearchParams();
-    params.append('operation', 'searchDni');
-    params.append('idtipodocumento', doc.value)
-    params.append('idpersonanrodoc', dni.value)
-
-    const response = await fetch(`../../controller/persona.controller.php?${params}`)
-    return response.json();
-  }
-
-  btnbuscardni.addEventListener("click", async () => {
-    const response = await searchDni();
-    console.log(response)
-    validarDoc(response);
-  })
-
+  // habilitar campos ✔️
   function addPersona(add = false) {
     if (!add) {
       $("#buscar-distrito").setAttribute("disabled", true)
@@ -278,15 +199,12 @@ document.addEventListener("DOMContentLoaded", () => {
     mostraResultados();
   });
 
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    btnRegistrar.disabled = true; 
+  $("#form-persona").addEventListener("submit", async (e) => {
+    e.preventDefault();
     let response1;
-    let response2;
-
-    if (confirm("¿Guardar datos?")) {
-      if (dataNew) {
-        response1 = await registrarPersona();
+    if (dataNew) {
+      if (confirm("¿Guardar datos?")) {
+        response1 = await registradoPersona();
         idpersona = response1.id;
         console.log("Datos guardados, ID: ", idpersona);
         if (idpersona == -1) {
@@ -294,23 +212,13 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
       }
-      const iduser = nombre_usuario.value.trim() != '' && password_usuario.value.trim() == '' && optionRol.value.trim() == ''
-      if (iduser) {
-        response2 = await registrarUsuario(idpersona);
-        if (response2.idusuario == -1) {
-          alert("verificar su nombre de usuario")
-        } else {
-          form.reset();
-          alert("datos de la persona y usuario guardados"); s
-        }
-      }
-    } else {
-      form.reset();
-      alert("datos de la persona guardados")
+    }else{
+      alert("Esta persona ya esta registrada")
     }
-    btnRegistrar.disabled = false; 
-  })
-  addPersona(false)
-  addUsuario(false)
-});
+  });
 
+  // FIN DE EVENTOS DE PRUEBAS
+  // desabilitar campos
+  addPersona(false);
+
+});

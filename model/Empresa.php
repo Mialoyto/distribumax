@@ -46,7 +46,7 @@ class Empresas extends Conexion{
    }
   }
 
-  public function UpdateEmpresa($params=[]){
+  public function UpEmpresa($params=[]){
     try{  
       $status=false;
       $query=$this->pdo->prepare("CALL sp_actualizar_empresa  (?,?,?,?,?,?) ");
@@ -60,6 +60,7 @@ class Empresas extends Conexion{
         $params['idempresaruc']
 
       ));
+      
       return $status;
     }catch(Exception $e){
       die($e->getCode());

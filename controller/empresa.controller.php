@@ -29,7 +29,35 @@ if(isset($_POST['operation'])){
  
         echo json_encode($empresa->add($datos));
   
-      break;
+    break;
+    case 'upEstado':
+      $datos=[
+        'estado' =>$_POST['estado'],
+        'idempresaruc' =>$_POST['idempresaruc']
+      ];
+      echo json_encode($empresa->upEstado($datos));
+    break;
+
+    case 'upEmpresa':
+      $datos=[
+        
+        'iddistrito'   => $_POST['iddistrito'],
+        'razonsocial'  => $_POST['razonsocial'],
+        'direccion'    => $_POST['direccion'],
+        'email'        => $_POST['email'],
+        'telefono'     => $_POST['telefono'],
+        'idempresaruc' => $_POST['idempresaruc']
+      ];
+      
+ 
+        echo json_encode($empresa->UpEmpresa($datos));
+    break;
+    case 'getByID':
+      echo json_encode($empresa->getByID(['idempresaruc'=>$_POST['idempresaruc']]));
+    break;
+
+    
+
    
   }
 }

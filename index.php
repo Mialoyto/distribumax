@@ -1,3 +1,10 @@
+<?php
+session_start();
+if(isset($_SESSION['login']) && $_SESSION['login']['acceso'] == true){
+    header("Location: dashboard.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -75,10 +82,15 @@
                 })
                     .then(response => response.json())
                     .then(data => {
+                        
                         console.log(data);
+                        // alert(data.status);
                         if (!data.acceso) {
-                            alert(data.status);
+                            console.log(data);
+                            // alert(data.status);
+                            // alert("Usuario o contraseña incorrectos");
                         } else {
+                            console.log(data);
                             window.location.href = `./dashboard.php`;
                         }
                     });

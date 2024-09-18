@@ -1,121 +1,84 @@
-<?php
+<?php require_once '../../header.php'; ?>
+<main>
+    <div class="container-fluid mt-5 d-flex justify-content-center">
+        <form action="" autocomplete="off" id="registrar-user">
+            <div class="card shadow-lg border-0 rounded-lg d-flex justify-content-around ">
+                <div class="card-header text-center">
+                    <h2 class="card-title ">Registro de usuarios</h2>
+                </div>
 
-require_once '../../header.php';
-?>
+                <div class="card-body ">
+                    <h4 class="card-title">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Información del usuario
+                    </h4>
 
-<div class="container mt-5">
-    <div class="card shadow-lg border-0 rounded-lg">
-        <div class="card-header">
-            <h3 class="text-center">Registro de Personas</h3>
-        </div>
-        <div class="card-body">
-            <!-- FORMULARIO DE REGISTRO -->
-            <form method="POST"   id="form-persona"autocomplete="off">
-                <!-- Sección de Información Personal -->
-                <h5 class="mb-4">
-                    <i class="fas fa-id-card"></i> Información Personal
-                </h5>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label for="idtipodocumento" class="form-label">Tipo de Documento</label>
-                        <select class="form-control" id="idtipodocumento" name="idtipodocumento" required>
-                            <option>Seleccione un documento de identidad</option>
-
-                            <!-- Agrega más opciones si es necesario -->
-                        </select>
-                    </div>
-                    <div class="col-md-8 mb-3">
-                        <label for="idpersonanrodoc" class="form-label">Número de Documento</label>
-                        <div class="input-group">
-                            <input type="number" class="form-control" id="idpersonanrodoc" name="idpersonanrodoc" required>
-                            <button class="btn btn-outline-secondary" type="button" id="btnbuscardni">Verificar</button>
+                    <!-- fila 1 -->
+                    <div class="row g-3 mb-3 mt-3">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="tipo_doc" name="tipo_documento" required>
+                                    <option>Seleccione un documento</option>
+                                </select>
+                                <label>Tipo de documento</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control"
+                                        id="numero_documento"
+                                        name="numero_documento"
+                                        type="text" placeholder="Número de documento"
+                                        maxlength="8" pattern="[0-9]+"
+                                        title="Solo se permite números"
+                                        autofocus
+                                        required />
+                                    <label for="dni" class="form-label">Número documento</label>
+                                </div>
+                                <button type="button" class="btn btn-lg btn-outline-success" id="buscar-dni"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <!-- fila 2 -->
+                    <div class="row g-3 mb-3">
 
-                <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input class="form-control " id="usuario" autocomplete="username" name="usuario" type="text" placeholder="Nombre de usuario" required />
+                                <label for="usuario valid-feedback">Nombre de usuario</label>
+                                <span id="valida-usuario"  style="visibility:visible; position:static;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="password" name="password" autocomplete="current-password" type="password" placeholder="password" required minlength="8" />
+                                <label for="password">Contraseña</label>
+                            </div>
+                        </div>
 
-                    <!-- BUSCADOR PETICIONES -->
-                    <div class="col-md-4 mb-3">
-                        <label for="datalistDistrito" class="form-label">Buscar Distrito</label>
-                        <input type="search" class="form-control" id="searchDistrito" list="datalistDistrito" required>
-                        <div class="error-container" style="display: none;"></div>
-                        <datalist id="datalistDistrito"></datalist>
-                    </div>
-                    <!-- FIN BUSCADOR PETICIONES -->
-                    <div class="col-md-4 mb-3">
-                        <label for="nombres" class="form-label">Nombres</label>
-                        <input type="text" class="form-control" id="nombres" name="nombres" required>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="appaterno" class="form-label">Apellido Paterno</label>
-                        <input type="text" class="form-control" id="appaterno" name="appaterno" required>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="apmaterno" class="form-label">Apellido Materno</label>
-                        <input type="text" class="form-control" id="apmaterno" name="apmaterno" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="text" class="form-control" id="telefono" name="telefono" pattern="[0-9]+" inputmode="numeric">
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="direccion" class="form-label">Dirección</label>
-                    <input type="text" class="form-control" id="direccion" name="direccion" required>
-                </div>
-
-                <!-- Separación visual entre secciones -->
-                <hr class="my-4">
-
-                <!-- Sección de Información de Cuenta de Usuario -->
-                <h5 class="mb-4">
-                    <i class="fas fa-user"></i> Información de Cuenta de Usuario
-                </h5>
-                <div class="row">
-
-                    <div class="col-md-4 px-5 pt-3">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="nombre_usuario">
-                            <label for="nombre_usuario">Nombre de Usuario</label>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="rol" name="rol" required>
+                                    <option>Seleccione un rol</option>
+                                </select>
+                                <label>Roles</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4 px-5 pt-3">
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="password_usuario">
-                            <label for="password_usuario">Contraseña</label>
-                        </div>
-                    </div>
-
-                    <!-- otion de roles -->
-                    <div class="col-md px-5 pt-3">
-                        <div class="form-floating mb-3">
-                            <select name="rol" id="rol" class="form-select">
-                                <option>Seleccione un rol</option>
-                                <!-- asincronismo -->
-                            </select>
-                            <label form="rol">Rol</label>
-                        </div>
-                    </div>
+                    <!-- fila 3 -->
                 </div>
-
-                <!-- Botones -->
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary me-2" id="btnRegistrarPersona">Registrar</button>
-                    <button type="reset" class="btn btn-secondary" id="btnCancelarRegistro">Cancelar</button>
+                <div class="card-footer text-end">
+                    <button type="submit" class="btn btn- btn-success mt-2 mb-2" id="registrar-user">Registrar</button>
+                    <button type="reset" class="btn btn-md btn-outline-danger mt-2 mb-2">Cancelar</button>
+                    <a href="usuarios.php" class="btn btn-md btn-outline-primary mt-2 mb-2">Mostrar lista de usuarios</a>
                 </div>
-            </form>
-            <!-- FORMULARIO DE REGISTRO -->
-        </div>
-    </div>
-</div>
+            </div>
+        </form>
+    </div> <!-- fin fluid -->
+</main>
+<?php require_once '../../footer.php'; ?>
+<script src="<?= $host ?>/js/usuarios.js" defer></script>
+</body>
 
-<?php
-
-require_once '../../footer.php';
-?>
-<script src="<?= $host ?>/js/persona.js"></script>
+</html>

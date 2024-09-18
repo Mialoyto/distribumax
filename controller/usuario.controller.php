@@ -1,8 +1,7 @@
 <?php
-
+session_start();
 require_once '../model/Usuario.php';
 $usuario = new Usuario();
-
 header("Content-Type: application/json; charset=utf-8");
 
 $verbo = $_SERVER["REQUEST_METHOD"];
@@ -10,9 +9,26 @@ $verbo = $_SERVER["REQUEST_METHOD"];
 
 switch ($verbo) {
     case 'GET':
-
         if (isset($_GET['operation'])) {
             switch ($_GET['operation']) {
+                case 'searchUser':
+                    $datosEnviar = [
+                        "idtipodocumento" => $_GET["idtipodocumento"],
+                        "idpersonanrodoc" => $_GET["idpersonanrodoc"]
+                    ];
+                    $row = $usuario->searchUser($datosEnviar);
+                    echo json_encode($row);
+                    break;
+                case 'checkUsername':
+                    $datosEnviar = ["username" => $_GET["username"]];
+                    $row = $usuario->getUser($datosEnviar);
+                    echo json_encode(["existe" => $row]);
+                    break;
+                case 'logout':
+                    session_unset(); // libera las variables de sesión pero no destruye la sesion
+                    session_destroy(); // destruye la sesion actual y sus variables
+                    header("Location:http://localhost/distribumax/dashboard.php");
+                    break;
             }
         }
         break;
@@ -59,6 +75,7 @@ switch ($verbo) {
                             $login['status'] = 'Contraseña incorrecta';
                         }
                     }
+                    $_SESSION['login'] = $login;
                     echo json_encode($login);
                     break;
             }

@@ -29,7 +29,7 @@ class Empresas extends Conexion{
     
         die($e->getMessage());
     }
-   } 
+}
   public function getAll() {
    try{
     $sql="SELECT E.idempresaruc, E.razonsocial, E.direccion,E.email,E.telefono, D.iddistrito,D.distrito
@@ -45,22 +45,8 @@ class Empresas extends Conexion{
     die($e->getCode());
    }
   }
-  public function getByID($params = []) {
-    try {
-        $sql = "SELECT * FROM empresas WHERE idempresaruc = ?";
-        $query = $this->pdo->prepare($sql);
 
-        // Usar el valor del array $params directamente
-        $query->execute([$params['idempresaruc']]);
-        
-        return $query->fetch(PDO::FETCH_ASSOC); // Se asume que obtendrás un solo resultado
-    } catch (Exception $e) {
-        die($e->getMessage());
-    }
-}
-
-
-  public function UpdateEmpresa($params=[]){
+  public function UpEmpresa($params=[]){
     try{  
       $status=false;
       $query=$this->pdo->prepare("CALL sp_actualizar_empresa  (?,?,?,?,?,?) ");
@@ -74,23 +60,10 @@ class Empresas extends Conexion{
         $params['idempresaruc']
 
       ));
+      
       return $status;
     }catch(Exception $e){
       die($e->getCode());
     }
   }
-
-  public function upEstado($params=[]){
-    try{
-      $query=$this->pdo->prepare("CALL sp_estado_empresa (?,?)");
-      $query->execute(array(
-        $params['estado'],
-        $params['idempresaruc']
-      ));
-      return $query;
-    }catch(Exception $e){
-      die($e->getMessage());
-    
-  }
- }
 }

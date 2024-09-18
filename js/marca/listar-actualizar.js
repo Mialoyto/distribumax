@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded",()=>{
   
-  const formarca = document.querySelector("#form-registrar-marca");
-  const marca =document.querySelector("#marca");
-
   const contentable =document.querySelector("#table-marcas tbody");
    
   (()=>{
@@ -27,25 +24,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 
 
-   formarca.addEventListener("submit",(event)=>{
-     
-    const params = new FormData()
-    params.append('operation','addMarca');
-    params.append('marca',marca.value);
-     
-    const options ={
-        'method':'POST',
-        'body':params
-    };
 
-    fetch(`../../controller/marca.controller.php?`,options)
-    .then(Response=>Response.json())
-    .then(datos=>{
-        if(datos=true){
-            alert("registroo exitoso")
-        }
-    })
-    .catch(e=>{console.error(e)})
-
-   })
+     
+    
 })

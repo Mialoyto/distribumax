@@ -6,7 +6,7 @@ class Usuario extends Conexion
 
     private $pdo;
 
-    
+
     public function __CONSTRUCT()
     {
         $this->pdo = parent::getConexion();
@@ -27,7 +27,7 @@ class Usuario extends Conexion
     }
 
 
-    public function addUsuario($params= []): int
+    public function addUsuario($params = []): int
     {
         $idusuario = null;
         try {
@@ -42,11 +42,41 @@ class Usuario extends Conexion
                 )
             );
             $row = $query->fetch(PDO::FETCH_ASSOC);
-            $idusuario = $row['idusuario'];
+            return $idusuario = $row['idusuario'];
         } catch (Exception $e) {
             $idusuario = -1;
         }
         return $idusuario;
     }
 
+    function searchUser($params = []): array
+    {
+        try {
+            $tsql = "CALL sp_buscarusuarios_registrados (?, ?)";
+            $cmd = $this->pdo->prepare($tsql);
+            $cmd->execute(array(
+                $params['idtipodocumento'],
+                $params['idpersonanrodoc']
+            ));
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    function getUser($params = []):bool
+    {
+        $user = false;
+        try {
+            $tsql = "SELECT count(nombre_usuario) AS username FROM usuarios WHERE nombre_usuario = ? ";
+            $cmd = $this->pdo->prepare($tsql);
+            $cmd->execute(
+                array($params['username'])
+            );
+            $user = $cmd->fetch(PDO::FETCH_ASSOC);
+            return $user['username'] > 0;
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
 }

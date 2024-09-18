@@ -61,3 +61,20 @@ BEGIN
 			estado = _estado
 		WHERE _nombre_usuario = nombre_usuario;
 END$$
+
+DELIMITER $$
+CREATE PROCEDURE sp_buscarusuarios_registrados(
+IN _idtipodocumento INT ,
+IN _idpersonanrodoc CHAR(11)
+)
+BEGIN
+	SELECT 
+        PER.idpersonanrodoc AS id,
+        USU.idusuario AS iduser,
+        USU.estado AS estado
+        FROM personas PER
+        INNER JOIN tipo_documento TDOC ON PER.idtipodocumento = TDOC.idtipodocumento
+        LEFT JOIN usuarios USU ON USU.idpersona = PER.idpersonanrodoc
+		WHERE PER.idtipodocumento = _idtipodocumento
+        AND PER.idpersonanrodoc = _idpersonanrodoc;
+END $$

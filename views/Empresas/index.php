@@ -115,6 +115,6 @@
   </div>
 </main>
 
-<script src="../../js/empresas.js"></script>
+<script src="../../js/empresas/listar-actualizar.js"></script>
 
 <?php require_once '../../footer.php'; ?>

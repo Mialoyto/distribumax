@@ -13,7 +13,7 @@
         Listado de Empresas
       </div>
       <div class="card-body">
-        <form method="POST" action="#" id="form-registrar-empresa">
+        <form method="POST" action="#" id="form-registrar-empresa" autocomplete="off">
           <div class="row">
             <div class="col-md-4 mb-3">
               <div class="form-floating">

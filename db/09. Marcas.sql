@@ -38,6 +38,6 @@ END$$
 
 -- LISTAR MARCAS
 CREATE VIEW vw_listar_marcas
-    SELECT marca FROM marcas
+SELECT idmarca,marca FROM marcas
     WHERE estado = '1'
     ORDER BY marca ASC;

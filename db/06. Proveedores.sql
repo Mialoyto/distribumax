@@ -4,7 +4,7 @@ USE distribumax;
 DELIMITER $$
 CREATE PROCEDURE sp_proovedor_registrar(
     IN _idempresa 				INT,
-    IN _proveedor		VARCHAR(50),
+    IN _proveedor		        VARCHAR(50),
     IN _contacto_principal		VARCHAR(50),
     IN _telefono_contacto		CHAR(9),
     IN _direccion				VARCHAR(100),
@@ -52,3 +52,11 @@ BEGIN
       estado=_estado
       WHERE idproveedor =_idproveedor;
 END$$
+
+SELECT 
+                    empresas.idempresaruc,empresas.razonsocial,
+		            proveedores.idproveedor, proveedores.proveedor,proveedores.contacto_principal,proveedores.telefono_contacto,
+                    proveedores.direccion,proveedores.email
+                  FROM proveedores 
+                  INNER JOIN empresas 
+                  ON empresas.idempresaruc = proveedores.idempresa;

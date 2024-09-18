@@ -53,7 +53,6 @@ document.addEventListener("DOMContentLoaded",()=>{
         for(let i =0; i<options.length;i++){
             if(options[i].value===selectedDistrito){
                 selectedId=options[i].getAttribute('data-id');
-                console.log(selectedId);
                 break;
             }
         }
@@ -80,7 +79,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     formempresa.addEventListener("submit",async (event) => {
         event.preventDefault(); // Evitar el comportamiento por defecto de recargar la página
         const result = await registrarempresa();
-        console.log(result);
+        if(result){
+          alert("Registro realizado");
+          formempresa.reset();
+        }
         
     });
 });

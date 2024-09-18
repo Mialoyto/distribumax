@@ -24,10 +24,7 @@ require_once '../../header.php';
                         <div class="col-md-6 mb-3">
                             <label for="idsubcategoria" class="form-label">Subcategoría</label>
                             <select class="form-control" id="idsubcategoria" name="idsubcategoria" required>
-                                <option value="">Seleccione una subcategoría</option>
-                                <option value="1">Subcategoría 1</option>
-                                <option value="2">Subcategoría 2</option>
-                                <option value="3">Subcategoría 3</option>
+                              
                                 <!-- Agrega más opciones según sea necesario -->
                             </select>
                         </div>

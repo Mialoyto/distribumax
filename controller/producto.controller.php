@@ -8,11 +8,11 @@ if (isset($_POST['operation'])) {
   switch ($_POST['operation']) {
     case 'addProducto':
       $datos = [
-        'idmarca' => $_POST['idmarca'],
+        'idmarca'        => $_POST['idmarca'],
         'idsubcategoria' => $_POST['idsubcategoria'],
         'nombreproducto' => $_POST['nombreproducto'],
-        'descripcion' => $_POST['descripcion'],
-        'codigo' => $_POST['codigo'],
+        'descripcion'    => $_POST['descripcion'],
+        'codigo'         => $_POST['codigo'],
         'preciounitario' => $_POST['preciounitario']
 
       ];

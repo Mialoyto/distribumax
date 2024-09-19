@@ -36,7 +36,7 @@ BEGIN
     UPDATE subcategorias
         SET 
             estado = _estado
-        WHERE idsubcategoria = _idsubcategoria
+        WHERE idsubcategoria = _idsubcategoria;
 END$$
 
 -- LISTAR SUBCATEGORIAS

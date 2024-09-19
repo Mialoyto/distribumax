@@ -25,11 +25,18 @@ class Productos extends Conexion{
         $params['preciounitario']
 
      ));
-     return $status->fetch
+     if($status){
+      return $status;
+     }else{
+      return false;
+     }
+      
     
     }catch(Exception $e){
       die($e->getMessage());
+      
     }
+  
   }
   public function getAll(){
     try{
@@ -41,4 +48,5 @@ class Productos extends Conexion{
       die($e->getMessage());
     }
   
+}
 }

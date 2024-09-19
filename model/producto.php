@@ -25,7 +25,7 @@ class Productos extends Conexion{
         $params['preciounitario']
 
      ));
-     return $status;
+     return $status->fetch
     
     }catch(Exception $e){
       die($e->getMessage());
@@ -33,12 +33,12 @@ class Productos extends Conexion{
   }
   public function getAll(){
     try{
-      $sql="SELECT * FROM vw_listar_productos";
+      $sql="SELECT * FROM";
       $query=$this->pdo->prepare($sql);
       $query->execute();
       return $query->fetchAll(PDO::FETCH_ASSOC);
     }catch(Exception $e){
       die($e->getMessage());
     }
-  }
+  
 }

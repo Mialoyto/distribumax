@@ -221,4 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // desabilitar campos
   addPersona(false);
 
+  // FIN DE EVENTO
+ 
+
 });

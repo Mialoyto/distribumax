@@ -62,7 +62,13 @@ DROP PROCEDURE IF EXISTS sp_estado_promocion;
 
 -- 14 detalle promocion
 
+
 -- 15 detalle pedidos
+DROP PROCEDURE IF EXISTS sp_detalle_pedido;
+DROP PROCEDURE IF EXISTS sp_actualizar_detalle_pedido;
+DROP PROCEDURE IF EXISTS sp_estado_detalle_pedido;
+
+
 -- 16 vehiculos
 DROP PROCEDURE IF EXISTS sp_registrar_vehiculo;
 DROP PROCEDURE IF EXISTS sp_actualizar_vehiculo;
@@ -81,7 +87,9 @@ DROP PROCEDURE IF EXISTS sp_despacho_registrar;
 DROP PROCEDURE IF EXISTS sp_actualizar_despacho;
 
 -- 20 ventas 
-
+DROP PROCEDURE IF EXISTS sp_registrar_venta;
+DROP PROCEDURE IF EXISTS sp_actualizar_venta;
+DROP PROCEDURE IF EXISTS sp_estado_venta;
 
 -- 21 Comprobantes
 DROP PROCEDURE IF EXISTS sp_comprobantes_registrar;

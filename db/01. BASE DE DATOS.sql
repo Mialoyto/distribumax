@@ -1,4 +1,4 @@
--- Active: 1726512933357@@localhost@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribuMax;
 USE distribuMax;

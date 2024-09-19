@@ -13,7 +13,7 @@ if(isset($_SESSION['login']) && $_SESSION['login']['acceso'] == true){
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Seguridad App</title>
+    <title>Distribumax</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
@@ -65,37 +65,9 @@ if(isset($_SESSION['login']) && $_SESSION['login']['acceso'] == true){
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-
+    <script src="http://localhost/distribumax/js/login/login.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelector("#form-login").addEventListener("submit", (event) => {
-                event.preventDefault();
-                // Datos a enviar
-                const fomrData = new FormData();
-                fomrData.append("operation", "login");
-                fomrData.append("nombre_usuario", document.querySelector("#nombre_usuario").value);
-                fomrData.append("password_usuario", document.querySelector("#inputPassword").value);
-
-                fetch(`controller/usuario.controller.php`,{
-                    method: 'POST',
-                    body:fomrData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        
-                        console.log(data);
-                        // alert(data.status);
-                        if (!data.acceso) {
-                            console.log(data);
-                            // alert(data.status);
-                            // alert("Usuario o contraseña incorrectos");
-                        } else {
-                            console.log(data);
-                            window.location.href = `./dashboard.php`;
-                        }
-                    });
-            });
-        });
+        
     </script>
 </body>
 </html>

@@ -31,6 +31,7 @@ CALL sp_buscarpersonadoc (1,'26558000');
  
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/
 CALL sp_registrar_usuario('26558000',1,'admin','admin');
+CALL sp_actualizar_usuario('admin2','$2y$10$kBwpNKMvgrkBobtC3OQJV.cyPVhOaqMyDfIxLiXt17Z.F1a6FeaDa',2);
 CALL sp_registrar_usuario('26558001',1,'admin1','admin');
 CALL sp_usuario_login ('admin');
 CALL sp_desactivar_usuario(1,'admin');
@@ -45,6 +46,8 @@ CALL sp_empresa_registrar(
     '987654321'
 );
 CALL sp_actualizar_empresa (1,1,'Dijisa','Panamericana #234','dijisa@gmail.com','932123029');
+
+
 -- -------------------------------------------------
 -- REGISTRAR EMPRESAS
 

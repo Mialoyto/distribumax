@@ -37,7 +37,7 @@ DELIMITER $$
 CREATE PROCEDURE sp_actualizar_usuario(
 
    IN     _nombre_usuario		VARCHAR(100),
-   IN     _password_usuario		VARCHAR(50),
+   IN     _password_usuario		VARCHAR(150),
    IN     _idusuario            INT 
 )
 BEGIN

@@ -43,7 +43,7 @@ END$$
 -- ESTADO producto
 DELIMITER $$
 CREATE PROCEDURE sp_estado_producto(
-IN  _estado 	CHAR(1),
+IN  _estado 		CHAR(1),
 IN  _idproducto INT 
 )
 BEGIN

@@ -344,7 +344,7 @@ CREATE TABLE pedidos (
     idpedido        INT             NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idusuario       INT             NOT NULL,
     idcliente       INT             NOT NULL,
-    fecha_pedido    DATETIME        NOT NULL,
+    fecha_pedido    DATETIME        NOT NULL DEFAULT NOW(),
     
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,

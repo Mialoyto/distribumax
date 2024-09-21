@@ -12,19 +12,17 @@ class Cliente extends Conexion
   }
 
   //Función para poder listar a todos los clientes
-  public function getAll()
+  public function searchCliente($params = []): array
   {
-    try{
-      $sql = "SELECT * FROM view_clientes";
-      $consulta = $this->pdo->prepare($sql);
-      $consulta->execute();
-
-      return $consulta->fetchAll(PDO::FETCH_ASSOC);
-    }
-    catch(Exception $e){
+    try {
+      $tsql = "CALL sp_buscar_cliente (?)";
+      $cmd = $this->pdo->prepare($tsql);
+      $cmd->execute(array(
+        $params['_nro_documento']
+      ));
+      return $cmd->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
       die($e->getCode());
     }
   }
-
-
 }

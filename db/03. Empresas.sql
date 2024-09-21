@@ -2,7 +2,7 @@ USE distribumax;
 -- REGISTRAR EMPRESAS 
 DELIMITER $$
 CREATE PROCEDURE sp_empresa_registrar(
-	IN _idempresaruc 	INT,
+	IN _idempresaruc 	BIGINT,
     IN _iddistrito 		INT,
     IN _razonsocial 	VARCHAR(100),
     IN _direccion 		VARCHAR(100),
@@ -24,7 +24,7 @@ CREATE PROCEDURE sp_actualizar_empresa(
     IN _direccion        VARCHAR(100),
     IN _email            VARCHAR(100),
     IN _telefono         CHAR(9),
-    IN _idempresaruc     INT
+    IN _idempresaruc     BIGINT
 )
 BEGIN
     UPDATE empresas
@@ -37,16 +37,13 @@ BEGIN
         update_at = NOW()
     WHERE idempresaruc = _idempresaruc;
 END$$
-DELIMITER ;
 
-CALL sp_actualizar_empresa(5, 'Santa', 'Lomo Largo', 'santa@gmail.com', '123456789', 1234567891);
 
-select * from empresas
 -- Eliminar
 DELIMITER $$
 CREATE PROCEDURE sp_estado_empresa(
 	IN  _estado 		CHAR(1),
-	IN  _idempresaruc 	INT 
+	IN  _idempresaruc 	BIGINT 
 )
 BEGIN
 	UPDATE empresas SET
@@ -54,7 +51,7 @@ BEGIN
       WHERE idempresaruc=_idempresaruc;
 END$$
 
-
+-- LISTAR EMPRESAS
 CREATE VIEW view_empresas AS
 SELECT E.idempresaruc, E.razonsocial, E.direccion,E.email,E.telefono, D.iddistrito,D.distrito
 FROM empresas E

@@ -108,7 +108,7 @@
     </div> <!-- fin fluid -->
 </main>
 <?php require_once '../../footer.php'; ?>
-<script src="<?= $host ?>/js/persona.js"></script>
+<script src="http://localhost/distribumax/js/personas/persona.js"></script>
 </body>
 
 </html>

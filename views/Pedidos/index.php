@@ -1,185 +1,178 @@
-<?php
-require_once '../../header.php';
-?>
-<div class="container mt-4">
-    <!-- Formulario en un solo card -->
-    <div class="card shadow-lg border-0 rounded-lg">
-        <div class="card-header">
-            <h3 class="text-center">Registro de Pedido y Detalles</h3>
-        </div>
-        <div class="card-body">
+<?php require_once '../../header.php'; ?>
+<main>
+    <div class="container mt-4">
+        <!-- Formulario en un solo card -->
+        <div class="card shadow-lg border-0 rounded-lg">
+            <div class="card-header text-center">
+                <h2 class="card-title">Registro de Pedido y Detalles</h2>
+                <!-- tailwindcss -->
+                <h1 class="text-3xl font-bold underline">
+                    Hello world!
+                </h1>
+            </div>
+            <div class="card-body">
+                <span class="badge text-bg-info text-uppercase fs-6" id="<?= $_SESSION['login']['idusuario']  ?>">
+                    <?= $_SESSION['login']['rol']  ?> :
+                    <?= $_SESSION['login']['nombres']  ?>
+                    <?= $_SESSION['login']['appaterno']  ?>
+                    <?= $_SESSION['login']['apmaterno']  ?>
+                </span>
 
-            <!-- Sección de Registro de Pedido -->
-            <h5 class="mb-3">Registro de Pedido</h5>
-            <form method="POST" action="#">
-                <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <label for="idcliente" class="form-label">Cliente</label>
-                        <select class="form-control" id="idcliente" name="idcliente" required>
-                            <option value="">Seleccione un cliente</option>
-                            <option value="1">Cliente 1</option>
-                            <option value="2">Cliente 2</option>
-                            <!-- Opciones dinámicas -->
-                        </select>
+                <!-- Sección de Registro de Pedido -->
+                <h5 class="mb-3 mt-3 card-title">Datos del cliente</h5>
+                <!-- fomrluario para enviar pedidos -->
+                <form method="POST" action="#" id="registrar-pedido" autocomplete="off">
+                    <!-- fila 01 -->
+                    <div class="row g-3 mb-3">
+
+                        <div class="col-md-6 mb-2">
+                            <!-- selecc de tipo de documento -->
+                            <div class="form-floating">
+                                <select class="form-control" id="id-tip-doc" name="id-tip-doc" disabled="true" required>
+                                    <option value="">Tipo de documento</option>
+                                    <!-- Opciones dinámicas -->
+                                </select>
+                                <label for="idcliente" class="form-label"><i class="fa-regular fa-id-card fa-lg"></i> Tipo de documento </label>
+                            </div>
+                            <!-- fin de selec de tipo de documento -->
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="nro-doc" name="nro-doc" placeholder="Número de documento" required>
+                                <label for="nro-doc" class="form-label"> Número de documento</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-2">
-                        <label for="fecha_pedido" class="form-label">Fecha del Pedido</label>
-                        <input type="datetime-local" class="form-control" id="fecha_pedido" name="fecha_pedido" required>
+                    <!-- fila 2 -->
+                    <div class="row g-3">
+
+                        <div class="col-md-4 mt-3">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="nombres" name="nombres" type="text" placeholder="nombres" required />
+                                <label for="nombres">Nombres</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mt-3">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="appaterno" name="appaterno" type="text" placeholder="appaterno" required />
+                                <label for="appaterno">Apellido paterno</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="apmaterno" name="apmaterno" type="text" placeholder="Apellido apmaterno" required />
+                                <label for="apmaterno">Apellido materno</label>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <!-- Botón para de prueba para retornar id de pedido -->
+                            <div class="d-flex justify-content-end mb-3">
+                                <button type="button" class="btn btn-outline-success" id="id-pedido">
+                                    <i class="bi bi-plus-circle"> Registrar pedido</i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <label for="estado" class="form-label">Estado</label>
-                        <select class="form-control" id="estado" name="estado" required>
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="Enviado">Enviado</option>
-                            <option value="Cancelado">Cancelado</option>
-                            <option value="Entregado">Entregado</option>
-                        </select>
+                    <hr class="my-3">
+
+                    <!-- Sección de Detalle de Pedido -->
+                    <div>
+                        <h5 class="mb-3">Detalle del Pedido</h5>
+
+
                     </div>
-                </div>
 
-                <hr class="my-3">
-
-                <!-- Sección de Detalle de Pedido -->
-                <h5 class="mb-3">Detalle del Pedido</h5>
-
-                <!-- Tabla de productos del pedido -->
-                <table class="table table-bordered" id="tabla-productos">
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>Unidad de Medida</th>
-                            <th>Precio Unitario</th>
-                            <th>Precio con Descuento</th>
-                            <th>Subtotal</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Aquí se agregarán dinámicamente los productos -->
-                    </tbody>
-                </table>
-
-                <!-- Formulario para agregar productos a la tabla -->
-                <div class="row">
-                    <div class="col-md-4 mb-2">
-                        <label for="idproducto" class="form-label">Producto</label>
-                        <select class="form-control" id="idproducto" name="idproducto" required>
-                            <option value="">Seleccione un producto</option>
-                            <option value="1">Producto 1</option>
-                            <option value="2">Producto 2</option>
-                            <!-- Opciones dinámicas -->
-                        </select>
+                    <!-- Tabla de productos del pedido -->
+                    <div class="table-responsive bs-warning">
+                        <table class="table table-striped table-hover table-secondar" id="detalle-productos">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Unidad Medida</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Descuento</th>
+                                    <th>Subtotal</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- primer detalle -->
+                                <tr>
+                                    <th class="col-md-3">
+                                        <div class="mt-1">
+                                            <select class="form-control form-control-sm" name="idproducto" id="idproducto" name="idproducto">
+                                                <option value="">Seleccione un producto</option>
+                                                <option value="1">Prodcuto 1</option>
+                                                <!-- Opciones dinámicas -->
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="col-md-1">
+                                        <div class="mt-1">
+                                            <input class="form-control form-control-sm cantidad" name="cantidad" type="text" aria-label=".form-control-sm example">
+                                        </div>
+                                    </th>
+                                    <th class="col-md-1">
+                                        <div class="mt-1">
+                                            <input class="form-control form-control-sm und-medida" name="und-medida" type="text" aria-label=".form-control-sm example">
+                                        </div>
+                                    </th>
+                                    <th class="col-md-1">
+                                        <div class="mt-1">
+                                            <input class="form-control form-control-sm precio-unitario" name="precio-unitario" type="text" aria-label=".form-control-sm example">
+                                        </div>
+                                    </th>
+                                    <th class="col-md-1">
+                                        <div class="mt-1">
+                                            <input class="form-control form-control-sm descuento" name="descuento" type="text" aria-label=".form-control-sm example">
+                                        </div>
+                                    </th>
+                                    <th class="col-md-1">
+                                        <div class="mt-1">
+                                            <input class="form-control form-control-sm subtotal" name="subtotal" type="text" aria-label=".form-control-sm example">
+                                        </div>
+                                    </th>
+                                    <th class="col-md-1">
+                                        <div class="mt-1  d-flex justify-content-evenly">
+                                            <button type="button" class="btn btn-warning btn-sm w-100">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-sm w-100">
+                                                <i class="bi bi-x-square"></i>
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <!-- fin del detalle -->
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-md-2 mb-2">
-                        <label for="cantidad_producto" class="form-label">Cantidad</label>
-                        <input type="number" class="form-control" id="cantidad_producto" name="cantidad_producto" min="1" required>
-                    </div>
-                    <div class="col-md-2 mb-2">
-                        <label for="unidad_medida" class="form-label">Unidad de Medida</label>
-                        <input type="text" class="form-control" id="unidad_medida" name="unidad_medida" required>
-                    </div>
-                    <div class="col-md-2 mb-2">
-                        <label for="precio_unitario" class="form-label">Precio Unitario</label>
-                        <input type="number" step="0.01" class="form-control" id="precio_unitario" name="precio_unitario" required>
-                    </div>
-                    <div class="col-md-2 mb-2">
-                        <label for="precio_descuento" class="form-label">Precio con Descuento</label>
-                        <input type="number" step="0.01" class="form-control" id="precio_descuento" name="precio_descuento" required>
-                    </div>
-                </div>
+                    <!-- fin tabla productos -->
+                    <!-- Botones -->
 
-                <!-- Botón para agregar producto a la tabla -->
-                <div class="d-flex justify-content-end mb-3">
-                    <button type="button" class="btn btn-success" id="agregar-producto">
-                        <i class="fa fa-plus me-2"></i>Agregar Producto
-                    </button>
-                </div>
+                    <div class="text-end">
+                        <!-- Botón para agregar producto a la tabla -->
+                        <div class="d-flex justify-content-end mb-3">
+                            <button type="button" class="btn btn-outline-success" id="agregar-producto">
+                                <i class="bi bi-plus-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-primary me-2 transition">Registrar Pedido</button>
+                        <button type="reset" class="btn btn-outline-danger">Cancelar</button>
+                    </div>
+                </form>
 
-                <!-- Botones -->
-                <div class="d-flex justify-content-end mt-3">
-                    <button type="submit" class="btn btn-primary me-2">Registrar Pedido</button>
-                    <button type="reset" class="btn btn-secondary">Cancelar</button>
-                </div>
-            </form>
-
+            </div>
         </div>
     </div>
-</div>
+</main>
+<?php require_once '../../footer.php'; ?>
+<script type="module" src="http://localhost/distribumax/js/pedidos/pedidos.js"></script>
+</body>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tablaProductos = document.getElementById('tabla-productos').getElementsByTagName('tbody')[0];
-        const btnAgregarProducto = document.getElementById('agregar-producto');
-
-        btnAgregarProducto.addEventListener('click', function () {
-            // Obtener los valores de los campos
-            const idProducto = document.getElementById('idproducto').value;
-            const nombreProducto = document.getElementById('idproducto').options[document.getElementById('idproducto').selectedIndex].text;
-            const cantidadProducto = document.getElementById('cantidad_producto').value;
-            const unidadMedida = document.getElementById('unidad_medida').value;
-            const precioUnitario = document.getElementById('precio_unitario').value;
-            const precioDescuento = document.getElementById('precio_descuento').value;
-            const subtotal = (cantidadProducto * precioDescuento).toFixed(2);
-
-            if (idProducto && cantidadProducto && unidadMedida && precioUnitario && precioDescuento) {
-                // Crear una nueva fila
-                const nuevaFila = tablaProductos.insertRow();
-
-                // Insertar celdas en la fila
-                nuevaFila.innerHTML = `
-                    <td>${nombreProducto}</td>
-                    <td>${cantidadProducto}</td>
-                    <td>${unidadMedida}</td>
-                    <td>${precioUnitario}</td>
-                    <td>${precioDescuento}</td>
-                    <td>${subtotal}</td>
-                    <td>
-                        <button type="button" class="btn btn-warning btn-sm me-2 editar-producto">Editar</button>
-                        <button type="button" class="btn btn-danger btn-sm eliminar-producto">Eliminar</button>
-                    </td>
-                `;
-
-                // Limpiar campos después de agregar
-                document.getElementById('idproducto').value = '';
-                document.getElementById('cantidad_producto').value = '';
-                document.getElementById('unidad_medida').value = '';
-                document.getElementById('precio_unitario').value = '';
-                document.getElementById('precio_descuento').value = '';
-            }
-
-            // Lógica para eliminar un producto de la tabla
-            tablaProductos.addEventListener('click', function (e) {
-                if (e.target.classList.contains('eliminar-producto')) {
-                    const fila = e.target.closest('tr');
-                    fila.remove();
-                }
-            });
-
-            // Lógica para editar un producto de la tabla
-            tablaProductos.addEventListener('click', function (e) {
-                if (e.target.classList.contains('editar-producto')) {
-                    const fila = e.target.closest('tr');
-                    const celdas = fila.getElementsByTagName('td');
-
-                    // Asignar los valores de la fila a los campos del formulario
-                    document.getElementById('idproducto').value = celdas[0].innerText;
-                    document.getElementById('cantidad_producto').value = celdas[1].innerText;
-                    document.getElementById('unidad_medida').value = celdas[2].innerText;
-                    document.getElementById('precio_unitario').value = celdas[3].innerText;
-                    document.getElementById('precio_descuento').value = celdas[4].innerText;
-
-                    // Eliminar la fila al hacer clic en editar
-                    fila.remove();
-                }
-            });
-        });
-    });
-</script>
-
-<?php
-require_once '../../footer.php';
-?>
+</html>

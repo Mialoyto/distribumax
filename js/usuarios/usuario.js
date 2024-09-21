@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }, false);
 
   // registrar usuario boton
-  $("#registrar-user").addEventListener('submit', async (e) => {
+  $("#form-user").addEventListener('submit', async (e) => {
     e.preventDefault();
     let response1;
     if (confirm("¿Guardar usuario?")) {

@@ -50,6 +50,7 @@ switch ($verbo) {
                     $login = [
                         'acceso' => false,
                         'idusuario' => "",
+                        'dni'       => "",
                         "appaterno" => "",
                         "apmaterno" => "",
                         "nombres"   => "",
@@ -67,6 +68,7 @@ switch ($verbo) {
                         if (password_verify($claveAcceso, $claveEncripta)) {
                             $login['acceso'] = true;
                             $login['idusuario'] = $row[0]['idusuario'];
+                            $login['dni']       = $row[0]['dni'];
                             $login['appaterno'] = $row[0]['appaterno'];
                             $login['apmaterno'] = $row[0]['apmaterno'];
                             $login['nombres']   = $row[0]['nombres'];

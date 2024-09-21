@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1726291702198@@localhost@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribuMax;
 USE distribuMax;
@@ -177,9 +177,10 @@ CREATE TABLE personas(
     CONSTRAINT fk_estado_pers CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
+/* modificaciones en la base tabla tipo doc por defecto la empresas se registraran con ruc */
 DROP TABLES IF EXISTS empresas;
 CREATE TABLE empresas(
-		idempresaruc	INT	NOT NULL PRIMARY KEY,
+		idempresaruc	BIGINT	NOT NULL PRIMARY KEY,
         iddistrito		INT NOT NULL,
         razonsocial		VARCHAR(100)	NOT NULL,
         direccion		VARCHAR(100)	NOT NULL,
@@ -213,23 +214,26 @@ CREATE TABLE usuarios(
 
 DROP TABLES IF EXISTS clientes;
 CREATE TABLE clientes (
-    idcliente       INT  NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idpersona       CHAR(11)  NOT NULL,
-    idempresa       INT  NOT NULL,
-    tipo_cliente    ENUM('Persona', 'Empresa') NOT NULL,
+    idcliente       INT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    idpersona       CHAR(11)    DEFAULT NULL,
+    idempresa       BIGINT        DEFAULT NULL,
+    tipo_cliente    CHAR(10)    NOT NULL,
     
-    create_at       DATETIME NOT NULL DEFAULT NOW(),
-	update_at		DATETIME NULL,
-	estado			CHAR(1) NOT NULL DEFAULT "1",
+    create_at       DATETIME    NOT NULL DEFAULT NOW(),
+	update_at		DATETIME    NULL,
+	estado			CHAR(1)     NOT NULL DEFAULT "1",
     CONSTRAINT fk_idpersona_cli FOREIGN KEY (idpersona) REFERENCES personas(idpersonanrodoc),
     CONSTRAINT fk_idempresa_cli FOREIGN KEY (idempresa) REFERENCES empresas(idempresaruc),
+    CONSTRAINT uk_idpersona_cliente UNIQUE(idpersona),
+    CONSTRAINT uk_idempresa_cliente UNIQUE(idempresa),
+    CONSTRAINT fk_tipo_cliente_cli CHECK (tipo_cliente IN ('Persona', 'Empresa')),
     CONSTRAINT fk_estado_cli CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
 
 DROP TABLES IF EXISTS proveedores;
 CREATE TABLE proveedores(
 	idproveedor			 	INT	NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	idempresa				INT NOT NULL,
+	idempresa				BIGINT NOT NULL,
 	proveedor				VARCHAR(100)    NOT NULL,
 	contacto_principal		VARCHAR(50)		NOT NULL,
 	telefono_contacto		CHAR(9)			NOT NULL,

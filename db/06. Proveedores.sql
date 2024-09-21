@@ -3,7 +3,7 @@ USE distribumax;
 -- REGISTRAR PROOVEDORES
 DELIMITER $$
 CREATE PROCEDURE sp_proovedor_registrar(
-    IN _idempresa 				INT,
+    IN _idempresa 				BIGINT,
     IN _proveedor		        VARCHAR(50),
     IN _contacto_principal		VARCHAR(50),
     IN _telefono_contacto		CHAR(9),
@@ -21,7 +21,7 @@ END$$
 DELIMITER $$
 CREATE PROCEDURE sp_actualizar_proovedor(
 	IN _idproveedor 			INT,
-    IN _idempresa 				INT,
+    IN _idempresa 				BIGINT,
     IN _proveedor				VARCHAR(50),
     IN _contacto_principal		VARCHAR(50),
     IN _telefono_contacto		CHAR(9),
@@ -44,8 +44,8 @@ END$$
 -- ELIMINAR PROOVEDOR
 DELIMITER $$
 CREATE PROCEDURE sp_estado_proovedor(
-IN  _estado BIT,
-IN  _idproveedor INT 
+IN  _estado         BIT,
+IN  _idproveedor    INT 
 )
 BEGIN
 	UPDATE proveedores SET
@@ -53,6 +53,7 @@ BEGIN
       WHERE idproveedor =_idproveedor;
 END$$
 
+/* MODIFICACION DE SOTO */
 SELECT 
                     empresas.idempresaruc,empresas.razonsocial,
 		            proveedores.idproveedor, proveedores.proveedor,proveedores.contacto_principal,proveedores.telefono_contacto,

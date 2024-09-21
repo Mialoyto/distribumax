@@ -20,6 +20,7 @@ CREATE PROCEDURE sp_usuario_login(IN _nombre_usuario	VARCHAR(100))
 BEGIN
 SELECT
 	USU.idusuario,
+    USU.idpersona AS dni,
     PER.appaterno,
     PER.apmaterno,
     PER.nombres,

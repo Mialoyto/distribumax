@@ -1,3 +1,4 @@
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribumax;
 --  REGISTRAR PEDIDOS
 DELIMITER $$
@@ -10,6 +11,7 @@ BEGIN
     (idusuario, idcliente) 
     VALUES 
     ( _idusuario, _idcliente);
+    SELECT LAST_INSERT_ID() AS idpedido;
 END$$
 
 -- ACTUALIZAR PEDIDOS SOLO LOS DATOS PERO NO EL ESTADO
@@ -17,7 +19,7 @@ DELIMITER $$
 CREATE PROCEDURE sp_actualizar_pedido(
     IN _idpedido        INT,
     IN _idusuario       INT,
-    IN _idcliente       INT,
+    IN _idcliente       INT
 )
 BEGIN
     UPDATE pedidos
@@ -40,3 +42,5 @@ BEGIN
         estado = _estado
     WHERE idpedido = _idpedido;
 END$$
+
+-- buscar cliente 

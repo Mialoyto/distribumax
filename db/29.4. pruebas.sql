@@ -16,6 +16,7 @@ select * from marcas;
    
 select * from usuarios;
 select * from personas;
+SELECT * FROM empresas;
 select * from clientes;
 select * from pedidos;
 select * from metodos_pago;
@@ -26,7 +27,7 @@ select * from roles;
 delete from usuarios where idpersona = '26558000';
 SELECT * FROM productos;
 SELECT * FROM  tipo_documento;
-SELECT * FROM empresas;
+
 SELECT * FROM proveedores;
 SHOW COLUMNS FROM tipos_promociones;
 

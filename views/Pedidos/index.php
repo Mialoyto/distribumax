@@ -11,7 +11,7 @@
                 </h1>
             </div>
             <div class="card-body">
-                <span class="badge text-bg-info text-uppercase fs-6" id="<?= $_SESSION['login']['idusuario']  ?>">
+                <span class="badge text-bg-info text-uppercase fs-6 d-block d-lg-inline" id="<?= $_SESSION['login']['idusuario']  ?>">
                     <?= $_SESSION['login']['rol']  ?> :
                     <?= $_SESSION['login']['nombres']  ?>
                     <?= $_SESSION['login']['appaterno']  ?>
@@ -44,35 +44,42 @@
                         </div>
                     </div>
                     <!-- fila 2 -->
-                    <div class="row g-3">
+                    <div class="row g-3 mb-3">
 
                         <div class="col-md-4 mt-3">
-                            <div class="form-floating mb-3">
+                            <div class="form-floating">
                                 <input class="form-control" id="nombres" name="nombres" type="text" placeholder="nombres" required />
                                 <label for="nombres">Nombres</label>
                             </div>
                         </div>
                         <div class="col-md-4 mt-3">
-                            <div class="form-floating mb-3">
+                            <div class="form-floating">
                                 <input class="form-control" id="appaterno" name="appaterno" type="text" placeholder="appaterno" required />
                                 <label for="appaterno">Apellido paterno</label>
                             </div>
                         </div>
 
                         <div class="col-md-4 mt-3">
-                            <div class="form-floating mb-3">
+                            <div class="form-floating">
                                 <input class="form-control" id="apmaterno" name="apmaterno" type="text" placeholder="Apellido apmaterno" required />
                                 <label for="apmaterno">Apellido materno</label>
                             </div>
                         </div>
-                        <div class="text-end">
-                            <!-- Botón para de prueba para retornar id de pedido -->
-                            <div class="d-flex justify-content-end mb-3">
-                                <button type="button" class="btn btn-outline-success" id="id-pedido">
-                                    <i class="bi bi-plus-circle"> Registrar pedido</i>
-                                </button>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6 mt-3">
+                            <div class="form-floating">
+                                <input class="form-control" id="razon-social" name="razon-social" type="text" placeholder="Razon social" required />
+                                <label for="razon-social">Razón social</label>
                             </div>
                         </div>
+                        <div class="col-md-6 mt-3">
+                            <div class="form-floating">
+                                <input class="form-control" id="direccion-cliente" name="direccion-cliente" type="text" placeholder="Dirección cliente" required />
+                                <label for="direccion-cliente">Dirección cliente</label>
+                            </div>
+                        </div>
+
                     </div>
 
                     <hr class="my-3">
@@ -80,8 +87,6 @@
                     <!-- Sección de Detalle de Pedido -->
                     <div>
                         <h5 class="mb-3">Detalle del Pedido</h5>
-
-
                     </div>
 
                     <!-- Tabla de productos del pedido -->

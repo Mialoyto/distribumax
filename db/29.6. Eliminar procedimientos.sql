@@ -1,3 +1,4 @@
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribuMax;
 -- 02 personas
 DROP PROCEDURE IF EXISTS spu_registrar_personas;
@@ -39,6 +40,8 @@ DROP PROCEDURE IF EXISTS sp_actualizar_subcategoria;
 -- 09 Marcas
 DROP PROCEDURE IF EXISTS sp_registrar_marca;
 DROP PROCEDURE IF EXISTS sp_actualizar_marca;
+DROP PROCEDURE IF EXISTS sp_eliminar_marca;
+DROP VIEW IF EXISTS vw_listar_marcas;
 
 -- 10 Productos
 DROP PROCEDURE IF EXISTS sp_registrar_producto;

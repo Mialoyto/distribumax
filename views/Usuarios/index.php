@@ -1,7 +1,7 @@
 <?php require_once '../../header.php'; ?>
 <main>
     <div class="container-fluid mt-5 d-flex justify-content-center">
-        <form action="" autocomplete="off" id="registrar-user">
+        <form action="" autocomplete="off" id="form-user">
             <div class="card shadow-lg border-0 rounded-lg d-flex justify-content-around ">
                 <div class="card-header text-center">
                     <h2 class="card-title ">Registro de usuarios</h2>
@@ -78,7 +78,7 @@
     </div> <!-- fin fluid -->
 </main>
 <?php require_once '../../footer.php'; ?>
-<script src="<?= $host ?>/js/usuarios.js" defer></script>
+<script src="http://localhost/distribumax/js/usuarios/usuario.js"></script>
 </body>
 
 </html>

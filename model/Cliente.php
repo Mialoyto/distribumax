@@ -26,23 +26,5 @@ class Cliente extends Conexion
     }
   }
 
-  // Registrar clientes
-//   public function addCliente($params = []): string
-//   {
-//     try{
-//       $id = '';
-//       $tsql = "CALL sp_cliente_registrar (?,?,?)";
-//       $query = $this->pdo->prepare($tsql);
-//       $query->execute(
-//         array(
-//           $params["idpersona"],
-//           $params["idempresa"],
-//           $params["tipo_cliente"]
-//         )
-//       );
-//     } catch(Exception $e){
-//       error_log("Error al registrar al cliente" . $e->getMessage());
-//     }
-//     return $id;
-//   }
+
 }

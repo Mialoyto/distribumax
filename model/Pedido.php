@@ -11,9 +11,9 @@ class Pedidos extends Conexion
   }
 
   // funcion para agregar pedido
-  public function agregarPedido($params = []): int
+  public function agregarPedido($params = []): string
   {
-    $id = -1;
+    $id = '';
     try {
 
       $sql = "CALL sp_pedido_registrar( ?, ?)";

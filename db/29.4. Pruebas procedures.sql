@@ -130,3 +130,13 @@ call sp_buscardistrito ('chincha');
 
 CALL sp_pedido_registrar (1, 2);
 select * from pedidos;
+
+SELECT 
+    CONSTRAINT_NAME, 
+    CONSTRAINT_TYPE, 
+    TABLE_NAME 
+FROM 
+    INFORMATION_SCHEMA.TABLE_CONSTRAINTS 
+WHERE 
+    TABLE_NAME = 'detalle_pedidos';
+

@@ -22,7 +22,9 @@ select * from clientes;
 select * from pedidos;
 select * from metodos_pago;
 select * from promociones;
+SELECT * from detalle_promociones;
 select * from tipos_promociones;
+SELECT * FROM detalle_pedidos;
 select * from personas where idpersonanrodoc = '26558009';
 select * from roles;
 delete from usuarios where idpersona = '26558000';
@@ -65,3 +67,7 @@ BEGIN
 END //
 
 DELIMITER ;
+
+
+-- AGREGAR DETALLE PEDIDO
+call sp_detalle_pedido ('PED-000000001',1,2,'und',8.50,0.00);

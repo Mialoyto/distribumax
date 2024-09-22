@@ -149,58 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log(productos);
   })
 
-  /* funcion para agregar detalle*/
-  async function addDetalle() {
-    const tbody = $('#detalle-productos tbody');
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <th class="col-md-3">
-          <div class="mt-1">
-              <select class="form-control form-control-sm" name="idproducto" id="idproducto" name="idproducto">
-                  <option value="">Seleccione un producto</option>
-                  <option value="1">Prodcuto 1</option>
-                  <!-- Opciones dinámicas -->
-              </select>
-          </div>
-      </th>
-      <th class="col-md-1">
-          <div class="mt-1">
-              <input class="form-control form-control-sm cantidad"name="cantidad" type="text" aria-label=".form-control-sm example">
-          </div>
-      </th>
-      <th class="col-md-1">
-          <div class="mt-1">
-              <input class="form-control form-control-sm und-medida" name="und-medida" type="text" aria-label=".form-control-sm example">
-          </div>
-      </th>
-      <th class="col-md-1">
-          <div class="mt-1">
-              <input class="form-control form-control-sm precio-unitario" name="precio-unitario" type="text" aria-label=".form-control-sm example">
-          </div>
-      </th>
-      <th class="col-md-1">
-          <div class="mt-1">
-              <input class="form-control form-control-sm descuento" name="descuento" type="text" aria-label=".form-control-sm example">
-          </div>
-      </th>
-      <th class="col-md-1">
-          <div class="mt-1">
-              <input class="form-control form-control-sm subtotal" name="subtotal" type="text" aria-label=".form-control-sm example">
-          </div>
-      </th>
-      <th class="col-md-1">
-          <div class="mt-1  d-flex justify-content-evenly">
-              <button type="button" class="btn btn-warning btn-sm w-100">
-                  <i class="bi bi-pencil-square"></i>
-              </button>
-              <button type="button" class="btn btn-danger btn-sm w-100">
-                  <i class="bi bi-x-square"></i>
-              </button>
-          </div>
-      </th>
-  `;
-    tbody.appendChild(tr);
-  }
+
 
 
   // buscar producto
@@ -224,50 +173,84 @@ document.addEventListener('DOMContentLoaded', async () => {
     $("#datalistProducto").innerHTML = '';
     if (response.length > 0) {
       $("#datalistProducto").style.display = 'block';
-
       // Iterar sobre los resultados y mostrarlos
       response.forEach(item => {
+        if (item.descuento === null) {
+          const descuento = 0 
+          item.descuento = parseFloat(descuento);
+        }
         const li = document.createElement('li');
         li.classList.add('list-group-item'); // Clase de Bootstrap para los ítems
-        li.textContent = `${item.nombreproducto} (${item.codigo})`;
+        li.innerHTML = `${item.nombreproducto}-${item.codigo}`;
         li.addEventListener('click', () => {
-          addProductToTable(item.idproducto, item.codigo, item.nombreproducto, item.preciounitario);
+          addProductToTable(item.idproducto, item.codigo, item.nombreproducto, item.preciounitario, item.descuento);
           $("#datalistProducto").style.display = 'none'; // Ocultar la lista cuando se selecciona un producto
           document.getElementById('addProducto').value = ''; // Limpiar el campo de búsqueda
         });
         $("#datalistProducto").appendChild(li);
       });
     } else {
-      resultsList.style.display = 'none';
+      $("#datalistProducto").style.display = 'none';
     }
     console.log(response);
   }
 
   $("#addProducto").addEventListener('input', async () => {
-    const response = await mostraResultados()
-    console.log(response);
+    await mostraResultados()
+    if ($("#addProducto").value === '') {
+      $("#datalistProducto").style.display = 'none';
+    }
   });
 
   // Función para añadir un producto a la tabla seleccionada
-  function addProductToTable(id,codigo, nombre, precio) {
-    const row = `
-    <tr>
-      <td>${id}</td>
-      <td>${codigo}</td>
-      <td>${nombre}</td>
-      <td>${precio}</td>
-    </tr>
+  function addProductToTable(id, codigo, nombre, precio, descuento) {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <th scope="row" colspan="1">${codigo}</th>
+      <td colspan="1" id-data="${id}">${nombre}</td>
+      <td class="col-md-1">
+          <input class="form-control form-control-sm cantidad"  type="number" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
+      </td>
+      <td class="col-md-1">
+        <select class="form-select form-select-sm und-medidad" id="und-medidad" name="und-medidad"  required>
+        <option value="Und">Und</option>
+        <option value="Caja">Caja</option>
+        <option value="Bot">Bot.</option>
+        </select>
+      </td>
+      <td class="precio">${precio}</td>
+      <td class="descuento">${descuento}</td>
+     <td class="subtotal">0.00</td>
+      <td class="col-1">
+        <div class="mt-1  d-flex justify-content-evenly">
+          <button type="button" class="btn btn-warning btn-sm w-100">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button type="button" class="btn btn-danger btn-sm w-100">
+            <i class="bi bi-x-square"></i>
+          </button>
+        </div>
+      </td>
   `;
 
+
     // Añadir la fila a la tabla
-    document.getElementById('detalle-pedido').innerHTML += row;
+    document.getElementById('detalle-pedido').appendChild(row);
+
+    const cantidadInput = row.querySelector('.cantidad');
+    const subtotalCell = row.querySelector('.subtotal');
+
+    cantidadInput.addEventListener('input', () =>{
+      const cantidad = cantidadInput.value || 0;
+      const subtotal = (cantidad * (parseFloat(precio) - parseFloat(descuento))).toFixed(2);
+      subtotalCell.textContent = subtotal;
+      
+  
+    });
   }
 
 
-  $("#agregar-producto").addEventListener("click", async () => {
-    await addDetalle();
-
-  });
+ 
 
 })
 // export { getIdPedido }

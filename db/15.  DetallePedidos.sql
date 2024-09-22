@@ -2,27 +2,27 @@ USE distribumax;
 
 -- REGISTRAR DETALLE PEDIDOS
 DELIMITER $$
-
 CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido            CHAR(15),
     IN _idproducto          INT,
     IN _cantidad_producto   INT,
-    IN _unidad_medida       INT,
+    IN _unidad_medida       CHAR(10),
     IN _precio_unitario     DECIMAL(10, 2),
-    IN _precio_descuento    DECIMAL(10, 2),
-    IN _subtotal            DECIMAL(10, 2)
+    IN _precio_descuento    DECIMAL(10, 2)
 )
 BEGIN
+    DECLARE _subtotal DECIMAL(10, 2);
+    SET _subtotal = (_cantidad_producto * _precio_unitario) - _precio_descuento;
     INSERT INTO detalle_pedidos 
     (idpedido, idproducto, cantidad_producto, unidad_medida, precio_unitario, precio_descuento, subtotal) 
     VALUES
     (_idpedido, _idproducto, _cantidad_producto, _unidad_medida, _precio_unitario, _precio_descuento, _subtotal);
 END$$
 
+
 -- ACTUALIZAR DETALLE PEDIDOS
 /** Se puede actualizar algun campo del proceso de actualizar PROBAR SI SE PUEDE ACTUALIZAR EL PRECIO UNITARIO**/
 DELIMITER $$
-
 CREATE PROCEDURE sp_actualizar_detalle_pedido(
     IN _idpedido          CHAR(15),
     IN _idproducto        INT,
@@ -61,13 +61,15 @@ CREATE PROCEDURE sp_buscar_productos(
 )
 BEGIN
     SELECT 
-        idproducto,
-        codigo,
-        nombreproducto,
-        preciounitario
-    FROM  productos 
+        PRO.idproducto,
+        PRO.codigo,
+        PRO.nombreproducto,
+        PRO.preciounitario,
+        DET.descuento
+    FROM  productos PRO
+        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
     WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%')) 
-    AND estado = '1';
+    AND PRO.estado = '1';
 END$$
 
 CALL sp_buscar_productos('AL00');

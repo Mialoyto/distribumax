@@ -26,12 +26,5 @@ if (isset($_GET['operation'])) {
     case 'getAll':
       echo json_encode($producto->getAll());
       break;
-    case 'searchProducto':
-      $datos = [
-        '_item' => $_GET['_item']
-      ];
-      $productos = $producto->searchProducto($datos);
-      echo json_encode($productos);
-      break;
   }
 }

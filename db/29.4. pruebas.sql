@@ -13,7 +13,7 @@ select * from departamentos;
 select * from provincias where provincia = 'Chincha';
 select * from distritos;
 select * from marcas;
-   
+select * from categorias;
 select * from usuarios;
 select * from personas;
 SELECT * FROM empresas;

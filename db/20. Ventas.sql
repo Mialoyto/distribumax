@@ -1,6 +1,7 @@
 USE distribumax;
 
 -- REGISTRAR VENTAS
+DELIMITER $$
 CREATE PROCEDURE sp_registrar_venta(
     IN _idpedido            INT,
     IN _idmetodopago        INT,
@@ -15,6 +16,7 @@ BEGIN
     (_idpedido, _idmetodopago, _idtipocomprobante, _subtotal, _descuento, _igv,_total_venta) 
     VALUES
     (idpedido, idmetodopago, idtipocomprobante, subtotal, descuento, igv,total_venta);
+    
 END$$
 
 

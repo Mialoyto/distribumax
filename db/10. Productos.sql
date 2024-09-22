@@ -1,4 +1,24 @@
 USE distribumax;
+DELIMITER $$
+CREATE PROCEDURE sp_buscarproducto(
+IN _nombreproducto VARCHAR(250)
+
+)
+BEGIN
+IF TRIM(_nombreproducto) <> '' THEN
+SELECT
+	 p.idproducto,
+     p.nombreproducto
+FROM
+    productos p
+
+WHERE
+    p.nombreproducto LIKE  CONCAT('%', TRIM(_nombreproducto),'%') ;
+END IF;
+END$$
+
+
+CALL  sp_buscarproducto('SHamp');
 
 -- REGISTRAR PRODUCTOS
 DELIMITER $$

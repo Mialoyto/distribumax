@@ -70,4 +70,4 @@ BEGIN
     AND estado = '1';
 END$$
 
-CALL sp_buscar_productos('AL');
+CALL sp_buscar_productos('AL00');

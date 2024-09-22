@@ -345,7 +345,7 @@ CREATE TABLE precios_historicos(
 
 DROP TABLE IF EXISTS pedidos;
 CREATE TABLE pedidos (
-    idpedido        INT             NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    idpedido        CHAR(15)        NOT NULL PRIMARY KEY,
     idusuario       INT             NOT NULL,
     idcliente       INT             NOT NULL,
     fecha_pedido    DATETIME        NOT NULL DEFAULT NOW(),
@@ -361,7 +361,7 @@ CREATE TABLE pedidos (
 DROP TABLES IF EXISTS detalle_pedidos;
 CREATE TABLE detalle_pedidos (
     id_detalle_pedido    INT             NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idpedido             INT             NOT NULL,
+    idpedido             CHAR(15)        NOT NULL,
     idproducto           INT             NOT NULL,
     cantidad_producto    INT             NOT NULL,
     unidad_medida		 VARCHAR(100)	 NOT NULL,  -- unidad, caja,
@@ -438,7 +438,7 @@ CREATE TABLE despacho (
 DROP TABLE IF EXISTS ventas;
 CREATE TABLE ventas (
     idventa 				INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idpedido 				INT NOT NULL,
+    idpedido 				CHAR(15) NOT NULL,
     idmetodopago 			INT NOT NULL,
     idtipocomprobante		INT NOT NULL,
     fecha_venta 			DATETIME NOT NULL DEFAULT NOW(),

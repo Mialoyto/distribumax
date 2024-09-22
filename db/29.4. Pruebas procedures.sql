@@ -55,7 +55,7 @@ CALL sp_registrar_usuario ( '26558000', 1, 'admin', 'admin' );
 CALL sp_actualizar_usuario (
     'admin',
     '$2y$10$qpFRvOWayRS8rcvHQvuNeu2V3YoMEfCBLaBp9Dccs35nyqd1hyZkK',
-    2
+    1
 );
 
 CALL sp_usuario_login ('admin');
@@ -115,7 +115,7 @@ CALL sp_proovedor_registrar (
 
  /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL sp_empresa_registrar(
-	20123456782,
+	20123456783,
 	954,
     'JRCA',
     'Av. Bancarios ',

@@ -4,7 +4,7 @@ USE distribumax;
 DELIMITER $$
 
 CREATE PROCEDURE sp_detalle_pedido(
-    IN _idpedido            INT,
+    IN _idpedido            CHAR(15),
     IN _idproducto          INT,
     IN _cantidad_producto   INT,
     IN _unidad_medida       INT,
@@ -24,7 +24,7 @@ END$$
 DELIMITER $$
 
 CREATE PROCEDURE sp_actualizar_detalle_pedido(
-    IN _idpedido          INT,
+    IN _idpedido          CHAR(15),
     IN _idproducto        INT,
     IN _cantidad_producto INT,
     IN _iddetallepedido   INT

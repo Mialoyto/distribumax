@@ -48,7 +48,7 @@ DROP PROCEDURE IF EXISTS sp_registrar_producto;
 DROP PROCEDURE IF EXISTS sp_actualziar_producto;
 DROP PROCEDURE IF EXISTS sp_estado_producto;
 
--- 11 Pedidos
+-- 11 AA
 DROP PROCEDURE IF EXISTS sp_pedido_registrar;
 DROP PROCEDURE IF EXISTS sp_actualizar_pedido;
 DROP PROCEDURE IF EXISTS sp_estado_pedido;

@@ -5,12 +5,11 @@ DELIMITER $$
 CREATE PROCEDURE sp_despacho_registrar(
     IN _idvehiculo 		INT,
     IN _idusuario 		INT,
-    IN _fecha_despacho	DATE,
-	IN _estado          BIT	-- 1 : pendiente	0: despachado
+    IN _fecha_despacho	DATE -- 1 : pendiente	0: despachado
 )
 BEGIN
-    INSERT INTO despacho (idvehiculo, idusuario,fecha_despacho, estado) 
-    VALUES (_idvehiculo, _idusuario, _fecha_despacho, _estado);
+    INSERT INTO despacho (idvehiculo, idusuario,fecha_despacho) 
+    VALUES (_idvehiculo, _idusuario, _fecha_despacho);
 END$$
 
 -- ACTUALIZAR DESPACHO
@@ -19,7 +18,7 @@ CREATE PROCEDURE sp_actualizar_despacho(
 	IN _iddespacho		INT,
 	IN _idvehiculo 		INT,
     IN _fecha_despacho	DATE,
-    IN _estado          BIT	-- 1 : pendiente	0: despachado
+    IN _estado          CHAR(1)	-- 1 : pendiente	0: despachado
 )
 BEGIN
 	UPDATE despacho

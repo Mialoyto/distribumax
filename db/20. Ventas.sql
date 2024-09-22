@@ -27,9 +27,8 @@ CREATE PROCEDURE sp_actualizar_venta(
     IN _idtipocomprobante INT,
     IN _subtotal DATE,
     IN _descuento DECIMAL(8, 2),
-    IN _igv CHAR(1),
-    IN _total_venta
-     INT
+    IN _igv DECIMAL(10, 2),
+    IN _total_venta INT
 )
 BEGIN
     UPDATE ventas

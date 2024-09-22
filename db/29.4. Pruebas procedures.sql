@@ -96,10 +96,10 @@ CALL sp_actualizar_empresa (
 
 /* PROCEDIMIENTOS DE CLIENTES ✔️*/ 
 -- REGISTRAR CLIENTES
-CALL sp_cliente_registrar (26558000, NULL, 'Persona');
+CALL sp_cliente_registrar (26558000, NULL);
 CALL sp_cliente_registrar (NULL, 20123456781, 'Empresa');
 --  No debe de registrar a un cliente con dni y ruc
-CALL sp_cliente_registrar (26558000, 20123456781,  'Persona'); 
+CALL sp_cliente_registrar (26558000, 20123456781,'Empresa'); 
 -- ACTUALIZAR CLIENTES
 CALL sp_actualizar_cliente (NULL,20123456781,'Empresa',2);
 
@@ -126,6 +126,17 @@ CALL sp_actualizar_empresa (12345678901,954,'Dijisa','Panamericana #234','dijisa
 
 
 /****************************************************************************************************************/
-call sp_buscardistrito ('chincha');
+insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558000, 20123456781,'Empresa');
+insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(2,1,'2024/09/22');
+insert into detalle_pedidos(idpedido,idproducto,cantidad_producto,unidad_medida,precio_unitario,precio_descuento,subtotal)VALUES
+(2,1,10,'unidad',2,1,10),
+(2,2,20,'unidad',10,2,90);
 
+select * from detalle_pedidos;
+select * from pedidos;
+select * from clientes;
+select * from productos;
+call sp_buscardistrito ('chincha');
 CALL sp_pedido_registrar (2, 21);
+
+

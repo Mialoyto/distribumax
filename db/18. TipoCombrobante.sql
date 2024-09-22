@@ -3,12 +3,11 @@ USE distribumax;
 -- REGISTRAR TIPO DE COMPROBANTES
 DELIMITER $$
 CREATE PROCEDURE sp_tipo_comprobantes_registrar(
-    IN _comprobantepago		VARCHAR(150),
-	IN _estado					BIT
+    IN _comprobantepago		VARCHAR(150)
 )
 BEGIN
-    INSERT INTO tipo_comprobante_pago (comprobantepago, estado) 
-    VALUES (_comprobantepago, _estado);
+    INSERT INTO tipo_comprobante_pago (comprobantepago) 
+    VALUES (_comprobantepago);
 END$$
 
 -- ACTUALIZAR TIPO DE COMPROBANTES
@@ -16,7 +15,7 @@ DELIMITER $$
 CREATE PROCEDURE sp_actualizar_tipo_comprobantes(
 	IN _idtipocomprobante			INT,
 	IN _comprobantepago		VARCHAR(150),
-	IN _estado					BIT
+	IN _estado					CHAR(1)
 )
 BEGIN
 	UPDATE tipo_comprobante_pago

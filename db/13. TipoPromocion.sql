@@ -5,7 +5,7 @@ DELIMITER $$
 CREATE PROCEDURE sp_tipo_promocion_registrar(
     IN _tipopromocion       VARCHAR(150),
     IN _descripcion         VARCHAR(250),
-    IN _estado              BIT
+    IN _estado              CHAR(1)
 )
 BEGIN
     INSERT INTO tipos_promociones (tipopromocion, descripcion, estado) 
@@ -18,7 +18,7 @@ CREATE PROCEDURE sp_actualizar_tipo_promocion(
 	IN _idtipopromocion INT,
     IN _tipopromocion   VARCHAR(150),
     IN _descripcion     VARCHAR(250),
- 	IN _estado			BIT
+ 	IN _estado			CHAR(1)
 )
 BEGIN
 	UPDATE tipos_promociones
@@ -35,7 +35,7 @@ END$$
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_estado_tipo_promocion;
 CREATE PROCEDURE sp_estado_tipo_promocion(
-IN  _estado BIT,
+IN  _estado CHAR(1),
 IN  _idtipopromocion INT 
 )
 BEGIN

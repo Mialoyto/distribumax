@@ -69,5 +69,5 @@ BEGIN
     WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%')) 
     AND estado = '1';
 END$$
-
+select * from pedidos;
 CALL sp_buscar_productos('AL00');

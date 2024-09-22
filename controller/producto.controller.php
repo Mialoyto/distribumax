@@ -18,7 +18,19 @@ if (isset($_POST['operation'])) {
       ];
       $estado = $producto->addProducto($datos);
         echo json_encode(["estado" => $estado]);
-      break;
+    break;
+    case 'searchProducto':
+      $datosEnviar = [
+        "nombreproducto" => $_POST["nombreproducto"]
+               
+      ];
+      $response = $producto->searchProducto($datosEnviar);
+      echo json_encode($response);
+    break;
+    
+    case 'getById':
+      echo json_decode($producto->getBytId(['idproducto'=>$_POST['idproducto']]));
+    break;
   }
 }
 if (isset($_GET['operation'])) {
@@ -26,5 +38,6 @@ if (isset($_GET['operation'])) {
     case 'getAll':
       echo json_encode($producto->getAll());
       break;
+   
   }
 }

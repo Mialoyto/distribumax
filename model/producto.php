@@ -48,5 +48,31 @@ class Productos extends Conexion{
       die($e->getMessage());
     }
   
-}
+  }
+
+  public function searchProducto($params=[])  {
+     try{
+        $sql="CALL sp_buscarproducto (?)";
+        $query=$this->pdo->prepare($sql);
+        $query->execute(array(
+          $params['nombreproducto']
+        
+        ));
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+      }catch(Exception $e){
+      die($e->getMessage());
+     }
+  }
+
+  public function getBytId($params=[]){
+    try{
+      $sql="SELECT * FROM productos WHERE idproducto=?";
+      $query=$this->pdo->prepare($sql);
+      $query->execute(array($params['idproducto']));
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+    }catch(Exception $e){
+      die($e->getMessage());
+    }
+  }
 }

@@ -70,6 +70,7 @@ DROP PROCEDURE IF EXISTS sp_estado_promocion;
 DROP PROCEDURE IF EXISTS sp_detalle_pedido;
 DROP PROCEDURE IF EXISTS sp_actualizar_detalle_pedido;
 DROP PROCEDURE IF EXISTS sp_estado_detalle_pedido;
+DROP PROCEDURE IF EXISTS sp_buscar_productos;
 
 
 -- 16 vehiculos

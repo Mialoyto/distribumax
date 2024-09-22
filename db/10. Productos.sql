@@ -55,3 +55,6 @@ END$$
 CREATE VIEW vw_listar_productos AS
 SELECT * FROM productos ;
 
+
+
+

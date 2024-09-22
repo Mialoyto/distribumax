@@ -1,16 +1,30 @@
 <?php
 
 require_once '../model/Cliente.php';
-
 $cliente = new Cliente();
+header('Content-Type: application/json');
+$verbos = $_SERVER['REQUEST_METHOD'];
 
-if(isset($_GET['operation'])){
-    switch($_GET['operation']){
-      case 'getAll':
-        echo json_encode($cliente->getAll());
-        break;
+switch ($verbos) {
+  case 'GET':
+    if (isset($_GET['operation'])) {
+      switch ($_GET['operation']) {
+        case 'searchCliente':
+          if (isset($_GET['nro_documento'])) {
+            echo json_encode($cliente->searchCliente(['_nro_documento' => $_GET['nro_documento']]));
+          } else {
+            echo json_encode(["error" => "Falta el número de documento."]);
+          }
+          break;
+        case 'getAll':
+
+          break;
+      }
     }
-  }
+    break;
+}
+
+
 
 // if(isset($_POST['operation'])){
 //   switch ($_POST['operation']){

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /* rama backup */
   const tipodoc = $("#tipo_documento");
   const nrodoc = $("#numero_documento");
-  const btnBuscarDni = $("#buscar-dni");
+  // const btnBuscarDni = $("#buscar-dni");
 
   const distrito = $("#buscar-distrito");
   const dataList = $("#datalistDistrito");
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // FUNCIONES
   async function registradoPersona() {
-    const params = new URLSearchParams();
+    const params = new FormData();
     params.append('operation', 'addPersona')
     params.append('idtipodocumento', $('#tipo_documento').value)
     params.append('idpersonanrodoc', $('#numero_documento').value)

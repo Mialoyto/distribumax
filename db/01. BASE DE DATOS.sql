@@ -291,7 +291,7 @@ CREATE TABLE productos (
     preciounitario  DECIMAL(8, 2)	NOT NULL,
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
-    estado          BIT NOT NULL DEFAULT 1,
+    estado          CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idmarca_prod FOREIGN KEY(idmarca) REFERENCES marcas(idmarca),
     CONSTRAINT fk_sbcategoria_prod FOREIGN KEY(idsubcategoria) REFERENCES subcategorias(idsubcategoria),
     CONSTRAINT uk_nombreproducto  UNIQUE (nombreproducto),

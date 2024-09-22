@@ -2,6 +2,7 @@ USE distribumax;
 
 -- REGISTRAR DETALLE PEDIDOS
 DELIMITER $$
+
 CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido            INT,
     IN _idproducto          INT,
@@ -51,3 +52,22 @@ BEGIN
         estado = _estado
         WHERE iddetallepedido = _iddetallepedido;
 END$$
+
+-- BUSCAR PRODUCTOS PARA LLENAR LA BASE DE DATOS
+-- EL ID DEL PEDIDO SE CAPTURA CUANDO SE REGISTRA EL PEDIDO
+DELIMITER $$
+CREATE PROCEDURE sp_buscar_productos(
+   IN _item VARCHAR(250)
+)
+BEGIN
+    SELECT 
+        idproducto,
+        codigo,
+        nombreproducto,
+        preciounitario
+    FROM  productos 
+    WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%')) 
+    AND estado = '1';
+END$$
+
+CALL sp_buscar_productos('AL');

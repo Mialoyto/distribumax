@@ -11,35 +11,33 @@
                 </h1>
             </div>
             <div class="card-body">
-                <span class="badge text-bg-info text-uppercase fs-6 d-block d-lg-inline" id="<?= $_SESSION['login']['idusuario']  ?>">
-                    <?= $_SESSION['login']['rol']  ?> :
-                    <?= $_SESSION['login']['nombres']  ?>
-                    <?= $_SESSION['login']['appaterno']  ?>
-                    <?= $_SESSION['login']['apmaterno']  ?>
-                </span>
-
-                <!-- Sección de Registro de Pedido -->
-                <h5 class="mb-3 mt-3 card-title">Datos del cliente</h5>
                 <!-- fomrluario para enviar pedidos -->
                 <form method="POST" action="#" id="registrar-pedido" autocomplete="off">
+                    <!-- Sección de Registro de Pedido -->
+                    <span class="badge text-bg-light text-uppercase text-end " id="idvendedor" data-id="<?= $_SESSION['login']['idusuario'] ?>">
+                        <?= $_SESSION['login']['rol']  ?> :
+                        <?= $_SESSION['login']['nombres']  ?>
+                        <?= $_SESSION['login']['appaterno']  ?>
+                        <?= $_SESSION['login']['apmaterno']  ?>
+                    </span>
+                    <h5 class="mb-3 mt-3 card-title">Datos del cliente</h5>
                     <!-- fila 01 -->
                     <div class="row g-3 mb-3">
 
                         <div class="col-md-6 mb-2">
                             <!-- selecc de tipo de documento -->
                             <div class="form-floating">
-                                <select class="form-control" id="id-tip-doc" name="id-tip-doc" disabled="true" required>
-                                    <option value="">Tipo de documento</option>
+                                <select class="form-control" id="cliente" name="cliente" disabled="true" required>
                                     <!-- Opciones dinámicas -->
                                 </select>
-                                <label for="idcliente" class="form-label"><i class="fa-regular fa-id-card fa-lg"></i> Tipo de documento </label>
+                                <label for="idcliente" class="form-label"><i class="fa-regular fa-id-card fa-lg"></i> Tipo de cliente </label>
                             </div>
                             <!-- fin de selec de tipo de documento -->
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="nro-doc" name="nro-doc" placeholder="Número de documento" required>
-                                <label for="nro-doc" class="form-label"> Número de documento</label>
+                                <label for="nro-doc" class="form-label"> <i class="bi bi-search"></i> Número de documento</label>
                             </div>
                         </div>
                     </div>
@@ -81,97 +79,115 @@
                         </div>
 
                     </div>
-
-                    <hr class="my-3">
-
-                    <!-- Sección de Detalle de Pedido -->
                     <div>
-                        <h5 class="mb-3">Detalle del Pedido</h5>
-                    </div>
-
-                    <!-- Tabla de productos del pedido -->
-                    <div class="table-responsive bs-warning">
-                        <table class="table table-striped table-hover table-secondar" id="detalle-productos">
-                            <thead class="bg-primary">
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Cantidad</th>
-                                    <th>Unidad Medida</th>
-                                    <th>Precio Unitario</th>
-                                    <th>Descuento</th>
-                                    <th>Subtotal</th>
-                                    <th class="text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- primer detalle -->
-                                <tr>
-                                    <th class="col-md-3">
-                                        <div class="mt-1">
-                                            <select class="form-control form-control-sm" name="idproducto" id="idproducto" name="idproducto">
-                                                <option value="">Seleccione un producto</option>
-                                                <option value="1">Prodcuto 1</option>
-                                                <!-- Opciones dinámicas -->
-                                            </select>
-                                        </div>
-                                    </th>
-                                    <th class="col-md-1">
-                                        <div class="mt-1">
-                                            <input class="form-control form-control-sm cantidad" name="cantidad" type="text" aria-label=".form-control-sm example">
-                                        </div>
-                                    </th>
-                                    <th class="col-md-1">
-                                        <div class="mt-1">
-                                            <input class="form-control form-control-sm und-medida" name="und-medida" type="text" aria-label=".form-control-sm example">
-                                        </div>
-                                    </th>
-                                    <th class="col-md-1">
-                                        <div class="mt-1">
-                                            <input class="form-control form-control-sm precio-unitario" name="precio-unitario" type="text" aria-label=".form-control-sm example">
-                                        </div>
-                                    </th>
-                                    <th class="col-md-1">
-                                        <div class="mt-1">
-                                            <input class="form-control form-control-sm descuento" name="descuento" type="text" aria-label=".form-control-sm example">
-                                        </div>
-                                    </th>
-                                    <th class="col-md-1">
-                                        <div class="mt-1">
-                                            <input class="form-control form-control-sm subtotal" name="subtotal" type="text" aria-label=".form-control-sm example">
-                                        </div>
-                                    </th>
-                                    <th class="col-md-1">
-                                        <div class="mt-1  d-flex justify-content-evenly">
-                                            <button type="button" class="btn btn-warning btn-sm w-100">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm w-100">
-                                                <i class="bi bi-x-square"></i>
-                                            </button>
-                                        </div>
-                                    </th>
-                                </tr>
-                                <!-- fin del detalle -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- fin tabla productos -->
-                    <!-- Botones -->
-
-                    <div class="text-end">
                         <!-- Botón para agregar producto a la tabla -->
                         <div class="d-flex justify-content-end mb-3">
-                            <button type="button" class="btn btn-outline-success" id="agregar-producto">
-                                <i class="bi bi-plus-circle"></i>
+                            <button type="button" class="btn btn-outline-success" id="addpedido">
+                                <i class="bi bi-plus-circle"></i> pedido
                             </button>
                         </div>
-                    </div>
-                    <div class="d-flex justify-content-end mt-3">
-                        <button type="submit" class="btn btn-primary me-2 transition">Registrar Pedido</button>
-                        <button type="reset" class="btn btn-outline-danger">Cancelar</button>
-                    </div>
-                </form>
 
+                        <hr class="my-3">
+
+                        <!-- Sección de Detalle de Pedido -->
+                        <div>
+                            <h5 class="mb-3">Detalle del Pedido</h5>
+                        </div>
+                        <!-- BUSCADOR PETICIONES -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-floating">
+                                <input type="search" class="form-control" id="addProducto" list="datalistProducto" placeholder="addProducto" required>
+                                <ul id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;">
+
+                                </ul>
+                               <!--  <datalist id="datalistProducto"></datalist>
+                                <label for="datalistProducto">Buscar producto</label> -->
+                            </div>
+                        </div>
+                        <!-- FIN BUSCADOR PETICIONES -->
+
+                        <!-- Tabla de productos del pedido -->
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover table-secondar" id="detalle-productos">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <th class="text-start">Producto</th>
+                                        <th class="text-start">Cantidad</th>
+                                        <th class="text-start">Unidad Medida</th>
+                                        <th class="text-start">Precio Unitario</th>
+                                        <th class="text-start">Descuento</th>
+                                        <th class="text-start">Subtotal</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detalle-pedido">
+                                    <!-- primer detalle -->
+                                    <tr>
+                                        <th class="col-md-3">
+                                            <div class="mt-1">
+                                                <select class="form-control form-control-sm idproducto" name="idproducto" id="idproducto" name="idproducto">
+                                                    <option value="">Seleccione un producto</option>
+                                                    <option value="1">Prodcuto 1</option>
+                                                    <!-- Opciones dinámicas -->
+                                                </select>
+                                            </div>
+                                        </th>
+                                        <th class="col-md-1">
+                                            <div class="mt-1">
+                                                <input class="form-control form-control-sm cantidad" name="cantidad" type="text" aria-label=".form-control-sm example">
+                                            </div>
+                                        </th>
+                                        <th class="col-md-1">
+                                            <div class="mt-1">
+                                                <input class="form-control form-control-sm und-medida" name="und-medida" type="text" aria-label=".form-control-sm example">
+                                            </div>
+                                        </th>
+                                        <th class="col-md-1">
+                                            <div class="mt-1">
+                                                <input class="form-control form-control-sm precio-unitario" name="precio-unitario" type="text" aria-label=".form-control-sm example">
+                                            </div>
+                                        </th>
+                                        <th class="col-md-1">
+                                            <div class="mt-1">
+                                                <input class="form-control form-control-sm descuento" name="descuento" type="text" aria-label=".form-control-sm example">
+                                            </div>
+                                        </th>
+                                        <th class="col-md-1">
+                                            <div class="mt-1">
+                                                <input class="form-control form-control-sm subtotal" name="subtotal" type="text" aria-label=".form-control-sm example">
+                                            </div>
+                                        </th>
+                                        <th class="col-md-1">
+                                            <div class="mt-1  d-flex justify-content-evenly">
+                                                <button type="button" class="btn btn-warning btn-sm w-100">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-sm w-100">
+                                                    <i class="bi bi-x-square"></i>
+                                                </button>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <!-- fin del detalle -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- fin tabla productos -->
+                        <!-- Botones -->
+
+                        <div class="text-end">
+                            <!-- Botón para agregar producto a la tabla -->
+                            <div class="d-flex justify-content-end mb-3">
+                                <button type="button" class="btn btn-outline-success" id="agregar-producto">
+                                    <i class="bi bi-plus-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-primary me-2 transition">Registrar Pedido</button>
+                            <button type="reset" class="btn btn-outline-danger">Cancelar</button>
+                        </div>
+                </form>
             </div>
         </div>
     </div>

@@ -1,0 +1,13 @@
+#datalistProducto {
+  max-height: 200px; /* Limitar la altura si hay muchos resultados */
+  overflow-y: auto; /* Habilitar scroll si hay muchos resultados */
+  background-color: white; /* Fondo blanco para que sea visible */
+  border: 1px solid #ced4da; /* Borde como los inputs de Bootstrap */
+  border-radius: 0.25rem;
+}
+#datalistProducto .list-group-item {
+  cursor: pointer;
+}
+#datalistProducto .list-group-item:hover {
+  background-color: #f8f9fa; /* Cambiar el color al pasar el ratón */
+}

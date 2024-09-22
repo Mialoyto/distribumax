@@ -5,7 +5,7 @@ DELIMITER $$
 
 CREATE PROCEDURE sp_cliente_registrar(
 	IN _idpersona 		CHAR(11),
-    IN _idempresa 		INT,
+    IN _idempresa 		BIGINT,
     IN _tipo_cliente    CHAR(10)
 )
 BEGIN

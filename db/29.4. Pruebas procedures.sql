@@ -55,7 +55,7 @@ CALL sp_registrar_usuario ( '26558000', 1, 'admin', 'admin' );
 CALL sp_actualizar_usuario (
     'admin',
     '$2y$10$qpFRvOWayRS8rcvHQvuNeu2V3YoMEfCBLaBp9Dccs35nyqd1hyZkK',
-    1
+    2
 );
 
 CALL sp_usuario_login ('admin');
@@ -73,10 +73,19 @@ CALL sp_empresa_registrar (
     '987654321'
 );
 
-CALL sp_actualizar_empresa (
+CALL sp_empresa_registrar (
     20123456782,
     954,
-    'Dijisa',
+    'Dijisaa',
+    'Av. Bancarios ',
+    'santafe@gmail.com',
+    '987654321'
+);
+
+CALL sp_actualizar_empresa (
+    20123456782,
+    955,
+    'Dijisaa',
     'Panamericana #234',
     'dijisa@gmail.com',
     '932123029'
@@ -88,7 +97,7 @@ CALL sp_actualizar_empresa (
 /* PROCEDIMIENTOS DE CLIENTES ✔️*/ 
 -- REGISTRAR CLIENTES
 CALL sp_cliente_registrar (26558000, NULL, 'Persona');
-CALL sp_cliente_registrar (NULL, 20123456781,  'Empresa');
+CALL sp_cliente_registrar (NULL, 20123456781, 'Empresa');
 --  No debe de registrar a un cliente con dni y ruc
 CALL sp_cliente_registrar (26558000, 20123456781,  'Persona'); 
 -- ACTUALIZAR CLIENTES
@@ -96,21 +105,13 @@ CALL sp_actualizar_cliente (NULL,20123456781,'Empresa',2);
 
 -- REISTRAR PROOVEDORES
 CALL sp_proovedor_registrar (
+    20123456781,
     1,
-    1,
-    'Dkasa',
     'José Carlos',
     '932143290',
     'Av. el Porvenir',
     'jose@gmail.com'
 );
-
-
-/**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/
-CALL sp_registrar_usuario('26558000',1,'admin','admin');
-CALL sp_registrar_usuario('26558002',1,'admin2','admin');
-CALL sp_usuario_login ('admin');
-CALL sp_desactivar_usuario(1,'admin');
 
  /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL sp_empresa_registrar(
@@ -127,4 +128,4 @@ CALL sp_actualizar_empresa (12345678901,954,'Dijisa','Panamericana #234','dijisa
 /****************************************************************************************************************/
 call sp_buscardistrito ('chincha');
 
-CALL sp_pedido_registrar (1, 2);
+CALL sp_pedido_registrar (2, 21);

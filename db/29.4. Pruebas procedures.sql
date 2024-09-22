@@ -128,4 +128,5 @@ CALL sp_actualizar_empresa (12345678901,954,'Dijisa','Panamericana #234','dijisa
 /****************************************************************************************************************/
 call sp_buscardistrito ('chincha');
 
-CALL sp_pedido_registrar (2, 21);
+CALL sp_pedido_registrar (1, 2);
+select * from pedidos;

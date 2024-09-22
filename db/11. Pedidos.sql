@@ -43,12 +43,3 @@ BEGIN
     WHERE idpedido = _idpedido;
 END$$
 
--- insertar id antes de insertar los datos
-CREATE TRIGGER before_insert_pedidos
-BEFORE INSERT ON pedidos
-FOR EACH ROW
-BEGIN
-    DECLARE nuevo_id CHAR(15); 
-    SET nuevo_id = CONCAT('PED-', LPAD((SELECT COUNT(*) + 1 FROM pedidos), 9, '0'));
-    SET NEW.idpedido = nuevo_id;
-END$$

@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       response.forEach(item => {
         const li = document.createElement('li');
         li.classList.add('list-group-item'); // Clase de Bootstrap para los ítems
-        li.textContent = `${item.nombreproducto} (${item.preciounitario})`;
+        li.textContent = `${item.nombreproducto} (${item.codigo})`;
         li.addEventListener('click', () => {
           addProductToTable(item.idproducto, item.codigo, item.nombreproducto, item.preciounitario);
           $("#datalistProducto").style.display = 'none'; // Ocultar la lista cuando se selecciona un producto
@@ -249,13 +249,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // Función para añadir un producto a la tabla seleccionada
-  function addProductToTable(codigo, nombre, precio) {
+  function addProductToTable(id,codigo, nombre, precio) {
     const row = `
     <tr>
+      <td>${id}</td>
       <td>${codigo}</td>
       <td>${nombre}</td>
       <td>${precio}</td>
-      <td><input type="number" class="form-control" value="1" min="1"></td>
     </tr>
   `;
 

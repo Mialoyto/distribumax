@@ -11,7 +11,7 @@ BEGIN
     (idusuario, idcliente) 
     VALUES 
     ( _idusuario, _idcliente);
-    SELECT LAST_INSERT_ID() AS idpedido;
+    SELECT idpedido FROM pedidos ORDER BY idpedido DESC LIMIT 1;
 END$$
 
 
@@ -19,7 +19,7 @@ END$$
 -- ACTUALIZAR PEDIDOS SOLO LOS DATOS PERO NO EL ESTADO
 DELIMITER $$
 CREATE PROCEDURE sp_actualizar_pedido(
-    IN _idpedido        INT,
+    IN _idpedido        CHAR(15),
     IN _idusuario       INT,
     IN _idcliente       INT
 )
@@ -37,7 +37,7 @@ END$$
 DELIMITER $$
 CREATE PROCEDURE sp_estado_pedido(
     IN  _estado         BIT,
-    IN  _idpedido       INT 
+    IN  _idpedido       CHAR(15) 
 )
 BEGIN
     UPDATE pedidos SET
@@ -45,4 +45,33 @@ BEGIN
     WHERE idpedido = _idpedido;
 END$$
 
--- buscar cliente 
+-- buscador para pedidos por id
+DELIMITER $$
+CREATE PROCEDURE sp_buscar_pedido(
+   IN _idpedido INT
+)
+BEGIN
+    SELECT 
+        idpedido
+    FROM  pedidos 
+    WHERE idpedido LIKE CONCAT ('%',_idpedido, '%')
+    AND estado='Pendiente';
+END$$
+select * from pedidos;
+
+
+CALL sp_buscar_pedido('PDO-01')
+
+-- insertar id antes de insertar los datos
+CREATE TRIGGER before_insert_pedidos
+BEFORE INSERT ON pedidos
+FOR EACH ROW
+BEGIN
+    DECLARE nuevo_id CHAR(15); 
+    SET nuevo_id = CONCAT('PED-', LPAD((SELECT COUNT(*) + 1 FROM pedidos), 9, '0'));
+    SET NEW.idpedido = nuevo_id;
+END$$
+
+CREATE VIEW vw_listar_productos AS
+SELECT * FROM productos ;
+

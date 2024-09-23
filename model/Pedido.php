@@ -11,9 +11,9 @@ class Pedidos extends Conexion
   }
 
   // funcion para agregar pedido
-  public function agregarPedido($params = []): int
+  public function agregarPedido($params = []): string
   {
-    $id = -1;
+    $id = '';
     try {
 
       $sql = "CALL sp_pedido_registrar( ?, ?)";
@@ -30,6 +30,33 @@ class Pedidos extends Conexion
       return $id;
     }
     return $id;
+  }
+
+  public function searchPedido($params=[]){
+    try{
+      $sql="CALL sp_buscar_pedido(?)";
+      $query=$this->pdo->prepare($sql);
+      $query->execute(array(
+        $params['_idpedido']
+      ));
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+    }catch(Exception $e){
+      die($e->getMessage());
+    }
+  }
+
+  public function getById($params=[]){
+    try{
+      $sql="CALL sp_getById_pedido(?)";
+      $query=$this->pdo->prepare($sql);
+      $query->execute(array(
+        $params['idpedido']
+      ));
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+    }catch(Exception $e){
+      die($e->getMessage());
+
+    }
   }
 
   

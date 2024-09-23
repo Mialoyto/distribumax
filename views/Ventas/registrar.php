@@ -13,18 +13,16 @@ require_once '../../header.php';
         Listado de Empresas
       </div>
       <div class="card-body">
-        <form method="POST" action="#">
-          
+        <form method="POST" action="#" autocomplete="off">
+
           <!-- Selección de Pedido -->
           <div class="mb-4">
             <h5>Pedido</h5>
             <div class="row mb-3">
               <div class="col-md-6">
                 <div class="form-floating">
-                  <select class="form-control" id="idpedido" name="idpedido" required onchange="cargarProductos()">
-                    <option value="">Seleccione un pedido</option>
-                    <!-- Opciones dinámicas -->
-                  </select>
+                  <input type="search" class="form-control" id="idpedido" list="datalistProducto" placeholder="" required>
+                  <datalist id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist>
                   <label for="idpedido">Pedido</label>
                 </div>
               </div>
@@ -38,21 +36,21 @@ require_once '../../header.php';
           </div>
 
           <!-- Tabla de Productos -->
-          <h5>Productos</h5>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio Unitario</th>
-                <th>Total</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="productosTabla">
-              <!-- Productos se llenarán aquí -->
-            </tbody>
-          </table>
+          <div class="table-responsive my-4"> <!-- Añadido margin top y bottom -->
+            <table class="table table-striped table-sm" id="productosTabla">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Precio Unitario</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Productos se llenarán aquí -->
+              </tbody>
+            </table>
+          </div>
 
           <!-- Totales -->
           <div class="mb-4">
@@ -95,72 +93,7 @@ require_once '../../header.php';
   </div>
 </main>
 
+<script src="../../js/ventas/registrar.js"></script>
 <?php
 require_once '../../footer.php';
 ?>
-
-<script>
-async function cargarProductos() {
-  const idPedido = document.getElementById('idpedido').value;
-  
-  if (!idPedido) return;
-
-  try {
-    const response = await fetch(`../../controller/pedido.controller.php?operation=getProductos&idpedido=${idPedido}`);
-    const productos = await response.json();
-
-    const productosTabla = document.getElementById('productosTabla');
-    productosTabla.innerHTML = ''; // Limpiar tabla antes de llenar
-
-    let subtotal = 0;
-
-    productos.forEach(producto => {
-      const total = producto.precio_unitario * producto.cantidad;
-      subtotal += total;
-
-      const row = `
-        <tr>
-          <td>${producto.nombre}</td>
-          <td>${producto.cantidad}</td>
-          <td>${producto.precio_unitario.toFixed(2)}</td>
-          <td>${total.toFixed(2)}</td>
-          <td><button type="button" class="btn btn-danger" onclick="eliminarProducto(this)">Eliminar</button></td>
-        </tr>
-      `;
-      productosTabla.innerHTML += row;
-    });
-
-    const igv = subtotal * 0.18; // 18% de IGV
-    const totalVenta = subtotal + igv;
-
-    document.getElementById('subtotal').value = subtotal.toFixed(2);
-    document.getElementById('igv').value = igv.toFixed(2);
-    document.getElementById('total_venta').value = totalVenta.toFixed(2);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-function eliminarProducto(button) {
-  const row = button.closest('tr');
-  row.remove();
-  calcularTotales();
-}
-
-function calcularTotales() {
-  const rows = document.querySelectorAll('#productosTabla tr');
-  let subtotal = 0;
-
-  rows.forEach(row => {
-    const total = parseFloat(row.cells[3].innerText);
-    subtotal += total;
-  });
-
-  const igv = subtotal * 0.18;
-  const totalVenta = subtotal + igv;
-
-  document.getElementById('subtotal').value = subtotal.toFixed(2);
-  document.getElementById('igv').value = igv.toFixed(2);
-  document.getElementById('total_venta').value = totalVenta.toFixed(2);
-}
-</script>

@@ -7,7 +7,27 @@ $verbo = $_SERVER["REQUEST_METHOD"];
 
 switch ($verbo) {
   case 'GET':
+       if(isset($_GET['operation'])){
+        switch($_GET['operation']){
+          case 'searchPedido':
+            $datos=[
+              '_idpedido'=>$_GET['_idpedido']
+            ];
 
+            echo json_encode($pedido->searchPedido($datos));
+          break;
+
+          case 'getById' :
+            $datos=[
+              'idpedido' =>$_GET['idpedido']
+            ];
+
+          echo json_encode($pedido->getById($datos));
+          
+          break;
+        }
+
+       }
     break;
   case 'POST':
     if (isset($_POST['operation'])) {

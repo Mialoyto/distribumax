@@ -4,7 +4,7 @@ USE distribumax;
 DELIMITER $$
 
 CREATE PROCEDURE sp_detalle_pedido(
-    IN _idpedido            INT,
+    IN _idpedido            CHAR(15),
     IN _idproducto          INT,
     IN _cantidad_producto   INT,
     IN _unidad_medida       INT,
@@ -24,7 +24,7 @@ END$$
 DELIMITER $$
 
 CREATE PROCEDURE sp_actualizar_detalle_pedido(
-    IN _idpedido          INT,
+    IN _idpedido          CHAR(15),
     IN _idproducto        INT,
     IN _cantidad_producto INT,
     IN _iddetallepedido   INT
@@ -69,5 +69,34 @@ BEGIN
     WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%')) 
     AND estado = '1';
 END$$
+
+
+-- Obtener el Id del pedido y completar la tabla en ventas
+
+DELIMITER $$
+CREATE PROCEDURE sp_getById_pedido(
+	IN  _idpedido CHAR(15)
+)BEGIN
+	SELECT 
+    dp.id_detalle_pedido,
+    pr.nombreproducto,
+    pr.preciounitario,
+    dp.cantidad_producto,
+    dp.unidad_medida,
+    dp.precio_descuento,
+    dp.subtotal
+FROM 
+    pedidos p
+INNER JOIN 
+    detalle_pedidos dp ON p.idpedido = dp.idpedido
+INNER JOIN 
+    productos pr ON pr.idproducto = dp.idproducto
+INNER JOIN  
+    clientes cl ON cl.idcliente = p.idcliente  -- Asegúrate de que esta condición es correcta
+WHERE 
+    p.idpedido =_idpedido;
+END$$
+
+CALL sp_getById_pedido('PED-000000001');
+
 select * from pedidos;
-CALL sp_buscar_productos('AL00');

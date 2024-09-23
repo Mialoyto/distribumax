@@ -55,7 +55,7 @@ CALL sp_registrar_usuario ( '26558000', 1, 'admin', 'admin' );
 CALL sp_actualizar_usuario (
     'admin',
     '$2y$10$qpFRvOWayRS8rcvHQvuNeu2V3YoMEfCBLaBp9Dccs35nyqd1hyZkK',
-    2
+    1
 );
 
 CALL sp_usuario_login ('admin');
@@ -115,7 +115,7 @@ CALL sp_proovedor_registrar (
 
  /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL sp_empresa_registrar(
-	20123456782,
+	20123456783,
 	954,
     'JRCA',
     'Av. Bancarios ',
@@ -129,8 +129,8 @@ CALL sp_actualizar_empresa (12345678901,954,'Dijisa','Panamericana #234','dijisa
 insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558000, 20123456781,'Empresa');
 insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(2,1,'2024/09/22');
 insert into detalle_pedidos(idpedido,idproducto,cantidad_producto,unidad_medida,precio_unitario,precio_descuento,subtotal)VALUES
-(2,1,10,'unidad',2,1,10),
-(2,2,20,'unidad',10,2,90);
+('PED-000000001',1,10,'unidad',2,1,10),
+('PED-000000001',2,20,'unidad',10,2,90);
 
 select * from detalle_pedidos;
 select * from pedidos;

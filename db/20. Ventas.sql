@@ -3,7 +3,7 @@ USE distribumax;
 -- REGISTRAR VENTAS
 DELIMITER $$
 CREATE PROCEDURE sp_registrar_venta(
-    IN _idpedido            INT,
+    IN _idpedido            CHAR(15),
     IN _idmetodopago        INT,
     IN _idtipocomprobante   INT,
     IN _subtotal            DECIMAL(10, 2),
@@ -22,7 +22,7 @@ END$$
 
 -- ACTUALIZAR VENTAS
 CREATE PROCEDURE sp_actualizar_venta(
-    IN _idpedido INT,
+    IN _idpedido CHAR(15),
     IN _idmetodopago INT,
     IN _idtipocomprobante INT,
     IN _subtotal DATE,

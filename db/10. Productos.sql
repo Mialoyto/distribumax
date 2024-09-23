@@ -52,8 +52,7 @@ BEGIN
       WHERE idproducto=_idproducto;
 END$$
 
-CREATE VIEW vw_listar_productos AS
-SELECT * FROM productos ;
+
 
 
 

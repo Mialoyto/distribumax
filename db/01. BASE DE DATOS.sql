@@ -1,4 +1,4 @@
--- Active: 1726291702198@@localhost@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribuMax;
 USE distribuMax;
@@ -267,7 +267,7 @@ CREATE TABLE promociones(
 	idpromocion      	INT	NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	idtipopromocion    INT  NOT NULL,
 	descripcion      	VARCHAR(250) NOT NULL,
-    fechaincio			DATE NOT NULL,
+    fechainicio			DATE NOT NULL,
     fechafin			DATE NOT NULL,
 	valor_descuento  	DECIMAL(8, 2),
     
@@ -278,7 +278,6 @@ CREATE TABLE promociones(
     CONSTRAINT ck_valor_descuento CHECK (valor_descuento > 0),
     CONSTRAINT fk_estado_prom  CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
-
 
 
 DROP TABLE IF EXISTS productos;

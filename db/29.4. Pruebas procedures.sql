@@ -96,7 +96,7 @@ CALL sp_actualizar_empresa (
 
 /* PROCEDIMIENTOS DE CLIENTES ✔️*/ 
 -- REGISTRAR CLIENTES
-CALL sp_cliente_registrar (26558000, NULL);
+CALL sp_cliente_registrar (26558000, NULL, 'Persona');
 CALL sp_cliente_registrar (NULL, 20123456781, 'Empresa');
 --  No debe de registrar a un cliente con dni y ruc
 CALL sp_cliente_registrar (26558000, 20123456781,'Empresa'); 

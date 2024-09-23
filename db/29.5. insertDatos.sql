@@ -131,7 +131,12 @@ VALUES
     ('Tarjeta de Crédito', 1),   -- Primer método de pago
     ('Transferencia Bancaria', 1); -- Segundo método de pago
 
+INSERT INTO promociones (idtipopromocion, descripcion, fechainicio, fechafin, valor_descuento)
+VALUES
+    (1, 'Descuento de Temporada', '2021-06-01', '2021-06-30', 10.00);
 
+INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
+VALUES (1, 1, 5.00);
 -- Registrando vehiculos (2 vehiculos)
 INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
 VALUES

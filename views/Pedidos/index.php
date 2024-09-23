@@ -5,10 +5,6 @@
         <div class="card shadow-lg border-0 rounded-lg">
             <div class="card-header text-center">
                 <h2 class="card-title">Registro de Pedido y Detalles</h2>
-                <!-- tailwindcss -->
-                <h1 class="text-3xl font-bold underline">
-                    Hello world!
-                </h1>
             </div>
             <div class="card-body">
                 <!-- fomrluario para enviar pedidos -->
@@ -97,10 +93,11 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-floating">
                                 <input type="search" class="form-control" id="addProducto" list="datalistProducto" placeholder="addProducto" required>
+                                <label for="addProducto">Agregar producto</label>
                                 <ul id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;">
 
                                 </ul>
-                               <!--  <datalist id="datalistProducto"></datalist>
+                                <!--  <datalist id="datalistProducto"></datalist>
                                 <label for="datalistProducto">Buscar producto</label> -->
                             </div>
                         </div>
@@ -111,78 +108,25 @@
                             <table class="table table-striped table-hover table-secondar" id="detalle-productos">
                                 <thead class="bg-primary">
                                     <tr>
-                                        <th class="text-start">Producto</th>
-                                        <th class="text-start">Cantidad</th>
-                                        <th class="text-start">Unidad Medida</th>
-                                        <th class="text-start">Precio Unitario</th>
-                                        <th class="text-start">Descuento</th>
-                                        <th class="text-start">Subtotal</th>
-                                        <th class="text-center">Acciones</th>
+                                        <th scope="col">código</th>
+                                        <th scope="col">Producto</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Unidad Medida</th>
+                                        <th scope="col">Precio Unitario</th>
+                                        <th scope="col">Descuento</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="detalle-pedido">
                                     <!-- primer detalle -->
-                                    <tr>
-                                        <th class="col-md-3">
-                                            <div class="mt-1">
-                                                <select class="form-control form-control-sm idproducto" name="idproducto" id="idproducto" name="idproducto">
-                                                    <option value="">Seleccione un producto</option>
-                                                    <option value="1">Prodcuto 1</option>
-                                                    <!-- Opciones dinámicas -->
-                                                </select>
-                                            </div>
-                                        </th>
-                                        <th class="col-md-1">
-                                            <div class="mt-1">
-                                                <input class="form-control form-control-sm cantidad" name="cantidad" type="text" aria-label=".form-control-sm example">
-                                            </div>
-                                        </th>
-                                        <th class="col-md-1">
-                                            <div class="mt-1">
-                                                <input class="form-control form-control-sm und-medida" name="und-medida" type="text" aria-label=".form-control-sm example">
-                                            </div>
-                                        </th>
-                                        <th class="col-md-1">
-                                            <div class="mt-1">
-                                                <input class="form-control form-control-sm precio-unitario" name="precio-unitario" type="text" aria-label=".form-control-sm example">
-                                            </div>
-                                        </th>
-                                        <th class="col-md-1">
-                                            <div class="mt-1">
-                                                <input class="form-control form-control-sm descuento" name="descuento" type="text" aria-label=".form-control-sm example">
-                                            </div>
-                                        </th>
-                                        <th class="col-md-1">
-                                            <div class="mt-1">
-                                                <input class="form-control form-control-sm subtotal" name="subtotal" type="text" aria-label=".form-control-sm example">
-                                            </div>
-                                        </th>
-                                        <th class="col-md-1">
-                                            <div class="mt-1  d-flex justify-content-evenly">
-                                                <button type="button" class="btn btn-warning btn-sm w-100">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-danger btn-sm w-100">
-                                                    <i class="bi bi-x-square"></i>
-                                                </button>
-                                            </div>
-                                        </th>
-                                    </tr>
+
                                     <!-- fin del detalle -->
                                 </tbody>
                             </table>
                         </div>
                         <!-- fin tabla productos -->
                         <!-- Botones -->
-
-                        <div class="text-end">
-                            <!-- Botón para agregar producto a la tabla -->
-                            <div class="d-flex justify-content-end mb-3">
-                                <button type="button" class="btn btn-outline-success" id="agregar-producto">
-                                    <i class="bi bi-plus-circle"></i>
-                                </button>
-                            </div>
-                        </div>
                         <div class="d-flex justify-content-end mt-3">
                             <button type="submit" class="btn btn-primary me-2 transition">Registrar Pedido</button>
                             <button type="reset" class="btn btn-outline-danger">Cancelar</button>

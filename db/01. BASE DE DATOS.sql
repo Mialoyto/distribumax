@@ -267,8 +267,8 @@ CREATE TABLE promociones(
 	idpromocion      	INT	NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	idtipopromocion    INT  NOT NULL,
 	descripcion      	VARCHAR(250) NOT NULL,
-    fechaincio			DATETIME NOT NULL,
-    fechafin			DATETIME NOT NULL,
+    fechaincio			DATE NOT NULL,
+    fechafin			DATE NOT NULL,
 	valor_descuento  	DECIMAL(8, 2),
     
     create_at		    DATETIME NOT NULL DEFAULT NOW(),
@@ -278,6 +278,8 @@ CREATE TABLE promociones(
     CONSTRAINT ck_valor_descuento CHECK (valor_descuento > 0),
     CONSTRAINT fk_estado_prom  CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
+
+
 
 DROP TABLE IF EXISTS productos;
 CREATE TABLE productos (
@@ -306,6 +308,7 @@ CREATE TABLE detalle_promociones(
 		iddetallepromocion	INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         idpromocion			INT NOT NULL,
         idproducto			INT NOT NULL,
+        descuento           DECIMAL(8, 2) NOT NULL,
         
 		create_at			DATETIME NOT NULL DEFAULT NOW(),
 		update_at			DATETIME NULL,
@@ -314,8 +317,10 @@ CREATE TABLE detalle_promociones(
         CONSTRAINT id_producto_deta_prom FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
         CONSTRAINT fk_estado_deta_prom  CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
-
-DROP TABLE IF EXISTS detalle_productos;
+ 
+ 
+ -- BORRAR
+/* DROP TABLE IF EXISTS detalle_productos;
 CREATE TABLE detalle_productos(
 		id_detalle_producto		INT	NOT NULL AUTO_INCREMENT PRIMARY KEY,
         idproveedor				INT NOT NULL,
@@ -327,7 +332,7 @@ CREATE TABLE detalle_productos(
         CONSTRAINT fk_idproveedor_deta_prod FOREIGN KEY(idproveedor) REFERENCES proveedores(idproveedor),
         CONSTRAINT fk_idproducto_deta_prod FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
         CONSTRAINT fk_estado_deta_prod  CHECK(estado IN ("0", "1"))
-)ENGINE = INNODB;
+)ENGINE = INNODB; */
 
 DROP TABLE IF EXISTS precios_historicos;
 CREATE TABLE precios_historicos(
@@ -376,7 +381,7 @@ CREATE TABLE detalle_pedidos (
     CONSTRAINT fk_idproducto_det_ped FOREIGN KEY (idproducto) REFERENCES productos(idproducto),
     CONSTRAINT ck_cantidad_producto CHECK (cantidad_producto > 0),
     CONSTRAINT ck_precio_unitario CHECK (precio_unitario > 0),
-    CONSTRAINT ck_precio_descuento CHECK (precio_descuento >0),
+    CONSTRAINT ck_precio_descuento CHECK (precio_descuento >= 0),
     CONSTRAINT ck_subtotal CHECK (subtotal > 0),
     CONSTRAINT fk_estado_det_ped CHECK(estado IN ("0", "1"))
 ) ENGINE = INNODB;

@@ -140,3 +140,6 @@ call sp_buscardistrito ('chincha');
 CALL sp_pedido_registrar (2, 21);
 
 
+
+CALL sp_pedido_registrar (1, 2);
+select * from pedidos;

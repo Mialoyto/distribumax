@@ -62,7 +62,14 @@ INSERT INTO roles (rol) VALUES
 ('Invitado');
 
 
+INSERT INTO tipo_comprobante_pago (comprobantepago) VALUES 
+('Factura'), 
+('Boleta de Venta'), 
+('Nota de Crédito'), 
+('Nota de Débito'), 
+('Recibo');
 
+INSERT INTO metodos_pago (metodopago)VALUES('Efectivo'),('Transferencia');
 
 -- Insertar productos en la categoría Alimentos (idcategoria = 1)
 -- Subcategoría Conservas (idsubcategoria = 1)

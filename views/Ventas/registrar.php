@@ -19,17 +19,11 @@ require_once '../../header.php';
           <div class="mb-4">
             <h5>Pedido</h5>
             <div class="row mb-3">
-              <div class="col-md-6">
+              <div class="col">
                 <div class="form-floating">
                   <input type="search" class="form-control" id="idpedido" list="datalistProducto" placeholder="" required>
                   <datalist id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist>
                   <label for="idpedido">Pedido</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="datetime-local" class="form-control" id="fecha_venta" name="fecha_venta" required>
-                  <label for="fecha_venta">Fecha de Venta</label>
                 </div>
               </div>
             </div>
@@ -52,6 +46,34 @@ require_once '../../header.php';
             </table>
           </div>
 
+
+          <!-- datos -->
+          <div class="mb-4">
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input type="datetime-local" class="form-control" id="fecha_venta" name="fecha_venta" required>
+                  <label for="fecha_venta">Fecha de Venta</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <select name="" id="idmetodopago" class="form-select">
+                    <option value=""></option>
+                  </select>
+                  <label for="fecha_venta">Metodo de Pago</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <select name="" id="idtipocomprobante" class="form-select">
+                    <option value=""></option>
+                  </select>
+                  <label for="fecha_venta">Tipo de Comprobante</label>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- Totales -->
           <div class="mb-4">
             <h5>Totales</h5>
@@ -76,6 +98,8 @@ require_once '../../header.php';
               </div>
             </div>
           </div>
+
+
 
           <!-- Botones -->
           <div class="d-flex justify-content-end mt-4">

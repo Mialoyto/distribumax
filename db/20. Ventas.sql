@@ -6,6 +6,7 @@ CREATE PROCEDURE sp_registrar_venta(
     IN _idpedido            CHAR(15),
     IN _idmetodopago        INT,
     IN _idtipocomprobante   INT,
+    IN _fecha_venta         DATETIME,
     IN _subtotal            DECIMAL(10, 2),
     IN _descuento           DECIMAL(10, 2),
     IN _igv                 DECIMAL(10, 2),
@@ -13,9 +14,9 @@ CREATE PROCEDURE sp_registrar_venta(
 )
 BEGIN
     INSERT INTO ventas 
-    (_idpedido, _idmetodopago, _idtipocomprobante, _subtotal, _descuento, _igv,_total_venta) 
+    (idpedido, idmetodopago, idtipocomprobante,fecha_venta, subtotal, descuento, igv,total_venta) 
     VALUES
-    (idpedido, idmetodopago, idtipocomprobante, subtotal, descuento, igv,total_venta);
+    (_idpedido, _idmetodopago, _idtipocomprobante,_fecha_venta, _subtotal, _descuento, _igv,_total_venta);
     
 END$$
 
@@ -54,3 +55,5 @@ BEGIN
         estado=_estado
         WHERE idventa=_idventa;
 END$$ 
+
+select * from ventas;

@@ -72,6 +72,20 @@ BEGIN
     SET NEW.idpedido = nuevo_id;
 END$$
 
+-- Trigger que cambiara el estado al registrar el pedido
+DELIMITER $$
+
+CREATE TRIGGER trg_actualizar_estado_pedido
+AFTER INSERT ON ventas
+FOR EACH ROW
+BEGIN
+    UPDATE pedidos
+    SET estado = 'Enviado'
+    WHERE idpedido = NEW.idpedido;
+END$$
+
+
+
 CREATE VIEW vw_listar_productos AS
 SELECT * FROM productos ;
 

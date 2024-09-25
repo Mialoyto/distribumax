@@ -22,3 +22,13 @@ BEGIN
             estado = _estado
         WHERE idmetodopago =_idmetodopago;
 END$$
+
+-- listar metodos de pago
+
+
+DELIMITER $$
+CREATE PROCEDURE sp_listar_mePago()
+BEGIN
+	SELECT * FROM metodos_pago;
+END$$
+

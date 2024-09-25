@@ -392,7 +392,7 @@ CREATE TABLE kardex(
 	idproducto			INT NOT NULL,
 	stockactual     	INT,
     tipomovimiento  	ENUM('Ingreso', 'Salida') NOT NULL,
-	cantidad        	DECIMAL(10, 2)  NOT NULL, 
+	cantidad        	INT NOT NULL,
 	motivo          	VARCHAR(255),
     
 	create_at			DATETIME NOT NULL DEFAULT NOW(),

@@ -92,13 +92,9 @@
                         <!-- BUSCADOR PETICIONES -->
                         <div class="col-md-4 mb-3">
                             <div class="form-floating">
-                                <input type="search" class="form-control" id="addProducto" list="datalistProducto" placeholder="addProducto" required>
+                                <input type="search" class="form-control" id="addProducto" list="datalistProducto" placeholder="addProducto">
                                 <label for="addProducto">Agregar producto</label>
-                                <ul id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;">
-
-                                </ul>
-                                <!--  <datalist id="datalistProducto"></datalist>
-                                <label for="datalistProducto">Buscar producto</label> -->
+                                <ul id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></ul>
                             </div>
                         </div>
                         <!-- FIN BUSCADOR PETICIONES -->
@@ -113,8 +109,9 @@
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">Unidad Medida</th>
                                         <th scope="col">Precio Unitario</th>
-                                        <th scope="col">Descuento</th>
                                         <th scope="col">Subtotal</th>
+                                        <th scope="col">Descuento</th>
+                                        <th scope="col">Total</th>
                                         <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>

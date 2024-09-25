@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.log("id Cliente:", idCliente);
     }
   }
+
   function resetCampos() {
     $("#cliente").value = '';
     $("#cliente").innerHTML = '';
@@ -77,8 +78,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     $("#razon-social").value = '';
     $("#direccion-cliente").value = '';
   }
-
-
 
   async function getIdPedido() {
     let idusuario = $('#idvendedor').getAttribute('data-id');
@@ -98,56 +97,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+
+  // EVENTOS
   $("#nro-doc").addEventListener('input', debounce(async () => {
     const response = await dataCliente();
     await validarNroDoc(response);
   }, 1000));
 
   // PRUEBA PARA RETORNR EL ID DEL PEDIDO - BORRAR
-  $("#addpedido").addEventListener("click", async () => {
+  /* $("#addpedido").addEventListener("click", async () => {
     const response = await getIdPedido();
     console.log(response.idpedido);
   });
+ */
 
 
   // FUNCIONES PARA AGREGAR DETALLE DE PRODUCTOS
   /* pruebas para ver si captura lod datos del campos */
-  $("#registrar-pedido").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const form = new FormData($("#registrar-pedido"));
-    console.log(form);
-
-    // Capturar los datos del documento, nombres, apellidos, etc.
-    console.log(form.get('idcliente'));
-    console.log(form.get('id-tip-doc'));
-    console.log(form.get('nro-doc'));
-    console.log(form.get('nombres'));
-    console.log(form.get('appaterno'));
-    console.log(form.get('apmaterno'));
-    console.log($("#idvendedor").value)
-
-    // Capturar los valores de los productos
-    const productos = [];
-    const idproducto = document.querySelectorAll('.idproducto');
-    const cantidades = document.querySelectorAll('.cantidad');
-    const undMedidas = document.querySelectorAll('.und-medida');
-    const preciosUnitarios = document.querySelectorAll('.precio-unitario');
-    const descuentos = document.querySelectorAll('.descuento');
-    const subtotales = document.querySelectorAll('.subtotal');
-
-    // Recorrer los elementos y guardar los datos en un array de productos
-    for (let i = 0; i < cantidades.length; i++) {
-      productos.push({
-        // idproducto : idproducto[i].value,
-        cantidad: cantidades[i].value,
-        undMedida: undMedidas[i].value,
-        precioUnitario: preciosUnitarios[i].value,
-        descuento: descuentos[i].value,
-        subtotal: subtotales[i].value
-      });
-    }
-    console.log(productos);
-  })
+  /*  $("#registrar-pedido").addEventListener("submit", async (e) => {
+     e.preventDefault();
+     const form = new FormData($("#registrar-pedido"));
+     console.log(form);
+ 
+     // Capturar los datos del documento, nombres, apellidos, etc.
+     console.log(form.get('idcliente'));
+     console.log(form.get('id-tip-doc'));
+     console.log(form.get('nro-doc'));
+     console.log(form.get('nombres'));
+     console.log(form.get('appaterno'));
+     console.log(form.get('apmaterno'));
+     console.log($("#idvendedor").value)
+ 
+     // Capturar los valores de los productos
+     const productos = [];
+     const idproducto = document.querySelectorAll('.idproducto');
+     const cantidades = document.querySelectorAll('.cantidad');
+     const undMedidas = document.querySelectorAll('.und-medida');
+     const preciosUnitarios = document.querySelectorAll('.precio-unitario');
+     const descuentos = document.querySelectorAll('.descuento');
+     const subtotales = document.querySelectorAll('.subtotal');
+ 
+     // Recorrer los elementos y guardar los datos en un array de productos
+     for (let i = 0; i < cantidades.length; i++) {
+       productos.push({
+         // idproducto : idproducto[i].value,
+         cantidad: cantidades[i].value,
+         // undMedida: undMedidas[i].value,
+         precioUnitario: preciosUnitarios[i].value,
+         descuento: descuentos[i].value,
+         subtotal: subtotales[i].value
+       });
+     }
+     console.log(productos);
+   }) */
 
 
 
@@ -176,7 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Iterar sobre los resultados y mostrarlos
       response.forEach(item => {
         if (item.descuento === null) {
-          const descuento = 0 
+          const descuento = 0
           item.descuento = parseFloat(descuento);
         }
         const li = document.createElement('li');
@@ -212,15 +214,16 @@ document.addEventListener('DOMContentLoaded', async () => {
           <input class="form-control form-control-sm cantidad"  type="number" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
       </td>
       <td class="col-md-1">
-        <select class="form-select form-select-sm und-medidad" id="und-medidad" name="und-medidad"  required>
+        <select class="form-select form-select-sm und-medida" id="und-medida" name="und-medida"  required>
         <option value="Und">Und</option>
         <option value="Caja">Caja</option>
         <option value="Bot">Bot.</option>
         </select>
       </td>
       <td class="precio">${precio}</td>
-      <td class="descuento">${descuento}</td>
-     <td class="subtotal">0.00</td>
+      <td class="subtotal"> S/0.00</td>
+      <td class="descuento">S/${descuento}</td>
+      <td class="total">S/0.00</td>
       <td class="col-1">
         <div class="mt-1  d-flex justify-content-evenly">
           <button type="button" class="btn btn-warning btn-sm w-100">
@@ -231,7 +234,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </button>
         </div>
       </td>
-  `;
+    `;
 
 
     // Añadir la fila a la tabla
@@ -239,19 +242,91 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const cantidadInput = row.querySelector('.cantidad');
     const subtotalCell = row.querySelector('.subtotal');
+    const descuentoCell = row.querySelector('.descuento');
+    const totalCell = row.querySelector('.total');
 
-    cantidadInput.addEventListener('input', () =>{
+    cantidadInput.addEventListener('input', () => {
       const cantidad = cantidadInput.value || 0;
-      const subtotal = (cantidad * (parseFloat(precio) - parseFloat(descuento))).toFixed(2);
+      const subtotal = (cantidad * parseFloat(precio)).toFixed(2);
+      const descuentos = (cantidad * (parseFloat(descuento))).toFixed(2);
+      const totales = (cantidad * (parseFloat(precio) - parseFloat(descuento))).toFixed(2);
+      totalCell.textContent = totales;
+      descuentoCell.textContent = descuentos;
       subtotalCell.textContent = subtotal;
-      
-  
     });
   }
 
+  async function addDetallePedidos(idpedido) {
+    const rows = document.querySelectorAll('#detalle-pedido tr');
+    const productos = [];
+    let idproducto
+    let cantidad
+    let undMedida
+    let precioUnitario
+    rows.forEach(row => {
+      idproducto = row.querySelector('td[id-data]').getAttribute('id-data');
+      cantidad = row.querySelector('.cantidad').value;
+      undMedida = row.querySelector('.und-medida').value;
+      precioUnitario = row.querySelector('.precio').textContent;
 
- 
+      productos.push({
+        idproducto,
+        cantidad,
+        undMedida,
+        precioUnitario
+      });
+    });
 
-})
-// export { getIdPedido }
-/* fin */
+    const params = new FormData();
+    params.append('operation', 'addDetallePedido');
+    params.append('idpedido', idpedido);
+    productos.forEach((producto, index) => {
+      params.append(`productos[${index}][idproducto]`, producto.idproducto);
+      params.append(`productos[${index}][cantidad_producto]`, producto.cantidad);
+      params.append(`productos[${index}][unidad_medida]`, producto.undMedida);
+      params.append(`productos[${index}][precio_unitario]`, producto.precioUnitario);
+
+    });
+
+
+    const options = {
+      method: 'POST',
+      body: params
+    }
+
+    try {
+      const response = await fetch(`../../controller/detallepedido.controller.php`, options);
+      return response.json();
+
+    } catch (e) {
+      console.error(e);
+    }
+
+  }
+
+
+
+  // EVENTO PARA MANDAR LOS DATOS A LA BASE DE DATOS
+  let idpedido = -1;
+  $("#registrar-pedido").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    let response01;
+    let response02;
+
+    if (confirm("Esta seguro de guardar los datos")) {
+      response01 = await getIdPedido();
+      idpedido = response01.idpedido;
+      console.log(idpedido)
+      if (idpedido == -1) {
+        alert("No se guardo los datos")
+      }else{
+        response02 = await addDetallePedidos(idpedido)
+        console.log(response02.id)
+      }
+    }
+
+  });
+
+
+
+}) /* fin del evento DOMcontenteLoaded */

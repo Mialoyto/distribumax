@@ -143,3 +143,7 @@ CALL sp_pedido_registrar (2, 21);
 
 CALL sp_pedido_registrar (1, 2);
 select * from pedidos;
+
+CALL sp_detalle_pedido ('PED-000000001',1,100,'und',8.50);
+
+SELECT * FROM detalle_pedidos;

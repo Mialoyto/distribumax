@@ -13,7 +13,7 @@ class Pedidos extends Conexion
   // funcion para agregar pedido
   public function agregarPedido($params = []): string
   {
-    $id = '';
+    $id = -1;
     try {
 
       $sql = "CALL sp_pedido_registrar( ?, ?)";
@@ -25,8 +25,6 @@ class Pedidos extends Conexion
       $row = $cmd->fetch(PDO::FETCH_ASSOC);
       $id = $row['idpedido'];
     } catch (Exception $e) {
-      // $this->pdo->rollBack();
-      // echo $e->getMessage();
       return $id;
     }
     return $id;

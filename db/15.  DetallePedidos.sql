@@ -1,23 +1,61 @@
 USE distribumax;
 
--- REGISTRAR DETALLE PEDIDOS
+-- REGISTRAR DETALLE PEDIDOSDELIMITER $$
 DELIMITER $$
 CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido            CHAR(15),
     IN _idproducto          INT,
     IN _cantidad_producto   INT,
     IN _unidad_medida       CHAR(10),
-    IN _precio_unitario     DECIMAL(10, 2),
-    IN _precio_descuento    DECIMAL(10, 2)
+    IN _precio_unitario     DECIMAL(10, 2)
 )
 BEGIN
-    DECLARE _subtotal DECIMAL(10, 2);
-    SET _subtotal = (_cantidad_producto * _precio_unitario) - _precio_descuento;
+    DECLARE _subtotal               DECIMAL(10, 2);
+    DECLARE v_descuento_unitario    DECIMAL(10, 2) DEFAULT 0.00;
+    DECLARE v_descuento             DECIMAL(10, 2) DEFAULT 0.00;
+
+
+    SELECT IFNULL(descuento, 0) INTO v_descuento_unitario
+    FROM detalle_promociones
+    WHERE idproducto = _idproducto
+    LIMIT 1;
+
+    SET v_descuento = _cantidad_producto * v_descuento_unitario;
+
+    SET _subtotal = (_cantidad_producto * _precio_unitario) - v_descuento;
+
     INSERT INTO detalle_pedidos 
     (idpedido, idproducto, cantidad_producto, unidad_medida, precio_unitario, precio_descuento, subtotal) 
     VALUES
-    (_idpedido, _idproducto, _cantidad_producto, _unidad_medida, _precio_unitario, _precio_descuento, _subtotal);
+    (_idpedido, _idproducto, _cantidad_producto, _unidad_medida, _precio_unitario, v_descuento, _subtotal);
+    SELECT LAST_INSERT_ID() AS iddetallepedido;
 END$$
+
+-- ACTUALIZAR EL STOCK
+CREATE TRIGGER trg_actualizar_stock
+AFTER INSERT ON detalle_pedidos
+FOR EACH ROW
+BEGIN
+    DECLARE v_stock_actual          INT;
+    DECLARE v_idusuario             INT;
+
+    SELECT stockactual INTO v_stock_actual
+    FROM kardex
+    WHERE idproducto = NEW.idproducto
+    LIMIT 1;
+
+    SELECT idusuario INTO v_idusuario
+    FROM pedidos
+    WHERE idpedido = NEW.idpedido
+    LIMIT 1;
+
+    IF v_stock_actual >= NEW.cantidad_producto THEN
+        CALL sp_registrarmovimiento_detallepedido(v_idusuario, NEW.idproducto, v_stock_actual, 'Salida', NEW.cantidad_producto, 'Venta de producto');
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para esta operación';
+    END IF;
+END
+
 
 
 -- ACTUALIZAR DETALLE PEDIDOS
@@ -74,12 +112,18 @@ END$$
 
 
 -- Obtener el Id del pedido y completar la tabla en ventas
-
+/* ESTO MODIFICO LOYOLA */
 DELIMITER $$
 CREATE PROCEDURE sp_getById_pedido(
 	IN  _idpedido CHAR(15)
 )BEGIN
 	SELECT 
+    cli.idpersona,
+    cli.idempresa,
+    pe.nombres,
+    pe.appaterno,
+    pe.apmaterno,
+    em.razonsocial,
     dp.id_detalle_pedido,
     pr.nombreproducto,
     pr.preciounitario,
@@ -87,16 +131,14 @@ CREATE PROCEDURE sp_getById_pedido(
     dp.unidad_medida,
     dp.precio_descuento,
     dp.subtotal
-FROM 
-    pedidos p
-INNER JOIN 
-    detalle_pedidos dp ON p.idpedido = dp.idpedido
-INNER JOIN 
-    productos pr ON pr.idproducto = dp.idproducto
-INNER JOIN  
-    clientes cl ON cl.idcliente = p.idcliente  -- Asegúrate de que esta condición es correcta
-WHERE 
-    p.idpedido =_idpedido;
+FROM pedidos p
+    INNER JOIN detalle_pedidos dp ON p.idpedido = dp.idpedido
+    INNER JOIN productos pr ON pr.idproducto = dp.idproducto
+    INNER JOIN  clientes cl ON cl.idcliente = p.idcliente  -- Asegúrate de que esta condición es correcta
+    INNER JOIN clientes cli ON cli.idcliente = p.idcliente
+    LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
+    LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
+    WHERE p.idpedido ='PED-000000001';
 END$$
 
 CALL sp_getById_pedido('PED-000000001');

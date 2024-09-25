@@ -2,8 +2,8 @@ USE distribumax;
 
 DELIMITER $$
 CREATE PROCEDURE getultimostock (
-    IN _idproducto INT,
-    OUT stock_actual INT
+    IN _idproducto      INT,
+    OUT stock_actual    INT
 )
 BEGIN
     SELECT stockactual INTO stock_actual
@@ -13,16 +13,15 @@ BEGIN
     LIMIT 1;
 END $$
 
-DROP PROCEDURE IF EXISTS sp_registrarmovimiento;
-DELIMITER $$
 
+DELIMITER $$
 CREATE PROCEDURE sp_registrarmovimiento (
-    IN _idusuario INT,
-    IN _idproducto INT,
-    IN _stockactual INT,
-    IN _tipomovimiento ENUM('Ingreso', 'Salida'),
-    IN _cantidad DECIMAL(10, 2), 
-    IN _motivo VARCHAR(255)
+    IN _idusuario       INT,
+    IN _idproducto      INT,
+    IN _stockactual     INT,
+    IN _tipomovimiento  ENUM('Ingreso', 'Salida'),
+    IN _cantidad        DECIMAL(10, 2), -- tiene que ser entero
+    IN _motivo          VARCHAR(255) -- mensaje
 )
 BEGIN
     DECLARE _ultimo_stock_actual INT;
@@ -50,11 +49,44 @@ BEGIN
     SELECT _idproducto AS _idproducto, _nuevo_stock_actual AS _retorno_stock_actual;
 END $$
 
-DELIMITER ;
+-- REGISTRO DE VENTAS
+DELIMITER $$
+CREATE PROCEDURE sp_registrarmovimiento_detallepedido (
+    IN _idusuario INT,
+    IN _idproducto INT,
+    IN _stockactual INT,
+    IN _tipomovimiento ENUM('Ingreso', 'Salida'),
+    IN _cantidad DECIMAL(10, 2), -- tiene que ser entero
+    IN _motivo VARCHAR(255) -- mensaje
+)
+BEGIN
+    DECLARE _ultimo_stock_actual INT;
+    DECLARE _nuevo_stock_actual INT;
+
+    CALL getultimostock(_idproducto, _ultimo_stock_actual);
+
+    IF _ultimo_stock_actual IS NULL THEN
+        SET _ultimo_stock_actual = 0;
+    END IF;
+
+    IF _tipomovimiento = 'Ingreso' THEN
+        SET _nuevo_stock_actual = _ultimo_stock_actual + _cantidad;
+    ELSEIF _tipomovimiento = 'Salida' THEN
+        IF _ultimo_stock_actual >= _cantidad THEN
+            SET _nuevo_stock_actual = _ultimo_stock_actual - _cantidad;
+        ELSE
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para esta operación';
+        END IF;
+    END IF;
+
+    INSERT INTO kardex (idusuario, idproducto, stockactual, tipomovimiento, cantidad, motivo)
+    VALUES (_idusuario, _idproducto, _nuevo_stock_actual, _tipomovimiento, _cantidad, _motivo);
+END $$
+
 
 -- Llamada al procedimiento
-CALL spu_registrarmovimiento(1, 7, 0, 'Ingreso', 40, 'Ingreso de nuevos productos');
-CALL spu_registrarmovimiento(1, 2, 0, 'Salida',11, 'Salida de nuevos productos');
+CALL sp_registrarmovimiento(1, 1, 0, 'Ingreso', 400, 'Ingreso de nuevos productos');
+CALL sp_registrarmovimiento(1, 2, 0, 'Ingreso',91, 'Salida de nuevos productos');
 
 select * from kardex;
 select * from productos;

@@ -1,4 +1,4 @@
--- Active: 1726291702198@@localhost@3306
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
@@ -30,6 +30,7 @@ select * from roles;
 delete from usuarios where idpersona = '26558000';
 SELECT * FROM productos;
 SELECT * FROM  tipo_documento;
+
 
 SELECT * FROM proveedores;
 SHOW COLUMNS FROM tipos_promociones;
@@ -70,4 +71,21 @@ DELIMITER ;
 
 
 -- AGREGAR DETALLE PEDIDO
-call sp_detalle_pedido ('PED-000000001',1,2,'und',8.50,0.00);
+call sp_detalle_pedido ('PED-000000002',1,8,'und',8.50);
+SELECT  * FROM pedidos ORDER BY idpedido DESC LIMIT 5;
+SELECT * FROM detalle_pedidos ORDER BY id_detalle_pedido DESC LIMIT 5;
+SELECT * FROM kardex ORDER BY idkardex DESC LIMIT 5;
+SELECT * from kardex where idproducto = 2;
+
+
+    SELECT 
+        PRO.idproducto,
+        PRO.codigo,
+        PRO.nombreproducto,
+        PRO.preciounitario,
+        DET.iddetallepromocion,
+        DET.descuento
+    FROM  productos PRO
+        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
+    WHERE nombreproducto  = "Atún Nestlé en Aceite"
+    AND PRO.estado = '1';

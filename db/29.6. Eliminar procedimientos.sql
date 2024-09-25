@@ -68,6 +68,7 @@ DROP PROCEDURE IF EXISTS sp_estado_promocion;
 
 -- 15 detalle pedidos
 DROP PROCEDURE IF EXISTS sp_detalle_pedido;
+DROP TRIGGER IF EXISTS trg_actualizar_stock;
 DROP PROCEDURE IF EXISTS sp_actualizar_detalle_pedido;
 DROP PROCEDURE IF EXISTS sp_estado_detalle_pedido;
 DROP PROCEDURE IF EXISTS sp_buscar_productos;
@@ -114,6 +115,11 @@ DROP VIEW IF EXISTS view_distritos;
 
 -- 28 Tipo Documentos 
 DROP VIEW IF EXISTS view_tipos_documentos;
+
+-- 29 Kardex
+DROP PROCEDURE IF EXISTS sp_registrarmovimiento;
+
+DROP PROCEDURE IF EXISTS sp_registrarmovimiento_detallepedido;
 
 
 

@@ -3,6 +3,55 @@ document.addEventListener("DOMContentLoaded", () => {
         return document.querySelector(selector);
     }
 
+    window.onload = function() {
+        // Obtener la fecha y hora actual
+        const now = new Date();
+        // Formatear la fecha y hora para el input datetime-local
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Mes es 0-indexado
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        
+        // Crear el valor de fecha en el formato requerido
+        const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+        
+        // Asignar el valor mínimo al input
+        document.getElementById('fecha_venta').setAttribute('min', minDateTime);
+      };
+    const optionMe =$("#idmetodopago");
+    const optionCo =$("#idtipocomprobante");
+     (()=>{
+        fetch(`../../controller/metodoP.controller.php?operation=getAll`)
+        .then(response=>response.json())
+        .then(data=>{
+            data.forEach(metodo => {
+            const tagOption= document.createElement('option'); 
+            tagOption.value=metodo.idmetodopago;
+            tagOption.innerText=metodo.metodopago;
+            optionMe.appendChild(tagOption);
+            });
+            
+            
+        })      
+        .catch(e=>console.error(e));
+     })();
+     (()=>{
+        fetch(`../../controller/comprobante.controller.php?operation=getAll`)
+        .then(response=>response.json())
+        .then(data=>{
+            data.forEach(comprobante => {
+            const tagOption= document.createElement('option'); 
+            tagOption.value=comprobante.idtipocomprobante;
+            tagOption.innerText=comprobante.comprobantepago;
+            optionCo.appendChild(tagOption);
+            });
+            
+            
+        })      
+        .catch(e=>console.error(e));
+     })();
+
     const buscarPedido = async () => {
         const params = new URLSearchParams();
         params.append('operation', 'searchPedido');

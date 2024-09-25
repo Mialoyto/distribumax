@@ -26,3 +26,10 @@ BEGIN
 			update_at=now()
         WHERE idtipocomprobante =_idtipocomprobante;
 END$$
+
+
+DELIMITER $$
+CREATE PROCEDURE sp_listar_comprobate()
+BEGIN
+	SELECT * FROM tipo_comprobante_pago;
+END$$

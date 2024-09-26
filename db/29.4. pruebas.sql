@@ -74,7 +74,7 @@ DELIMITER ;
 call sp_detalle_pedido ('PED-000000002',1,8,'und',8.50);
 SELECT  * FROM pedidos ORDER BY idpedido DESC LIMIT 5;
 SELECT * FROM detalle_pedidos ORDER BY id_detalle_pedido DESC LIMIT 5;
-SELECT * FROM kardex ORDER BY idkardex DESC LIMIT 5;
+SELECT idproducto,stockactual FROM kardex WHERE idproducto=2 ORDER BY idkardex DESC LIMIT 1;
 SELECT * from kardex where idproducto = 2;
 
 
@@ -84,8 +84,11 @@ SELECT * from kardex where idproducto = 2;
         PRO.nombreproducto,
         PRO.preciounitario,
         DET.iddetallepromocion,
-        DET.descuento
+        DET.descuento,
+        KAR.idkardex,
+        KAR.stockactual
     FROM  productos PRO
         LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
+        RIGHT JOIN kardex KAR ON PRO.idproducto = KAR.idproducto
     WHERE nombreproducto  = "Atún Nestlé en Aceite"
-    AND PRO.estado = '1';
+    AND PRO.estado = '1' ORDER BY idkardex DESC LIMIT 5;

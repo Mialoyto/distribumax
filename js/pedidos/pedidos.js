@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.log(idpedido)
       if (idpedido == -1) {
         alert("No se guardo los datos")
-      }else{
+      } else {
         response02 = await addDetallePedidos(idpedido)
         console.log(response02.id)
       }

@@ -144,15 +144,17 @@ VALUES
 
 INSERT INTO promociones (idtipopromocion, descripcion, fechainicio, fechafin, valor_descuento)
 VALUES
-    (1, 'Descuento de Temporada', '2021-06-01', '2021-06-30', 5.00);
+    (1, 'Descuento de Temporada', '2024-06-01', '2024-06-30', 5.00);
 INSERT INTO promociones (idtipopromocion, descripcion, fechainicio, fechafin, valor_descuento)
 VALUES
     (2, 'Descuento del 5% por und', '2021-06-01', '2021-06-30', 5);
 
 INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
-VALUES (1, 1, 5.00);
+VALUES (5, 1, 5.00);
+select * from promociones;
+select * from detalle_promociones;
 INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
-VALUES (2, 2, 5.00);
+VALUES (4, 2, 5.00);
 -- Registrando vehiculos (2 vehiculos)
 INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
 VALUES

@@ -138,9 +138,10 @@ FROM pedidos p
     INNER JOIN clientes cli ON cli.idcliente = p.idcliente
     LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
     LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
-    WHERE p.idpedido = _idpedido;
+    WHERE p.idpedido ='PED-000000001';
 END$$
 
-CALL sp_getById_pedido('PED-000000002');
 
+CALL sp_getById_pedido('PED-000000002');
+select * from detalle_pedidos;
 select * from pedidos;

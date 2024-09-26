@@ -4,16 +4,16 @@ require_once '../../header.php';
 
 <main>
   <div class="container-fluid px-4">
-    <h1 class="mt-4">Empresas</h1>
+    <h1 class="mt-4">Ventas</h1>
     <ol class="breadcrumb mb-4"></ol>
 
     <div class="card mb-4">
       <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Listado de Empresas
+        Registro de venta
       </div>
       <div class="card-body">
-        <form method="POST" action="#" autocomplete="off">
+        <form method="POST" action="#" autocomplete="off" id="form-venta-registrar">
 
           <!-- Selección de Pedido -->
           <div class="mb-4">
@@ -39,6 +39,7 @@ require_once '../../header.php';
                   <th>Producto</th>
                   <th>Cantidad</th>
                   <th>Precio Unitario</th>
+                  <th>Descuento</th>
                   <th>Total</th>
                 </tr>
               </thead>
@@ -60,7 +61,7 @@ require_once '../../header.php';
               </div>
               <div class="col-md-4">
                 <div class="form-floating">
-                  <select name="" id="idmetodopago" class="form-select">
+                  <select name="" id="idmetodopago" class="form-select" required>
                     <option value=""></option>
                   </select>
                   <label for="fecha_venta">Metodo de Pago</label>
@@ -68,7 +69,7 @@ require_once '../../header.php';
               </div>
               <div class="col-md-4">
                 <div class="form-floating">
-                  <select name="" id="idtipocomprobante" class="form-select">
+                  <select name="" id="idtipocomprobante" class="form-select" required>
                     <option value=""></option>
                   </select>
                   <label for="fecha_venta">Tipo de Comprobante</label>
@@ -80,24 +81,32 @@ require_once '../../header.php';
           <div class="mb-4">
             <h5>Totales</h5>
             <div class="row mb-3">
-              <div class="col-md-4">
+              
+              <div class="col-md-3">
                 <div class="form-floating">
                   <input type="number" step="0.01" class="form-control" id="subtotal" name="subtotal" required readonly>
                   <label for="subtotal">Subtotal</label>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
+                <div class="form-floating">
+                  <input type="number" step="0.01" class="form-control" id="descuento" value="0.00" required readonly>
+                  <label for="total_venta">Descuento</label>
+                </div>
+              </div>
+              <div class="col-md-3">
                 <div class="form-floating">
                   <input type="number" step="0.01" class="form-control" id="igv" name="igv" value="0.00" required readonly>
                   <label for="igv">IGV</label>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-floating">
-                  <input type="number" step="0.01" class="form-control" id="total_venta" name="total_venta" required readonly>
+                  <input type="number" step="0.01" class="form-control" id="total_venta" name="total_venta" required readonly >
                   <label for="total_venta">Total Venta</label>
                 </div>
               </div>
+
             </div>
           </div>
 

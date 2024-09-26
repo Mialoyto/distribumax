@@ -77,11 +77,7 @@
                     </div>
                     <div>
                         <!-- Botón para agregar producto a la tabla -->
-                   <!--      <div class="d-flex justify-content-end mb-3">
-                            <button type="button" class="btn btn-outline-success" id="addpedido">
-                                <i class="bi bi-plus-circle"></i> pedido
-                            </button>
-                        </div> -->
+                     
 
                         <hr class="my-3">
 

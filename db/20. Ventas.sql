@@ -20,7 +20,8 @@ BEGIN
     
 END$$
 
-
+CALL sp_registrar_venta('PED-000000009', 1, 1, NOW(), 100.00, 10.00, 18.00, 108.00);
+SELECT * FROM ventas INNER JOIN  pedidos  on ventas.idpedido=pedidos.idpedido;
 -- ACTUALIZAR VENTAS
 CREATE PROCEDURE sp_actualizar_venta(
     IN _idpedido CHAR(15),
@@ -56,4 +57,15 @@ BEGIN
         WHERE idventa=_idventa;
 END$$ 
 
--- select * from ventas;
+-- Cambiar el estado del pedido al registrarlo
+DELIMITER $$
+CREATE TRIGGER trg_actualizar_estado_pedido
+AFTER INSERT ON ventas
+FOR EACH ROW
+BEGIN
+    UPDATE pedidos
+    SET estado = 'Enviado'
+    WHERE idpedido = NEW.idpedido 
+      AND estado <> 'Enviado';  
+END$$
+

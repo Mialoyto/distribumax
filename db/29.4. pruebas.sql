@@ -1,4 +1,4 @@
--- Active: 1726291702198@@localhost@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
@@ -72,23 +72,23 @@ DELIMITER ;
 
 -- AGREGAR DETALLE PEDIDO
 call sp_detalle_pedido ('PED-000000002',1,8,'und',8.50);
-SELECT  * FROM pedidos ORDER BY idpedido DESC LIMIT 5;
+SELECT  * FROM pedidos ORDER BY idpedido DESC LIMIT 1;
 SELECT * FROM detalle_pedidos ORDER BY id_detalle_pedido DESC LIMIT 5;
 SELECT idproducto,stockactual FROM kardex WHERE idproducto=2 ORDER BY idkardex DESC LIMIT 1;
 SELECT * from kardex where idproducto = 2;
 
 
-    SELECT 
-        PRO.idproducto,
-        PRO.codigo,
-        PRO.nombreproducto,
-        PRO.preciounitario,
-        DET.iddetallepromocion,
-        DET.descuento,
-        KAR.idkardex,
-        KAR.stockactual
-    FROM  productos PRO
-        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
-        RIGHT JOIN kardex KAR ON PRO.idproducto = KAR.idproducto
-    WHERE nombreproducto  = "Atún Nestlé en Aceite"
-    AND PRO.estado = '1' ORDER BY idkardex DESC LIMIT 5;
+SELECT 
+    KAR.idkardex,
+    PRO.idproducto,
+    PRO.codigo,
+    PRO.nombreproducto,
+    PRO.preciounitario,
+    DET.iddetallepromocion,
+    DET.descuento,
+    KAR.stockactual
+FROM  productos PRO
+    LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
+    INNER JOIN kardex KAR ON PRO.idproducto = KAR.idproducto
+WHERE nombreproducto  = "At"
+AND PRO.estado = '1' ORDER BY idkardex DESC;

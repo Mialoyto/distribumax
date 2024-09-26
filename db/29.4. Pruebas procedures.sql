@@ -4,9 +4,9 @@ CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
     '26558000', -- Número de documento
     954, -- ID del distrito
-    'Ana', -- Nombres
-    'Martinez', -- Apellido paterno
-    'Lopez', -- Apellido materno
+    'Miguel', -- Nombres
+    'Loyola', -- Apellido paterno
+    'Torres', -- Apellido materno
     NULL, -- Teléfono (NULL)
     'Calle Falsa 123' -- Dirección
 );
@@ -129,13 +129,15 @@ CALL sp_actualizar_empresa (12345678901,954,'Dijisa','Panamericana #234','dijisa
 insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558000, 20123456781,'Empresa');
 insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(2,1,'2024/09/22');
 insert into detalle_pedidos(idpedido,idproducto,cantidad_producto,unidad_medida,precio_unitario,precio_descuento,subtotal)VALUES
-('PED-000000001',1,10,'unidad',2,1,10),
-('PED-000000001',2,20,'unidad',10,2,90);
+('PED-000000002',1,10,'unidad',2,1,10),
+('PED-000000002',2,20,'unidad',10,2,90);
 
 select * from detalle_pedidos;
 select * from pedidos;
 select * from clientes;
 select * from productos;
+select * from kardex;
+select * from ventas;
 call sp_buscardistrito ('chincha');
 CALL sp_pedido_registrar (2, 21);
 

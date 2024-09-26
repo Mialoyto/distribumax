@@ -1,4 +1,4 @@
--- Active: 1726291702198@@localhost@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 --  REGISTRAR PEDIDOS
 DELIMITER $$
@@ -54,15 +54,24 @@ BEGIN
     SELECT 
         idpedido
     FROM  pedidos 
-    WHERE idpedido LIKE CONCAT ('%',_idpedido, '%')
-    AND estado='Pendiente';
+    WHERE idpedido LIKE CONCAT ('%', _idpedido, '%') 
+      AND estado = 'Pendiente';  -- Filtra para no mostrar pedidos "Enviados"
+      
+    -- Actualizar el estado del pedido si se encuentra
+    UPDATE pedidos 
+    SET estado = ''  
+    WHERE idpedido = _idpedido
+      AND estado = 'Enviado';  -- Asegúrate de que solo se actualicen los pedidos que no están "Enviados"
+    
 END$$
-select * from pedidos;
 
 
-CALL sp_buscar_pedido('PDO-01')
+
+
+
 
 -- insertar id antes de insertar los datos
+DELIMITER $$
 CREATE TRIGGER before_insert_pedidos
 BEFORE INSERT ON pedidos
 FOR EACH ROW
@@ -70,18 +79,6 @@ BEGIN
     DECLARE nuevo_id CHAR(15); 
     SET nuevo_id = CONCAT('PED-', LPAD((SELECT COUNT(*) + 1 FROM pedidos), 9, '0'));
     SET NEW.idpedido = nuevo_id;
-END$$
-
--- Trigger que cambiara el estado al registrar el pedido
-DELIMITER $$
-
-CREATE TRIGGER trg_actualizar_estado_pedido
-AFTER INSERT ON ventas
-FOR EACH ROW
-BEGIN
-    UPDATE pedidos
-    SET estado = 'Enviado'
-    WHERE idpedido = NEW.idpedido;
 END$$
 
 

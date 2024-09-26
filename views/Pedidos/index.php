@@ -20,25 +20,25 @@
           <!-- fila 01 -->
           <div class="row g-3 mb-3">
 
-            <div class="col-md-6 mb-2">
-              <!-- selecc de tipo de documento -->
-              <div class="form-floating">
-                <select class="form-control" id="cliente" name="cliente" disabled="true" required>
-                  <!-- Opciones dinámicas -->
-                </select>
-                <label for="idcliente" class="form-label"><i class="fa-regular fa-id-card fa-lg"></i> Tipo de cliente </label>
-              </div>
-              <!-- fin de selec de tipo de documento -->
-            </div>
-            <div class="col-md-6 mb-2">
-              <div class="form-floating">
-                <input type="number" class="form-control" id="nro-doc" name="nro-doc" placeholder="Número de documento" required>
-                <label for="nro-doc" class="form-label"> <i class="bi bi-search"></i> Número de documento</label>
-              </div>
-            </div>
-          </div>
-          <!-- fila 2 -->
-          <div class="row g-3 mb-3">
+                        <div class="col-md-6 mb-2">
+                            <!-- selecc de tipo de documento -->
+                            <div class="form-floating">
+                                <select class="form-control" id="cliente" name="cliente" disabled="true" required>
+                                    <!-- Opciones dinámicas -->
+                                </select>
+                                <label for="idcliente" class="form-label"><i class="fa-regular fa-id-card fa-lg"></i> Tipo de cliente </label>
+                            </div>
+                            <!-- fin de selec de tipo de documento -->
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="nro-doc" name="nro-doc" placeholder="Número de documento" type="number" min="1" pattern="^[0-9]+" required>
+                                <label for="nro-doc" class="form-label"> <i class="bi bi-search"></i> Número de documento</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- fila 2 -->
+                    <div class="row g-3 mb-3">
 
             <div class="col-md-4 mt-3">
               <div class="form-floating">
@@ -74,23 +74,30 @@
               </div>
             </div>
 
-          </div>
-          <div>
-            <hr class="my-3">
+                    </div>
+                    <div>
+                        <!-- Botón para agregar producto a la tabla -->
+                        <div class="d-flex justify-content-end mb-3">
+                            <button type="button" class="btn btn-outline-success" id="addpedido">
+                                <i class="bi bi-plus-circle"></i> pedido
+                            </button>
+                        </div>
 
-            <!-- Sección de Detalle de Pedido -->
-            <div>
-              <h5 class="mb-3">Detalle del Pedido</h5>
-            </div>
-            <!-- BUSCADOR PETICIONES -->
-            <div class="col-md-4 mb-3">
-              <div class="form-floating">
-                <input type="search" class="form-control" id="addProducto" list="datalistProducto" placeholder="addProducto">
-                <label for="addProducto">Agregar producto</label>
-                <ul id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></ul>
-              </div>
-            </div>
-            <!-- FIN BUSCADOR PETICIONES -->
+                        <hr class="my-3">
+
+                        <!-- Sección de Detalle de Pedido -->
+                        <div>
+                            <h5 class="mb-3">Detalle del Pedido</h5>
+                        </div>
+                        <!-- BUSCADOR PETICIONES -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-floating">
+                                <input type="search" class="form-control" id="addProducto" list="datalistProducto" placeholder="addProducto">
+                                <label for="addProducto">Agregar producto</label>
+                                <ul id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></ul>
+                            </div>
+                        </div>
+                        <!-- FIN BUSCADOR PETICIONES -->
 
             <!-- Tabla de productos del pedido -->
             <div class="table-responsive">

@@ -1,3 +1,4 @@
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR DETALLE PEDIDOSDELIMITER $$
@@ -80,7 +81,6 @@ END$$
 -- ESTADO DETALLE PEDIDOS
 /** Debe de poder eliminar el pedido **/
 DELIMITER $$
-
 CREATE PROCEDURE sp_estado_detalle_pedido(
     IN  _estado           CHAR(1),
     IN  _iddetallepedido  INT 
@@ -141,6 +141,7 @@ FROM pedidos p
     WHERE p.idpedido ='PED-000000001';
 END$$
 
-CALL sp_getById_pedido('PED-000000001');
 
+CALL sp_getById_pedido('PED-000000002');
+select * from detalle_pedidos;
 select * from pedidos;

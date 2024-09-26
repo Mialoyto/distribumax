@@ -14,17 +14,16 @@ document.addEventListener("DOMContentLoaded",()=>{
         })
     };
     const searchProducto = async ()=>{
-        let searchData = new FormData();
+        const searchData = new URLSearchParams();
 
         searchData.append('operation','searchProducto');
-        searchData.append('nombreproducto',producto);
-        const optiones={
-            method : 'POST',
-            body:searchData
-        }
+        searchData.append('_item',producto);
+     
         try{
-            const response= await fetch(`../../controller/producto.controller.php`,optiones)
-            return response.json();
+            const response= await fetch(`../../controller/producto.controller.php?${searchData}`);
+            const data = await response.json();
+            console.log(data);
+            return data;
         }catch(e){
             console.error(e);
         }
@@ -53,7 +52,8 @@ document.addEventListener("DOMContentLoaded",()=>{
         for(let i =0; i<options.length;i++){
             if(options[i].value===selectedDistrito){
                 selectedId=options[i].getAttribute('data-id');
-                await cargarStock();
+                // ERROR
+                // await cargarStock();
                 break;
             }
         }
@@ -78,23 +78,6 @@ document.addEventListener("DOMContentLoaded",()=>{
         .catch(e=>{console.error(e)})
     }
     
-   /* async function cargarStock() {
-        const params= new FormData();
-        params.append('operation','getById');
-        params.append('idproducto',selectedId);
-     
-        const option ={
-            method : 'POST',
-            body :params
-        }
-
-     const resultado= await fetch(`../../controller/kardex.controller.php`,option);
-     return resultado.json()
-     .then(datos=>{
-       $("#stockactual").value=datos.stockactual;
-     })
-     .catch(e=>{console.error(e)})
-    }*/
 
  const formkardex=   $("#form-registrar-kardex").addEventListener('submit',async (event)=>{
         event.preventDefault();

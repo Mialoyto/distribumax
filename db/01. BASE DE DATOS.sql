@@ -353,7 +353,6 @@ CREATE TABLE pedidos (
     idusuario       INT             NOT NULL,
     idcliente       INT             NOT NULL,
     fecha_pedido    DATETIME        NOT NULL DEFAULT NOW(),
-    
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
     estado          CHAR(10) NOT NULL DEFAULT 'Pendiente',
@@ -461,7 +460,8 @@ CREATE TABLE ventas (
     CONSTRAINT ck_subtotal_venta CHECK(subtotal > 0),
     CONSTRAINT ck_descuento CHECK (descuento > 0),
     CONSTRAINT ck_igv CHECK(igv > 0),
-    CONSTRAINT ck_totalventa CHECK(total_venta > 0)
+    CONSTRAINT ck_totalventa CHECK(total_venta > 0),
+    CONSTRAINT uk_idpedido UNIQUE (idpedido)
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS comprobantes;

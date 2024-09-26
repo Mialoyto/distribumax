@@ -67,11 +67,11 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const mostraResultados = async () => {
-        const response = await buscarPedido();
         const datalist = $("#datalistProducto");
         datalist.innerHTML = '';
+        const response = await buscarPedido();
 
-        if (response && response.length > 0) {
+        if (response.length > 0) {
             response.forEach(item => {
                 const option = document.createElement('option');
                 option.value = `${item.idpedido}`;

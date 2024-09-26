@@ -1,3 +1,4 @@
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TABLAS NECESARIAS PARA REGISTRAR PERSONAS
 INSERT INTO tipo_documento (documento, descripcion) VALUES
@@ -151,7 +152,7 @@ VALUES
 INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
 VALUES (1, 1, 5.00);
 INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
-VALUES (13, 2, 5.00);
+VALUES (2, 2, 5.00);
 -- Registrando vehiculos (2 vehiculos)
 INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
 VALUES

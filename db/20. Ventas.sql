@@ -56,4 +56,4 @@ BEGIN
         WHERE idventa=_idventa;
 END$$ 
 
-select * from ventas;
+-- select * from ventas;

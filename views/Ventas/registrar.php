@@ -21,8 +21,10 @@ require_once '../../header.php';
             <div class="row mb-3">
               <div class="col">
                 <div class="form-floating">
-                  <input type="search" class="form-control" id="idpedido" list="datalistProducto" placeholder="" required>
-                  <datalist id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist>
+                  <input type="search" class="form-control" id="idpedido" list="datalistIdPedido" placeholder="" required>
+                  <!-- <label for="idpedido">Pedido</label> -->
+                  <!-- <ul id="datalistIdPedido" class="list-group position-absolute w-100 dataList" style="z-index: 1000; display: none;"></ul> -->
+                  <datalist id="datalistPedido" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist>
                   <label for="idpedido">Pedido</label>
                 </div>
               </div>

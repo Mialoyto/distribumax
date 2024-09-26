@@ -4,9 +4,9 @@ CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
     '26558000', -- Número de documento
     954, -- ID del distrito
-    'Ana', -- Nombres
-    'Martinez', -- Apellido paterno
-    'Lopez', -- Apellido materno
+    'Miguel', -- Nombres
+    'Loyola', -- Apellido paterno
+    'Torres', -- Apellido materno
     NULL, -- Teléfono (NULL)
     'Calle Falsa 123' -- Dirección
 );

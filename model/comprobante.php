@@ -23,7 +23,7 @@ class ComprobantePago extends Conexion{
     }
     public function getAll(){
         try{
-            $query=$this->pdo->prepare("CALL sp_listar_comprobate ");
+            $query=$this->pdo->prepare("CALL sp_listar_comprobate");
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
         }catch(Exception $e){   

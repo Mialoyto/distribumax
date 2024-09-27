@@ -279,6 +279,17 @@ CREATE TABLE promociones(
     CONSTRAINT fk_estado_prom  CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
 
+DROP TABLE unidades_medidas;
+CREATE TABLE unidades_medidas(
+    idunidadmedida	INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    unidadmedida	VARCHAR(100)	NOT NULL,
+    
+    create_at		DATETIME NOT NULL DEFAULT NOW(),
+    update_at		DATETIME NULL,
+    estado			CHAR(1) NOT NULL DEFAULT "1",
+    CONSTRAINT uk_unidadmedida UNIQUE(unidadmedida),
+    CONSTRAINT fk_estado_uni_med CHECK(estado IN ("0", "1"))
+)ENGINE = INNODB;
 
 DROP TABLE IF EXISTS productos;
 CREATE TABLE productos (

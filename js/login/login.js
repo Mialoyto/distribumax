@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
           .then(data => {
               
               console.log(data);
-            //   alert(data.status);
-            //   alert("revisar json");
+              alert(data.status);
+              alert("revisar json");
               if (!data.acceso) {
                   console.log(data);
                   // alert(data.status);

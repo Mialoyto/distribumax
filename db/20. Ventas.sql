@@ -3,7 +3,7 @@ USE distribumax;
 -- REGISTRAR VENTAS
 DELIMITER $$
 CREATE PROCEDURE sp_registrar_venta(
-    IN _idpedido            CHAR(15),
+    IN _idpedido            VARCHAR(15),
     IN _idmetodopago        INT,
     IN _idtipocomprobante   INT,
     IN _fecha_venta         DATETIME,
@@ -20,8 +20,7 @@ BEGIN
     
 END$$
 
-CALL sp_registrar_venta('PED-000000009', 1, 1, NOW(), 100.00, 10.00, 18.00, 108.00);
-SELECT * FROM ventas INNER JOIN  pedidos  on ventas.idpedido=pedidos.idpedido;
+
 -- ACTUALIZAR VENTAS
 CREATE PROCEDURE sp_actualizar_venta(
     IN _idpedido CHAR(15),
@@ -68,4 +67,41 @@ BEGIN
     WHERE idpedido = NEW.idpedido 
       AND estado <> 'Enviado';  
 END$$
+
+
+-- View para listar tables 
+CREATE PROCEDURE sp_generar_reporte
+CREATE VIEW vw_generar_reporte AS
+SELECT 
+    ve.idventa,
+    ve.fecha_venta,
+    p.idpedido,
+    cli.idpersona,
+    cli.idempresa,
+    cli.tipo_cliente,
+    pe.nombres,
+    pe.appaterno,
+    pe.apmaterno,
+    em.razonsocial,
+    us.idusuario,
+    us.nombre_usuario,
+    GROUP_CONCAT(pr.nombreproducto SEPARATOR ', ') AS productos,
+    GROUP_CONCAT(pr.preciounitario SEPARATOR ', ') AS precios_unitarios,
+    GROUP_CONCAT(dp.cantidad_producto SEPARATOR ', ') AS cantidades,
+    GROUP_CONCAT(dp.unidad_medida SEPARATOR ', ') AS unidades_medida,
+    GROUP_CONCAT(dp.precio_descuento SEPARATOR ', ') AS descuentos,
+    GROUP_CONCAT(dp.subtotal SEPARATOR ', ') AS subtotales
+FROM ventas ve
+    INNER JOIN pedidos p ON p.idpedido = ve.idpedido
+    INNER JOIN detalle_pedidos dp ON p.idpedido = dp.idpedido
+    INNER JOIN productos pr ON pr.idproducto = dp.idproducto
+    INNER JOIN clientes cli ON cli.idcliente = p.idcliente
+    LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
+    LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
+    LEFT JOIN usuarios us ON us.idusuario=pe.idpersonanrodoc
+WHERE p.estado = 'Enviado'
+GROUP BY p.idpedido, cli.idpersona, cli.idempresa, cli.tipo_cliente, pe.nombres, pe.appaterno, pe.apmaterno, em.razonsocial;
+
+
+    
 

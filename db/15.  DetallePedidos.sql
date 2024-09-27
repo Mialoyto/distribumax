@@ -115,33 +115,41 @@ END$$
 /* ESTO MODIFICO LOYOLA */
 DELIMITER $$
 CREATE PROCEDURE sp_getById_pedido(
-	IN  _idpedido CHAR(15)
-)BEGIN
-	SELECT 
-    cli.idpersona,
-    cli.idempresa,
-    pe.nombres,
-    pe.appaterno,
-    pe.apmaterno,
-    em.razonsocial,
-    dp.id_detalle_pedido,
-    pr.nombreproducto,
-    pr.preciounitario,
-    dp.cantidad_producto,
-    dp.unidad_medida,
-    dp.precio_descuento,
-    dp.subtotal
-FROM pedidos p
-    INNER JOIN detalle_pedidos dp ON p.idpedido = dp.idpedido
-    INNER JOIN productos pr ON pr.idproducto = dp.idproducto
-    INNER JOIN  clientes cl ON cl.idcliente = p.idcliente  -- Asegúrate de que esta condición es correcta
-    INNER JOIN clientes cli ON cli.idcliente = p.idcliente
-    LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
-    LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
-    WHERE p.idpedido ='PED-000000001';
+    IN _idpedido CHAR(15)
+) 
+BEGIN
+    SELECT 
+        cli.idpersona,
+        cli.idempresa,
+        cli.tipo_cliente,
+        pe.nombres,
+        pe.appaterno,
+        pe.apmaterno,
+        COALESCE(pe.direccion, em.direccion) AS direccion, -- Selecciona la dirección de persona o empresa
+        em.razonsocial,
+        dp.id_detalle_pedido,
+        pr.nombreproducto,
+        pr.preciounitario,
+        dp.cantidad_producto,
+        dp.unidad_medida,
+        dp.precio_descuento,
+        dp.subtotal,
+        tp.idtipocomprobante,
+        tp.comprobantepago
+    FROM pedidos p
+        INNER JOIN detalle_pedidos dp ON p.idpedido = dp.idpedido
+        INNER JOIN productos pr ON pr.idproducto = dp.idproducto
+        INNER JOIN clientes cli ON cli.idcliente = p.idcliente
+        LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
+        LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
+        LEFT JOIN ventas ve ON ve.idpedido = p.idpedido
+        LEFT JOIN tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
+    WHERE p.idpedido = _idpedido
+      AND ve.idventa IS NULL; -- Este filtro asegura que solo se incluyan los pedidos sin ventas
 END$$
 
 
-CALL sp_getById_pedido('PED-000000002');
+SELECT * FROM pedidos;
+CALL sp_getById_pedido('PED-000000008');
 select * from detalle_pedidos;
 select * from pedidos;

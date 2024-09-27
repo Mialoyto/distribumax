@@ -389,6 +389,8 @@ CREATE TABLE kardex(
 	idkardex			INT	NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	idusuario			INT NOT NULL,
 	idproducto			INT NOT NULL,
+    fecha_vencimiento   DATE  NULL,
+    numlote				VARCHAR(60) NULL,
 	stockactual     	INT,
     tipomovimiento  	ENUM('Ingreso', 'Salida') NOT NULL,
 	cantidad        	INT NOT NULL,
@@ -396,12 +398,14 @@ CREATE TABLE kardex(
     
 	create_at			DATETIME NOT NULL DEFAULT NOW(),
 	update_at			DATETIME NULL,
-	estado          	CHAR(1) NOT NULL DEFAULT "1",
+	estado          	CHAR(1) NOT NULL DEFAULT '1',
 	CONSTRAINT fk_idusuario_kardex FOREIGN KEY(idusuario) REFERENCES usuarios(idusuario),
 	CONSTRAINT fk_idproducto_kardex FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
-    CONSTRAINT ck_stockactual CHECK (stockactual > 0),
+    CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
     CONSTRAINT ck_cantidad CHECK (cantidad > 0),
-    CONSTRAINT fk_estado_kardex CHECK(estado IN ("0", "1"))
+    CONSTRAINT fk_estado_kardex CHECK(estado IN ('0', '1')),
+    CHECK (fecha_vencimiento >= CURDATE() OR fecha_vencimiento IS NULL)
+
 )ENGINE  = INNODB;
 
 DROP TABLE IF EXISTS vehiculos;
@@ -458,7 +462,7 @@ CREATE TABLE ventas (
     CONSTRAINT fk_idtipocomprobante_venta FOREIGN KEY (idtipocomprobante) REFERENCES tipo_comprobante_pago(idtipocomprobante),
     CONSTRAINT fk_estado_venta   CHECK(estado IN ("0", "1")),
     CONSTRAINT ck_subtotal_venta CHECK(subtotal > 0),
-    CONSTRAINT ck_descuento CHECK (descuento > 0),
+    CONSTRAINT ck_descuento CHECK (descuento >= 0),
     CONSTRAINT ck_igv CHECK(igv > 0),
     CONSTRAINT ck_totalventa CHECK(total_venta > 0),
     CONSTRAINT uk_idpedido UNIQUE (idpedido)

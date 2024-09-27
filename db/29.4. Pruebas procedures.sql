@@ -127,13 +127,15 @@ CALL sp_actualizar_empresa (12345678901,954,'Dijisa','Panamericana #234','dijisa
 
 /****************************************************************************************************************/
 insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558000, 20123456781,'Empresa');
-insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(2,1,'2024/09/22');
+insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558001, 20123456782,'Persona');
+insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(1,4,'2024/09/22');
 insert into detalle_pedidos(idpedido,idproducto,cantidad_producto,unidad_medida,precio_unitario,precio_descuento,subtotal)VALUES
-('PED-000000002',1,10,'unidad',2,1,10),
-('PED-000000002',2,20,'unidad',10,2,90);
+('PED-000000003',1,10,'unidad',2,1,10),
+('PED-000000003',2,20,'unidad',10,2,90);
 
 select * from detalle_pedidos;
 select * from pedidos;
+select * from usuarios;
 select * from clientes;
 select * from productos;
 select * from kardex;
@@ -143,9 +145,9 @@ CALL sp_pedido_registrar (2, 21);
 
 
 
-CALL sp_pedido_registrar (1, 2);
+CALL sp_pedido_registrar (1, 1);
 select * from pedidos;
 
-CALL sp_detalle_pedido ('PED-000000001',1,100,'und',8.50);
+CALL sp_detalle_pedido ('PED-000000006',1,100,'und',8.50);
 
 SELECT * FROM detalle_pedidos;

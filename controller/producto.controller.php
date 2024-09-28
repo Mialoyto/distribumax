@@ -32,5 +32,12 @@ if (isset($_GET['operation'])) {
       ];
       echo json_encode($producto->searchProducto($datos));
       break;
+      case 'getProducto':
+        $datos = [
+          '_cliente_id' => $_GET['_cliente_id'],
+          '_item' => $_GET['_item']
+        ];
+        echo json_encode($producto->ObtenerPrecioProducto($datos));
+        break;
   }
 }

@@ -37,10 +37,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function validarNroDoc(response) {
     if (response.length === 0) {
       resetCampos();
-      $("#nombres").removeAttribute("disabled");
-      $("#appaterno").removeAttribute("disabled");
-      $("#apmaterno").removeAttribute("disabled");
-      $("#razon-social").removeAttribute("disabled");
+      $("#nombres").setAttribute("disabled", true);
+      $("#appaterno").setAttribute("disabled", true);
+      $("#apmaterno").setAttribute("disabled", true);
+      $("#razon-social").setAttribute("disabled", true);
+      $("#direccion-cliente").setAttribute("disabled", true);
 
       console.log("No existe el cliente");
     } else {
@@ -102,18 +103,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // EVENTOS
-  $("#nro-doc").addEventListener(
-    "input",
-    debounce(async () => {
-      const response = await dataCliente();
-      await validarNroDoc(response);
-    }, 1000)
+  $("#nro-doc").addEventListener("input",debounce(async () => {
+      if ($("#nro-doc").value === "") {
+        $("#detalle-pedido").innerHTML = "";
+        resetCampos();
+      } else {
+        const response = await dataCliente();
+        await validarNroDoc(response);
+      }
+    }, 500)
   );
 
   // buscar producto
   const buscarProducto = async () => {
     const params = new URLSearchParams();
-    params.append("operation", "searchProducto");
+    params.append("operation", "getProducto");
+    params.append("_cliente_id", $("#nro-doc").value);
     params.append("_item", $("#addProducto").value);
 
     try {
@@ -121,6 +126,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         `../../controller/producto.controller.php?${params}`
       );
       return response.json();
+      // console.log("linea 125 :", data);
     } catch (e) {
       console.error(e);
     }
@@ -140,14 +146,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         const li = document.createElement("li");
         li.classList.add("list-group-item"); // Clase de Bootstrap para los ítems
-        li.innerHTML = `${item.nombreproducto}-${item.codigo}`;
+        li.innerHTML = `${item.codigo}-${item.nombreproducto} <h6 class="btn btn-secondary btn-sm h-25 d-inline-block"secondary>${item.unidadmedida}</h6>`;
         li.addEventListener("click", () => {
           addProductToTable(
             item.idproducto,
             item.codigo,
             item.nombreproducto,
-            item.preciounitario,
+            item.unidadmedida,
+            item.precio_venta,
             item.descuento
+            // item.stockactual
           );
           $("#datalistProducto").style.display = "none"; // Ocultar la lista cuando se selecciona un producto
           document.getElementById("addProducto").value = ""; // Limpiar el campo de búsqueda
@@ -162,35 +170,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   $("#addProducto").addEventListener("input", async () => {
     await mostraResultados();
+    // await buscarProducto();
     if ($("#addProducto").value === "") {
       $("#datalistProducto").style.display = "none";
     }
   });
 
   // Función para añadir un producto a la tabla seleccionada
-  function addProductToTable(id, codigo, nombre, precio, descuento) {
+  function addProductToTable(id, codigo, nombre, unidadmedida, precio_venta, descuento) {
     const row = document.createElement("tr");
     row.innerHTML = `
       <th scope="row" colspan="1">${codigo}</th>
       <td colspan="1" id-data="${id}">${nombre}</td>
       <td class="col-md-1">
-          <input class="form-control form-control-sm cantidad"  type="number" type="number" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
+          <input class="form-control form-control-sm cantidad"  type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
       </td>
-      <td class="col-md-1">
-        <select class="form-select form-select-sm und-medida" id="und-medida" name="und-medida"  required>
-        <option value="Und">Und</option>
-        <option value="Caja">Caja</option>
-        <option value="Bot">Bot.</option>
-        </select>
-      </td>
-      <td class="precio">${precio}</td>
-      <td class="subtotal"> S/0.00</td>
-      <td class="descuento">S/${descuento}</td>
-      <td class="total">S/0.00</td>
+      <td class="col-md-1 und-medida">${unidadmedida}</td>
+      <td class="precio">${precio_venta}</td>
+      <td class="subtotal"> 0.00</td>
+      <td class="descuento">${descuento}</td>
+      <td class="total">0.00</td>
       <td class="col-1">
         <div class="mt-1  d-flex justify-content-evenly">
      
-          <button type="button" class="btn btn-danger btn-sm w-100">
+          <button type="button" class="btn btn-danger btn-sm w-100 eliminar-fila">
             <i class="bi bi-x-square"></i>
           </button>
         </div>
@@ -200,22 +203,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Añadir la fila a la tabla
     document.getElementById("detalle-pedido").appendChild(row);
 
+    // eliminar fila
+    row.querySelector(".eliminar-fila").addEventListener("click", () => {
+      row.remove();
+    });
+
     const cantidadInput = row.querySelector(".cantidad");
     const subtotalCell = row.querySelector(".subtotal");
     const descuentoCell = row.querySelector(".descuento");
     const totalCell = row.querySelector(".total");
 
     cantidadInput.addEventListener("input", () => {
-      const cantidad = cantidadInput.value || 0;
-      const subtotal = (cantidad * parseFloat(precio)).toFixed(2);
-      const descuentos = (cantidad * parseFloat(descuento)).toFixed(2);
-      const totales = (
-        cantidad *
-        (parseFloat(precio) - parseFloat(descuento))
-      ).toFixed(2);
-      totalCell.textContent = totales;
-      descuentoCell.textContent = descuentos;
-      subtotalCell.textContent = subtotal;
+      const cantidad = cantidadInput.value;
+      if (cantidad >= 1 || cantidad === "") {
+        const subtotal = (cantidad * parseFloat(precio_venta)).toFixed(2);
+        const descuentos = (subtotal * (parseFloat(descuento) / 100)).toFixed(2);
+        const totales = ((cantidad * (parseFloat(precio_venta))) - descuentos).toFixed(2);
+        totalCell.textContent = totales;
+        descuentoCell.textContent = descuentos;
+        subtotalCell.textContent = subtotal;
+      } else {
+        alert("La cantidad no puede ser menor a 1");
+      }
     });
   }
 
@@ -229,7 +238,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     rows.forEach((row) => {
       idproducto = row.querySelector("td[id-data]").getAttribute("id-data");
       cantidad = row.querySelector(".cantidad").value;
-      undMedida = row.querySelector(".und-medida").value;
+      undMedida = row.querySelector(".und-medida").textContent;
       precioUnitario = row.querySelector(".precio").textContent;
 
       productos.push({
@@ -245,15 +254,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     params.append("idpedido", idpedido);
     productos.forEach((producto, index) => {
       params.append(`productos[${index}][idproducto]`, producto.idproducto);
-      params.append(
-        `productos[${index}][cantidad_producto]`,
-        producto.cantidad
-      );
+      params.append(`productos[${index}][cantidad_producto]`,producto.cantidad);
       params.append(`productos[${index}][unidad_medida]`, producto.undMedida);
-      params.append(
-        `productos[${index}][precio_unitario]`,
-        producto.precioUnitario
-      );
+      params.append(`productos[${index}][precio_unitario]`,producto.precioUnitario);
     });
 
     const options = {
@@ -288,6 +291,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         response02 = await addDetallePedidos(idpedido)
         console.log(response02.id)
+        if(response02.id == -1){
+          console.log("No se guardo los datos")
+        }else{
+          console.log("Datos guardados correctamente")
+        }
       }
     }
   });

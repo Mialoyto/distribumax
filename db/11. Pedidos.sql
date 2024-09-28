@@ -62,7 +62,6 @@ BEGIN
     SET estado = ''  
     WHERE idpedido = _idpedido
       AND estado = 'Enviado';  -- Asegúrate de que solo se actualicen los pedidos que no están "Enviados"
-    
 END$$
 
 
@@ -84,5 +83,5 @@ END$$
 
 
 CREATE VIEW vw_listar_productos AS
-SELECT * FROM productos ;
+SELECT * FROM productos;
 

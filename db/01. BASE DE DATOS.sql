@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1726291702198@@localhost@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribuMax;
 USE distribuMax;
@@ -216,7 +216,7 @@ DROP TABLES IF EXISTS clientes;
 CREATE TABLE clientes (
     idcliente       INT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idpersona       CHAR(11)    DEFAULT NULL,
-    idempresa       BIGINT        DEFAULT NULL,
+    idempresa       BIGINT      DEFAULT NULL,
     tipo_cliente    CHAR(10)    NOT NULL,
     
     create_at       DATETIME    NOT NULL DEFAULT NOW(),
@@ -251,42 +251,40 @@ CREATE TABLE proveedores(
 
 DROP TABLE IF EXISTS tipos_promociones;
 CREATE TABLE tipos_promociones (
-    idtipopromocion INT	NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    tipopromocion   VARCHAR(150)	NOT NULL,
-    descripcion     VARCHAR(250) NOT NULL,
-    
-    create_at				DATETIME NOT NULL DEFAULT NOW(),
-	update_at				DATETIME NULL,
-	estado					CHAR(1) NOT NULL DEFAULT "1",
+    idtipopromocion   INT	NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    tipopromocion     VARCHAR(150)	NOT NULL,
+    descripcion       VARCHAR(250) NOT NULL,
+    create_at         DATETIME NOT NULL DEFAULT NOW(),
+	update_at         DATETIME NULL,
+	estado            CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT uk_tipopromocion UNIQUE(tipopromocion),
     CONSTRAINT fk_estado_tip_prom  CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
 
 DROP TABLE IF EXISTS promociones;
 CREATE TABLE promociones(
-	idpromocion      	INT	NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	idtipopromocion    INT  NOT NULL,
-	descripcion      	VARCHAR(250) NOT NULL,
-    fechainicio			DATE NOT NULL,
-    fechafin			DATE NOT NULL,
-	valor_descuento  	DECIMAL(8, 2),
-    
-    create_at		    DATETIME NOT NULL DEFAULT NOW(),
-	update_at		    DATETIME NULL,
-	estado			    CHAR(1) NOT NULL DEFAULT "1",
+	idpromocion      	INT	            NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	idtipopromocion     INT             NOT NULL,
+	descripcion      	VARCHAR(250)    NOT NULL,
+    fechainicio			DATE            NOT NULL,
+    fechafin			DATE            NOT NULL,
+	valor_descuento  	DECIMAL(8, 2)   NOT NULL,
+    create_at		    DATETIME        NOT NULL DEFAULT NOW(),
+	update_at		    DATETIME        NULL,
+	estado			    CHAR(1)         NOT NULL DEFAULT "1",
 	CONSTRAINT fk_idtipopromociones FOREIGN KEY(idtipopromocion) REFERENCES tipos_promociones(idtipopromocion),
     CONSTRAINT ck_valor_descuento CHECK (valor_descuento > 0),
     CONSTRAINT fk_estado_prom  CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
 
-DROP TABLE unidades_medidas;
+DROP TABLE IF EXISTS unidades_medidas;
 CREATE TABLE unidades_medidas(
-    idunidadmedida	INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idunidadmedida	INT             NOT NULL AUTO_INCREMENT PRIMARY KEY,
     unidadmedida	VARCHAR(100)	NOT NULL,
     
-    create_at		DATETIME NOT NULL DEFAULT NOW(),
-    update_at		DATETIME NULL,
-    estado			CHAR(1) NOT NULL DEFAULT "1",
+    create_at		DATETIME        NOT NULL DEFAULT NOW(),
+    update_at		DATETIME        NULL,
+    estado			CHAR(1)         NOT NULL DEFAULT "1",
     CONSTRAINT uk_unidadmedida UNIQUE(unidadmedida),
     CONSTRAINT fk_estado_uni_med CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
@@ -298,19 +296,15 @@ CREATE TABLE productos (
     idsubcategoria  INT             NOT NULL,
     nombreproducto  VARCHAR(250)   	NOT NULL,
     descripcion     VARCHAR(250)   	NOT NULL,
-    codigo          CHAR(30)          NOT NULL,
-    
-    preciounitario  DECIMAL(8, 2)	NOT NULL,
+    codigo          CHAR(30)        NOT NULL,
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
     estado          CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idmarca_prod FOREIGN KEY(idmarca) REFERENCES marcas(idmarca),
     CONSTRAINT fk_sbcategoria_prod FOREIGN KEY(idsubcategoria) REFERENCES subcategorias(idsubcategoria),
-    CONSTRAINT uk_nombreproducto  UNIQUE (nombreproducto),
-    CONSTRAINT ck_preciounitario CHECK (preciounitario > 0),
+    CONSTRAINT uk_nombreproducto_unidad  UNIQUE (nombreproducto),
     CONSTRAINT uk_codigo         UNIQUE (codigo),
     CONSTRAINT fk_estado_prod  CHECK(estado IN ("0", "1"))
-    
 ) ENGINE=INNODB;
 
 DROP TABLE IF EXISTS detalle_promociones;
@@ -330,19 +324,22 @@ CREATE TABLE detalle_promociones(
  
  
  -- BORRAR
-/* DROP TABLE IF EXISTS detalle_productos;
+DROP TABLE IF EXISTS detalle_productos;
 CREATE TABLE detalle_productos(
-		id_detalle_producto		INT	NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        idproveedor				INT NOT NULL,
-        idproducto				INT NOT NULL,
-        
-		create_at				DATETIME NOT NULL DEFAULT NOW(),
-		update_at				DATETIME NULL,
-        estado          		CHAR(1) NOT NULL DEFAULT "1",
-        CONSTRAINT fk_idproveedor_deta_prod FOREIGN KEY(idproveedor) REFERENCES proveedores(idproveedor),
-        CONSTRAINT fk_idproducto_deta_prod FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
-        CONSTRAINT fk_estado_deta_prod  CHECK(estado IN ("0", "1"))
-)ENGINE = INNODB; */
+    id_detalle_producto		INT	NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idproveedor				INT NOT NULL,
+    idproducto				INT NOT NULL,
+    idunidadmedida          INT NOT NULL,
+    precio_compra           DECIMAL(10, 2) NOT NULL, -- Nuevo: Precio de compra
+    precio_venta_minorista  DECIMAL(10, 2) NOT NULL DEFAULT 0.00, -- Nuevo: Precio de venta minorista
+    precio_venta_mayorista  DECIMAL(10, 2) NOT NULL DEFAULT 0.00, -- Precio mayorista
+    create_at				DATETIME NOT NULL DEFAULT NOW(),
+    update_at				DATETIME NULL,
+    estado          		CHAR(1) NOT NULL DEFAULT "1",
+    CONSTRAINT fk_idproveedor_deta_prod FOREIGN KEY(idproveedor) REFERENCES proveedores(idproveedor),
+    CONSTRAINT fk_idproducto_deta_prod FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
+    CONSTRAINT fk_estado_deta_prod  CHECK(estado IN ("0", "1"))
+)ENGINE = INNODB;
 
 DROP TABLE IF EXISTS precios_historicos;
 CREATE TABLE precios_historicos(
@@ -378,11 +375,10 @@ CREATE TABLE detalle_pedidos (
     idpedido             CHAR(15)        NOT NULL,
     idproducto           INT             NOT NULL,
     cantidad_producto    INT             NOT NULL,
-    unidad_medida		 VARCHAR(100)	 NOT NULL,  -- unidad, caja,
+    unidad_medida		 CHAR(20)        NOT NULL,  -- unidad, caja,
     precio_unitario      DECIMAL(10, 2)  NOT NULL,
     precio_descuento     DECIMAL(10, 2)  NOT NULL,
     subtotal             DECIMAL(10, 2)  NOT NULL,
-    
 	create_at			DATETIME NOT NULL DEFAULT NOW(),
 	update_at			DATETIME NULL,
 	estado          	CHAR(1) NOT NULL DEFAULT "1",
@@ -394,6 +390,7 @@ CREATE TABLE detalle_pedidos (
     CONSTRAINT ck_subtotal CHECK (subtotal > 0),
     CONSTRAINT fk_estado_det_ped CHECK(estado IN ("0", "1"))
 ) ENGINE = INNODB;
+
 
 DROP TABLE IF EXISTS kardex;
 CREATE TABLE kardex(
@@ -410,7 +407,7 @@ CREATE TABLE kardex(
 	estado          	CHAR(1) NOT NULL DEFAULT "1",
 	CONSTRAINT fk_idusuario_kardex FOREIGN KEY(idusuario) REFERENCES usuarios(idusuario),
 	CONSTRAINT fk_idproducto_kardex FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
-    CONSTRAINT ck_stockactual CHECK (stockactual > 0),
+    CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
     CONSTRAINT ck_cantidad CHECK (cantidad > 0),
     CONSTRAINT fk_estado_kardex CHECK(estado IN ("0", "1"))
 )ENGINE  = INNODB;
@@ -460,7 +457,6 @@ CREATE TABLE ventas (
     descuento 				DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     igv 					DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     total_venta 			DECIMAL(10, 2) NOT NULL,
-    
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
 	estado          CHAR(1) NOT NULL DEFAULT "1",		-- 1: VENTA 	0: CANCELADO

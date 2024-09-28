@@ -1,46 +1,42 @@
 <?php
 require_once '../../header.php';
 ?>
-
 <main>
-    <div class="container-fluid px-4">
-        <h1 class="mt-4">Categorias</h1>
-        <ol class="breadcrumb mb-4">
-            <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
-        </ol>
-
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Listado de Categorias
-            </div>
+    <div class="container">
+        <div class="card mt-4">
             <div class="card-body">
-
                 <div class="table-responsive">
-
-                    <table class="table table-striped " id="table-marcas">
-                        <thead class="">
+                    <table class="table" id="tabla-categorias" style="width: 100%;">
+                        <thead>
                             <tr>
-
-                                <th scope="col">Categorias</th>
-                                <th scope="col">Fecha de Registro</th>
-                                <th scope="col">Acciones</th>
+                                <th>Nombre de Categoría</th>
+                                <th>Fecha Creación</th>
+                                <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            <!-- Agrega más filas según sea necesario -->
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer">
-                    <a href="registrar.php" class="btn btn-primary">Registrar nueva categoria</a>
+                <!-- Botón ubicado dentro del DataTable en la parte inferior derecha -->
+                <div class="d-flex justify-content-end mt-3">
+                    <a href="registrar.php" class="btn btn-primary">Registrar nueva categoría</a>
                 </div>
             </div>
         </div>
-    </div>
+    </div><!-- Fin del container -->
 </main>
+<?php require_once '../../footer.php';?>
 
-<?php
-require_once '../../footer.php';
-?>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- DataTables Core -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<!-- DataTables Bootstrap 5 -->
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- Enlace del JavaScript de DataTable -->
+<script src="../../js/categorias/dataTable.js"></script>
+</body>
+</html>

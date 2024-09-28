@@ -65,10 +65,7 @@ INSERT INTO roles (rol) VALUES
 
 INSERT INTO tipo_comprobante_pago (comprobantepago) VALUES 
 ('Factura'), 
-('Boleta de Venta'), 
-('Nota de Crédito'), 
-('Nota de Débito'), 
-('Recibo');
+('Boleta');
 
 INSERT INTO unidades_medidas (unidadmedida)
 VALUES
@@ -189,20 +186,11 @@ VALUES
     (2, 'Descuento del 5% por und', '2021-06-01', '2021-06-30', 5);
 
 INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
-VALUES (2, 1, 5.00);
--- select * from promociones;
--- select * from detalle_promociones;
-/* INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
+VALUES (5, 1, 5.00);
+select * from promociones;
+select * from detalle_promociones;
+INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
 VALUES (4, 2, 5.00);
- */
-
-CALL sp_registrar_usuario ( '26558000', 1, 'admin', 'admin' );
-
-CALL sp_actualizar_usuario (
-    'admin',
-    '$2y$10$WbVyMH7H3pFtbDipnc4Lj.7xZQYTf4qg8og4CbLRZWZYltyOWorJC',
-    2
-);
 -- Registrando vehiculos (2 vehiculos)
 INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
 VALUES

@@ -1,5 +1,4 @@
 USE distribuMax;
-
 -- REGISTRAR  ✔️ 
 DELIMITER $$
 CREATE PROCEDURE spu_registrar_personas(

@@ -18,6 +18,12 @@ if(isset($_POST['operation'])){
             ];
             echo json_encode($venta->addVentas($datos));
         break;
+        case 'reporteVenta':
+             $datos=[
+                'idventa' =>$_POST['idventa']
+             ];
+             echo json_encode($venta->reporteVenta($datos));
+        break;
     }
 }
 if(isset($_GET['operation'])){

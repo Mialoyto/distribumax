@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PRODUCTOS
@@ -8,13 +8,13 @@ IN _idmarca         INT,
 IN _idsubcategoria  INT,
 IN _nombreproducto  VARCHAR(250),
 IN _descripcion     VARCHAR(250),
-IN _codigo          CHAR(30),
-IN _preciounitario  DECIMAL(8, 2)	
+IN _codigo          CHAR(30)
+-- IN _preciounitario  DECIMAL(8, 2)	
 )BEGIN
 	INSERT INTO productos 
-    (idmarca,idsubcategoria,nombreproducto,descripcion,codigo,preciounitario) 
+    (idmarca,idsubcategoria,nombreproducto,descripcion,codigo) 
     VALUES
-    (_idmarca,_idsubcategoria,_nombreproducto,_descripcion,_codigo,_preciounitario);
+    (_idmarca,_idsubcategoria,_nombreproducto,_descripcion,_codigo);
 END$$
 
 -- ACTUALIZA PRODUCTOS
@@ -25,7 +25,6 @@ IN _idsubcategoria  INT,
 IN _nombreproducto  VARCHAR(250),
 IN _descripcion     VARCHAR(250),
 IN _codigo          CHAR(30),
-IN _preciounitario  DECIMAL(8, 2),
 IN _idproducto		INT
 )
 BEGIN
@@ -36,7 +35,6 @@ BEGIN
 			nombreproducto=_nombreproducto,
 			descripcion=_descripcion,
 			codigo=_codigo,
-			preciounitario=_preciounitario,
 			update_at=now()
         WHERE idproducto=_idproducto;
 END$$

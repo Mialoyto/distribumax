@@ -85,8 +85,10 @@ END $$
 
 
 -- Llamada al procedimiento
-CALL sp_registrarmovimiento(1, 1, 0, 'Ingreso', 400, 'Ingreso de nuevos productos');
-CALL sp_registrarmovimiento(1, 2, 0, 'Ingreso',91, 'Salida de nuevos productos');
+
+CALL sp_registrarmovimiento(2, 1, 0, 'Ingreso', 400, 'Ingreso de nuevos productos');
+CALL sp_registrarmovimiento(2, 2, 0, 'Ingreso',100, 'Salida de nuevos productos');
+CALL sp_registrarmovimiento(2, 3, 0, 'Ingreso',100, 'Salida de nuevos productos');
 
 select * from kardex;
 select * from productos;

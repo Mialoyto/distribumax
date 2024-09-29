@@ -1,3 +1,4 @@
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribuMax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
@@ -50,13 +51,10 @@ CALL sp_desactivar_persona (1, '26558000');
 CALL sp_buscarpersonadoc (1, '26558000');
 
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/
-CALL sp_registrar_usuario ( '26558000', 1, 'admin', 'admin' );
 
-CALL sp_actualizar_usuario (
-    'admin',
-    '$2y$10$qpFRvOWayRS8rcvHQvuNeu2V3YoMEfCBLaBp9Dccs35nyqd1hyZkK',
-    1
-);
+
+SELECT * FROM usuarios;
+
 
 CALL sp_usuario_login ('admin');
 
@@ -64,14 +62,6 @@ CALL sp_desactivar_usuario (1, 'admin');
 
 -- -------------------------------------------------
 -- REGISTRAR EMPRESAS
-CALL sp_empresa_registrar (
-    20123456781,
-    954,
-    'JRC',
-    'Av. Bancarios ',
-    'santafe@gmail.com',
-    '987654321'
-);
 
 CALL sp_empresa_registrar (
     20123456782,

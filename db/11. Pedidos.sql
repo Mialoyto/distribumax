@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribumax;
 --  REGISTRAR PEDIDOS
 DELIMITER $$
@@ -62,7 +62,6 @@ BEGIN
     SET estado = ''  
     WHERE idpedido = _idpedido
       AND estado = 'Enviado';  -- Asegúrate de que solo se actualicen los pedidos que no están "Enviados"
-    
 END$$
 
 
@@ -84,5 +83,5 @@ END$$
 
 
 CREATE VIEW vw_listar_productos AS
-SELECT * FROM productos ;
+SELECT * FROM productos;
 

@@ -61,4 +61,20 @@ class Productos extends Conexion
       die($e->getMessage());
     }
   }
+
+  // nueva function 
+  public function ObtenerPrecioProducto($params = [])
+  {
+    try {
+      $sql = "CALL ObtenerPrecioProducto(?,?)";
+      $query = $this->pdo->prepare($sql);
+      $query->execute(array(
+        $params['_cliente_id'],
+        $params['_item']
+      ));
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 }

@@ -1,4 +1,4 @@
--- Active: 1727404453511@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
@@ -30,6 +30,8 @@ select * from roles;
 delete from usuarios where idpersona = '26558000';
 SELECT * FROM productos;
 SELECT * FROM  tipo_documento;
+SELECT * FROM kardex;
+SELECT * FROM detalle_productos;
 
 
 SELECT * FROM proveedores;
@@ -71,24 +73,18 @@ DELIMITER ;
 
 
 -- AGREGAR DETALLE PEDIDO
-call sp_detalle_pedido ('PED-000000002',1,8,'und',8.50);
-SELECT  * FROM pedidos ORDER BY idpedido DESC LIMIT 1;
+call sp_detalle_pedido ('PED-000000011',1,1,'caja',8.50);
+SELECT  * FROM pedidos ORDER BY idpedido DESC LIMIT 20;
 SELECT * FROM detalle_pedidos ORDER BY id_detalle_pedido DESC LIMIT 5;
-SELECT * FROM kardex ORDER BY idkardex DESC LIMIT 5;
-SELECT * from kardex where idproducto = 2;
+SELECT idproducto,stockactual FROM kardex WHERE idproducto=2 ORDER BY idkardex DESC LIMIT 1;
+SELECT idproducto,stockactual from kardex WHERE idproducto = 1 ORDER BY idkardex DESC ;
+
+SELECT * FROM detalle_pedidos where idpedido = 'PED-000000053';
+SELECT * from detalle_promociones;
+UPDATE detalle_promociones SET descuento = 5 WHERE iddetallepromocion = 1;
+
+DROP PROCEDURE IF EXISTS ObtenerPrecioProducto;
 
 
-SELECT 
-    KAR.idkardex,
-    PRO.idproducto,
-    PRO.codigo,
-    PRO.nombreproducto,
-    PRO.preciounitario,
-    DET.iddetallepromocion,
-    DET.descuento,
-    KAR.stockactual
-FROM  productos PRO
-    LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
-    INNER JOIN kardex KAR ON PRO.idproducto = KAR.idproducto
-WHERE nombreproducto  = "At"
-AND PRO.estado = '1' ORDER BY idkardex DESC;
+CALL ObtenerPrecioProducto(26558000, 'a');
+SELECT * FROM productos;

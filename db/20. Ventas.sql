@@ -1,3 +1,4 @@
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -16,12 +17,14 @@ BEGIN
     INSERT INTO ventas 
     (idpedido, idmetodopago, idtipocomprobante,fecha_venta, subtotal, descuento, igv,total_venta) 
     VALUES
-    (_idpedido, _idmetodopago, _idtipocomprobante,_fecha_venta, _subtotal, _descuento, _igv,_total_venta);
-    
+    (_idpedido, _idmetodopago, _idtipocomprobante,_fecha_venta, _subtotal, _descuento, _igv,_total_venta); 
 END$$
 
 
+-- CALL sp_registrar_venta('PED-000000009', 1, 1, NOW(), 100.00, 10.00, 18.00, 108.00);
+-- SELECT * FROM ventas INNER JOIN  pedidos  on ventas.idpedido=pedidos.idpedido;
 -- ACTUALIZAR VENTAS
+DELIMITER $$
 CREATE PROCEDURE sp_actualizar_venta(
     IN _idpedido CHAR(15),
     IN _idmetodopago INT,
@@ -46,6 +49,8 @@ END$$
 
 -- ESTADO VENTAS
 
+
+DELIMITER $$
 CREATE PROCEDURE sp_estado_venta(
     IN  _estado CHAR(1),
     IN  _idventa INT 

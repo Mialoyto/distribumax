@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR DETALLE PEDIDOSDELIMITER $$
@@ -7,21 +7,21 @@ CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido            CHAR(15),
     IN _idproducto          INT,
     IN _cantidad_producto   INT,
-    IN _unidad_medida       CHAR(10),
+    IN _unidad_medida       CHAR(20),
     IN _precio_unitario     DECIMAL(10, 2)
 )
 BEGIN
     DECLARE _subtotal               DECIMAL(10, 2);
     DECLARE v_descuento_unitario    DECIMAL(10, 2) DEFAULT 0.00;
     DECLARE v_descuento             DECIMAL(10, 2) DEFAULT 0.00;
+    DECLARE v_subtotal              DECIMAL(10, 2) DEFAULT 0.00;
 
 
     SELECT IFNULL(descuento, 0) INTO v_descuento_unitario
     FROM detalle_promociones
     WHERE idproducto = _idproducto
     LIMIT 1;
-
-    SET v_descuento = _cantidad_producto * v_descuento_unitario;
+    SET v_descuento = (_cantidad_producto * _precio_unitario) * (v_descuento_unitario / 100);
 
     SET _subtotal = (_cantidad_producto * _precio_unitario) - v_descuento;
 
@@ -32,7 +32,9 @@ BEGIN
     SELECT LAST_INSERT_ID() AS iddetallepedido;
 END$$
 
+
 -- ACTUALIZAR EL STOCK
+DELIMITER $$
 CREATE TRIGGER trg_actualizar_stock
 AFTER INSERT ON detalle_pedidos
 FOR EACH ROW
@@ -55,7 +57,7 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para esta operación';
     END IF;
-END
+END$$
 
 
 
@@ -110,6 +112,34 @@ BEGIN
     AND PRO.estado = '1';
 END$$
 
+-- buscar productos por nombre o codigo y dependiendo del numero de ruc o dni del cliente cambia los precios
+
+DELIMITER $$
+CREATE PROCEDURE ObtenerPrecioProducto(
+    IN _cliente_id       BIGINT,
+    IN _item  VARCHAR(255)
+)
+BEGIN
+    SELECT 
+        PRO.idproducto,
+        PRO.codigo,
+        PRO.nombreproducto,
+        DET.descuento,
+        UNDM.unidadmedida,
+        CASE 
+            WHEN LENGTH(CLI.idpersona) = 8 THEN DETP.precio_venta_minorista
+            WHEN LENGTH(CLI.idempresa) = 11 THEN DETP.precio_venta_mayorista
+        END 
+        AS precio_venta
+    FROM  productos PRO
+        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
+        LEFT JOIN detalle_productos DETP ON PRO.idproducto = DETP.idproducto
+        INNER JOIN unidades_medidas UNDM ON UNDM.idunidadmedida = DETP.idunidadmedida
+        INNER JOIN clientes CLI ON CLI.idempresa = _cliente_id OR CLI.idpersona = _cliente_id
+    WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%'))
+    AND PRO.estado = '1';
+END $$
+
 
 -- Obtener el Id del pedido y completar la tabla en ventas
 /* ESTO MODIFICO LOYOLA */
@@ -146,10 +176,33 @@ BEGIN
         LEFT JOIN tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE p.idpedido = _idpedido
       AND ve.idventa IS NULL; -- Este filtro asegura que solo se incluyan los pedidos sin ventas
+	IN  _idpedido CHAR(15)
+)BEGIN
+	SELECT 
+    cli.idpersona,
+    cli.idempresa,
+    pe.nombres,
+    pe.appaterno,
+    pe.apmaterno,
+    em.razonsocial,
+    dp.id_detalle_pedido,
+    pr.nombreproducto,
+    pr.preciounitario,
+    dp.cantidad_producto,
+    dp.unidad_medida,
+    dp.precio_descuento,
+    dp.subtotal
+FROM pedidos p
+    INNER JOIN detalle_pedidos dp ON p.idpedido = dp.idpedido
+    INNER JOIN productos pr ON pr.idproducto = dp.idproducto
+    INNER JOIN  clientes cl ON cl.idcliente = p.idcliente  -- Asegúrate de que esta condición es correcta
+    INNER JOIN clientes cli ON cli.idcliente = p.idcliente
+    LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
+    LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
+    WHERE p.idpedido = _idpedido;
 END$$
 
 
-SELECT * FROM pedidos;
-CALL sp_getById_pedido('PED-000000008');
+CALL sp_getById_pedido('PED-000000002');
 select * from detalle_pedidos;
-select * from pedidos;
+select * from pedidos; */

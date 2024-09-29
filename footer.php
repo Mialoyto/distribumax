@@ -25,3 +25,5 @@
  <script src="//cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
  <!--Dtatable estilos BS5-->
  <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+<!-- utils sweetalert2 -->
+<script src="http://localhost/distribumax/js/utils/sweetalert.js"></script>

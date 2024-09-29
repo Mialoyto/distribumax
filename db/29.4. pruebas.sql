@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
@@ -75,9 +75,11 @@ DELIMITER ;
 -- AGREGAR DETALLE PEDIDO
 call sp_detalle_pedido ('PED-000000011',1,1,'caja',8.50);
 SELECT  * FROM pedidos ORDER BY idpedido DESC LIMIT 20;
-SELECT * FROM detalle_pedidos ORDER BY id_detalle_pedido DESC LIMIT 5;
-SELECT idproducto,stockactual FROM kardex WHERE idproducto=2 ORDER BY idkardex DESC LIMIT 1;
-SELECT idproducto,stockactual from kardex WHERE idproducto = 1 ORDER BY idkardex DESC ;
+SELECT * FROM detalle_pedidos ORDER BY id_detalle_pedido DESC;
+SELECT idproducto,stockactual from kardex WHERE idproducto = 1 ORDER BY idkardex DESC LIMIT 1;
+SELECT idproducto,stockactual FROM kardex WHERE idproducto = 2 ORDER BY idkardex DESC LIMIT 1;
+SELECT idproducto,stockactual FROM kardex WHERE idproducto = 3 ORDER BY idkardex DESC LIMIT 1;
+SELECT idproducto,stockactual FROM kardex WHERE idproducto = 4 ORDER BY idkardex DESC LIMIT 1;
 
 SELECT * FROM detalle_pedidos where idpedido = 'PED-000000053';
 SELECT * from detalle_promociones;
@@ -88,3 +90,41 @@ DROP PROCEDURE IF EXISTS ObtenerPrecioProducto;
 
 CALL ObtenerPrecioProducto(26558000, 'a');
 SELECT * FROM productos;
+
+-- ELIMINAR DESPUES
+DROP PROCEDURE IF EXISTS ObtenerPrecioProducto;
+DELIMITER $$
+CREATE PROCEDURE ObtenerPrecioProducto(
+    IN _cliente_id       BIGINT,
+    IN _item  VARCHAR(255)
+)
+BEGIN
+    SELECT 
+        PRO.idproducto,
+        PRO.codigo,
+        PRO.nombreproducto,
+        DET.descuento,
+        UNDM.unidadmedida,
+        CASE 
+            WHEN LENGTH(CLI.idpersona) = 8 THEN DETP.precio_venta_minorista
+            WHEN LENGTH(CLI.idempresa) = 11 THEN DETP.precio_venta_mayorista
+        END 
+        AS precio_venta,
+        kAR.stockactual
+    FROM  productos PRO
+        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
+        LEFT JOIN detalle_productos DETP ON PRO.idproducto = DETP.idproducto
+        INNER JOIN unidades_medidas UNDM ON UNDM.idunidadmedida = DETP.idunidadmedida
+        INNER JOIN clientes CLI ON CLI.idempresa = _cliente_id OR CLI.idpersona = _cliente_id
+        -- kardex
+        INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
+        AND KAR.idkardex = (SELECT MAX(K2.idkardex) FROM kardex K2 WHERE K2.idproducto = PRO.idproducto)
+    WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%'))
+    AND PRO.estado = '1' 
+    AND KAR.stockactual > 0;
+END $$
+
+CALL ObtenerPrecioProducto(26558000, 'a');
+CALL sp_estado_producto ('1', 1);
+
+

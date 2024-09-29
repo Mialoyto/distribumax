@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch(`../../controller/pedido.controller.php?${params}`);
             const data = await response.json();
-
+            console.log("datos del pedido",data);   
             const tbody = $("#productosTabla tbody");
             tbody.innerHTML = ''; // Limpiar la tabla antes de añadir los nuevos resultados
             let subtotal = 0;
@@ -102,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
             tipoComprobanteSelect.innerHTML = '';
             data.forEach(pedido => {
                
-
                 const tipo_cliente = $("#tipocliente").value = pedido.tipo_cliente;
 
                 if (tipo_cliente === 'Empresa') {
@@ -121,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
                 } else if (tipo_cliente === 'Persona') {
                     // Cargar datos de persona
-                    $("#nombres").value = pedido.nombres;
+                    $("#nombres").value = pedido.nombres + ' ' + pedido.appaterno + ' ' + pedido.apmaterno;
                     $("#direccion").value = pedido.direccion;
     
                     // Filtrar y agregar la opción Boleta al select
@@ -137,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 const row = document.createElement('tr');
                 const cantidad_producto = parseFloat(pedido.cantidad_producto);
-                const preciounitario = parseFloat(pedido.preciounitario);
+                const preciounitario = parseFloat(pedido.precio_unitario);
                 const total_producto = cantidad_producto * preciounitario; // Calcular total por producto
                 
                 row.innerHTML = `
@@ -159,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Actualizar los totales
             const igv = subtotal * 0.18; 
             subtotal=subtotal-igv;
-            const total_venta = subtotal + igv - descuentoTotal;
+            const total_venta = (subtotal + igv) - descuentoTotal;
             $("#subtotal").value = subtotal.toFixed(2);
             $("#igv").value = igv.toFixed(2);
             $("#total_venta").value = total_venta.toFixed(2);

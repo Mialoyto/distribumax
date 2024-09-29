@@ -119,7 +119,7 @@
             <!-- Botones -->
             <div class="d-flex justify-content-end mt-3">
               <button type="submit" class="btn btn-primary me-2 transition">Registrar Pedido</button>
-              <button type="reset" class="btn btn-outline-danger">Cancelar</button>
+              <button type="reset" class="btn btn-outline-danger" id="cancelarPedido">Cancelar</button>
             </div>
         </form>
       </div>

@@ -14,14 +14,15 @@ document.addEventListener("DOMContentLoaded", () => {
           .then(response => response.json())
           .then(data => {
               
-              console.log(data);
+            //   console.log(data);
             //   alert(data.status);
             //   alert("revisar json");
               if (!data.acceso) {
                   console.log(data);
                   // alert(data.status);
-                  // alert("Usuario o contraseña incorrectos");
+                //   alert("Usuario o contraseña incorrectos");
               } else {
+                alert("Bienvenido");
                   console.log(data);
                   window.location.href = `./dashboard.php`;
               }

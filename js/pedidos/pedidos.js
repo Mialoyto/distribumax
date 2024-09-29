@@ -103,15 +103,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // EVENTOS
-  $("#nro-doc").addEventListener("input",debounce(async () => {
-      if ($("#nro-doc").value === "") {
-        $("#detalle-pedido").innerHTML = "";
-        resetCampos();
-      } else {
-        const response = await dataCliente();
-        await validarNroDoc(response);
-      }
-    }, 500)
+  $("#nro-doc").addEventListener("input", debounce(async () => {
+    if ($("#nro-doc").value === "") {
+      $("#detalle-pedido").innerHTML = "";
+      resetCampos();
+    } else {
+      const response = await dataCliente();
+      await validarNroDoc(response);
+    }
+  }, 500)
   );
 
   // buscar producto
@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   // mostrar resultados ✔️
+
   const mostraResultados = async () => {
     const response = await buscarProducto();
     $("#datalistProducto").innerHTML = "";
@@ -146,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         const li = document.createElement("li");
         li.classList.add("list-group-item"); // Clase de Bootstrap para los ítems
-        li.innerHTML = `${item.codigo}-${item.nombreproducto} <h6 class="btn btn-secondary btn-sm h-25 d-inline-block"secondary>${item.unidadmedida}</h6>`;
+        li.innerHTML = `${item.codigo}-${item.nombreproducto} <h6 class="btn btn-secondary btn-sm h-25 d-inline-block"secondary>${item.unidadmedida}: ${item.stockactual}</h6>`;
         li.addEventListener("click", () => {
           addProductToTable(
             item.idproducto,
@@ -154,18 +155,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             item.nombreproducto,
             item.unidadmedida,
             item.precio_venta,
-            item.descuento
-            // item.stockactual
+            item.descuento,
+            item.stockactual
           );
           $("#datalistProducto").style.display = "none"; // Ocultar la lista cuando se selecciona un producto
           document.getElementById("addProducto").value = ""; // Limpiar el campo de búsqueda
         });
         $("#datalistProducto").appendChild(li);
       });
+      console.log("datos de los productos",response);
     } else {
       $("#datalistProducto").style.display = "none";
     }
-    console.log(response);
+    // console.log(response);
   };
 
   $("#addProducto").addEventListener("input", async () => {
@@ -177,7 +179,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Función para añadir un producto a la tabla seleccionada
-  function addProductToTable(id, codigo, nombre, unidadmedida, precio_venta, descuento) {
+
+  function addProductToTable(id, codigo, nombre, unidadmedida, precio_venta, descuento,stockactual) {
+    const existId = document.querySelector(`#detalle-pedido tr td[id-data="${id}"]`);
+    console.log("existe el ID en la tabla ?", existId);
+    if (existId) {
+      showToast('El producto ya se encuentra en la tabla', 'info', 'INFO');
+      return;
+    }
     const row = document.createElement("tr");
     row.innerHTML = `
       <th scope="row" colspan="1">${codigo}</th>
@@ -199,7 +208,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       </td>
     `;
-
     // Añadir la fila a la tabla
     document.getElementById("detalle-pedido").appendChild(row);
 
@@ -214,16 +222,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     const totalCell = row.querySelector(".total");
 
     cantidadInput.addEventListener("input", () => {
-      const cantidad = cantidadInput.value;
-      if (cantidad >= 1 || cantidad === "") {
+      let cantidad = cantidadInput.value;
+
+      if (cantidad > stockactual) {
+        showToast(`La cantidad no puede ser mayor que el stock disponible (${stockactual})`, 'info', 'INFO');
+        cantidadInput.value = stockactual; // Ajustar al stock máximo disponible
+        cantidad = stockactual; // Actualizamos la cantidad
+      }
+      if (cantidad <= 0 || cantidad == "") {
+        showToast('La cantidad no puede ser menor a 1', 'info', 'INFO');
+      }else{
         const subtotal = (cantidad * parseFloat(precio_venta)).toFixed(2);
         const descuentos = (subtotal * (parseFloat(descuento) / 100)).toFixed(2);
         const totales = ((cantidad * (parseFloat(precio_venta))) - descuentos).toFixed(2);
         totalCell.textContent = totales;
         descuentoCell.textContent = descuentos;
         subtotalCell.textContent = subtotal;
-      } else {
-        alert("La cantidad no puede ser menor a 1");
       }
     });
   }
@@ -240,13 +254,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       cantidad = row.querySelector(".cantidad").value;
       undMedida = row.querySelector(".und-medida").textContent;
       precioUnitario = row.querySelector(".precio").textContent;
-
       productos.push({
         idproducto,
         cantidad,
         undMedida,
         precioUnitario,
       });
+
     });
 
     const params = new FormData();
@@ -254,9 +268,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     params.append("idpedido", idpedido);
     productos.forEach((producto, index) => {
       params.append(`productos[${index}][idproducto]`, producto.idproducto);
-      params.append(`productos[${index}][cantidad_producto]`,producto.cantidad);
+      params.append(`productos[${index}][cantidad_producto]`, producto.cantidad);
       params.append(`productos[${index}][unidad_medida]`, producto.undMedida);
-      params.append(`productos[${index}][precio_unitario]`,producto.precioUnitario);
+      params.append(`productos[${index}][precio_unitario]`, producto.precioUnitario);
     });
 
     const options = {
@@ -275,12 +289,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+   
+
   // EVENTO PARA MANDAR LOS DATOS A LA BASE DE DATOS
   let idpedido = -1;
   $("#registrar-pedido").addEventListener("submit", async (e) => {
     e.preventDefault();
     let response01;
     let response02;
+    const rows = document.querySelectorAll("#detalle-pedido tr");
+    if (rows.length === 0) {
+      showToast('Debes agregar al menos un producto antes de registrar el pedido', 'warning',);
+      return;
+    }
+    let cantidadInvalida = false;
+    rows.forEach((row) => {
+      const cantidad = parseInt(row.querySelector(".cantidad").value.trim());
+      if (cantidad == "" || parseInt(cantidad) < 1 || isNaN(cantidad)) {
+        cantidadInvalida = true;
+      }
+    });
+    if (cantidadInvalida) {
+      showToast('Todos los productos deben tener una cantidad mayor a 0', 'warning', 'WARNING');
+      return;
+    }
 
     if (confirm("Esta seguro de guardar los datos")) {
       response01 = await getIdPedido();
@@ -291,12 +323,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         response02 = await addDetallePedidos(idpedido)
         console.log(response02.id)
-        if(response02.id == -1){
-          console.log("No se guardo los datos")
-        }else{
-          console.log("Datos guardados correctamente")
+        if (response02.id == -1) {
+          showToast('Hubo un error al registrar el pedido', 'error', 'ERROR');
+        } else {
+          showToast('Pedido registrado con éxito', 'success', 'SUCCESS');
+          $("#registrar-pedido").reset();
+          $("#detalle-pedido").innerHTML = "";
         }
       }
     }
+  });
+
+  $("#cancelarPedido").addEventListener("click", () => {
+    $("#detalle-pedido").innerHTML = "";
   });
 }); /* fin del evento DOMcontenteLoaded */

@@ -33,9 +33,8 @@ require_once '../../header.php';
                 Listado de Empresas
             </div>
             <div class="card-body">
-
+                
                 <div class="table-responsive">
-
                     <table id="table-ventas" class="table" tyle="width: 100%;">
                         <thead>
                             <tr>

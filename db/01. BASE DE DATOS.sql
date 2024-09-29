@@ -161,9 +161,9 @@ CREATE TABLE personas(
 	idtipodocumento		INT NOT NULL,
 	idpersonanrodoc		CHAR(11) NOT NULL PRIMARY KEY,
 	iddistrito			INT NOT NULL,
-	nombres				VARCHAR(250)	NOT NULL,
-	appaterno			VARCHAR(250)	NOT NULL,
-	apmaterno			VARCHAR(250)	NOT NULL,
+	nombres				VARCHAR(80)	NOT NULL,
+	appaterno			VARCHAR(80)	NOT NULL,
+	apmaterno			VARCHAR(80)	NOT NULL,
 	telefono			CHAR(9)			NULL,
 	direccion			VARCHAR(250)	NOT NULL,
 	
@@ -411,8 +411,7 @@ CREATE TABLE kardex(
 	CONSTRAINT fk_idproducto_kardex FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
     CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
     CONSTRAINT ck_cantidad CHECK (cantidad > 0),
-    CONSTRAINT fk_estado_kardex CHECK(estado IN ('0', '1')),
-    CHECK (fecha_vencimiento >= CURDATE() OR fecha_vencimiento IS NULL)
+    CONSTRAINT fk_estado_kardex CHECK(estado IN ('0', '1'))
 
 )ENGINE  = INNODB;
 
@@ -422,10 +421,9 @@ CREATE TABLE vehiculos (
     idusuario 			INT NOT NULL,
     marca_vehiculo 		VARCHAR(100) NOT NULL,
     modelo 				VARCHAR(100) NOT NULL,
-    placa 				VARCHAR(20) NOT NULL UNIQUE,
+    placa 				VARCHAR(7) NOT NULL UNIQUE,
     capacidad 			SMALLINT NOT NULL,
-    condicion 			ENUM('operativo', 'taller', 'averiado') NOT NULL,
-    
+    condicion 			ENUM('operativo', 'taller', 'averiado') NOT NULL DEFAULT 'operativo',
 	create_at			DATETIME NOT NULL DEFAULT NOW(),
 	update_at			DATETIME NULL,
     estado           	CHAR(10) NOT NULL DEFAULT 'Activo',

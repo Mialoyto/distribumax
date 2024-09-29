@@ -145,6 +145,10 @@ $host = "http://localhost/distribumax";
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Marcas
             </a>
+            <a class="nav-link" href="<?= $host ?>/views/Vehiculos/">
+              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              Vehiculos
+            </a>
 
 
           </div>

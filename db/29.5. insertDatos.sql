@@ -60,7 +60,8 @@ INSERT INTO roles (rol) VALUES
 ('Administrador'), 
 ('Usuario'), 
 ('Moderador'), 
-('Invitado');
+('Invitado'),
+('Conductor');
 
 
 INSERT INTO tipo_comprobante_pago (comprobantepago) VALUES 
@@ -133,14 +134,14 @@ INSERT INTO productos (idmarca, idsubcategoria, nombreproducto, descripcion, cod
 (8, 18, 'Pedigree Gatos Adultos 3kg', 'Alimento completo para gatos adultos', 'MASC001GAT'),
 (8, 18, 'Pedigree Gatos Cachorros 1.5kg', 'Alimento nutritivo para gatitos', 'MASC002GAT');
 
-CALL sp_empresa_registrar (
+/*CALL sp_empresa_registrar (
     20123456781,
     954,
     'JRC',
     'Av. Bancarios ',
     'santafe@gmail.com',
     '987654321'
-);
+); */
 
 -- Insertar un registro en la tabla proveedores
 INSERT INTO proveedores (idempresa, proveedor, contacto_principal, telefono_contacto, direccion, email)

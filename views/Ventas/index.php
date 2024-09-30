@@ -19,15 +19,24 @@ require_once '../../header.php';
           </div>
           <div class="modal-body">
             <!-- Aquí puedes incluir los datos de la venta -->
-            <div id="modal-content">
-              <p><strong>ID Venta:</strong> <span id="venta-id"></span></p>
-              <p><strong>Detalles de la Venta:</strong> <span id="venta-detalles"></span></p>
-              <!-- Puedes agregar más campos según sea necesario -->
+            <div class="table-responsive">
+              <table id="table-pedidos" class="table" tyle="width: 100%;">
+                <thead>
+                  <tr>
+                    <th>Productos</th>
+                    <th>Cantidades</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Las filas se llenarán aquí -->
+                </tbody>
+              </table>
+
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
+         
           </div>
         </div>
       </div>

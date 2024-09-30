@@ -124,22 +124,21 @@ CALL sp_empresa_registrar(
 );
 CALL sp_actualizar_empresa (12345678901,954,'Dijisa','Panamericana #234','dijisa@gmail.com','932123029');
 
-
+select * from usuarios;
 /****************************************************************************************************************/
 insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558004, 20123456783,'Empresa');
 insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558001, 20123456782,'Persona');
 
-insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(1,8,'2024/09/22');
+insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(1,5,'2024/09/22');
 select * from pedidos;
-
+select * from detalle_pedidos;
 -- Insertar detalles del pedido
 INSERT INTO detalle_pedidos (idpedido, idproducto, cantidad_producto, unidad_medida, precio_unitario, precio_descuento, subtotal) VALUES
-('PED-000000011', 2, 5, 'unidad', 2.00, 1.00, 10.00),
-('PED-000000011', 2, 6, 'unidad', 10.00, 2.00, 90.00);
+('PED-00000001', 2, 5, 'unidad', 2.00, 1.00, 10.00),
+('PED-00000001', 2, 6, 'unidad', 10.00, 2.00, 90.00);
 
 -- Llamar al procedimiento para registrar el movimiento correspondiente
-CALL sp_registrarmovimiento_detallepedido(1, 2, 'Salida', 10, 'Salida de 10 unidades del pedido PED-000000007');
-CALL sp_registrarmovimiento_detallepedido(1, 2, 'Salida', 20, 'Salida de 20 unidades del pedido PED-000000007');
+
 
 
 

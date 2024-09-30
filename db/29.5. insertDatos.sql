@@ -164,7 +164,7 @@ VALUES
     (1, 9, 3, 15.00, 20.00, 18.00),  -- Producto 9: Dog Chow Adultos
     (1, 10, 3, 12.00, 17.00, 15.00);  -- Producto 10: Pedigree Cachorros
 
-
+-- select * from detalle_productos
 
 INSERT INTO tipos_promociones (tipopromocion, descripcion)
 VALUES ('Descuento de Temporada', 'Descuento especial aplicado durante la temporada de invierno.');
@@ -188,11 +188,11 @@ VALUES
     (2, 'Descuento del 5% por und', '2021-06-01', '2021-06-30', 5);
 
 INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
-VALUES (5, 1, 5.00);
+VALUES (1, 1, 5.00);
 select * from promociones;
 select * from detalle_promociones;
 INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
-VALUES (4, 2, 5.00);
+VALUES (2, 2, 5.00);
 -- Registrando vehiculos (2 vehiculos)
 INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
 VALUES

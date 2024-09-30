@@ -117,32 +117,7 @@ END//
 CALL sp_generar_reporte(1);
 
 -- listar ventas
-SELECT 
-        ve.idventa,
-        ve.fecha_venta,
-        p.idpedido,
-        cli.idpersona,
-        cli.idempresa,
-        cli.tipo_cliente,
-        pe.nombres,
-        pe.appaterno,
-        pe.apmaterno,
-        em.razonsocial,
-        GROUP_CONCAT(pr.nombreproducto SEPARATOR ', ') AS productos,
-        GROUP_CONCAT(pr.preciounitario SEPARATOR ', ') AS precios_unitarios,
-        GROUP_CONCAT(dp.cantidad_producto SEPARATOR ', ') AS cantidades,
-        GROUP_CONCAT(dp.unidad_medida SEPARATOR ', ') AS unidades_medida,
-        GROUP_CONCAT(dp.precio_descuento SEPARATOR ', ') AS descuentos,
-        GROUP_CONCAT(dp.subtotal SEPARATOR ', ') AS subtotales
-    FROM ventas ve
-        INNER JOIN pedidos p ON p.idpedido = ve.idpedido
-        INNER JOIN detalle_pedidos dp ON p.idpedido = dp.idpedido
-        INNER JOIN productos pr ON pr.idproducto = dp.idproducto
-        INNER JOIN clientes cli ON cli.idcliente = p.idcliente
-        LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
-        LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
-    WHERE p.estado = 'Enviado' 
-    GROUP BY p.idpedido, cli.idpersona, cli.idempresa, cli.tipo_cliente, pe.nombres, pe.appaterno, pe.apmaterno, em.razonsocial;
+
 
 
 DROP PROCEDURE IF EXISTS `sp_listar_ventas`

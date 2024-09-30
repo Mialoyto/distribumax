@@ -179,6 +179,4 @@ BEGIN
       AND ve.idventa IS NULL;
 END $$
 
-CALL sp_getById_pedido('PED-000000047');
-select * from detalle_pedidos;
-select * from pedidos; */
+

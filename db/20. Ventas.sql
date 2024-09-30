@@ -82,7 +82,6 @@ CREATE PROCEDURE sp_generar_reporte (
 )
 BEGIN
     -- Input validation can be added here if needed
-    
     SELECT 
         ve.idventa,
         ve.fecha_venta,
@@ -97,7 +96,7 @@ BEGIN
         us.idusuario,
         us.nombre_usuario,
         GROUP_CONCAT(pr.nombreproducto SEPARATOR ', ') AS productos,
-        GROUP_CONCAT(pr.preciounitario SEPARATOR ', ') AS precios_unitarios,
+      --  GROUP_CONCAT(pr.preciounitario SEPARATOR ', ') AS precios_unitarios,
         GROUP_CONCAT(dp.cantidad_producto SEPARATOR ', ') AS cantidades,
         GROUP_CONCAT(dp.unidad_medida SEPARATOR ', ') AS unidades_medida,
         GROUP_CONCAT(dp.precio_descuento SEPARATOR ', ') AS descuentos,
@@ -111,10 +110,11 @@ BEGIN
         LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
         LEFT JOIN usuarios us ON us.idusuario=pe.idpersonanrodoc
     WHERE p.estado = 'Enviado' AND ve.idventa = _idventa
+    
     GROUP BY p.idpedido, cli.idpersona, cli.idempresa, cli.tipo_cliente, pe.nombres, pe.appaterno, pe.apmaterno, em.razonsocial;
 END//
 
-CALL sp_generar_reporte(3);
+CALL sp_generar_reporte(1);
 
 -- listar ventas
 SELECT 
@@ -169,6 +169,4 @@ ORDER BY p.idpedido DESC;
 END//
 
 CALL sp_listar_ventas
-
-    
 

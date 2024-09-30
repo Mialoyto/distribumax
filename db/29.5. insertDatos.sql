@@ -134,21 +134,22 @@ INSERT INTO productos (idmarca, idsubcategoria, nombreproducto, descripcion, cod
 (8, 18, 'Pedigree Gatos Adultos 3kg', 'Alimento completo para gatos adultos', 'MASC001GAT'),
 (8, 18, 'Pedigree Gatos Cachorros 1.5kg', 'Alimento nutritivo para gatitos', 'MASC002GAT');
 
-/*CALL sp_empresa_registrar (
+CALL sp_empresa_registrar (
     20123456781,
     954,
     'JRC',
     'Av. Bancarios ',
     'santafe@gmail.com',
     '987654321'
-); */
+); 
 
 -- Insertar un registro en la tabla proveedores
 INSERT INTO proveedores (idempresa, proveedor, contacto_principal, telefono_contacto, direccion, email)
 VALUES 
 (20123456781, 'Proveedor Ejemplo', 'Juan Pérez', '987654321', 'Av. Principal 123, Ciudad', 'contacto@proveedorejemplo.com');
 
-
+select * from proveedores;
+select * from unidades_medidas;
 -- Insertar registros en detalle_productos sin las columnas create_at y estado
 INSERT INTO detalle_productos (idproveedor, idproducto, idunidadmedida, precio_compra, precio_venta_minorista, precio_venta_mayorista)
 VALUES

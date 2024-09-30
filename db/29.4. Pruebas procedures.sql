@@ -23,6 +23,16 @@ CALL spu_registrar_personas (
     'Calle Falsa 123' -- Dirección
 );
 
+CALL spu_registrar_personas (
+    1, -- Tipo de documento (dni)
+    '26558004', -- Número de documento
+    954, -- ID del distrito
+    'pepito', -- Nombres
+    'Levano', -- Apellido paterno
+    'Martinez', -- Apellido materno
+    NULL, -- Teléfono (NULL)
+    'Calle Falsa 123' -- Dirección
+);
 CALL sp_actualizar_persona (
     1,
     99,
@@ -64,7 +74,7 @@ CALL sp_desactivar_usuario (1, 'admin');
 -- REGISTRAR EMPRESAS
 
 CALL sp_empresa_registrar (
-    20123456782,
+    20123456783,
     954,
     'Dijisaa',
     'Av. Bancarios ',
@@ -73,7 +83,7 @@ CALL sp_empresa_registrar (
 );
 
 CALL sp_actualizar_empresa (
-    20123456782,
+    20123456783,
     955,
     'Dijisaa',
     'Panamericana #234',
@@ -105,7 +115,7 @@ CALL sp_proovedor_registrar (
 
  /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL sp_empresa_registrar(
-	20123456783,
+	20123456782,
 	954,
     'JRCA',
     'Av. Bancarios ',
@@ -116,16 +126,27 @@ CALL sp_actualizar_empresa (12345678901,954,'Dijisa','Panamericana #234','dijisa
 
 
 /****************************************************************************************************************/
-insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558000, 20123456781,'Empresa');
+insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558004, 20123456783,'Empresa');
 insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558001, 20123456782,'Persona');
-insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(1,4,'2024/09/22');
-insert into detalle_pedidos(idpedido,idproducto,cantidad_producto,unidad_medida,precio_unitario,precio_descuento,subtotal)VALUES
-('PED-000000003',1,10,'unidad',2,1,10),
-('PED-000000003',2,20,'unidad',10,2,90);
+
+insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(1,8,'2024/09/22');
+select * from pedidos;
+
+-- Insertar detalles del pedido
+INSERT INTO detalle_pedidos (idpedido, idproducto, cantidad_producto, unidad_medida, precio_unitario, precio_descuento, subtotal) VALUES
+('PED-000000011', 2, 5, 'unidad', 2.00, 1.00, 10.00),
+('PED-000000011', 2, 6, 'unidad', 10.00, 2.00, 90.00);
+
+-- Llamar al procedimiento para registrar el movimiento correspondiente
+CALL sp_registrarmovimiento_detallepedido(1, 2, 'Salida', 10, 'Salida de 10 unidades del pedido PED-000000007');
+CALL sp_registrarmovimiento_detallepedido(1, 2, 'Salida', 20, 'Salida de 20 unidades del pedido PED-000000007');
+
+
 
 select * from detalle_pedidos;
 select * from pedidos;
 select * from usuarios;
+select * from personas;
 select * from clientes;
 select * from productos;
 select * from kardex;

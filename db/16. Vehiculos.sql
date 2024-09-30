@@ -55,8 +55,6 @@ DROP PROCEDURE IF EXISTS `sp_listar_vehiculo`
 DELIMITER //
 CREATE PROCEDURE `sp_listar_vehiculo`()
 BEGIN
-
-
 		SELECT 
          vh.idvehiculo,
          vh.marca_vehiculo,

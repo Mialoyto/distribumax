@@ -164,7 +164,7 @@ VALUES
     (1, 9, 3, 15.00, 20.00, 18.00),  -- Producto 9: Dog Chow Adultos
     (1, 10, 3, 12.00, 17.00, 15.00);  -- Producto 10: Pedigree Cachorros
 
-
+-- select * from detalle_productos
 
 INSERT INTO tipos_promociones (tipopromocion, descripcion)
 VALUES ('Descuento de Temporada', 'Descuento especial aplicado durante la temporada de invierno.');

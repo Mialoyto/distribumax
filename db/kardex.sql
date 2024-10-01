@@ -1,3 +1,4 @@
+USE distribuMax;
 -- Procedimiento para obtener el último stock
 DROP PROCEDURE IF EXISTS getultimostock;
 DELIMITER $$
@@ -12,7 +13,7 @@ BEGIN
     ORDER BY create_at DESC
     LIMIT 1;
 END $$
-DELIMITER ;
+
 
 -- Procedimiento para registrar movimientos
 /*DROP PROCEDURE IF EXISTS sp_registrarmovimiento;
@@ -113,20 +114,19 @@ BEGIN
     INNER JOIN colaboradores COL ON COL.idcolaborador = KAR.idcolaborador
     WHERE KAR.idproducto = _idproducto;
 END $$
-DELIMITER ;
+
 
 -- Llamadas de ejemplo a los procedimientos
-CALL sp_registrarmovimiento(1, 1, 'Ingreso', 400, 'Ingreso de nuevos productos');
+/*CALL sp_registrarmovimiento(2, 1, 'Ingreso', 400, 'Ingreso de nuevos productos');
 CALL sp_registrarmovimiento(2, 2, 'Ingreso', 100, 'Salida de nuevos productos');
 CALL sp_registrarmovimiento(2, 3, 'Ingreso', 100, 'Salida de nuevos productos');
 CALL sp_registrarmovimiento(2, 4, 'Ingreso', 150, 'Salida de nuevos productos');
-
+*/
 -- detalle pedidos
 
 CALL sp_registrarmovimiento_detallepedido(1, 2, 0,'Ingreso', 100, 'Ingreso de productos para venta');
-CALL sp_registrarmovimiento_detallepedido(1, 2, 0,'Salida', 50, 'Salida de productos vendidos');
 CALL sp_registrarmovimiento_detallepedido(1, 3, 0,'Ingreso', 200, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_detallepedido(1, 3, 0,'Salida', 75, 'Salida de productos dañados');
+
 
 SELECT * FROM kardex;
 SELECT * FROM productos;

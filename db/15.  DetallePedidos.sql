@@ -179,4 +179,5 @@ BEGIN
       AND ve.idventa IS NULL;
 END $$
 
+select * from pedidos;
 

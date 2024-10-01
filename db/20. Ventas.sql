@@ -86,6 +86,7 @@ BEGIN
         ve.idventa,
         ve.fecha_venta,
         p.idpedido,
+        tp.comprobantepago,
         cli.idpersona,
         cli.idempresa,
         cli.tipo_cliente,
@@ -95,11 +96,11 @@ BEGIN
         em.razonsocial,
         us.idusuario,
         us.nombre_usuario,
-        GROUP_CONCAT(pr.nombreproducto SEPARATOR ', ') AS productos,
+        pr.nombreproducto ,
       --  GROUP_CONCAT(pr.preciounitario SEPARATOR ', ') AS precios_unitarios,
-        GROUP_CONCAT(dp.cantidad_producto SEPARATOR ', ') AS cantidades,
-        GROUP_CONCAT(dp.unidad_medida SEPARATOR ', ') AS unidades_medida,
-        GROUP_CONCAT(dp.precio_descuento SEPARATOR ', ') AS descuentos,
+        dp.cantidad_producto,
+        dp.unidad_medida,
+        dp.precio_descuento,
         GROUP_CONCAT(dp.subtotal SEPARATOR ', ') AS subtotales
     FROM ventas ve
         INNER JOIN pedidos p ON p.idpedido = ve.idpedido
@@ -109,6 +110,8 @@ BEGIN
         LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
         LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
         LEFT JOIN usuarios us ON us.idusuario=pe.idpersonanrodoc
+          LEFT JOIN 
+        tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE p.estado = 'Enviado' AND ve.idventa = _idventa
     
     GROUP BY p.idpedido, cli.idpersona, cli.idempresa, cli.tipo_cliente, pe.nombres, pe.appaterno, pe.apmaterno, em.razonsocial;
@@ -120,28 +123,51 @@ CALL sp_generar_reporte(1);
 
 
 
-DROP PROCEDURE IF EXISTS `sp_listar_ventas`
+DROP PROCEDURE IF EXISTS `sp_listar_ventas`;
 DELIMITER //
 CREATE PROCEDURE `sp_listar_ventas`()
 BEGIN
-	SELECT 
-    ve.idventa,
-    ve.fecha_venta,
-    p.idpedido,
-    cli.idpersona,
-    cli.tipo_cliente,
-    GROUP_CONCAT(pr.nombreproducto SEPARATOR ', ') AS productos,
-    GROUP_CONCAT(dp.cantidad_producto SEPARATOR ', ') AS cantidades,
-    SUM(dp.subtotal) AS total_subtotal  -- Using SUM to calculate total
-FROM ventas ve
-    INNER JOIN pedidos p ON p.idpedido = ve.idpedido
-    INNER JOIN detalle_pedidos dp ON p.idpedido = dp.idpedido
-    INNER JOIN productos pr ON pr.idproducto = dp.idproducto
-    INNER JOIN clientes cli ON cli.idcliente = p.idcliente
-WHERE p.estado = 'Enviado' 
-GROUP BY ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
-ORDER BY p.idpedido DESC;
-END//
+    SELECT 
+        ve.idventa,
+        ve.fecha_venta,
+        p.idpedido,
+       tp.comprobantepago,
+        cli.idpersona,
+        cli.tipo_cliente,
+        pr.nombreproducto,
+        dp.cantidad_producto,
+        dp.subtotal,
+        pe.nombres,
+        pe.idpersonanrodoc,
+        pe.appaterno,
+        pe.apmaterno,
+        em.razonsocial,
+        em.idempresaruc
+    FROM 
+        ventas ve
+    INNER JOIN 
+        pedidos p ON p.idpedido = ve.idpedido
+    INNER JOIN 
+        detalle_pedidos dp ON p.idpedido = dp.idpedido
+    INNER JOIN 
+        productos pr ON pr.idproducto = dp.idproducto
+    INNER JOIN 
+        clientes cli ON cli.idcliente = p.idcliente
+    LEFT JOIN 
+        personas pe ON pe.idpersonanrodoc = cli.idpersona
+    LEFT JOIN 
+        empresas em ON em.idempresaruc = cli.idempresa
+    LEFT JOIN 
+        tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
+    WHERE 
+        p.estado = 'Enviado'
+    GROUP BY 
+        ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
+    ORDER BY 
+        p.idpedido DESC;
+END //
+
+
 
 CALL sp_listar_ventas
 

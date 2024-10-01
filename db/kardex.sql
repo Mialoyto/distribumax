@@ -49,7 +49,7 @@ BEGIN
     
     SELECT _idproducto AS _idproducto, _nuevo_stock_actual AS _retorno_stock_actual;
 END $$
-DELIMITER ;
+
 */
 
 -- Procedimiento para registrar movimiento de detalle de pedido
@@ -116,7 +116,7 @@ END $$
 DELIMITER ;
 
 -- Llamadas de ejemplo a los procedimientos
-CALL sp_registrarmovimiento(2, 1, 'Ingreso', 400, 'Ingreso de nuevos productos');
+CALL sp_registrarmovimiento(1, 1, 'Ingreso', 400, 'Ingreso de nuevos productos');
 CALL sp_registrarmovimiento(2, 2, 'Ingreso', 100, 'Salida de nuevos productos');
 CALL sp_registrarmovimiento(2, 3, 'Ingreso', 100, 'Salida de nuevos productos');
 CALL sp_registrarmovimiento(2, 4, 'Ingreso', 150, 'Salida de nuevos productos');
@@ -136,4 +136,4 @@ SELECT * FROM empresas;
 SELECT k.idkardex, k.stockactual, p.idproducto, p.nombreproducto 
 FROM kardex k
 INNER JOIN productos p ON k.idproducto = p.idproducto
-WHERE p.idproducto = 7;
+WHERE p.idproducto = 2;

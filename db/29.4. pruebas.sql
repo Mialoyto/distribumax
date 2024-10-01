@@ -93,36 +93,6 @@ SELECT * FROM productos;
 
 -- ELIMINAR DESPUES
 DROP PROCEDURE IF EXISTS ObtenerPrecioProducto;
-DELIMITER $$
-CREATE PROCEDURE ObtenerPrecioProducto(
-    IN _cliente_id       BIGINT,
-    IN _item  VARCHAR(255)
-)
-BEGIN
-    SELECT 
-        PRO.idproducto,
-        PRO.codigo,
-        PRO.nombreproducto,
-        DET.descuento,
-        UNDM.unidadmedida,
-        CASE 
-            WHEN LENGTH(CLI.idpersona) = 8 THEN DETP.precio_venta_minorista
-            WHEN LENGTH(CLI.idempresa) = 11 THEN DETP.precio_venta_mayorista
-        END 
-        AS precio_venta,
-        kAR.stockactual
-    FROM  productos PRO
-        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
-        LEFT JOIN detalle_productos DETP ON PRO.idproducto = DETP.idproducto
-        INNER JOIN unidades_medidas UNDM ON UNDM.idunidadmedida = DETP.idunidadmedida
-        INNER JOIN clientes CLI ON CLI.idempresa = _cliente_id OR CLI.idpersona = _cliente_id
-        -- kardex
-        INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
-        AND KAR.idkardex = (SELECT MAX(K2.idkardex) FROM kardex K2 WHERE K2.idproducto = PRO.idproducto)
-    WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%'))
-    AND PRO.estado = '1' 
-    AND KAR.stockactual > 0;
-END $$
 
 CALL ObtenerPrecioProducto(26558000, 'a');
 CALL sp_estado_producto ('1', 1);

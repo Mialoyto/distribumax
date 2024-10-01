@@ -75,7 +75,7 @@ END$$
 
 
 -- View para listar tables 
-DROP PROCEDURE IF EXISTS sp_generar_reporte;
+
 DELIMITER //
 CREATE PROCEDURE sp_generar_reporte ( 
 	IN _idventa INT
@@ -117,7 +117,7 @@ END//
 CALL sp_generar_reporte(1);
 
 -- listar ventas
-SELECT 
+/* SELECT 
         ve.idventa,
         ve.fecha_venta,
         p.idpedido,
@@ -142,10 +142,10 @@ SELECT
         LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
         LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
     WHERE p.estado = 'Enviado' 
-    GROUP BY p.idpedido, cli.idpersona, cli.idempresa, cli.tipo_cliente, pe.nombres, pe.appaterno, pe.apmaterno, em.razonsocial;
+    GROUP BY p.idpedido, cli.idpersona, cli.idempresa, cli.tipo_cliente, pe.nombres, pe.appaterno, pe.apmaterno, em.razonsocial; */
 
 
-DROP PROCEDURE IF EXISTS `sp_listar_ventas`
+
 DELIMITER //
 CREATE PROCEDURE `sp_listar_ventas`()
 BEGIN
@@ -168,5 +168,5 @@ GROUP BY ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
 ORDER BY p.idpedido DESC;
 END//
 
-CALL sp_listar_ventas
+-- CALL sp_listar_ventas
 

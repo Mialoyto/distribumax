@@ -97,6 +97,9 @@ DROP PROCEDURE IF EXISTS sp_actualizar_despacho;
 DROP PROCEDURE IF EXISTS sp_registrar_venta;
 DROP PROCEDURE IF EXISTS sp_actualizar_venta;
 DROP PROCEDURE IF EXISTS sp_estado_venta;
+DROP TRIGGER IF EXISTS trg_actualizar_estado_pedido;
+DROP PROCEDURE IF EXISTS sp_generar_reporte;
+DROP PROCEDURE IF EXISTS `sp_listar_ventas`
 
 -- 21 Comprobantes
 DROP PROCEDURE IF EXISTS sp_comprobantes_registrar;

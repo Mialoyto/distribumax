@@ -64,6 +64,13 @@ CALL sp_buscarpersonadoc (1, '26558000');
 
 
 SELECT * FROM usuarios;
+CALL sp_registrar_usuario(26558000,1,'admin','admin');
+CALL sp_actualizar_usuario
+(
+'admin',
+'$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
+2
+);
 
 
 CALL sp_usuario_login ('admin');

@@ -338,6 +338,7 @@ CREATE TABLE detalle_productos(
     estado          		CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idproveedor_deta_prod FOREIGN KEY(idproveedor) REFERENCES proveedores(idproveedor),
     CONSTRAINT fk_idproducto_deta_prod FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
+    CONSTRAINT uk_idproducto_deta_prod UNIQUE(idproducto),
     CONSTRAINT fk_estado_deta_prod  CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
@@ -412,7 +413,6 @@ CREATE TABLE kardex(
     CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
     CONSTRAINT ck_cantidad CHECK (cantidad > 0),
     CONSTRAINT fk_estado_kardex CHECK(estado IN ('0', '1'))
-
 )ENGINE  = INNODB;
 
 DROP TABLE IF EXISTS vehiculos;

@@ -95,7 +95,8 @@ END$$
 
 -- BUSCAR PRODUCTOS PARA LLENAR LA BASE DE DATOS
 -- EL ID DEL PEDIDO SE CAPTURA CUANDO SE REGISTRA EL PEDIDO
--- revusar este procedimiento almacenado0
+-- revusar este procedimiento almacenado
+DROP PROCEDURE IF EXISTS sp_buscar_productos;
 DELIMITER $$
 CREATE PROCEDURE sp_buscar_productos(
    IN _item VARCHAR(250)
@@ -115,6 +116,7 @@ END$$
 
 -- buscar productos por nombre o codigo y dependiendo del numero de ruc o dni del cliente cambia los precios
 
+DROP PROCEDURE IF EXISTS ObtenerPrecioProducto;
 DELIMITER $$
 CREATE PROCEDURE ObtenerPrecioProducto(
     IN _cliente_id       BIGINT,
@@ -131,19 +133,25 @@ BEGIN
             WHEN LENGTH(CLI.idpersona) = 8 THEN DETP.precio_venta_minorista
             WHEN LENGTH(CLI.idempresa) = 11 THEN DETP.precio_venta_mayorista
         END 
-        AS precio_venta
+        AS precio_venta,
+        kAR.stockactual
     FROM  productos PRO
         LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
         LEFT JOIN detalle_productos DETP ON PRO.idproducto = DETP.idproducto
         INNER JOIN unidades_medidas UNDM ON UNDM.idunidadmedida = DETP.idunidadmedida
         INNER JOIN clientes CLI ON CLI.idempresa = _cliente_id OR CLI.idpersona = _cliente_id
+        -- kardex
+        INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
+        AND KAR.idkardex = (SELECT MAX(K2.idkardex) FROM kardex K2 WHERE K2.idproducto = PRO.idproducto)
     WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%'))
-    AND PRO.estado = '1';
+    AND PRO.estado = '1' 
+    AND KAR.stockactual > 0;
 END $$
-
+CALL ObtenerPrecioProducto(26558000,'a')
 
 -- Obtener el Id del pedido y completar la tabla en ventas
 /* ESTO MODIFICO LOYOLA */
+DROP PROCEDURE IF EXISTS sp_getById_pedido;
 DELIMITER $$
 CREATE PROCEDURE sp_getById_pedido(
     IN _idpedido CHAR(15)
@@ -179,6 +187,6 @@ BEGIN
       AND ve.idventa IS NULL;
 END $$
 
-CALL sp_getById_pedido('PED-000000047');
+/* CALL sp_getById_pedido('PED-000000047');
 select * from detalle_pedidos;
-select * from pedidos; */
+select * from pedidos;  */

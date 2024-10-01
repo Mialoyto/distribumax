@@ -7,63 +7,78 @@ use Dompdf\Options;
 
 // Crear instancia de DOMPDF y establecer opciones
 $options = new Options();
-$options->set('isHtml5ParserEnabled', true);  // Soporte para HTML5
-$options->set('isRemoteEnabled', true);  // Permitir cargar imágenes remotas
+$options->set('isHtml5ParserEnabled', true);
+$options->set('isRemoteEnabled', true);
 
 $dompdf = new Dompdf($options);
 
-// Contenido HTML del reporte
+// Contenido HTML del ticket
 $html = '
-<style>
-    h1 { text-align: center; color: #333; }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    table, th, td {
-        border: 1px solid black;
-    }
-    th, td {
-        padding: 10px;
-        text-align: center;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-</style>
-<h1>Reporte de Ventas</h1>
-<p>Fecha: ' . date('Y-m-d') . '</p>
-<table>
-    <tr>
-        <th>Producto</th>
-        <th>Cantidad</th>
-        <th>Precio Unitario</th>
-        <th>Total</th>
-    </tr>
-    <tr>
-        <td>Producto A</td>
-        <td>10</td>
-        <td>$15.00</td>
-        <td>$150.00</td>
-    </tr>
-    <tr>
-        <td>Producto B</td>
-        <td>5</td>
-        <td>$20.00</td>
-        <td>$100.00</td>
-    </tr>
-    <tr>
-        <td>Producto C</td>
-        <td>3</td>
-        <td>$30.00</td>
-        <td>$90.00</td>
-    </tr>
-    <tr>
-        <th colspan="3">Total General</th>
-        <th>$340.00</th>
-    </tr>
-</table>
-<p>Reporte generado automáticamente.</p>
+
+
+<div class="ticket">
+    <h1>Boleta Electronica</h1>
+    <p class="fecha"></p>
+    
+    <div class="datos">
+        <p><strong>Cliente:Nombre de la empresa</strong></p>
+        <p><strong>RUC 0 DNI:</strong> Ruc</p>
+        <p><strong>Fecha:</strong> ' . date('d/m/Y H:i:s') . '</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cant.</th>
+                <th>P. UNIT.</th>
+                <th>Importe</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                
+            </tr>
+        </tbody>
+    </table>
+    
+    <table style="margin-top: 10px;">
+        <tbody>
+            <tr>
+                <td>OP. GRAVADAS</td>
+                <td class="total">S/ 2.03</td>
+            </tr>
+            <tr>
+                <td>OP. GRATUITAS</td>
+                <td class="total">S/ 0.00</td>
+            </tr>
+            <tr>
+                <td>OP. EXONERADAS</td>
+                <td class="total">S/ 0.00</td>
+            </tr>
+            <tr>
+                <td>OP. INAFECTAS</td>
+                <td class="total">S/ 0.00</td>
+            </tr>
+            <tr>
+                <td>I.G.V</td>
+                <td class="total">S/ 0.37</td>
+            </tr>
+            <tr>
+                <td>SUB TOTAL</td>
+                <td class="total">S/ 2.03</td>
+            </tr>
+            <tr>
+                <td class="total-final">TOTAL VENTA</td>
+                <td class="total-final">S/ 2.40</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="pie">DOS 40/100 PEN</p>
+    <p class="pie">VENDEDOR(A): ANDRES P.C.</p>
+    <p class="pie">Gracias por su preferencia</p>
+</div>
 ';
 
 // Cargar el HTML a DOMPDF
@@ -76,5 +91,5 @@ $dompdf->setPaper('A4', 'portrait');  // Cambia a 'landscape' si prefieres horiz
 $dompdf->render();
 
 // Enviar el PDF al navegador (puedes cambiar a 'D' para forzar descarga)
-$dompdf->stream('reporte_ventas.pdf', array("Attachment" => false));
+$dompdf->stream('factura_venta.pdf', array("Attachment" => false));
 ?>

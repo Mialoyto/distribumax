@@ -103,12 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
             data.forEach(pedido => {
                
                 const tipo_cliente = $("#tipocliente").value = pedido.tipo_cliente;
-
+ 
                 if (tipo_cliente === 'Empresa') {
                     // Cargar datos de empresa
                     $("#nombres").value = pedido.razonsocial;
                     $("#direccion").value = pedido.direccion;
-    
+                
                     // Filtrar y agregar la opción Factura al select
                     const facturaOption = window.comprobantesData.find(comprobante => comprobante.comprobantepago === 'Factura');
                     if (facturaOption) {
@@ -117,12 +117,21 @@ document.addEventListener("DOMContentLoaded", () => {
                         option.text = facturaOption.comprobantepago;
                         tipoComprobanteSelect.appendChild(option);
                     }
-    
+                
+                    // Agregar la opción Boleta si es necesario
+                    const boletaOption = window.comprobantesData.find(comprobante => comprobante.comprobantepago === 'Boleta');
+                    if (boletaOption) {
+                        const option = document.createElement('option');
+                        option.value = boletaOption.idtipocomprobante;
+                        option.text = boletaOption.comprobantepago;
+                        tipoComprobanteSelect.appendChild(option);
+                    }
+                
                 } else if (tipo_cliente === 'Persona') {
                     // Cargar datos de persona
                     $("#nombres").value = pedido.nombres + ' ' + pedido.appaterno + ' ' + pedido.apmaterno;
                     $("#direccion").value = pedido.direccion;
-    
+                
                     // Filtrar y agregar la opción Boleta al select
                     const boletaOption = window.comprobantesData.find(comprobante => comprobante.comprobantepago === 'Boleta');
                     if (boletaOption) {
@@ -131,7 +140,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         option.text = boletaOption.comprobantepago;
                         tipoComprobanteSelect.appendChild(option);
                     }
+                
+                    // Agregar la opción Factura si es necesario
+                    const facturaOption = window.comprobantesData.find(comprobante => comprobante.comprobantepago === 'Factura');
+                    if (facturaOption) {
+                        const option = document.createElement('option');
+                        option.value = facturaOption.idtipocomprobante;
+                        option.text = facturaOption.comprobantepago;
+                        tipoComprobanteSelect.appendChild(option);
+                    }
                 }
+                
 
                 
                 const row = document.createElement('tr');

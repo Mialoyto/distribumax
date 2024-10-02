@@ -87,7 +87,7 @@
               <div class="form-floating">
                 <input type="search" class="form-control" id="addProducto" list="datalistProducto" placeholder="addProducto">
                 <label for="addProducto">Agregar producto</label>
-                <ul id="datalistProducto" class="list-group-item position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
+                <ul id="datalistProducto" class="list-group position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
               </div>
             </div>
             <!-- FIN BUSCADOR PETICIONES -->

@@ -5,10 +5,10 @@
   border: 1px solid #ced4da; /* Borde como los inputs de Bootstrap */
   border-radius: 0.25rem;
 }
-#datalistProducto .list-group-item {
+#datalistProducto .list-group {
   cursor: pointer;
 }
-#datalistProducto .list-group-item:hover {
+#datalistProducto .list-group:hover {
   background-color: #f8f9fa; /* Cambiar el color al pasar el ratón */
 }
 

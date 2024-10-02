@@ -48,4 +48,14 @@
             die($e->getMessage());
         }
     }
+
+    public function getById_usuarioVe($params=[]){
+        try{
+            $query=$this->pdo->prepare("CALL sp_getById_usuarioVe (?)");
+            $query->execute(array($params['idusuarioVe']));
+            return $query->fetch(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }

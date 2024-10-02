@@ -15,7 +15,7 @@ require_once '../../header.php';
         Datos del Vehículo
       </div>
       <div class="card-body">
-        <form action="registrar_vehiculo.php" method="POST">
+        <form action="" method="" id="form-registrar-Vehiculo">
           <div class="row">
             <div class="col-md-4 mb-3">
               <div class="form-floating">
@@ -26,7 +26,7 @@ require_once '../../header.php';
             </div>
             <div class="col-md-4 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="marca" name="marca" maxlength="100" minlength="3" required>
+                <input type="text" class="form-control" id="marca_vehiculo" name="marca_vehiculo" maxlength="100" minlength="3" required>
                 <label for="marca"><i class="fas fa-car me-2"></i> Marca</label>
               </div>
             </div>
@@ -40,8 +40,8 @@ require_once '../../header.php';
           <div class="row">
             <div class="col-md-4 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="placa" name="placa" pattern="[A-Za-z]{4}-[0-9]{3}" maxlength="9" minlength="9" required oninput="this.value = this.value.toUpperCase();">
-                <label for="placa"><i class="fas fa-clipboard-check me-2"></i> Placa (Ej: ABCD-123)</label>
+                <input type="text" class="form-control" id="placa" name="placa" pattern="[A-Za-z]{3}-[0-9]{3}" maxlength="7" minlength="7" required>
+                <label for="placa"><i class="fas fa-clipboard-check me-2"></i> Placa (Ej: ABC-123)</label>
               </div>
             </div>
             <div class="col-md-4 mb-3">

@@ -1,1 +1,6 @@
 /.vscode
+/vendor
+composer.lock
+composer.json
+prueba.txt
+Roles Lino Fino.xlsx

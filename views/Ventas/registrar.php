@@ -31,23 +31,23 @@ require_once '../../header.php';
               </div>
             </div>
           </div>
-
+          <!-- BUSCADOR -->
           <div class="mb-4">
             <h5>Pedido</h5>
             <div class="row mb-3">
               <div class="col">
                 <div class="form-floating">
                   <input type="search" class="form-control" id="idpedido" list="datalistProducto" placeholder="" required>
-                  <!-- <label for="idpedido">Pedido</label> -->
-                  <!-- <ul id="datalistIdPedido" class="list-group position-absolute w-100 dataList" style="z-index: 1000; display: none;"></ul> -->
-                  <datalist id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist>
                   <label for="idpedido">Pedido</label>
+                  <ul id="datalistIdPedido" class="list-group-item position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
+                  <!-- <label for="idpedido">Pedido</label> -->
+                  <!-- <datalist id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist> -->
                   <div id="mensaje-error" style="color: red; display: none;">No existe el pedido</div>
                 </div>
               </div>
             </div>
           </div>
-
+          <!-- FIN DEL BUSCADOR -->
           <!-- Tabla de Productos -->
           <div class="table-responsive my-4"> <!-- Añadido margin top y bottom -->
             <table class="table table-striped table-sm" id="productosTabla">

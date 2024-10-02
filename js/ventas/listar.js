@@ -1,17 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
     function $(object = null) { return document.querySelector(object); }
     let dtventa;
-    
+
     async function CargarDatos() {
         const Tablaventas = $("#table-ventas tbody");
-        
+
         const response = await fetch(`../../controller/ventas.controller.php?operation=getAll`);
         const data = await response.json();
-    
+        console.log(data);
+
         Tablaventas.innerHTML = ''; // Limpiar contenido previo
         data.forEach(element => {
             const clienteNombre = element.tipo_cliente === 'Empresa' ? element.razonsocial : element.nombres;
-            const documetno =clienteNombre === 'Empresa'?element.idempresaruc :element.idpersonanrodoc;
+            const documento = element.tipo_cliente === 'Empresa' ? element.idempresaruc : element.idpersonanrodoc;
             Tablaventas.innerHTML += `
             <tr>
                 <td><a href='#' class='text-primary info' 
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     data-idpedido='${element.idpedido}'>${element.idpedido}</a></td>
                 <td>${element.tipo_cliente}</td>
                 <td>${clienteNombre}</td>
-                <td>${documetno}</td>
+                <td class="text-start">${documento}</td>
                 <td>${element.fecha_venta}</td>
                 <td>
                     <button class="btn btn-primary info reporte" 
@@ -31,12 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
             </tr>
             `;
         });
-    
+
         if (dtventa) {
             dtventa.destroy(); // Destruir la tabla anterior si existe
         }
         RenderDatatable();
-    
+
         // Añadir listeners a los botones de reporte
         const tagsreporte = document.querySelectorAll('.reporte');
         tagsreporte.forEach(element => {
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 await Reporte(idventa); // Llamar a la función reporte
             });
         });
-        
+
         const tagsinfo = document.querySelectorAll('.info');
         tagsinfo.forEach(element => {
             element.addEventListener("click", async (event) => {
@@ -57,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
-    
+
 
     async function RenderDatatable() {
         dtventa = new DataTable("#table-ventas", {
@@ -72,19 +73,19 @@ document.addEventListener("DOMContentLoaded", () => {
             // Puedes agregar más opciones aquí si es necesario
         });
     }
-    
-    
+
+
     async function MostrarDetalle(idpedido) {
-        
+
         const Tablaventas = $("#table-pedidos tbody");
-        
+
         const response = await fetch(`../../controller/ventas.controller.php?operation=getAll`);
         const data = await response.json();
 
         Tablaventas.innerHTML = '';
-        
+
         data.forEach(element => {
-        const clienteNombre = element.tipo_cliente === 'Empresa' ? element.razonsocial : element.nombres;
+            const clienteNombre = element.tipo_cliente === 'Empresa' ? element.razonsocial : element.nombres;
             Tablaventas.innerHTML += `
             <tr>
                 <td>${element.nombreproducto}</td>
@@ -92,32 +93,30 @@ document.addEventListener("DOMContentLoaded", () => {
             </tr>
             `;
 
-            $("#datos").value=clienteNombre;
+            $("#datos").value = clienteNombre;
         });
     }
-    
+
     async function Reporte(idventa) {
         const params = new FormData();
         params.append('operation', 'reporteVenta');
         params.append('idventa', idventa);
-       
+
         const option = {
             method: 'POST',
             body: params // Cambiar params a body
         };
-    
+
         const response = await fetch(`../../controller/ventas.controller.php`, option);
         const data = await response.json();
-        if(data[0].comprobantepago == 'Boleta'){
-            window.location.href=`../../views/Reportes/Boleta.php?idventa=${idventa}`;  
-        }else{
-            
-            window.location.href=`../../views/Reportes/Factura.php?idventa=${idventa}`;
-        
+        if (data[0].comprobantepago == 'Boleta') {
+            window.open(`../../views/Reportes/Boleta.php?idventa=${idventa}`, '_blank');
+        } else {
+            window.open(`../../views/Reportes/Factura.php?idventa=${idventa}`, '_blank');
         }
-      
+
     }
-    
+
     //Reporte();
     CargarDatos();
 });

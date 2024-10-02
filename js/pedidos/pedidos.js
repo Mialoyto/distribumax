@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         const li = document.createElement("li");
         li.classList.add("list-group-item"); // Clase de Bootstrap para los ítems
-        li.innerHTML = `${item.codigo}-${item.nombreproducto} <h6 class="btn btn-secondary btn-sm h-25 d-inline-block"secondary>${item.unidadmedida}: ${item.stockactual}</h6>`;
+        li.innerHTML = `${item.codigo}-${item.nombreproducto} <h6 class="btn btn-secondary btn-sm h-25 d-inline-block">${item.unidadmedida}: ${item.stockactual}</h6>`;
         li.addEventListener("click", () => {
           addProductToTable(
             item.idproducto,

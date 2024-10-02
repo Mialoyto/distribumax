@@ -50,3 +50,25 @@ BEGIN
       estado=_estado
       WHERE idproducto=_idproducto;
 END$$
+
+-- BUSCAR PRODUCTOS
+DROP PROCEDURE IF EXISTS sp_buscar_productos;
+DELIMITER $$
+CREATE PROCEDURE sp_buscar_productos(
+   IN _item VARCHAR(250)
+)
+BEGIN
+    SELECT 
+        PRO.idproducto,
+        PRO.codigo,
+        PRO.nombreproducto,
+        kAR.stockactual
+    FROM  productos PRO
+    INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
+        AND KAR.idkardex = (SELECT MAX(K2.idkardex) FROM kardex K2 WHERE K2.idproducto = PRO.idproducto)
+    WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%')) 
+    AND PRO.estado = '1' 
+    AND KAR.stockactual > 0;
+END$$
+
+CALL sp_buscar_productos('a');

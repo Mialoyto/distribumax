@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Obtener subcategorías
       const responseSubcategorias = await fetch(`../../controller/subcategoria.controller.php?operation=getAll`);
       const subcategorias = await responseSubcategorias.json();
+      console.log(subcategorias);
       subcategorias.forEach(element => {
         const tagOption = document.createElement('option');
         tagOption.value = element.idsubcategoria;

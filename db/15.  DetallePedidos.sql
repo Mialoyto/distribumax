@@ -95,25 +95,7 @@ BEGIN
 END$$
 
 
--- BUSCAR PRODUCTOS PARA LLENAR LA BASE DE DATOS
--- EL ID DEL PEDIDO SE CAPTURA CUANDO SE REGISTRA EL PEDIDO
--- revusar este procedimiento almacenado
-DROP PROCEDURE IF EXISTS sp_buscar_productos;
-DELIMITER $$
-CREATE PROCEDURE sp_buscar_productos(
-   IN _item VARCHAR(250)
-)
-BEGIN
-    SELECT 
-        PRO.idproducto,
-        PRO.codigo,
-        PRO.nombreproducto
-    FROM  productos PRO
-    WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%')) 
-    AND PRO.estado = '1';
-END$$
 
-CALL sp_buscar_productos('a');
 -- buscar productos por nombre o codigo y dependiendo del numero de ruc o dni del cliente cambia los precios
 DELIMITER $$
 CREATE PROCEDURE ObtenerPrecioProducto(

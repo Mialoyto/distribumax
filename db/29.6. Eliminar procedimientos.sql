@@ -36,6 +36,7 @@ DROP VIEW IF EXISTS vw_listar_categorias;
 -- 08 Subcategorias
 DROP PROCEDURE IF EXISTS sp_registrar_subcategoria;
 DROP PROCEDURE IF EXISTS sp_actualizar_subcategoria;
+DROP VIEW IF EXISTS vw_listar_subcategorias;
 
 -- 09 Marcas
 DROP PROCEDURE IF EXISTS sp_registrar_marca;

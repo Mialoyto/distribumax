@@ -42,6 +42,6 @@ END$$
 -- LISTAR SUBCATEGORIAS
 
 CREATE VIEW vw_listar_subcategorias AS
-    SELECT subcategoria FROM subcategoriaS
+    SELECT idsubcategoria,subcategoria FROM subcategoriaS
     WHERE estado = '1'
     ORDER BY subcategoria ASC;

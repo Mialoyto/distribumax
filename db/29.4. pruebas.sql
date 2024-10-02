@@ -94,7 +94,7 @@ SELECT * FROM productos;
 -- ELIMINAR DESPUES
 DROP PROCEDURE IF EXISTS ObtenerPrecioProducto;
 
-CALL ObtenerPrecioProducto(26558000, 'a');
+CALL ObtenerPrecioProducto(, 'a');
 CALL sp_estado_producto ('1', 1);
 
 

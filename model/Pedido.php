@@ -37,6 +37,7 @@ class Pedidos extends Conexion
       $query->execute(array(
         $params['_idpedido']
       ));
+      
       return $query->fetchAll(PDO::FETCH_ASSOC);
     }catch(Exception $e){
       die($e->getMessage());

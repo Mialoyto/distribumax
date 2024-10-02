@@ -47,16 +47,17 @@ END$$
 
 
 -- buscador para pedidos por id
+DROP PROCEDURE sp_buscar_pedido;
 DELIMITER $$
 CREATE PROCEDURE sp_buscar_pedido(
-   IN _idpedido INT
+   IN _idpedido CHAR(15)
 )
 BEGIN
     SELECT 
         idpedido
-    FROM  pedidos 
-    WHERE idpedido LIKE CONCAT ('%', _idpedido, '%') 
-      AND estado = 'Pendiente';  -- Filtra para no mostrar pedidos "Enviados"
+    FROM  pedidos  
+    WHERE idpedido LIKE CONCAT (_idpedido,'%') 
+      AND estado = 'Pendiente'; -- Filtra para no mostrar pedidos "Enviados"
       
     -- Actualizar el estado del pedido si se encuentra
     UPDATE pedidos 
@@ -64,7 +65,8 @@ BEGIN
     WHERE idpedido = _idpedido
       AND estado = 'Enviado';  -- Asegúrate de que solo se actualicen los pedidos que no están "Enviados"
 END$$
-
+CALL sp_buscar_pedido('PED-000000007');
+SELECT * FROM pedidos;
 
 -- insertar id antes de insertar los datos
 DELIMITER $$

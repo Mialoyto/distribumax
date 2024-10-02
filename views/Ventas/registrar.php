@@ -37,9 +37,9 @@ require_once '../../header.php';
             <div class="row mb-3">
               <div class="col">
                 <div class="form-floating">
-                  <input type="search" class="form-control" id="idpedido" list="datalistProducto" placeholder="" required>
-                  <label for="idpedido">Pedido</label>
-                  <ul id="datalistIdPedido" class="list-group-item position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
+                  <input type="search" class="form-control" id="idpedido" list="datalistIdPedido" placeholder="Buscar ID pedido" required>
+                  <label for="idpedido">Buscar ID pedido</label>
+                  <ul id="datalistIdPedido" class="list-group position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
                   <!-- <label for="idpedido">Pedido</label> -->
                   <!-- <datalist id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist> -->
                   <div id="mensaje-error" style="color: red; display: none;">No existe el pedido</div>
@@ -146,7 +146,8 @@ require_once '../../header.php';
   </div>
 </main>
 
+<?php require_once '../../footer.php'; ?>
 <script src="../../js/ventas/registrar.js"></script>
-<?php
-require_once '../../footer.php';
-?>
+</body>
+
+</html>

@@ -10,7 +10,7 @@ $host = "http://localhost/distribumax";
 
 <!--Variable temporal --->
 
-<head>
+<>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -19,6 +19,7 @@ $host = "http://localhost/distribumax";
   <title>Distribumax</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="<?= $host ?>/css/styles.css" rel="stylesheet" />
+  <link href="http://distribumax/css/list.css"/>
 
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 

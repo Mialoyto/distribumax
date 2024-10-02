@@ -13,8 +13,9 @@ switch ($verbo) {
           $datos = [
             '_idpedido' => $_GET['_idpedido']
           ];
+          $id = $pedido->searchPedido($datos);
 
-          echo json_encode($pedido->searchPedido($datos));
+          echo json_encode($id);
           break;
 
         case 'getById':

@@ -31,7 +31,8 @@ if (isset($_GET['operation'])) {
       $datos = [
         '_item' => $_GET['_item']
       ];
-      echo json_encode($producto->searchProducto($datos));
+      $lista = $producto->searchProducto($datos);
+      echo json_encode(["data" => $lista]);
       break;
 
       case 'getProducto':

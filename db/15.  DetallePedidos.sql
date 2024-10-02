@@ -53,7 +53,8 @@ BEGIN
     LIMIT 1;
 
     IF v_stock_actual >= NEW.cantidad_producto THEN
-        CALL sp_registrarmovimiento_detallepedido(v_idusuario, NEW.idproducto, v_stock_actual, 'Salida', NEW.cantidad_producto, 'Venta de producto');
+        CALL sp_registrarmovimiento_detallepedido
+        (v_idusuario, NEW.idproducto, v_stock_actual, 'Salida', NEW.cantidad_producto, 'Venta de producto');
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para esta operación';
     END IF;
@@ -93,6 +94,7 @@ BEGIN
         WHERE iddetallepedido = _iddetallepedido;
 END$$
 
+
 -- BUSCAR PRODUCTOS PARA LLENAR LA BASE DE DATOS
 -- EL ID DEL PEDIDO SE CAPTURA CUANDO SE REGISTRA EL PEDIDO
 -- revusar este procedimiento almacenado
@@ -105,18 +107,14 @@ BEGIN
     SELECT 
         PRO.idproducto,
         PRO.codigo,
-        PRO.nombreproducto,
-        PRO.preciounitario,
-        DET.descuento
+        PRO.nombreproducto
     FROM  productos PRO
-        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
     WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%')) 
     AND PRO.estado = '1';
 END$$
 
+CALL sp_buscar_productos('a');
 -- buscar productos por nombre o codigo y dependiendo del numero de ruc o dni del cliente cambia los precios
-
-DROP PROCEDURE IF EXISTS ObtenerPrecioProducto;
 DELIMITER $$
 CREATE PROCEDURE ObtenerPrecioProducto(
     IN _cliente_id       BIGINT,
@@ -147,7 +145,7 @@ BEGIN
     AND PRO.estado = '1' 
     AND KAR.stockactual > 0;
 END $$
-CALL ObtenerPrecioProducto(26558000,'a')
+
 
 -- Obtener el Id del pedido y completar la tabla en ventas
 /* ESTO MODIFICO LOYOLA */

@@ -15,44 +15,6 @@ BEGIN
 END $$
 
 
--- Procedimiento para registrar movimientos
-/*DROP PROCEDURE IF EXISTS sp_registrarmovimiento;
-DELIMITER $$
-CREATE PROCEDURE sp_registrarmovimiento (
-    IN _idusuario       INT,
-    IN _idproducto      INT,
-    IN _tipomovimiento  ENUM('Ingreso', 'Salida'),
-    IN _cantidad        INT, -- Cambiado a INT si debe ser entero
-    IN _motivo          VARCHAR(255)
-)
-BEGIN
-    DECLARE _ultimo_stock_actual INT DEFAULT 0;
-    DECLARE _nuevo_stock_actual INT;
-
-    CALL getultimostock(_idproducto, _ultimo_stock_actual);
-
-    IF _ultimo_stock_actual IS NULL THEN
-        SET _ultimo_stock_actual = 0;
-    END IF;
-
-    IF _tipomovimiento = 'Ingreso' THEN
-        SET _nuevo_stock_actual = _ultimo_stock_actual + _cantidad;
-    ELSEIF _tipomovimiento = 'Salida' THEN
-        IF _ultimo_stock_actual >= _cantidad THEN
-            SET _nuevo_stock_actual = _ultimo_stock_actual - _cantidad;
-        ELSE
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para esta operación';
-        END IF;
-    END IF;
-
-    INSERT INTO kardex (idusuario, idproducto, stockactual, tipomovimiento, cantidad, motivo)
-    VALUES (_idusuario, _idproducto, _nuevo_stock_actual, _tipomovimiento, _cantidad, _motivo);
-    
-    SELECT _idproducto AS _idproducto, _nuevo_stock_actual AS _retorno_stock_actual;
-END $$
-
-*/
-
 -- Procedimiento para registrar movimiento de detalle de pedido
 
 DROP PROCEDURE IF EXISTS sp_registrarmovimiento_detallepedido;
@@ -114,18 +76,18 @@ BEGIN
     INNER JOIN colaboradores COL ON COL.idcolaborador = KAR.idcolaborador
     WHERE KAR.idproducto = _idproducto;
 END $$
+-- detalle idos
 
-
--- Llamadas de ejemplo a los procedimientos
-/*CALL sp_registrarmovimiento(2, 1, 'Ingreso', 400, 'Ingreso de nuevos productos');
-CALL sp_registrarmovimiento(2, 2, 'Ingreso', 100, 'Salida de nuevos productos');
-CALL sp_registrarmovimiento(2, 3, 'Ingreso', 100, 'Salida de nuevos productos');
-CALL sp_registrarmovimiento(2, 4, 'Ingreso', 150, 'Salida de nuevos productos');
-*/
--- detalle pedidos
-
+CALL sp_registrarmovimiento_detallepedido(1, 1, 0,'Ingreso', 200, 'Ingreso de productos adicionales');
 CALL sp_registrarmovimiento_detallepedido(1, 2, 0,'Ingreso', 100, 'Ingreso de productos para venta');
 CALL sp_registrarmovimiento_detallepedido(1, 3, 0,'Ingreso', 200, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_detallepedido(1, 4, 0,'Ingreso', 50, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_detallepedido(1, 5, 0,'Ingreso', 150, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_detallepedido(1, 6, 0,'Ingreso', 200, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_detallepedido(1, 7, 0,'Ingreso', 250, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_detallepedido(1, 8, 0,'Ingreso', 275, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_detallepedido(1, 9, 0,'Ingreso', 300, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_detallepedido(1, 10, 0,'Ingreso', 325, 'Ingreso de productos adicionales');
 
 
 SELECT * FROM kardex;
@@ -136,4 +98,4 @@ SELECT * FROM empresas;
 SELECT k.idkardex, k.stockactual, p.idproducto, p.nombreproducto 
 FROM kardex k
 INNER JOIN productos p ON k.idproducto = p.idproducto
-WHERE p.idproducto = 2;
+WHERE p.idproducto = 1;

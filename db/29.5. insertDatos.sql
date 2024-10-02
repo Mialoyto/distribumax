@@ -135,7 +135,7 @@ INSERT INTO productos (idmarca, idsubcategoria, nombreproducto, descripcion, cod
 (8, 18, 'Pedigree Gatos Cachorros 1.5kg', 'Alimento nutritivo para gatitos', 'MASC002GAT');
 
 CALL sp_empresa_registrar (
-    20123456781,
+    20123456783,
     954,
     'JRC',
     'Av. Bancarios ',
@@ -146,7 +146,7 @@ CALL sp_empresa_registrar (
 -- Insertar un registro en la tabla proveedores
 INSERT INTO proveedores (idempresa, proveedor, contacto_principal, telefono_contacto, direccion, email)
 VALUES 
-(20123456781, 'Proveedor Ejemplo', 'Juan Pérez', '987654321', 'Av. Principal 123, Ciudad', 'contacto@proveedorejemplo.com');
+(20123456782, 'Proveedor Ejemplo', 'Juan Pérez', '987654321', 'Av. Principal 123, Ciudad', 'contacto@proveedorejemplo.com');
 
 select * from proveedores;
 select * from unidades_medidas;
@@ -196,5 +196,7 @@ VALUES (2, 2, 5.00);
 -- Registrando vehiculos (2 vehiculos)
 INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
 VALUES
-    (2, 'Toyota', 'Corolla', 'ABC123', 5, 'operativo' ),
-    (2, 'Honda', 'Civic', 'XYZ789', 5, 'operativo' );
+    (1, 'Toyota', 'Corolla', 'ABC123', 5, 'operativo' ),
+    (1, 'Honda', 'Civic', 'XYZ789', 5, 'operativo' );
+
+SELECT * FROM vehiculos;

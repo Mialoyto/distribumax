@@ -22,8 +22,10 @@ WHERE
 END IF;
 END$$
 
-call sp_buscardistrito('chincha');
+-- call sp_buscardistrito('chincha');
 
+
+-- LISTAR DISTRITOS
 CREATE VIEW view_distritos  AS
 	SELECT iddistrito,distrito
         FROM distritos ORDER BY distrito ASC;

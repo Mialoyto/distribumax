@@ -10,6 +10,7 @@ BEGIN
     VALUES (_comprobantepago);
 END$$
 
+
 -- ACTUALIZAR TIPO DE COMPROBANTES
 DELIMITER $$
 CREATE PROCEDURE sp_actualizar_tipo_comprobantes(
@@ -28,6 +29,7 @@ BEGIN
 END$$
 
 
+-- LISTAR TIPO DE COMPROBANTES
 DELIMITER $$
 CREATE PROCEDURE sp_listar_comprobate()
 BEGIN

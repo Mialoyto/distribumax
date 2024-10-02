@@ -1,6 +1,6 @@
 -- Active: 1726291702198@@localhost@3306@distribumax
 USE distribumax;
-
+F
 -- REGISTRAR PRODUCTOS
 DELIMITER $$
 CREATE PROCEDURE sp_registrar_producto(
@@ -8,8 +8,8 @@ IN _idmarca         INT,
 IN _idsubcategoria  INT,
 IN _nombreproducto  VARCHAR(250),
 IN _descripcion     VARCHAR(250),
-IN _codigo          CHAR(30)
--- IN _preciounitario  DECIMAL(8, 2)	
+IN _codigo          CHAR(30),
+IN _preciounitario  DECIMAL(8, 2)	
 )BEGIN
 	INSERT INTO productos 
     (idmarca,idsubcategoria,nombreproducto,descripcion,codigo) 
@@ -50,9 +50,3 @@ BEGIN
       estado=_estado
       WHERE idproducto=_idproducto;
 END$$
-
-
-
-
-
-

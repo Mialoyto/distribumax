@@ -10,6 +10,7 @@ BEGIN
     VALUES (_metodopago);
 END$$
 
+
 -- ACTUALIZAR METODO DE PAGO
 DELIMITER $$
 CREATE PROCEDURE sp_actualizar_metodo_pago(
@@ -23,9 +24,8 @@ BEGIN
         WHERE idmetodopago =_idmetodopago;
 END$$
 
--- listar metodos de pago
 
-
+-- LISTAR METODO DE PAGO
 DELIMITER $$
 CREATE PROCEDURE sp_listar_mePago()
 BEGIN

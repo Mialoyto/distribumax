@@ -485,7 +485,3 @@ CREATE TABLE comprobantes (
     CONSTRAINT fk_estado_comp   CHECK(estado IN ("0", "1"))
 ) ENGINE = INNODB;
 -- ------------------------------------------------------------------------------------------------------
-/*SELECT COUNT(*) 
-FROM information_schema.tables 
-WHERE table_schema = 'distribumax';
-*/

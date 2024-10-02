@@ -54,10 +54,3 @@ BEGIN
 END$$
 
 /* MODIFICACION DE SOTO */
-/* SELECT 
-                    empresas.idempresaruc,empresas.razonsocial,
-		            proveedores.idproveedor, proveedores.proveedor,proveedores.contacto_principal,proveedores.telefono_contacto,
-                    proveedores.direccion,proveedores.email
-                  FROM proveedores 
-                  INNER JOIN empresas 
-                  ON empresas.idempresaruc = proveedores.idempresa; */

@@ -51,7 +51,7 @@ BEGIN
 END$$
 
 -- lista vehiculos
-DROP PROCEDURE IF EXISTS `sp_listar_vehiculo`
+DROP PROCEDURE IF EXISTS `sp_listar_vehiculo`;
 DELIMITER //
 CREATE PROCEDURE `sp_listar_vehiculo`()
 BEGIN
@@ -73,7 +73,6 @@ END//
 -- buscador de usuarios, para el rol conductor
 DROP PROCEDURE IF EXISTS `sp_buscar_conductor`;
 DELIMITER //
-
 CREATE PROCEDURE `sp_buscar_conductor`(
     IN _item VARCHAR(80)
 )
@@ -98,8 +97,4 @@ BEGIN
         AND rl.rol = 'Conductor'
         AND (pe.nombres LIKE CONCAT('%', _item, '%') OR 
              CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%'));  -- Filtrar por nombres o apellidos concatenados
-
 END //
-
-
-select * from usuarios;

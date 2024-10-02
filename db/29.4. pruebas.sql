@@ -53,8 +53,9 @@ SELECT 1 as usuario FROM Usuarios WHERE nombre_usuario = 'juan' LIMIT 1;
 call sp_buscarusuarios_registrados (1, '26558000');
 call VerificarUsuarioUnico ('alex', @resultado);
 select @resultado AS unico
-DELIMITER //
 
+/* --------------------------------------------------- */
+DELIMITER //
 CREATE PROCEDURE VerificarUsuarioUnico(
     IN _nombre_usuario VARCHAR(50),
     OUT _unico TINYINT
@@ -68,7 +69,6 @@ BEGIN
         SET _unico = 0; -- No es único
     END IF;
 END //
-
 DELIMITER ;
 
 

@@ -52,7 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const response = await fetch(`../../controller/producto.controller.php`, options);
-    return response.json().catch(e => { console.error(e) });
+    return response.json()
+      // .catch(e => { console.error(e) });
   }
 
   $("#form-registrar-producto").addEventListener("submit", async (event) => {

@@ -45,6 +45,7 @@ BEGIN
     WHERE idpedido = _idpedido;
 END$$
 
+
 -- buscador para pedidos por id
 DELIMITER $$
 CREATE PROCEDURE sp_buscar_pedido(
@@ -65,10 +66,6 @@ BEGIN
 END$$
 
 
-
-
-
-
 -- insertar id antes de insertar los datos
 DELIMITER $$
 CREATE TRIGGER before_insert_pedidos
@@ -80,8 +77,7 @@ BEGIN
     SET NEW.idpedido = nuevo_id;
 END$$
 
-
-
+-- VISTA PARA PRODUCTOS
 CREATE VIEW vw_listar_productos AS
 SELECT * FROM productos;
 

@@ -25,7 +25,7 @@ CALL spu_registrar_personas (
 
 CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
-    '26558004', -- Número de documento
+    '26558002', -- Número de documento
     954, -- ID del distrito
     'pepito', -- Nombres
     'Levano', -- Apellido paterno
@@ -69,7 +69,7 @@ CALL sp_actualizar_usuario
 (
 'admin',
 '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
-2
+1
 );
 
 
@@ -81,7 +81,7 @@ CALL sp_desactivar_usuario (1, 'admin');
 -- REGISTRAR EMPRESAS
 
 CALL sp_empresa_registrar (
-    20123456783,
+    20123456781,
     954,
     'Dijisaa',
     'Av. Bancarios ',
@@ -90,7 +90,7 @@ CALL sp_empresa_registrar (
 );
 
 CALL sp_actualizar_empresa (
-    20123456783,
+    20123456781,
     955,
     'Dijisaa',
     'Panamericana #234',
@@ -106,9 +106,9 @@ CALL sp_actualizar_empresa (
 CALL sp_cliente_registrar (26558000, NULL, 'Persona');
 CALL sp_cliente_registrar (NULL, 20123456781, 'Empresa');
 --  No debe de registrar a un cliente con dni y ruc
-CALL sp_cliente_registrar (26558000, 20123456781,'Empresa'); 
+-- CALL sp_cliente_registrar (26558000, 20123456781,'Empresa'); 
 -- ACTUALIZAR CLIENTES
-CALL sp_actualizar_cliente (NULL,20123456781,'Empresa',2);
+-- CALL sp_actualizar_cliente (NULL,20123456781,'Empresa',2);
 
 -- REISTRAR PROOVEDORES
 CALL sp_proovedor_registrar (
@@ -133,9 +133,8 @@ CALL sp_actualizar_empresa (12345678901,954,'Dijisa','Panamericana #234','dijisa
 
 select * from usuarios;
 /****************************************************************************************************************/
-insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558004, 20123456783,'Empresa');
-insert into clientes(idpersona,idempresa,tipo_cliente)VALUES(26558001, 20123456782,'Persona');
 
+select * from clientes;
 insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(1,5,'2024/09/22');
 select * from pedidos;
 select * from detalle_pedidos;

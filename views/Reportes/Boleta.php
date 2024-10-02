@@ -23,7 +23,8 @@ $html = '
     <div class="datos">
         <p><strong>Cliente:Nombre de la empresa</strong></p>
         <p><strong>RUC 0 DNI:</strong> Ruc</p>
-        <p><strong>Fecha:</strong> ' . date('d/m/Y H:i:s') . '</p>
+        <p><strong>Fecha:</strong> ' . date('l, d/M/Y') . '</p>
+        <p><strong>Hora:</strong> ' . date('H:i:s') . '</p>
     </div>
 
     <table>
@@ -36,8 +37,7 @@ $html = '
             </tr>
         </thead>
         <tbody>
-            <tr>
-                
+            <tr>                
             </tr>
         </tbody>
     </table>

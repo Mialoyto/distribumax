@@ -47,9 +47,8 @@ BEGIN
         WHERE idventa=_idventa; 
 END$$
 
+
 -- ESTADO VENTAS
-
-
 DELIMITER $$
 CREATE PROCEDURE sp_estado_venta(
     IN  _estado CHAR(1),
@@ -60,6 +59,7 @@ BEGIN
         estado=_estado
         WHERE idventa=_idventa;
 END$$ 
+
 
 -- Cambiar el estado del pedido al registrarlo
 DELIMITER $$
@@ -74,8 +74,8 @@ BEGIN
 END$$
 
 
--- View para listar tables 
 
+-- GENERAR REPORTE
 DELIMITER //
 CREATE PROCEDURE sp_generar_reporte ( 
 	IN _idventa INT
@@ -117,12 +117,8 @@ BEGIN
     GROUP BY p.idpedido, cli.idpersona, cli.idempresa, cli.tipo_cliente, pe.nombres, pe.appaterno, pe.apmaterno, em.razonsocial;
 END//
 
-CALL sp_generar_reporte(1);
 
--- listar ventas
-
-
-
+-- LISTAR VENTAS
 DROP PROCEDURE IF EXISTS `sp_listar_ventas`;
 DELIMITER //
 CREATE PROCEDURE `sp_listar_ventas`()

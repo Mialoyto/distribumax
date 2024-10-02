@@ -10,6 +10,7 @@ BEGIN
     VALUES (_idventa );
 END$$
 
+
 -- ACTUALIZAR COMPROBANTES 
 DELIMITER $$
 CREATE PROCEDURE sp_actualizar_comprobantes(

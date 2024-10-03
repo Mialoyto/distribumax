@@ -15,21 +15,29 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const optionMe = $("#idmetodopago");
+  const opntionMe = $("#idmetodopago_2");
   const optionCo = $("#idtipocomprobante");
 
-  (() => {
+
+  async function metodoPago(idmetodopago) {
     fetch(`../../controller/metodoP.controller.php?operation=getAll`)
       .then(response => response.json())
       .then(data => {
+        const select = $(idmetodopago);
         data.forEach(metodo => {
           const tagOption = document.createElement('option');
           tagOption.value = metodo.idmetodopago;
           tagOption.innerText = metodo.metodopago;
-          optionMe.appendChild(tagOption);
+          select.appendChild(tagOption);
         });
       })
       .catch(e => console.error(e));
-  })();
+  };
+
+  metodoPago('#idmetodopago');
+  metodoPago('#idmetodopago_2');
+  
+
 
   (() => {
     // Cargar todos los tipos de comprobantes una sola vez al cargar la página
@@ -168,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const cantidad_producto = parseFloat(pedido.cantidad_producto);
         const preciounitario = parseFloat(pedido.precio_unitario);
         const total_producto = cantidad_producto * preciounitario; // Calcular total por producto
-
+        
         row.innerHTML = `
                     <td>${pedido.nombreproducto}</td>
                      <td>${pedido.unidad_medida}</td>
@@ -193,7 +201,39 @@ document.addEventListener("DOMContentLoaded", () => {
       $("#igv").value = igv.toFixed(2);
       $("#total_venta").value = total_venta.toFixed(2);
       $("#descuento").value = descuentoTotal.toFixed(2);
+      const tipo_pago=$("#tipo_pago");
+      
+      
+      tipo_pago.addEventListener("click",()=>{
+        //console.log(tipo_pago.value);
+        
+        if(tipo_pago.value=='unico'){
+          $("#monto_pago_1").value=total_venta;
+        }else{
+          $("#monto_pago_1").value=``;
+          let total = $("#total_venta").value
+          
+          $("#monto_pago_1").addEventListener('input',()=>{
+           let monto =parseFloat($("#monto_pago_1").value);
+           
+           console.log(monto)
+           let resto = total - monto;
+           console.log(resto)
+          
+           $("#monto_pago_2").value=resto;
+           
+          })
 
+        }
+  
+
+      })
+      
+      
+    //  $("#monto_pago_2").value=total_venta-monto1;
+      
+       console.log(tipo_pago);
+      
     } catch (e) {
       console.error(e);
     }
@@ -269,8 +309,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultado = await RegistrarVenta();
     if (resultado) {
       alert("Venta registrada exitosamente");
-      // $("#form-venta-registrar").reset();
+       $("#form-venta-registrar").reset();
       console.log(resultado);
+      limpiarDatosPedido();
     }
   });
 

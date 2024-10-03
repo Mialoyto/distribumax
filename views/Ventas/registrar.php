@@ -16,7 +16,6 @@ require_once '../../header.php';
         <form method="POST" action="#" autocomplete="off" id="form-venta-registrar">
 
           <!-- Selección de Pedido -->
-
           <div class="mb-4">
             <h5>Cliente</h5>
             <div class="row mb-3">
@@ -31,6 +30,7 @@ require_once '../../header.php';
               </div>
             </div>
           </div>
+
           <!-- BUSCADOR -->
           <div class="mb-4">
             <h5>Pedido</h5>
@@ -40,16 +40,14 @@ require_once '../../header.php';
                   <input type="search" class="form-control" id="idpedido" list="datalistIdPedido" placeholder="Buscar ID pedido" required>
                   <label for="idpedido">Buscar ID pedido</label>
                   <ul id="datalistIdPedido" class="list-group position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
-                  <!-- <label for="idpedido">Pedido</label> -->
-                  <!-- <datalist id="datalistProducto" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist> -->
                   <div id="mensaje-error" style="color: red; display: none;">No existe el pedido</div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- FIN DEL BUSCADOR -->
+
           <!-- Tabla de Productos -->
-          <div class="table-responsive my-4"> <!-- Añadido margin top y bottom -->
+          <div class="table-responsive my-4">
             <table class="table table-striped table-sm" id="productosTabla">
               <thead>
                 <tr>
@@ -67,8 +65,7 @@ require_once '../../header.php';
             </table>
           </div>
 
-
-          <!-- datos -->
+          <!-- Datos de Venta -->
           <div class="mb-4">
             <div class="row mb-3">
               <div class="col-md-4">
@@ -79,27 +76,70 @@ require_once '../../header.php';
               </div>
               <div class="col-md-4">
                 <div class="form-floating">
-                  <select name="" id="idmetodopago" class="form-select" required>
+                  <select id="tipo_pago" class="form-select" required onchange="togglePaymentMethod()">
                     <option value=""></option>
+                    <option value="unico">Pago Único</option>
+                    <option value="mixto">Pago Mixto</option>
                   </select>
-                  <label for="fecha_venta">Metodo de Pago</label>
+                  <label for="tipo_pago">Tipo de Pago</label>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4" id="tipo_comprobante_container">
                 <div class="form-floating">
-                  <select name="" id="idtipocomprobante" class="form-select" required>
+                  <select id="idtipocomprobante" class="form-select" required>
                     <option value=""></option>
                   </select>
-                  <label for="fecha_venta">Tipo de Comprobante</label>
+                  <label for="idtipocomprobante">Tipo de Comprobante</label>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- Métodos de Pago -->
+          <div id="paymentMethodsContainer" style="display: none;"> <!-- Ocultar por defecto -->
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Métodos de Pago</h5>
+                <button type="button" id="agregar" class="btn btn-primary btn-sm" onclick="addPaymentMethod()">+</button>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6" id="">
+                  <div class="form-floating">
+                    <select id="idmetodopago" class="form-select" required>
+                      <option value=""></option>
+
+                      <!-- Agrega más opciones según sea necesario -->
+                    </select>
+                    <label for="idmetodopago">Método de Pago 1</label>
+                  </div>
+                  <div class="form-floating">
+                    <input type="number" step="0.01" class="form-control" id="monto_pago_1" placeholder="Monto">
+                    <label for="monto_pago_2">Monto 1</label>
+                  </div>
+                </div>
+                <div class="col-md-6" id="metodo_pago_2" style="display: none;">
+                  <div class="form-floating">
+                    <select id="idmetodopago_2" class="form-select">
+                      <option value=""></option>
+
+                      <!-- Agrega más opciones según sea necesario -->
+                    </select>
+                    <label for="idmetodopago_2">Método de Pago 2</label>
+                  </div>
+                  <div class="form-floating">
+                    <input type="number" step="0.01" class="form-control" id="monto_pago_2" placeholder="Monto">
+                    <label for="monto_pago_2">Monto 2</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Totales -->
           <div class="mb-4">
             <h5>Totales</h5>
             <div class="row mb-3">
-
               <div class="col-md-3">
                 <div class="form-floating">
                   <input type="number" step="0.01" class="form-control" id="subtotal" name="subtotal" required readonly>
@@ -124,11 +164,8 @@ require_once '../../header.php';
                   <label for="total_venta">Total Venta</label>
                 </div>
               </div>
-
             </div>
           </div>
-
-
 
           <!-- Botones -->
           <div class="d-flex justify-content-end mt-4">
@@ -148,6 +185,28 @@ require_once '../../header.php';
 
 <?php require_once '../../footer.php'; ?>
 <script src="../../js/ventas/registrar.js"></script>
+<script>
+  function togglePaymentMethod() {
+    const tipoPago = document.getElementById("tipo_pago").value;
+    const paymentMethodsContainer = document.getElementById("paymentMethodsContainer");
+    const metodoPago2 = document.getElementById("metodo_pago_2");
+
+    // Muestra el contenedor de métodos de pago solo si el tipo de pago no está vacío
+    if (tipoPago) {
+      paymentMethodsContainer.style.display = "block";
+
+      // Muestra el segundo método de pago si se selecciona "Mixto"
+      if (tipoPago === "mixto") {
+        metodoPago2.style.display = "block"; // Mostrar segundo método
+      } else {
+        metodoPago2.style.display = "none"; // Ocultar segundo método si no es mixto
+      }
+    } else {
+      paymentMethodsContainer.style.display = "none"; // Ocultar si no se ha seleccionado nada
+      metodoPago2.style.display = "none"; // Asegúrate de ocultar también el segundo método
+    }
+  }
+</script>
 </body>
 
 </html>

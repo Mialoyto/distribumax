@@ -40,8 +40,10 @@ require_once '../../header.php';
           <div class="row">
             <div class="col-md-4 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="placa" name="placa" pattern="[A-Za-z]{3}-[0-9]{3}" maxlength="7" minlength="7" required>
-                <label for="placa"><i class="fas fa-clipboard-check me-2"></i> Placa (Ej: ABC-123)</label>
+                <input type="text" class="form-control" id="placa" name="placa"
+                  pattern="[A-Za-z]{1}[A-Za-z0-9]{1}[A-Za-z]{1}-[0-9]{3}"
+                  maxlength="7" minlength="7" required>
+                <label for="placa"><i class="fas fa-clipboard-check me-2"></i> Placa (Ej: A1B-123 o ABC-123)</label>
               </div>
             </div>
             <div class="col-md-4 mb-3">

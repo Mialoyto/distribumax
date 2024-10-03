@@ -163,7 +163,7 @@ BEGIN
         p.idpedido DESC;
 END //
 
-
+select * from metodos_pago
 
 -- CALL sp_listar_ventas
 

@@ -61,8 +61,8 @@ INSERT INTO roles (rol) VALUES
 ('Usuario'), 
 ('Moderador'), 
 ('Invitado'),
-('Conductor');
-
+('Conductor'),
+('Vendedor');
 
 INSERT INTO tipo_comprobante_pago (comprobantepago) VALUES 
 ('Factura'), 
@@ -142,11 +142,12 @@ CALL sp_empresa_registrar (
     'santafe@gmail.com',
     '987654321'
 ); 
+select * from proveedores;
 
 -- Insertar un registro en la tabla proveedores
 INSERT INTO proveedores (idempresa, proveedor, contacto_principal, telefono_contacto, direccion, email)
 VALUES 
-(20123456782, 'Proveedor Ejemplo', 'Juan Pérez', '987654321', 'Av. Principal 123, Ciudad', 'contacto@proveedorejemplo.com');
+(20123456783, 'Proveedor Ejemplo', 'Juan Pérez', '987654321', 'Av. Principal 123, Ciudad', 'contacto@proveedorejemplo.com');
 
 select * from proveedores;
 select * from unidades_medidas;
@@ -175,10 +176,7 @@ SELECT * FROM tipos_promociones;
 SELECT * FROM promociones;
 SELECT * FROM detalle_promociones;
 -- Registrando 2 metodos de pago
-INSERT INTO metodos_pago (metodopago, estado)
-VALUES
-    ('Tarjeta de Crédito', 1),   -- Primer método de pago
-    ('Transferencia Bancaria', 1); -- Segundo método de pago
+ -- Segundo método de pago
 
 INSERT INTO promociones (idtipopromocion, descripcion, fechainicio, fechafin, valor_descuento)
 VALUES

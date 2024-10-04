@@ -3,7 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(selector);
   };
 
-  window.onload = function () {
+  
+  // obtener el id del metodo.
+  const optionMe = $("#idmetodopago");
+  //const opntionMe = $("#idmetodopago_2");
+  const optionCo = $("#idtipocomprobante");
+  async  function Validarfecha(){
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -13,10 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
     document.getElementById('fecha_venta').setAttribute('min', minDateTime);
   };
+  Validarfecha();
 
-  const optionMe = $("#idmetodopago");
-  const opntionMe = $("#idmetodopago_2");
-  const optionCo = $("#idtipocomprobante");
+  
 
 
   async function metodoPago(idmetodopago) {
@@ -33,9 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(e => console.error(e));
   };
-
+   //llamando el metodo y mostrarlo con su id.
   metodoPago('#idmetodopago');
   metodoPago('#idmetodopago_2');
+
   
 
 
@@ -87,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const li = document.createElement('li');
         li.classList.add('list-group-item');
         li.value = `${item.idpedido}`;
-        li.innerText = `${item.idpedido}`;
+        li.innerText = `${item.idpedido}`+'--'+`${item.nombre_o_razonsocial}`;
         li.addEventListener('click', () => {
           $("#idpedido").value = item.idpedido;
           CargarPedido(item.idpedido);
@@ -110,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(`../../controller/pedido.controller.php?${params}`);
       const data = await response.json();
-      console.log("datos del pedido", data);
+     // console.log("datos del pedido", data);
       const tbody = $("#productosTabla tbody");
       tbody.innerHTML = ''; // Limpiar la tabla antes de añadir los nuevos resultados
       let subtotal = 0;
@@ -216,11 +221,12 @@ document.addEventListener("DOMContentLoaded", () => {
           $("#monto_pago_1").addEventListener('input',()=>{
            let monto =parseFloat($("#monto_pago_1").value);
            
-           console.log(monto)
+           //console.log(monto)
            let resto = total - monto;
-           console.log(resto)
+          // console.log(resto)
           
            $("#monto_pago_2").value=resto;
+           $("#monto_pago_2").innerHTML='';
            
           })
 
@@ -232,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
     //  $("#monto_pago_2").value=total_venta-monto1;
       
-       console.log(tipo_pago);
+      // console.log(tipo_pago);
       
     } catch (e) {
       console.error(e);
@@ -287,21 +293,27 @@ document.addEventListener("DOMContentLoaded", () => {
     tbody.innerHTML = ''; // Limpiar la tabla de productos
 
     // Limpiar los totales
-    $("#subtotal").value = '0.00';
-    $("#igv").value = '0.00';
-    $("#total_venta").value = '0.00';
-    $("#descuento").value = '0.00';
+    $("#subtotal").value = '';
+    $("#igv").value = '';
+    $("#total_venta").value = '';
+    $("#descuento").value = '';
 
     // Limpiar el select de tipo de comprobante
     const tipoComprobanteSelect = $("#idtipocomprobante");
     tipoComprobanteSelect.innerHTML = ''; // Limpiar opciones previas
+    $("#tipo_pago").value='';
 
-    // Limpiar la lista de resultados de búsqueda
-    /*  const datalist = $("#datalistProducto");
-     datalist.innerHTML = ''; */ // Limpiar la lista de pedidos sugeridos
+    // Ocultar el contenedor de métodos de pago
+    document.getElementById('paymentMethodsContainer').style.display = 'none'; 
 
+    // Si tienes un campo de método de pago adicional
+    const select = $(".form-select");
+    select.value = '';
 
-  };
+    // Ocultar la lista de resultados de búsqueda
+    $("#datalistIdPedido").style.display = 'none';
+}
+
 
 
   $("#form-venta-registrar").addEventListener("submit", async (event) => {

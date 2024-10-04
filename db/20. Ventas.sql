@@ -49,16 +49,18 @@ END$$
 
 
 -- ESTADO VENTAS
-DELIMITER $$
-CREATE PROCEDURE sp_estado_venta(
+DROP PROCEDURE IF EXISTS `sp_estado_venta`;
+DELIMITER //
+CREATE PROCEDURE `sp_estado_venta`(
     IN  _estado CHAR(1),
     IN  _idventa INT 
 )
 BEGIN
     UPDATE ventas SET
-        estado=_estado
+        estado=_estado,
+        update_at=now()
         WHERE idventa=_idventa;
-END$$ 
+END//
 
 
 -- Cambiar el estado del pedido al registrarlo
@@ -118,7 +120,7 @@ BEGIN
 END//
 
 
--- LISTAR VENTAS
+-- LISTAR VENTAS DEL DIA
 DROP PROCEDURE IF EXISTS `sp_listar_ventas`;
 DELIMITER //
 CREATE PROCEDURE `sp_listar_ventas`()
@@ -127,16 +129,14 @@ BEGIN
         ve.idventa,
         ve.fecha_venta,
         p.idpedido,
-       tp.comprobantepago,
+        tp.comprobantepago,
         cli.idpersona,
         cli.tipo_cliente,
         pr.nombreproducto,
         dp.cantidad_producto,
         dp.subtotal,
-        pe.nombres,
+        CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno) AS datos,
         pe.idpersonanrodoc,
-        pe.appaterno,
-        pe.apmaterno,
         em.razonsocial,
         em.idempresaruc
     FROM 
@@ -157,13 +157,94 @@ BEGIN
         tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE 
         p.estado = 'Enviado'
+	AND ve.estado='1'
+        AND DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
     GROUP BY 
         ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
     ORDER BY 
         p.idpedido DESC;
 END //
 
-select * from metodos_pago
 
--- CALL sp_listar_ventas
+-- listar ventas historial 
+DROP PROCEDURE IF EXISTS `sp_historial_ventas`;
+DELIMITER //
+CREATE PROCEDURE `sp_historial_ventas`()
+BEGIN
+    SELECT 
+        ve.idventa,
+        ve.fecha_venta,
+        p.idpedido,
+        tp.comprobantepago,
+        cli.idpersona,
+        cli.tipo_cliente,
+        pr.nombreproducto,
+        dp.cantidad_producto,
+        dp.subtotal,
+        CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno) AS datos,
+        pe.idpersonanrodoc,
+        em.razonsocial,
+        em.idempresaruc,
+        ve.estado
+    FROM 
+        ventas ve
+    INNER JOIN 
+        pedidos p ON p.idpedido = ve.idpedido
+    INNER JOIN 
+        detalle_pedidos dp ON p.idpedido = dp.idpedido
+    INNER JOIN 
+        productos pr ON pr.idproducto = dp.idproducto
+    INNER JOIN 
+        clientes cli ON cli.idcliente = p.idcliente
+    LEFT JOIN 
+        personas pe ON pe.idpersonanrodoc = cli.idpersona
+    LEFT JOIN 
+        empresas em ON em.idempresaruc = cli.idempresa
+    LEFT JOIN 
+        tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
+    WHERE 
+        p.estado = 'Enviado' AND ve.estado='0'
+        
+       -- Filtra las ventas del día actual
+    GROUP BY 
+        ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
+    ORDER BY 
+        p.idpedido DESC;
+END //
+
+select * from  ventas;
+
+DROP PROCEDURE IF EXISTS `sp_getById_venta`;
+DELIMITER //
+CREATE PROCEDURE `sp_getById_venta`
+(
+	IN _idventa   INT
+)
+BEGIN 
+SELECT 
+    ve.idventa,
+    pr.nombreproducto,
+    dp.cantidad_producto,
+    cl.tipo_cliente,
+   CONCAT( per.nombres,' ',per.appaterno ) AS datos,
+    em.razonsocial
+FROM 
+    ventas ve
+INNER JOIN 
+    pedidos pe ON pe.idpedido = ve.idpedido
+LEFT JOIN 
+	clientes cl ON  cl.idcliente=pe.idcliente 
+LEFT JOIN
+	personas per ON per.idpersonanrodoc=cl.idpersona
+LEFT JOIN 
+	empresas em ON em.idempresaruc=cl.idempresa
+LEFT JOIN  
+    detalle_pedidos dp ON dp.idpedido = pe.idpedido
+LEFT JOIN 
+    productos pr ON pr.idproducto = dp.idproducto
+-- Relaciona con la columna idproducto en detalle_pedidos
+WHERE ve.idventa=_idventa;
+
+END //
+
 

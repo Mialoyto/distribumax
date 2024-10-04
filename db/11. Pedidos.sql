@@ -47,27 +47,41 @@ END$$
 
 
 -- buscador para pedidos por id
-DROP PROCEDURE sp_buscar_pedido;
+DROP PROCEDURE IF EXISTS sp_buscar_pedido;
 DELIMITER $$
 CREATE PROCEDURE sp_buscar_pedido(
    IN _idpedido CHAR(15)
 )
 BEGIN
+    -- Selección de datos de los pedidos, mostrando los nombres o la razón social
     SELECT 
-        idpedido
-    FROM  pedidos  
-    WHERE idpedido LIKE CONCAT (_idpedido,'%') 
-      AND estado = 'Pendiente'; -- Filtra para no mostrar pedidos "Enviados"
-      
-    -- Actualizar el estado del pedido si se encuentra
-    UPDATE pedidos 
-    SET estado = ''  
-    WHERE idpedido = _idpedido
-      AND estado = 'Enviado';  -- Asegúrate de que solo se actualicen los pedidos que no están "Enviados"
-END$$
-CALL sp_buscar_pedido('PED-000000007');
-SELECT * FROM pedidos;
+        pd.idpedido,
+        COALESCE(CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno), em.razonsocial) AS nombre_o_razonsocial
+    FROM  
+        pedidos pd
+    INNER JOIN 
+        clientes cl ON pd.idcliente = cl.idcliente
+    LEFT JOIN 
+        personas pe ON pe.idpersonanrodoc = cl.idpersona
+    LEFT JOIN 
+        empresas em ON em.idempresaruc = cl.idempresa
+    WHERE 
+        pd.idpedido LIKE CONCAT( _idpedido, '%')  -- Búsqueda flexible por idpedido
+        AND pd.estado = 'Pendiente';  -- Solo muestra pedidos pendientes
 
+    -- Actualización del estado si el pedido se encuentra "Enviado"
+    UPDATE pedidos 
+    SET estado = ''  -- Cambia el estado a un valor significativo
+    WHERE 
+        idpedido = _idpedido
+        AND estado = 'Enviado';  -- Solo actualiza si el pedido estaba "Enviado"
+END$$
+DELIMITER ;
+
+
+CALL sp_buscar_pedido('PED-000000002');
+SELECT * FROM pedidos;
+select * from clientes
 -- insertar id antes de insertar los datos
 DELIMITER $$
 CREATE TRIGGER before_insert_pedidos

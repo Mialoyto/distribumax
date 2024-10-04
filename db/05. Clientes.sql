@@ -111,6 +111,7 @@ BEGIN
     SELECT 
         c.tipo_cliente,
         c.create_at AS fecha_creacion,
+        c.update_at AS fecha_actualizacion,
         c.estado AS estado_cliente
     FROM 
         clientes c

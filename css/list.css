@@ -1,14 +1,26 @@
 .ListarDatos {
-  max-height: 80px; /* Limitar la altura si hay muchos resultados */
-  overflow-y: auto; /* Habilitar scroll si hay muchos resultados */
-  background-color: white; /* Fondo blanco para que sea visible */
-  border: 1px solid #ced4da; /* Borde como los inputs de Bootstrap */
+  max-height: 80px;
+  /* Limitar la altura si hay muchos resultados */
+  overflow-y: auto;
+  /* Habilitar scroll si hay muchos resultados */
+  background-color: white;
+  /* Fondo blanco para que sea visible */
+  border: 1px solid #ced4da;
+  /* Borde como los inputs de Bootstrap */
   border-radius: 0.25rem;
 }
+
 .ListarDatos .list-group {
   cursor: pointer;
 }
+
 .ListarDatos .list-group:hover {
-  background-color: #f8f9fa; /* Cambiar el color al pasar el ratón */
+  background-color: #f8f9fa;
+  /* Cambiar el color al pasar el ratón */
 }
 
+.numeros[type=number]::-webkit-inner-spin-button,
+.numeros[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

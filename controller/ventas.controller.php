@@ -16,7 +16,8 @@ if(isset($_POST['operation'])){
                 'igv' =>$_POST['igv'],
                 'total_venta'=>$_POST['total_venta']
             ];
-            echo json_encode($venta->addVentas($datos));
+            $estado = $venta->addVentas($datos);
+            echo json_encode(['estado' => $estado]);
         break;
         case 'reporteVenta':
              $datos=[

@@ -60,7 +60,7 @@ $host = "http://localhost/distribumax";
     <!-- Navbar-->
     <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
       <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown d-sm-none d-lg-block">
           <a class="nav-link dropdown-toggle" id="navbarDropdown"  role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             <i class="fas fa-user fa-fw"></i>
@@ -112,7 +112,7 @@ $host = "http://localhost/distribumax";
               Productos
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Kardex/">
-              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              <div class="sb-nav-link-icon"><i class="fa-solid fa-boxes-packing fa-lg"></i></div>
               Kardex
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Proveedores/">

@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     const params = new URLSearchParams();
     params.append("operation", "searchCliente");
-    params.append("nro_documento", $("#nro-doc").value);
+    params.append("nro_documento", $("#nro-doc").value.trim());
 
     try {
       const response = await fetch(
@@ -32,17 +32,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error(e);
     }
   }
+  function desactivarCampos() {
+    $("#nombres").setAttribute("disabled", true);
+    $("#appaterno").setAttribute("disabled", true);
+    $("#apmaterno").setAttribute("disabled", true);
+    $("#razon-social").setAttribute("disabled", true);
+    $("#direccion-cliente").setAttribute("disabled", true);
+  }
 
   let idCliente;
   async function validarNroDoc(response) {
     if (response.length === 0) {
       resetCampos();
-      $("#nombres").setAttribute("disabled", true);
-      $("#appaterno").setAttribute("disabled", true);
-      $("#apmaterno").setAttribute("disabled", true);
-      $("#razon-social").setAttribute("disabled", true);
-      $("#direccion-cliente").setAttribute("disabled", true);
-
+      desactivarCampos();
       console.log("No existe el cliente");
     } else {
       if (response[0].tipo_cliente === "Persona") {
@@ -50,13 +52,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         $("#nombres").value = response[0].nombres;
         $("#appaterno").value = response[0].appaterno;
         $("#apmaterno").value = response[0].apmaterno;
-        $("#razon-social").setAttribute("disabled", true);
+        desactivarCampos();
       } else {
         $("#razon-social").value = response[0].razonsocial;
-        $("#razon-social").removeAttribute("disabled");
-        $("#nombres").setAttribute("disabled", true);
-        $("#appaterno").setAttribute("disabled", true);
-        $("#apmaterno").setAttribute("disabled", true);
+        desactivarCampos();
       }
 
       $("#direccion-cliente").value = response[0].direccion_cliente;
@@ -104,21 +103,31 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // EVENTOS
   $("#nro-doc").addEventListener("input", debounce(async () => {
+
     if ($("#nro-doc").value === "") {
+      desactivarCampos();
       $("#detalle-pedido").innerHTML = "";
       resetCampos();
     } else {
       const response = await dataCliente();
       await validarNroDoc(response);
+      $("#nro-doc").addEventListener('keydown', (event) => {
+        if (event.keyCode == 13) {
+          event.preventDefault();
+          $("#addProducto").focus();
+        }
+      })
+
     }
-  }, 500)
-  );
+  }, 500));
+
+
 
   // buscar producto
   const buscarProducto = async () => {
     const params = new URLSearchParams();
     params.append("operation", "getProducto");
-    params.append("_cliente_id", $("#nro-doc").value);
+    params.append("_cliente_id", $("#nro-doc").value.trim());
     params.append("_item", $("#addProducto").value);
 
     try {
@@ -142,7 +151,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Iterar sobre los resultados y mostrarlos
       response.forEach((item) => {
         if (item.descuento === null) {
-          const descuento = 0;
+          const descuento = 0.00;
           item.descuento = parseFloat(descuento);
         }
         const li = document.createElement("li");
@@ -163,11 +172,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         $("#datalistProducto").appendChild(li);
       });
-      console.log("datos de los productos",response);
+      console.log("datos de los productos", response);
     } else {
       $("#datalistProducto").style.display = "none";
     }
-    // console.log(response);
   };
 
   $("#addProducto").addEventListener("input", async () => {
@@ -179,8 +187,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Función para añadir un producto a la tabla seleccionada
-
-  function addProductToTable(id, codigo, nombre, unidadmedida, precio_venta, descuento,stockactual) {
+  function addProductToTable(id, codigo, nombre, unidadmedida, precio_venta, descuento, stockactual) {
     const existId = document.querySelector(`#detalle-pedido tr td[id-data="${id}"]`);
     console.log("existe el ID en la tabla ?", existId);
     if (existId) {
@@ -189,19 +196,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     const row = document.createElement("tr");
     row.innerHTML = `
-      <th scope="row" colspan="1">${codigo}</th>
-      <td colspan="1" id-data="${id}">${nombre}</td>
-      <td class="col-md-1">
-          <input class="form-control form-control-sm cantidad"  type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
+      <th scope="row" class"text-nowrap w-auto">${codigo}</th>
+      <td class="text-nowrap w-auto" id-data="${id}">${nombre}</td>
+      <td class="col-md-1 w-10">
+          <input class="form-control form-control-sm cantidad numeros text-center w-100"  type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
       </td>
-      <td class="col-md-1 und-medida">${unidadmedida}</td>
-      <td class="precio">${precio_venta}</td>
-      <td class="subtotal"> 0.00</td>
-      <td class="descuento">${descuento}</td>
-      <td class="total">0.00</td>
+      <td class="text-nowrap w-auto col-md-1 und-medida">${unidadmedida}</td>
+      <td class="text-nowrap w-auto precio" data="${precio_venta}">S/${precio_venta}</td>
+      <td class="text-nowrap w-auto subtotal"> S/0.00</td>
+      <td class="text-nowrap w-auto">% ${descuento}</td>
+      <td class="text-nowrap w-auto descuento">S/0.00</td>
+      <td class="text-nowrap w-auto total">S/0.00</td>
       <td class="col-1">
         <div class="mt-1  d-flex justify-content-evenly">
-     
           <button type="button" class="btn btn-danger btn-sm w-100 eliminar-fila">
             <i class="bi bi-x-square"></i>
           </button>
@@ -231,13 +238,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       if (cantidad <= 0 || cantidad == "") {
         showToast('La cantidad no puede ser menor a 1', 'info', 'INFO');
-      }else{
+      } else {
         const subtotal = (cantidad * parseFloat(precio_venta)).toFixed(2);
         const descuentos = (subtotal * (parseFloat(descuento) / 100)).toFixed(2);
         const totales = ((cantidad * (parseFloat(precio_venta))) - descuentos).toFixed(2);
-        totalCell.textContent = totales;
-        descuentoCell.textContent = descuentos;
-        subtotalCell.textContent = subtotal;
+        totalCell.textContent = `S/${totales}`;
+        descuentoCell.textContent = `S/${descuentos}`;
+        subtotalCell.textContent = `S/${subtotal}`;
       }
     });
   }
@@ -253,14 +260,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       idproducto = row.querySelector("td[id-data]").getAttribute("id-data");
       cantidad = row.querySelector(".cantidad").value;
       undMedida = row.querySelector(".und-medida").textContent;
-      precioUnitario = row.querySelector(".precio").textContent;
+      precioUnitario = row.querySelector(".precio").getAttribute("data");
       productos.push({
         idproducto,
         cantidad,
         undMedida,
         precioUnitario,
       });
-
     });
 
     const params = new FormData();
@@ -289,7 +295,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-   
+
 
   // EVENTO PARA MANDAR LOS DATOS A LA BASE DE DATOS
   let idpedido = -1;
@@ -326,7 +332,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (response02.id == -1) {
           showToast('Hubo un error al registrar el pedido', 'error', 'ERROR');
         } else {
-          showToast('Pedido registrado con éxito', 'success', 'SUCCESS');
+          showToast(`Pedido registrado con éxito\n ID: ${idpedido}`, 'success', 'SUCCESS');
           $("#registrar-pedido").reset();
           $("#detalle-pedido").innerHTML = "";
         }

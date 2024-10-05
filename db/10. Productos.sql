@@ -62,8 +62,11 @@ BEGIN
         PRO.idproducto,
         PRO.codigo,
         PRO.nombreproducto,
-        kAR.stockactual
+        kAR.stockactual,
+        UME.unidadmedida
     FROM  productos PRO
+    INNER JOIN detalle_productos DTP ON PRO.idproducto = DTP.idproducto
+    INNER JOIN unidades_medidas UME ON DTP.idunidadmedida = UME.idunidadmedida
     INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
         AND KAR.idkardex = (SELECT MAX(K2.idkardex) FROM kardex K2 WHERE K2.idproducto = PRO.idproducto)
     WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%')) 

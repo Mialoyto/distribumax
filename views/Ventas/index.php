@@ -4,7 +4,7 @@ require_once '../../header.php';
 
 <main>
   <div class="container-fluid px-4">
-    <h1 class="mt-4">Empresas</h1>
+    <h1 class="mt-4">Ventas</h1>
     <ol class="breadcrumb mb-4">
       <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
     </ol>
@@ -44,7 +44,7 @@ require_once '../../header.php';
     <div class="card mb-4">
       <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Listado de Empresas
+        Listado de ventas
       </div>
       <div class="card-body">
         <div class="table-responsive">

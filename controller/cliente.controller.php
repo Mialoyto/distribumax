@@ -24,6 +24,13 @@ switch ($verbos) {
     break;
 }
 
+if(isset($_GET['operation'])){
+  switch($_GET['operation']){
+      case 'getAll':
+          echo json_encode($cliente->getAll());
+      break;
+  }
+}
 
 
 // if(isset($_POST['operation'])){

@@ -1,4 +1,4 @@
--- Active: 1726291702198@@localhost@3306@distribumax
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 USE distribuMax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
@@ -81,16 +81,16 @@ CALL sp_desactivar_usuario (1, 'admin');
 -- REGISTRAR EMPRESAS
 
 CALL sp_empresa_registrar (
-    20123456781,
+    20123456782,
     954,
-    'Dijisaa',
+    'Dijisaaa',
     'Av. Bancarios ',
     'santafe@gmail.com',
     '987654321'
 );
 
 CALL sp_actualizar_empresa (
-    20123456781,
+    20123456782,
     955,
     'Dijisaa',
     'Panamericana #234',
@@ -104,7 +104,8 @@ CALL sp_actualizar_empresa (
 /* PROCEDIMIENTOS DE CLIENTES ✔️*/ 
 -- REGISTRAR CLIENTES
 CALL sp_cliente_registrar (26558000, NULL, 'Persona');
-CALL sp_cliente_registrar (NULL, 20123456781, 'Empresa');
+CALL sp_cliente_registrar (NULL, 20123456782, 'Empresa');
+select * from clientes;
 --  No debe de registrar a un cliente con dni y ruc
 -- CALL sp_cliente_registrar (26558000, 20123456781,'Empresa'); 
 -- ACTUALIZAR CLIENTES
@@ -133,9 +134,12 @@ CALL sp_actualizar_empresa (12345678901,954,'Dijisa','Panamericana #234','dijisa
 
 select * from usuarios;
 /****************************************************************************************************************/
-
+select * from empresas;
 select * from clientes;
-insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(1,5,'2024/09/22');
+select * from personas;
+insert into clientes (idpersona,idempresa,tipo_cliente) VALUES('26558001','20123456781','Empresa');
+insert into clientes (idpersona,idempresa,tipo_cliente) VALUES(null,'20123456782','Empresa');
+insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(1,1,'2024/09/22');
 select * from pedidos;
 select * from detalle_pedidos;
 -- Insertar detalles del pedido

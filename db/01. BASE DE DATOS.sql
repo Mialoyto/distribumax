@@ -1,4 +1,4 @@
--- Active: 1726291702198@@localhost@3306@distribumax
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribuMax;
 USE distribuMax;
@@ -472,6 +472,20 @@ CREATE TABLE ventas (
     CONSTRAINT ck_totalventa CHECK(total_venta > 0),
     CONSTRAINT uk_idpedido UNIQUE (idpedido)
 ) ENGINE = INNODB;
+
+DROP TABLE IF EXISTS detalle_meto_Pago;
+CREATE TABLE detalle_meto_Pago(
+	iddetallemetodo   INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idventa           INT NOT NULL,
+    idmetodopago      INT NOT NULL,
+    monto 			  DECIMAL(10.2) NOT NULL,
+	create_at		  DATETIME NOT NULL DEFAULT NOW(),
+    update_at		  DATETIME NULL,
+    estado           CHAR(1) NOT NULL DEFAULT "1",
+    CONSTRAINT fk_idventa FOREIGN KEY (idventa) REFERENCES ventas(idventa),
+    CONSTRAINT fk_idmetodopago FOREIGN KEY (idmetodopago)REFERENCES metodos_pago(idmetodopago),
+    CONSTRAINT fk_estado_deta_me  CHECK(estado IN ("0", "1"))
+)ENGINE=INNODB;
 
 DROP TABLE IF EXISTS comprobantes;
 CREATE TABLE comprobantes (

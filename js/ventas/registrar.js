@@ -3,7 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(selector);
   };
 
-  window.onload = function () {
+  
+  // obtener el id del metodo.
+  const optionMe = $("#idmetodopago");
+  //const opntionMe = $("#idmetodopago_2");
+  const optionCo = $("#idtipocomprobante");
+  async  function Validarfecha(){
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -13,23 +18,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
     document.getElementById('fecha_venta').setAttribute('min', minDateTime);
   };
+  Validarfecha();
 
-  const optionMe = $("#idmetodopago");
-  const optionCo = $("#idtipocomprobante");
+  
 
-  (() => {
+
+  async function metodoPago(idmetodopago) {
     fetch(`../../controller/metodoP.controller.php?operation=getAll`)
       .then(response => response.json())
       .then(data => {
+        const select = $(idmetodopago);
         data.forEach(metodo => {
           const tagOption = document.createElement('option');
           tagOption.value = metodo.idmetodopago;
           tagOption.innerText = metodo.metodopago;
-          optionMe.appendChild(tagOption);
+          select.appendChild(tagOption);
         });
       })
       .catch(e => console.error(e));
-  })();
+  };
+   //llamando el metodo y mostrarlo con su id.
+  metodoPago('#idmetodopago');
+  metodoPago('#idmetodopago_2');
+
+  
+
 
   (() => {
     // Cargar todos los tipos de comprobantes una sola vez al cargar la página
@@ -79,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const li = document.createElement('li');
         li.classList.add('list-group-item');
         li.value = `${item.idpedido}`;
-        li.innerText = `${item.idpedido}`;
+        li.innerText = `${item.idpedido}`+'--'+`${item.nombre_o_razonsocial}`;
         li.addEventListener('click', () => {
           $("#idpedido").value = item.idpedido;
           CargarPedido(item.idpedido);
@@ -102,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(`../../controller/pedido.controller.php?${params}`);
       const data = await response.json();
-      console.log("datos del pedido", data);
+     // console.log("datos del pedido", data);
       const tbody = $("#productosTabla tbody");
       tbody.innerHTML = ''; // Limpiar la tabla antes de añadir los nuevos resultados
       let subtotal = 0;
@@ -168,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const cantidad_producto = parseFloat(pedido.cantidad_producto);
         const preciounitario = parseFloat(pedido.precio_unitario);
         const total_producto = cantidad_producto * preciounitario; // Calcular total por producto
-
+        
         row.innerHTML = `
                     <td>${pedido.nombreproducto}</td>
                      <td>${pedido.unidad_medida}</td>
@@ -193,7 +206,40 @@ document.addEventListener("DOMContentLoaded", () => {
       $("#igv").value = igv.toFixed(2);
       $("#total_venta").value = total_venta.toFixed(2);
       $("#descuento").value = descuentoTotal.toFixed(2);
+      const tipo_pago=$("#tipo_pago");
+      
+      
+      tipo_pago.addEventListener("click",()=>{
+        //console.log(tipo_pago.value);
+        
+        if(tipo_pago.value=='unico'){
+          $("#monto_pago_1").value=total_venta;
+        }else{
+          $("#monto_pago_1").value=``;
+          let total = $("#total_venta").value
+          
+          $("#monto_pago_1").addEventListener('input',()=>{
+           let monto =parseFloat($("#monto_pago_1").value);
+           
+           //console.log(monto)
+           let resto = total - monto;
+          // console.log(resto)
+          
+           $("#monto_pago_2").value=resto;
+           $("#monto_pago_2").innerHTML='';
+           
+          })
 
+        }
+  
+
+      })
+      
+      
+    //  $("#monto_pago_2").value=total_venta-monto1;
+      
+      // console.log(tipo_pago);
+      
     } catch (e) {
       console.error(e);
     }
@@ -247,21 +293,27 @@ document.addEventListener("DOMContentLoaded", () => {
     tbody.innerHTML = ''; // Limpiar la tabla de productos
 
     // Limpiar los totales
-    $("#subtotal").value = '0.00';
-    $("#igv").value = '0.00';
-    $("#total_venta").value = '0.00';
-    $("#descuento").value = '0.00';
+    $("#subtotal").value = '';
+    $("#igv").value = '';
+    $("#total_venta").value = '';
+    $("#descuento").value = '';
 
     // Limpiar el select de tipo de comprobante
     const tipoComprobanteSelect = $("#idtipocomprobante");
     tipoComprobanteSelect.innerHTML = ''; // Limpiar opciones previas
+    $("#tipo_pago").value='';
 
-    // Limpiar la lista de resultados de búsqueda
-    /*  const datalist = $("#datalistProducto");
-     datalist.innerHTML = ''; */ // Limpiar la lista de pedidos sugeridos
+    // Ocultar el contenedor de métodos de pago
+    document.getElementById('paymentMethodsContainer').style.display = 'none'; 
 
+    // Si tienes un campo de método de pago adicional
+    const select = $(".form-select");
+    select.value = '';
 
-  };
+    // Ocultar la lista de resultados de búsqueda
+    $("#datalistIdPedido").style.display = 'none';
+}
+
 
 
   $("#form-venta-registrar").addEventListener("submit", async (event) => {
@@ -269,8 +321,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultado = await RegistrarVenta();
     if (resultado) {
       alert("Venta registrada exitosamente");
-      // $("#form-venta-registrar").reset();
+       $("#form-venta-registrar").reset();
       console.log(resultado);
+      limpiarDatosPedido();
     }
   });
 

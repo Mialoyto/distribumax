@@ -1,6 +1,5 @@
--- Active: 1726291702198@@localhost@3306@distribumax
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 USE distribumax;
-F
 -- REGISTRAR PRODUCTOS
 DELIMITER $$
 CREATE PROCEDURE sp_registrar_producto(

@@ -25,12 +25,29 @@ if(isset($_POST['operation'])){
              ];
              echo json_encode($venta->reporteVenta($datos));
         break;
+        case 'upVenta':
+            $dato=[
+                'estado' =>$_POST['estado'],
+                'idventa' =>$_POST['idventa']
+            ];
+            echo json_encode($venta->upVenta($dato));
+        break;
     }
 }
+
 if(isset($_GET['operation'])){
     switch($_GET['operation']){
         case 'getAll':
             echo json_encode($venta->getAll());
+        break;
+        case 'historial':
+            echo json_encode($venta->historial());
+        break;
+        case 'getByID':
+            $dato=[
+                'idventa' =>$_GET['idventa']
+            ];
+            echo json_encode($venta->getByID($dato));
         break;
     }
 }

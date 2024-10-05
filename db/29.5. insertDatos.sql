@@ -1,4 +1,4 @@
--- Active: 1726291702198@@localhost@3306@distribumax
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TABLAS NECESARIAS PARA REGISTRAR PERSONAS
 INSERT INTO tipo_documento (documento, descripcion) VALUES
@@ -61,8 +61,8 @@ INSERT INTO roles (rol) VALUES
 ('Usuario'), 
 ('Moderador'), 
 ('Invitado'),
-('Conductor');
-
+('Conductor'),
+('Vendedor');
 
 INSERT INTO tipo_comprobante_pago (comprobantepago) VALUES 
 ('Factura'), 
@@ -142,27 +142,28 @@ CALL sp_empresa_registrar (
     'santafe@gmail.com',
     '987654321'
 ); 
+select * from proveedores;
 
 -- Insertar un registro en la tabla proveedores
 INSERT INTO proveedores (idempresa, proveedor, contacto_principal, telefono_contacto, direccion, email)
 VALUES 
-(20123456782, 'Proveedor Ejemplo', 'Juan Pérez', '987654321', 'Av. Principal 123, Ciudad', 'contacto@proveedorejemplo.com');
+(20123456783, 'Proveedor Ejemplo', 'Juan Pérez', '987654321', 'Av. Principal 123, Ciudad', 'contacto@proveedorejemplo.com');
 
 select * from proveedores;
 select * from unidades_medidas;
 -- Insertar registros en detalle_productos sin las columnas create_at y estado
 INSERT INTO detalle_productos (idproveedor, idproducto, idunidadmedida, precio_compra, precio_venta_minorista, precio_venta_mayorista)
 VALUES
-    (1, 1, 1, 2.50, 3.50, 3.00),  -- Producto 1: Atún en lata
-    (1, 2, 1, 1.20, 1.50, 1.30),  -- Producto 2: Leche evaporada
-    (1, 3, 2, 0.80, 1.20, 1.00),  -- Producto 3: Coca Cola 500ml
-    (1, 4, 2, 1.00, 1.50, 1.20),  -- Producto 4: Inca Kola 1L
-    (1, 5, 3, 5.00, 7.50, 6.50),  -- Producto 5: Detergente Ariel
-    (1, 6, 3, 4.80, 7.00, 6.00),  -- Producto 6: Detergente Ace
-    (1, 7, 1, 3.20, 4.50, 4.00),  -- Producto 7: Shampoo Pantene
-    (1, 8, 1, 2.90, 4.00, 3.50),  -- Producto 8: Acondicionador Sedal
-    (1, 9, 3, 15.00, 20.00, 18.00),  -- Producto 9: Dog Chow Adultos
-    (1, 10, 3, 12.00, 17.00, 15.00);  -- Producto 10: Pedigree Cachorros
+    (2, 1, 1, 2.50, 3.50, 3.00),  -- Producto 1: Atún en lata
+    (2, 2, 1, 1.20, 1.50, 1.30),  -- Producto 2: Leche evaporada
+    (2, 3, 2, 0.80, 1.20, 1.00),  -- Producto 3: Coca Cola 500ml
+    (2, 4, 2, 1.00, 1.50, 1.20),  -- Producto 4: Inca Kola 1L
+    (2, 5, 3, 5.00, 7.50, 6.50),  -- Producto 5: Detergente Ariel
+    (2, 6, 3, 4.80, 7.00, 6.00),  -- Producto 6: Detergente Ace
+    (2, 7, 1, 3.20, 4.50, 4.00),  -- Producto 7: Shampoo Pantene
+    (2, 8, 1, 2.90, 4.00, 3.50),  -- Producto 8: Acondicionador Sedal
+    (2, 9, 3, 15.00, 20.00, 18.00),  -- Producto 9: Dog Chow Adultos
+    (2, 10, 3, 12.00, 17.00, 15.00);  -- Producto 10: Pedigree Cachorros
 
 -- select * from detalle_productos
 
@@ -175,10 +176,7 @@ SELECT * FROM tipos_promociones;
 SELECT * FROM promociones;
 SELECT * FROM detalle_promociones;
 -- Registrando 2 metodos de pago
-INSERT INTO metodos_pago (metodopago, estado)
-VALUES
-    ('Tarjeta de Crédito', 1),   -- Primer método de pago
-    ('Transferencia Bancaria', 1); -- Segundo método de pago
+ -- Segundo método de pago
 
 INSERT INTO promociones (idtipopromocion, descripcion, fechainicio, fechafin, valor_descuento)
 VALUES

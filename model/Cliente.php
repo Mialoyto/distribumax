@@ -25,4 +25,14 @@ class Cliente extends Conexion
       die($e->getCode());
     }
   }
+
+  public function getAll(){
+    try{
+        $query=$this->pdo->prepare("CALL sp_listar_clientes");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }catch(Exception $e){
+        die($e->getMessage());
+    }
+}
 }

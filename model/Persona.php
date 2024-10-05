@@ -105,4 +105,14 @@ class Persona extends Conexion
             $e->getCode();
         }
     }
+
+    public function getAll(){
+        try{
+            $query=$this->pdo->prepare("CALL sp_listar_personas");
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }

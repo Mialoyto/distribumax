@@ -29,10 +29,34 @@ class Ventas extends Conexion{
             return $estado;
         }
     }
+    public function upVenta($params=[]){
+        try{
+            $status=false;
+            $sql="CALL sp_estado_venta (?,?)";
+            $query=$this->pdo->prepare($sql);
+            $status=$query->execute(array(
+                $params['estado'],
+                $params['idventa']
+            ));
+            return $status;
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 
     public function getAll(){
         try{
             $query=$this->pdo->prepare("CALL sp_listar_ventas");
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+    public function historial(){
+        try{
+            $sql="CALL sp_historial_ventas";
+            $query=$this->pdo->prepare($sql);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
         }catch(Exception $e){
@@ -50,4 +74,18 @@ class Ventas extends Conexion{
             die($e->getMessage());
         }
     }
+
+    public function getByID($params=[])  {
+        try{
+            $sql="CALL sp_getById_venta(?)";
+            $query=$this->pdo->prepare($sql);
+            $query->execute(array(
+                $params['idventa']
+            ));
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
 }

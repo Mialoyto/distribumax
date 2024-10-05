@@ -103,3 +103,21 @@ BEGIN
         WHERE CLI.idpersona = _nro_documento OR CLI.idempresa =_nro_documento;
 END$$
 
+
+-- LISTAR CLIENTES
+DELIMITER $$
+CREATE PROCEDURE sp_listar_clientes()
+BEGIN
+    SELECT 
+        c.tipo_cliente,
+        c.create_at AS fecha_creacion,
+        c.update_at AS fecha_actualizacion,
+        c.estado AS estado_cliente
+    FROM 
+        clientes c
+    LEFT JOIN personas p ON c.idpersona = p.idpersonanrodoc
+    LEFT JOIN empresas e ON c.idempresa = e.idempresaruc;
+END $$
+DELIMITER ;
+
+CALL sp_listar_clientes();

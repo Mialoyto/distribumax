@@ -98,3 +98,5 @@ BEGIN
         AND (pe.nombres LIKE CONCAT('%', _item, '%') OR 
              CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%'));  -- Filtrar por nombres o apellidos concatenados
 END //
+
+select  * from vehiculos;

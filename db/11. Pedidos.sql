@@ -1,4 +1,4 @@
--- Active: 1728058749643@@127.0.0.1@3306@distribumax
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribumax;
 --  REGISTRAR PEDIDOS
 DELIMITER $$
@@ -47,7 +47,6 @@ END$$
 
 
 -- buscador para pedidos por id
-DROP PROCEDURE IF EXISTS sp_buscar_pedido;
 DELIMITER $$
 CREATE PROCEDURE sp_buscar_pedido(
    IN _idpedido CHAR(15)
@@ -76,12 +75,8 @@ BEGIN
         idpedido = _idpedido
         AND estado = 'Enviado';  -- Solo actualiza si el pedido estaba "Enviado"
 END$$
-DELIMITER ;
 
 
-CALL sp_buscar_pedido('PED-000000002');
-SELECT * FROM pedidos;
-select * from clientes
 -- insertar id antes de insertar los datos
 DELIMITER $$
 CREATE TRIGGER before_insert_pedidos

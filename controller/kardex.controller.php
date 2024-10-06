@@ -4,27 +4,30 @@ require_once '../model/kardex.php';
 
 $kardex = new Kardex();
 
-if(isset($_POST['operation'])){
-    switch($_POST['operation']){
+if (isset($_POST['operation'])) {
+    switch ($_POST['operation']) {
         case 'add':
-
-            $datos=[
-                'idusuario' =>$_POST['idusuario'],
-                'idproducto' =>$_POST['idproducto'],
-                'stockactual' =>$_POST['stockactual'],
-                'tipomovimiento'=>$_POST['tipomovimiento'],
-                'cantidad'=>$_POST['cantidad'],
-                'motivo'=>$_POST['motivo']
+            if (empty($_POST['tipomovimiento']) || empty($_POST['cantidad']) || ($_POST['tipomovimiento'] != 'Ingreso' && $_POST['tipomovimiento'] != 'Salida')) {
+                echo json_encode(['estado controller' => false]);
+                return;
+            }
+            $datosEnviar = [
+                'idusuario'         => $_POST['idusuario'],
+                'idproducto'        => $_POST['idproducto'],
+                'fecha_vencimiento' => $_POST['fecha_vencimiento'],
+                'numlote'           => $_POST['numlote'],
+                'tipomovimiento'    => $_POST['tipomovimiento'],
+                'cantidad'          => $_POST['cantidad'],
+                'motivo'            => $_POST['motivo']
             ];
-
-        echo json_encode($kardex->add($datos)); 
-        break;
+            $estado = $kardex->add($datosEnviar);
+            echo json_encode(['estado' => $estado]);
+            break;
 
         case 'getById':
-            echo json_encode($kardex->getById(['idproducto'=>$_POST['idproducto']]));
-        break; 
+            echo json_encode($kardex->getById(['idproducto' => $_POST['idproducto']]));
+            break;
     }
-    
 }
 
 if (isset($_GET['operation'])) {

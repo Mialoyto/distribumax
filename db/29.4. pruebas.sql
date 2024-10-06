@@ -5,6 +5,7 @@ USE distribumax;
 -- NOTA : ESTO SOLO SON PRUEBAS DE CONSULTAS
 SELECT * FROM subcategorias;
 SELECT * FROM ventas;
+SELECT * FROM detalle_meto_pago;
 SELECT * FROM despacho;
 SELECT * FROM comprobantes;
 SELECT * FROM tipo_comprobante_pago;

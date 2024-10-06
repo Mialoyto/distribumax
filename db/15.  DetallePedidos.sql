@@ -1,7 +1,8 @@
--- Active: 1728058749643@@127.0.0.1@3306@distribumax
+-- Active: 1726291702198@@localhost@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR DETALLE PEDIDOSDELIMITER $$
+DROP PROCEDURE IF EXISTS sp_detalle_pedido;
 DELIMITER $$
 CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido            CHAR(15),
@@ -22,9 +23,7 @@ BEGIN
     WHERE idproducto = _idproducto
     LIMIT 1;
     SET v_descuento = (_cantidad_producto * _precio_unitario) * (v_descuento_unitario / 100);
-
     SET _subtotal = (_cantidad_producto * _precio_unitario) - v_descuento;
-
     INSERT INTO detalle_pedidos 
     (idpedido, idproducto, cantidad_producto, unidad_medida, precio_unitario, precio_descuento, subtotal) 
     VALUES
@@ -34,6 +33,7 @@ END$$
 
 
 -- ACTUALIZAR EL STOCK
+drop TRIGGER trg_actualizar_stock;
 DELIMITER $$
 CREATE TRIGGER trg_actualizar_stock
 AFTER INSERT ON detalle_pedidos

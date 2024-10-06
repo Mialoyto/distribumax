@@ -9,21 +9,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 	let producto = '';
-
-	if (idproducto) {
-		idproducto.addEventListener('input', event => {
-			producto = event.target.value;
-			console.log("soy la linea 24", producto.length);
-			if (!producto.length == 0) {
-				mostraResultados();
-			} else {
-				datalist.innerHTML = '';
-				console.log("la longitud es:", producto.length);
-
-			}
-
-		})
-	};
+	// OK ✔️
+	idproducto.addEventListener('input', event => {
+		producto = event.target.value;
+		if (!producto.length == 0) {
+			mostraResultados();
+		} else {
+			datalist.innerHTML = '';
+			stock.value = '';
+			medida.textContent = 'Unidad Medida';
+			idproducto.removeAttribute('producto');
+		}
+	});
 	// OK ✔️
 	const searchProducto = async (producto) => {
 		const searchData = new URLSearchParams();
@@ -38,10 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			console.error(e);
 		}
 	};
-
+	// OK ✔️
 	const mostraResultados = async () => {
 		const response = await searchProducto(producto);
-		console.log("soy la linea 35", response.data);
 		datalist.innerHTML = '';
 		if (response.data.length > 0) {
 			datalist.style.display = 'block';
@@ -54,66 +50,63 @@ document.addEventListener("DOMContentLoaded", () => {
 				li.addEventListener('click', async () => {
 					idproducto.value = item.nombreproducto;
 					idproducto.setAttribute('producto', item.idproducto);
-
-					await viewStock(item.stockactual,item.unidadmedida);
+					await viewStock(item.stockactual, item.unidadmedida);
 					datalist.innerHTML = '';
 				});
 				datalist.appendChild(li);
-				// datalist.style.display = 'block';
 			});
+			if (response.data.stockactual == 0) {
+				alert("Producto sin stock")
+			}
 		}
 	};
-
+	// OK ✔️
 	async function viewStock(stockactual, unidaMedida) {
 		stock.value = stockactual;
 		medida.textContent = unidaMedida
 	}
 
 
-	let selectedId;
-	idproducto.addEventListener('change', async event => {
-		const selectedDistrito = event.target.value;
-		const options = datalist.children;
-
-		for (let i = 0; i < options.length; i++) {
-			if (options[i].value === selectedDistrito) {
-				selectedId = options[i].getAttribute('data-id');
-				// ERROR
-				// await cargarStock();
-				break;
-			}
-		}
-	});
-
+	// PROBANDO EL REGISTRO DE KARDEX 
 	async function registrarkardex() {
 		const params = new FormData();
 		params.append('operation', 'add');
-		params.append('idusuario', $("#idusuario").value);
-		params.append('idproducto', selectedId);
-		params.append('stockactual', $("#stockactual").value);
+		params.append('idusuario', $("#iduser").getAttribute('data-id'));
+		params.append('idproducto', idproducto.getAttribute('producto'));
+		params.append('fecha_vencimiento', $("#fechaVP").value);
+		params.append('numlote', $("#loteP").value);
 		params.append('tipomovimiento', $("#tipomovimiento").value);
 		params.append('cantidad', $("#cantidad").value);
-		params.append('motivo', $("#motivo").value)
+		params.append('motivo', $("#motivo").value);
 
 		const options = {
 			method: 'POST',
 			body: params
 		}
-		const response = await fetch(`../../controller/kardex.controller.php`, options)
-		return response.json()
-			.catch(e => { console.error(e) })
+		try {
+			const response = await fetch(`../../controller/kardex.controller.php`, options)
+			const data = await response.json()
+			console.log(" respuesta de la funcion registrar Kardex", data)
+			return data;
+		} catch (e) {
+			console.error(e)
+		}
 	}
+	// FIN DE PRUEBA DE REGISTRO DE KARDEX
 
 
-	const formkardex = $("#form-registrar-kardex").addEventListener('submit', async (event) => {
+	// EVENTO DE REGISTRO DE KARDEX
+	$("#form-registrar-kardex").addEventListener('submit', async (event) => {
 		event.preventDefault();
 
 		const resultado = await registrarkardex();
-		if (resultado) {
+		console.log(resultado.estado);
+		if (resultado.estado) {
 			alert("exitoso!")
-			formkardex.reset();
+			$("#form-registrar-kardex").reset();
 		} else {
 			alert("No se puede")
 		}
 	})
+	// FIN DE EVENTO DE REGISTRO DE KARDEX
 });

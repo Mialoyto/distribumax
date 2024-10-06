@@ -16,7 +16,6 @@ END $$
 
 
 -- Procedimiento para registrar movimiento de detalle de pedido
-
 DROP PROCEDURE IF EXISTS sp_registrarmovimiento_kardex;
 DELIMITER $$
 CREATE PROCEDURE sp_registrarmovimiento_kardex (
@@ -50,7 +49,7 @@ BEGIN
 
     INSERT INTO kardex (idusuario, idproducto,fecha_vencimiento,numlote, stockactual, tipomovimiento, cantidad, motivo)
     VALUES (_idusuario, _idproducto,_fecha_vencimiento,_numlote, _nuevo_stock_actual, _tipomovimiento, _cantidad, _motivo);
-END $$
+END$$
 
 
 
@@ -98,6 +97,8 @@ CALL sp_registrarmovimiento_kardex(1, 18,'2023-10-05','LOT002','Ingreso',10, 'In
 SELECT * FROM kardex;
 SELECT * FROM productos;
 SELECT * FROM empresas;
+DELETE FROM kardex
+WHERE idkardex = 15;
 
 -- Consulta de producto específico
 SELECT k.idkardex, k.stockactual, p.idproducto, p.nombreproducto 

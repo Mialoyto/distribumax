@@ -41,6 +41,8 @@ FOR EACH ROW
 BEGIN
     DECLARE v_stock_actual          INT;
     DECLARE v_idusuario             INT;
+    DECLARE v_fecha_vencimiento     DATE;
+    DECLARE v_numlote               VARCHAR(60);
 
     SELECT stockactual INTO v_stock_actual
     FROM kardex
@@ -52,9 +54,16 @@ BEGIN
     WHERE idpedido = NEW.idpedido
     LIMIT 1;
 
+    SELECT fecha_vencimiento, numlote INTO v_fecha_vencimiento, v_numlote
+    FROM kardex
+    WHERE idproducto = NEW.idproducto
+    AND  stockactual > 0
+    ORDER BY fecha_vencimiento ASC
+    LIMIT 1;
+
     IF v_stock_actual >= NEW.cantidad_producto THEN
-        CALL sp_registrarmovimiento_detallepedido
-        (v_idusuario, NEW.idproducto, v_stock_actual, 'Salida', NEW.cantidad_producto, 'Venta de producto');
+        CALL sp_registrarmovimiento_kardex
+        (v_idusuario, NEW.idproducto,v_fecha_vencimiento,v_numlote, 'Salida', NEW.cantidad_producto, 'Venta de producto');
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para esta operación';
     END IF;

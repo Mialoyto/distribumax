@@ -167,14 +167,14 @@ VALUES
 
 INSERT INTO detalle_productos (idproveedor, idproducto, idunidadmedida, precio_compra, precio_venta_minorista, precio_venta_mayorista)
 VALUES
-    (2, 11, 3, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
-    (2, 12, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
-    (2, 13, 3, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
-    (2, 14, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
-    (2, 15, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
-    (2, 16, 3, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
-    (2, 17, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
-    (2, 18, 2, 12.00, 17.00, 15.00);
+    (1, 11, 3, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 12, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 13, 3, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 14, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 15, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 16, 3, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 17, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 18, 2, 12.00, 17.00, 15.00);
 
 
 -- select * from detalle_productos

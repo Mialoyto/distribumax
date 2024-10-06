@@ -58,7 +58,7 @@
           <div class="row">
             <div class="col-md-4 mt-3">
               <div class="form-floating">
-                <input type="number" step="1" min="0" class="form-control numeros" id="cantidad" name="cantidad" placeholder="" required>
+                <input type="number" step="1" min="0" class="form-control numeros" id="cantidad" name="cantidad" placeholder="">
                 <label for="cantidad" class="form-label">Cantidad</label>
               </div>
             </div>
@@ -90,7 +90,7 @@
           <!-- Botones -->
           <div class="d-flex justify-content-end mt-3">
             <button type="submit" class="btn btn-primary me-2">Registrar</button>
-            <button type="reset" class="btn btn-secondary">Cancelar</button>
+            <button type="reset" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
           </div>
         </form>
         <div class="card-footer mt-3">
@@ -101,6 +101,8 @@
   </div>
 </main>
 
-<script src="../../js/kardex/registrar.js"></script>
-
 <?php require_once '../../footer.php'; ?>
+<script src="../../js/kardex/registrar.js"></script>
+</body>
+
+</html>

@@ -74,7 +74,6 @@ BEGIN
         ORDER BY PRO.idproducto ASC ;
 END $$
 
-CALL sp_buscar_productos ('PEDI');
 -- BORRAR ESTE PROCEDIMIENTO
 
 -- BUSCAR PRODUCTOS

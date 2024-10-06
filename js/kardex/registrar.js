@@ -10,10 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	let producto = '';
 	// OK ✔️
-	idproducto.addEventListener('input', event => {
+	idproducto.addEventListener('input', async (event) => {
 		producto = event.target.value;
 		if (!producto.length == 0) {
-			mostraResultados();
+			await mostraResultados();
 		} else {
 			datalist.innerHTML = '';
 			stock.value = '';
@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// OK ✔️
 	const mostraResultados = async () => {
 		const response = await searchProducto(producto);
+		console.log(response);
 		datalist.innerHTML = '';
 		if (response.data.length > 0) {
 			datalist.style.display = 'block';
@@ -68,6 +69,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 	// PROBANDO EL REGISTRO DE KARDEX 
+	let fecha;
+	$("#fechaVP").addEventListener('input', () => {
+		fecha = $("#fechaVP").value;
+		console.log(fecha);
+		if (fecha <= new Date().toISOString().split('T')[0]) {
+			showToast('La fecha de vencimiento debe ser mayor a la fecha actual', 'warning', 'WARNING', 2500);
+			fecha.value = new Date().toISOString().split('T')[0];
+			return;
+		};
+	});
 	async function registrarkardex() {
 		const params = new FormData();
 		params.append('operation', 'add');
@@ -98,15 +109,28 @@ document.addEventListener("DOMContentLoaded", () => {
 	// EVENTO DE REGISTRO DE KARDEX
 	$("#form-registrar-kardex").addEventListener('submit', async (event) => {
 		event.preventDefault();
-
-		const resultado = await registrarkardex();
-		console.log(resultado.estado);
-		if (resultado.estado) {
-			alert("exitoso!")
-			$("#form-registrar-kardex").reset();
+		if (fecha <= new Date().toISOString().split('T')[0]) {
+			showToast('La fecha de vencimiento debe ser mayor a la fecha actual', 'warning', 'WARNING', 2500);
+			return;
 		} else {
-			alert("No se puede")
+			if (await showConfirm('¿Desea registrar el producto en el kardex?', 'Kardex')) {
+				const resultado = await registrarkardex();
+				if (resultado.estado) {
+					showToast('Registro exitoso del producto en el kardex', 'success', 'SUCCESS', 2500,);
+					$("#form-registrar-kardex").reset();
+				} else {
+					showToast('Error al registrar el producto en el kardex', 'error', 'ERROR', 2500);
+				}
+			} else {
+				showToast('Registro cancelado', 'error', 'ERROR', 2500);
+			}
 		}
+
+	})
+
+	$("#btnCancelar").addEventListener('click', () => {
+		$("#form-registrar-kardex").reset();
+		$("#medida").textContent = 'Unidad Medida';
 	})
 	// FIN DE EVENTO DE REGISTRO DE KARDEX
 });

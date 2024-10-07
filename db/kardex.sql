@@ -16,16 +16,16 @@ END $$
 
 
 -- Procedimiento para registrar movimiento de detalle de pedido
-
-DROP PROCEDURE IF EXISTS sp_registrarmovimiento_detallepedido;
+DROP PROCEDURE IF EXISTS sp_registrarmovimiento_kardex;
 DELIMITER $$
-CREATE PROCEDURE sp_registrarmovimiento_detallepedido (
-    IN _idusuario INT,
-    IN _idproducto INT,
-    IN _stock_actual INT,
-    IN _tipomovimiento ENUM('Ingreso', 'Salida'),
-    IN _cantidad INT, -- Cambiado a INT si debe ser entero
-    IN _motivo VARCHAR(255)
+CREATE PROCEDURE sp_registrarmovimiento_kardex (
+    IN _idusuario           INT,
+    IN _idproducto          INT,
+    IN _fecha_vencimiento   DATE,
+    IN _numlote             VARCHAR(60),
+    IN _tipomovimiento      ENUM('Ingreso', 'Salida'),
+    IN _cantidad            INT, -- Cambiado a INT si debe ser entero
+    IN _motivo              VARCHAR(255)
 )
 BEGIN
     DECLARE _ultimo_stock_actual INT DEFAULT 0;
@@ -47,9 +47,10 @@ BEGIN
         END IF;
     END IF;
 
-    INSERT INTO kardex (idusuario, idproducto, stockactual, tipomovimiento, cantidad, motivo)
-    VALUES (_idusuario, _idproducto, _nuevo_stock_actual, _tipomovimiento, _cantidad, _motivo);
-END $$
+    INSERT INTO kardex (idusuario, idproducto,fecha_vencimiento,numlote, stockactual, tipomovimiento, cantidad, motivo)
+    VALUES (_idusuario, _idproducto,_fecha_vencimiento,_numlote, _nuevo_stock_actual, _tipomovimiento, _cantidad, _motivo);
+END$$
+
 
 
 -- Procedimiento para reporte de producto
@@ -78,21 +79,26 @@ BEGIN
 END $$
 -- detalle idos
 
-CALL sp_registrarmovimiento_detallepedido(1, 1, 0,'Ingreso', 200, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_detallepedido(1, 2, 0,'Ingreso', 100, 'Ingreso de productos para venta');
-CALL sp_registrarmovimiento_detallepedido(1, 3, 0,'Ingreso', 200, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_detallepedido(1, 4, 0,'Ingreso', 50, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_detallepedido(1, 5, 0,'Ingreso', 150, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_detallepedido(1, 6, 0,'Ingreso', 200, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_detallepedido(1, 7, 0,'Ingreso', 250, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_detallepedido(1, 8, 0,'Ingreso', 275, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_detallepedido(1, 9, 0,'Ingreso', 300, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_detallepedido(1, 10, 0,'Ingreso', 325, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 1,'2023-10-05','LOT002','Ingreso', 100, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 2,'2023-10-05','LOT002','Ingreso', 125, 'Ingreso de productos para venta');
+CALL sp_registrarmovimiento_kardex(1, 3,'2023-10-05','LOT002','Ingreso', 150, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 4,'2023-10-05','LOT002','Ingreso', 200, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 5,'2023-10-05','LOT002','Ingreso', 225, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 6,'2023-10-05','LOT002','Ingreso', 250, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 7,'2023-10-05','LOT002','Ingreso', 300, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 8,'2023-10-05','LOT002','Ingreso', 325, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 9,'2023-10-05','LOT002','Ingreso', 350, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 10,'2023-10-05','LOT002','Ingreso',400, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 11,'2023-10-05','LOT002','Ingreso',425, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 17,'2023-10-05','LOT002','Ingreso',10, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 18,'2023-10-05','LOT002','Ingreso',10, 'Ingreso de productos adicionales');
 
 
 SELECT * FROM kardex;
 SELECT * FROM productos;
 SELECT * FROM empresas;
+DELETE FROM kardex
+WHERE idkardex = 15;
 
 -- Consulta de producto específico
 SELECT k.idkardex, k.stockactual, p.idproducto, p.nombreproducto 

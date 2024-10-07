@@ -93,3 +93,21 @@ BEGIN
 		WHERE PER.idtipodocumento = _idtipodocumento
         AND PER.idpersonanrodoc = _idpersonanrodoc AND PER.estado = "1";
 END $$
+
+DELIMITER //
+
+CREATE PROCEDURE sp_listar_personas()
+BEGIN
+    SELECT 
+        p.idpersonanrodoc AS nro_documento,
+        td.documento AS tipo_documento,
+        p.nombres,
+        p.appaterno,
+        p.apmaterno,
+        d.distrito
+    FROM personas p
+    INNER JOIN tipo_documento td ON p.idtipodocumento = td.idtipodocumento
+    INNER JOIN distritos d ON p.iddistrito = d.iddistrito;
+END //
+
+DELIMITER ;

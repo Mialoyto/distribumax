@@ -5,6 +5,7 @@ USE distribumax;
 -- NOTA : ESTO SOLO SON PRUEBAS DE CONSULTAS
 SELECT * FROM subcategorias;
 SELECT * FROM ventas;
+SELECT * FROM detalle_meto_pago;
 SELECT * FROM despacho;
 SELECT * FROM comprobantes;
 SELECT * FROM tipo_comprobante_pago;
@@ -98,3 +99,35 @@ CALL ObtenerPrecioProducto(, 'a');
 CALL sp_estado_producto ('1', 1);
 
 
+
+/* PRUEBA PARA TRAER EL DESCUENTO */
+  SELECT 
+        PRO.idproducto,
+        PRO.codigo,
+        PRO.nombreproducto,
+        TPRO.tipopromocion,
+        DET.descuento,
+        UNDM.unidadmedida,
+        CASE 
+            WHEN LENGTH(CLI.idpersona) = 8 THEN DETP.precio_venta_minorista
+            WHEN LENGTH(CLI.idempresa) = 11 THEN DETP.precio_venta_mayorista
+        END 
+        AS precio_venta,
+        kAR.stockactual
+    FROM  productos PRO
+        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
+        LEFT JOIN detalle_productos DETP ON PRO.idproducto = DETP.idproducto
+        INNER JOIN unidades_medidas UNDM ON UNDM.idunidadmedida = DETP.idunidadmedida
+        INNER JOIN clientes CLI ON CLI.idpersona = 26558000
+        INNER JOIN promociones PROM ON DET.idpromocion = PROM.idpromocion
+        INNER JOIN tipos_promociones TPRO ON PROM.idtipopromocion = TPRO.idtipopromocion
+        -- kardex
+        INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
+        AND KAR.idkardex = (SELECT MAX(K2.idkardex) FROM kardex K2 WHERE K2.idproducto = PRO.idproducto)
+    WHERE nombreproducto = "Sardinas Nestlé en Tomate"
+    AND PRO.estado = '1' 
+    AND KAR.stockactual > 0;
+
+SELECT * FROM detalle_promociones;
+SELECT * from productos;
+select * from kardex WHERE idproducto = 2 and stockactual =0 ORDER BY idkardex DESC ;

@@ -400,7 +400,7 @@ CREATE TABLE kardex(
 	idproducto			INT NOT NULL,
     fecha_vencimiento   DATE  NULL,
     numlote				VARCHAR(60) NULL,
-	stockactual     	INT,
+	stockactual     	INT NULL DEFAULT 0,
     tipomovimiento  	ENUM('Ingreso', 'Salida') NOT NULL,
 	cantidad        	INT NOT NULL,
 	motivo          	VARCHAR(255),

@@ -154,18 +154,31 @@ select * from unidades_medidas;
 -- Insertar registros en detalle_productos sin las columnas create_at y estado
 INSERT INTO detalle_productos (idproveedor, idproducto, idunidadmedida, precio_compra, precio_venta_minorista, precio_venta_mayorista)
 VALUES
-    (2, 1, 1, 2.50, 3.50, 3.00),  -- Producto 1: Atún en lata
-    (2, 2, 1, 1.20, 1.50, 1.30),  -- Producto 2: Leche evaporada
-    (2, 3, 2, 0.80, 1.20, 1.00),  -- Producto 3: Coca Cola 500ml
-    (2, 4, 2, 1.00, 1.50, 1.20),  -- Producto 4: Inca Kola 1L
-    (2, 5, 3, 5.00, 7.50, 6.50),  -- Producto 5: Detergente Ariel
-    (2, 6, 3, 4.80, 7.00, 6.00),  -- Producto 6: Detergente Ace
-    (2, 7, 1, 3.20, 4.50, 4.00),  -- Producto 7: Shampoo Pantene
-    (2, 8, 1, 2.90, 4.00, 3.50),  -- Producto 8: Acondicionador Sedal
-    (2, 9, 3, 15.00, 20.00, 18.00),  -- Producto 9: Dog Chow Adultos
-    (2, 10, 3, 12.00, 17.00, 15.00);  -- Producto 10: Pedigree Cachorros
+    (1, 1, 1, 2.50, 3.50, 3.00),  -- Producto 1: Atún en lata
+    (1, 2, 1, 1.20, 1.50, 1.30),  -- Producto 2: Leche evaporada
+    (1, 3, 2, 0.80, 1.20, 1.00),  -- Producto 3: Coca Cola 500ml
+    (1, 4, 2, 1.00, 1.50, 1.20),  -- Producto 4: Inca Kola 1L
+    (1, 5, 3, 5.00, 7.50, 6.50),  -- Producto 5: Detergente Ariel
+    (1, 6, 3, 4.80, 7.00, 6.00),  -- Producto 6: Detergente Ace
+    (1, 7, 1, 3.20, 4.50, 4.00),  -- Producto 7: Shampoo Pantene
+    (1, 8, 1, 2.90, 4.00, 3.50),  -- Producto 8: Acondicionador Sedal
+    (1, 9, 3, 15.00, 20.00, 18.00),  -- Producto 9: Dog Chow Adultos
+    (1, 10, 3, 12.00, 17.00, 15.00);  -- Producto 10: Pedigree Cachorros
+
+INSERT INTO detalle_productos (idproveedor, idproducto, idunidadmedida, precio_compra, precio_venta_minorista, precio_venta_mayorista)
+VALUES
+    (1, 11, 3, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 12, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 13, 3, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 14, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 15, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 16, 3, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 17, 2, 12.00, 17.00, 15.00),  -- Producto 10: Pedigree Cachorros
+    (1, 18, 2, 12.00, 17.00, 15.00);
+
 
 -- select * from detalle_productos
+SELECT * FROM productos;
 
 INSERT INTO tipos_promociones (tipopromocion, descripcion)
 VALUES ('Descuento de Temporada', 'Descuento especial aplicado durante la temporada de invierno.');

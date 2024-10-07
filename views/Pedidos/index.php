@@ -19,6 +19,12 @@
           <h5 class="mb-3 mt-3 card-title">Datos del cliente</h5>
           <!-- fila 01 -->
           <div class="row g-3 mb-3">
+            <div class="col-md-6 mb-2">
+              <div class="form-floating">
+                <input type="search" class="form-control numeros" id="nro-doc" name="nro-doc" placeholder="Número de documento" type="number" min="1" pattern="^[0-9]+" required>
+                <label for="nro-doc" class="form-label"> <i class="bi bi-search"></i> Número de documento</label>
+              </div>
+            </div>
 
             <div class="col-md-6 mb-2">
               <!-- selecc de tipo de documento -->
@@ -30,32 +36,27 @@
               </div>
               <!-- fin de selec de tipo de documento -->
             </div>
-            <div class="col-md-6 mb-2">
-              <div class="form-floating">
-                <input type="number" class="form-control" id="nro-doc" name="nro-doc" placeholder="Número de documento" type="number" min="1" pattern="^[0-9]+" required>
-                <label for="nro-doc" class="form-label"> <i class="bi bi-search"></i> Número de documento</label>
-              </div>
-            </div>
+
           </div>
           <!-- fila 2 -->
           <div class="row g-3 mb-3">
 
             <div class="col-md-4 mt-3">
               <div class="form-floating">
-                <input class="form-control" id="nombres" name="nombres" type="text" placeholder="nombres" required />
+                <input class="form-control" id="nombres" disabled="true" name="nombres" type="text" placeholder="nombres" required />
                 <label for="nombres">Nombres</label>
               </div>
             </div>
             <div class="col-md-4 mt-3">
               <div class="form-floating">
-                <input class="form-control" id="appaterno" name="appaterno" type="text" placeholder="appaterno" required />
+                <input class="form-control" id="appaterno" disabled="true" name="appaterno" type="text" placeholder="appaterno" required />
                 <label for="appaterno">Apellido paterno</label>
               </div>
             </div>
 
             <div class="col-md-4 mt-3">
               <div class="form-floating">
-                <input class="form-control" id="apmaterno" name="apmaterno" type="text" placeholder="Apellido apmaterno" required />
+                <input class="form-control" id="apmaterno" disabled="true" name="apmaterno" type="text" placeholder="Apellido apmaterno" required />
                 <label for="apmaterno">Apellido materno</label>
               </div>
             </div>
@@ -63,13 +64,13 @@
           <div class="row g-3 mb-3">
             <div class="col-md-6 mt-3">
               <div class="form-floating">
-                <input class="form-control" id="razon-social" name="razon-social" type="text" placeholder="Razon social" required />
+                <input class="form-control" id="razon-social" disabled="true" name="razon-social" type="text" placeholder="Razon social" required />
                 <label for="razon-social">Razón social</label>
               </div>
             </div>
             <div class="col-md-6 mt-3">
               <div class="form-floating">
-                <input class="form-control" id="direccion-cliente" name="direccion-cliente" type="text" placeholder="Dirección cliente" required />
+                <input class="form-control" id="direccion-cliente" disabled="true" name="direccion-cliente" type="text" placeholder="Dirección cliente" required />
                 <label for="direccion-cliente">Dirección cliente</label>
               </div>
             </div>
@@ -104,6 +105,7 @@
                     <th scope="col">Precio Unitario</th>
                     <th scope="col">Subtotal</th>
                     <th scope="col span-2">% Descuento</th>
+                    <th scope="col span-2">Monto Descuento</th>
                     <th scope="col">Total</th>
                     <th scope="col">Acciones</th>
                   </tr>

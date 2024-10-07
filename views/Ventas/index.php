@@ -51,6 +51,7 @@ require_once '../../header.php';
                 <thead>
                   <tr>
                     <th>Productos</th>
+                    <th>Unidad Medida</th>
                     <th>Cantidades</th>
                   </tr>
                 </thead>

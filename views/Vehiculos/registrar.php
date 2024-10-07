@@ -15,7 +15,7 @@ require_once '../../header.php';
         Datos del Vehículo
       </div>
       <div class="card-body">
-        <form action="" method="" id="form-registrar-Vehiculo">
+        <form action="" method="" id="form-registrar-Vehiculo" autocomplete="off">
           <div class="row">
             <div class="col-md-4 mb-3">
               <div class="form-floating">
@@ -26,13 +26,13 @@ require_once '../../header.php';
             </div>
             <div class="col-md-4 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="marca_vehiculo" name="marca_vehiculo" maxlength="100" minlength="3" required>
+                <input type="text" class="form-control" id="marca_vehiculo" name="marca_vehiculo" maxlength="23" minlength="3" required>
                 <label for="marca"><i class="fas fa-car me-2"></i> Marca</label>
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="modelo" name="modelo" maxlength="100" minlength="3" required>
+                <input type="text" class="form-control" id="modelo" name="modelo" maxlength="73" minlength="1" required>
                 <label for="modelo"><i class="fas fa-car-side me-2"></i> Modelo</label>
               </div>
             </div>
@@ -48,14 +48,14 @@ require_once '../../header.php';
             </div>
             <div class="col-md-4 mb-3">
               <div class="form-floating">
-                <input type="number" class="form-control" id="capacidad" name="capacidad" required>
+                <input type="text" class="form-control" id="capacidad" name="capacidad" pattern="[0-9]+" title="solos numeros" maxlength="5" required >
                 <label for="capacidad"><i class="fas fa-users me-2"></i> Capacidad</label>
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <div class="form-floating">
                 <select class="form-select" id="condicion" name="condicion" required>
-                  <option value="operativo">Operativo</option>
+                  <option value="operativo" selected>Operativo</option>
                   <option value="taller">Taller</option>
                   <option value="averiado">Averiado</option>
                 </select>
@@ -64,6 +64,7 @@ require_once '../../header.php';
             </div>
           </div>
           <button type="submit" class="btn btn-primary">Registrar Vehículo</button>
+          <button type="reset" class="btn btn-danger">Cancelar</button>
         </form>
       </div>
 
@@ -74,6 +75,12 @@ require_once '../../header.php';
   </div>
 </main>
 <script src="../../js/vehiculos/registrar.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const condicionSelect = document.getElementById('condicion');
+    condicionSelect.value = 'operativo'; // Establece "Operativo" como seleccionada
+});
+</script>
 <?php
 require_once '../../footer.php';
 ?>

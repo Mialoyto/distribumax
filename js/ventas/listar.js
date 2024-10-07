@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const response = await fetch(`../../controller/ventas.controller.php?operation=getAll`);
         const data = await response.json();
-        console.log(data);
+       // console.log(data);
       
         Tablaventas.innerHTML = ''; // Limpiar contenido previo
         if(data.length>0){
@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
             Tablaventas.innerHTML += `
             <tr>
                 <td>${element.nombreproducto}</td>
+                 <td>${element.unidad_medida}</td>
                 <td>${element.cantidad_producto}</td>
             </tr>
             `;

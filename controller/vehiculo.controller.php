@@ -30,6 +30,12 @@ if(isset($_POST['operation'])){
            ];
            echo json_encode($vehiculo->getById_usuarioVe($dato));
        break;
+       case 'searchVehiculo':
+        $dato=[
+            'item'=>$_POST['item']
+        ];
+        echo json_encode($vehiculo->searchVehiculo($dato));
+        break;
     }
 }
 if(isset($_GET['operation'])){

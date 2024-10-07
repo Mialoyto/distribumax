@@ -58,4 +58,18 @@
             die($e->getMessage());
         }
     }
+    public function searchVehiculo($params=[]){
+        try{
+            $query=$this->pdo->prepare("CALL sp_buscar_vehiculos (?)");
+            $query->execute(array($params['item']));
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }
+// $vehiculo= new Vehiculo();
+// $dato=[
+//     'item'=>'a'
+// ];
+// echo json_encode($vehiculo->searchVehiculo($dato));

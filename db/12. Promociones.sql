@@ -1,3 +1,4 @@
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROMOCIONES
@@ -54,3 +55,24 @@ BEGIN
       estado=_estado
       WHERE idpromocion =_idpromocion;
 END$$
+
+-- PROCEDIMIENTO PARA LISTAR PROMOCIONES
+DELIMITER $$
+CREATE PROCEDURE sp_listar_promociones()
+BEGIN
+    SELECT 
+        tp.tipopromocion,
+        p.descripcion,
+        p.fechainicio,
+        p.fechafin,
+        p.valor_descuento
+    FROM 
+        promociones p
+    INNER JOIN 
+        tipos_promociones tp ON p.idtipopromocion = tp.idtipopromocion
+    ORDER BY 
+        p.fechainicio DESC;
+END $$
+DELIMITER ;
+
+CALL sp_listar_promociones();

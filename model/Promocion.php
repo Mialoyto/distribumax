@@ -28,8 +28,7 @@ class Promocion extends Conexion{
 
   public function getAll(){
     try{
-
-      $sql="SELECT * FROM tipos_promociones";
+      $sql="CALL sp_listar_promociones";
       $query=$this->pdo->prepare($sql);
       $query->execute();
       return $query->fetchAll(PDO::FETCH_ASSOC);

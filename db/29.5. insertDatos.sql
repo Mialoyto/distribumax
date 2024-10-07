@@ -1,4 +1,4 @@
--- Active: 1728058749643@@127.0.0.1@3306@distribumax
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TABLAS NECESARIAS PARA REGISTRAR PERSONAS
 INSERT INTO tipo_documento (documento, descripcion) VALUES
@@ -127,6 +127,21 @@ INSERT INTO productos (idmarca, idsubcategoria, nombreproducto, descripcion, cod
 INSERT INTO productos (idmarca, idsubcategoria, nombreproducto, descripcion, codigo) VALUES 
 (7, 17, 'Dog Chow Adultos 4kg', 'Alimento balanceado para perros adultos', 'MASC001PER'),
 (7, 17, 'Dog Chow Cachorros 2kg', 'Alimento para cachorros', 'MASC002PER');
+
+INSERT INTO tipos_promociones (tipopromocion, descripcion) VALUES 
+('Descuento por volumen', 'Descuento aplicado al comprar una cantidad mínima de productos.'),
+('2x1 en productos seleccionados', 'Compra dos productos y paga solo uno.'),
+('Descuento por temporada', 'Descuento especial durante temporadas específicas.'),
+('Combo promocional', 'Combo de productos con precio reducido al comprarlos juntos.'),
+('Descuento para clientes frecuentes', 'Descuento exclusivo para clientes que han realizado más de tres compras.');
+
+INSERT INTO promociones (idtipopromocion, descripcion, fechainicio, fechafin, valor_descuento) VALUES 
+(1, '10% de descuento en la compra de 10 cajas de galletas', '2024-10-01', '2024-10-31', 10.00),
+(2, 'Compra 2 cajas de leche y paga solo 1', '2024-10-05', '2024-10-15', 50.00),
+(3, 'Descuento del 15% por el Día de la Madre en todas las golosinas', '2024-05-01', '2024-05-10', 15.00),
+(4, 'Combo especial de galletas y leche con 20% de descuento', '2024-11-01', '2024-11-30', 20.00),
+(5, '5% de descuento adicional para clientes que hayan realizado 3 compras en el último mes', '2024-10-01', '2024-12-31', 5.00);
+
 
 -- Subcategoría Alimento para Gatos (idsubcategoria = 18)
 -- Marca Pedigree (idmarca = 8)

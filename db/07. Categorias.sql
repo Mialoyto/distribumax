@@ -39,7 +39,10 @@ END $$
 
 
 -- LISTAR CATEGORIAS
-CREATE VIEW vw_listar_categorias AS
-    SELECT categoria FROM categorias
-    WHERE estado = '1'
-    ORDER BY categoria ASC;
+DROP VIEW IF EXISTS `vw_listar_categorias`;
+CREATE VIEW `vw_listar_categorias` AS
+    SELECT
+        CAT.idcategoria,
+        CAT.categoria
+    FROM categorias CAT
+    WHERE CAT.estado = 1

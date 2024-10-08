@@ -3,7 +3,9 @@ USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
 -- NOTA : ESTO SOLO SON PRUEBAS DE CONSULTAS
+select * from categorias;
 SELECT * FROM subcategorias;
+SELECT * from productos;
 SELECT * FROM ventas;
 SELECT * FROM detalle_meto_pago;
 SELECT * FROM despacho;
@@ -15,7 +17,6 @@ select * from departamentos;
 select * from provincias where provincia = 'Chincha';
 select * from distritos;
 select * from marcas;
-select * from categorias;
 select * from usuarios;
 select * from personas;
 SELECT * FROM empresas;
@@ -100,34 +101,32 @@ CALL sp_estado_producto ('1', 1);
 
 
 
-/* PRUEBA PARA TRAER EL DESCUENTO */
-  SELECT 
-        PRO.idproducto,
-        PRO.codigo,
-        PRO.nombreproducto,
-        TPRO.tipopromocion,
-        DET.descuento,
-        UNDM.unidadmedida,
-        CASE 
-            WHEN LENGTH(CLI.idpersona) = 8 THEN DETP.precio_venta_minorista
-            WHEN LENGTH(CLI.idempresa) = 11 THEN DETP.precio_venta_mayorista
-        END 
-        AS precio_venta,
-        kAR.stockactual
-    FROM  productos PRO
-        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
-        LEFT JOIN detalle_productos DETP ON PRO.idproducto = DETP.idproducto
-        INNER JOIN unidades_medidas UNDM ON UNDM.idunidadmedida = DETP.idunidadmedida
-        INNER JOIN clientes CLI ON CLI.idpersona = 26558000
-        INNER JOIN promociones PROM ON DET.idpromocion = PROM.idpromocion
-        INNER JOIN tipos_promociones TPRO ON PROM.idtipopromocion = TPRO.idtipopromocion
-        -- kardex
-        INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
-        AND KAR.idkardex = (SELECT MAX(K2.idkardex) FROM kardex K2 WHERE K2.idproducto = PRO.idproducto)
-    WHERE nombreproducto = "Sardinas Nestlé en Tomate"
-    AND PRO.estado = '1' 
-    AND KAR.stockactual > 0;
+/* PRUEBAS*/
+DELIMITER $$
+CREATE PROCEDURE getSubcategorias(
+    IN _idsubcategoria INT
+)
+BEGIN
+SELECT 
+    SUB.idsubcategoria,
+    SUB.subcategoria
+    FROM categorias CAT
+    RIGHT JOIN subcategorias SUB ON CAT.idcategoria = SUB.idcategoria
+    WHERE CAT.idcategoria = _idsubcategoria
+    AND CAT.estado = 1 AND SUB.estado = 1
+    ORDER BY SUB.idsubcategoria ASC;
+END $$
+
+
+
+
+CALL getSubcategorias(3);
+/* FIN DE LA PRUEBA */
+SELECT * FROM categorias;
+UPDATE categorias SET estado = 1 WHERE idcategoria = 1;
+SELECT * FROM subcategorias;
+UPDATE subcategorias SET estado = 1 WHERE idsubcategoria = 1;
 
 SELECT * FROM detalle_promociones;
-SELECT * from productos;
+
 select * from kardex WHERE idproducto = 2 and stockactual =0 ORDER BY idkardex DESC ;

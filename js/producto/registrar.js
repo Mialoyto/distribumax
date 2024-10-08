@@ -6,6 +6,30 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(object);
   }
 
+
+  async function getCategorias() {
+    const params = new URLSearchParams();
+    params.append('operation', 'getAll');
+    try {
+      const response = await fetch(`../../controller/categoria.controller.php?${params}`);
+      const categorias = await response.json();
+      console.log(categorias);
+      categorias.forEach(element => {
+        const tagOption = document.createElement('option');
+        tagOption.value = element.idcategoria;
+        tagOption.innerText = element.categoria;
+        $("#idcategoria").appendChild(tagOption);
+      });
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  getCategorias();
+  $("#idcategoria").addEventListener("change", async () => {
+
+  });
+
   // Función asincrónica para obtener marcas y subcategorías
   async function obtenerMarcasYSubcategorias() {
     try {
@@ -54,10 +78,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const response = await fetch(`../../controller/producto.controller.php`, options);
     return response.json()
-      // .catch(e => { console.error(e) });
+    // .catch(e => { console.error(e) });
   }
 
-  $("#form-registrar-producto").addEventListener("submit", async (event) => {
+  $("#formRegistrarProducto").addEventListener("submit", async (event) => {
     event.preventDefault();
     const resultado = await registrarproducto();
 

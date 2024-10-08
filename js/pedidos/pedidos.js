@@ -320,7 +320,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    if (confirm("Esta seguro de guardar los datos")) {
+    if (await showConfirm('¿Desea registrar el pedido?', 'Pedido')) {
       response01 = await getIdPedido();
       idpedido = response01.idpedido;
       console.log(idpedido);

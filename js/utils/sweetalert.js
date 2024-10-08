@@ -38,7 +38,6 @@ async function showConfirm(pregunta = ``, modulo = ``) {
     footer: '<b>Distribumax V.1.0</b>',
   });
   if (respuesta.isConfirmed) {
-    console.log("respuesta", respuesta.isConfirmed);
     return true;
   } else if (respuesta.isDenied) {
     return false;

@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 USE distribuMax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
@@ -82,7 +82,7 @@ CALL sp_desactivar_usuario (1, 'admin');
 
 CALL sp_empresa_registrar (
     20123456782,
-    1834,
+    954,
     'Dijisaaa',
     'Av. Bancarios ',
     'santafe@gmail.com',
@@ -104,7 +104,7 @@ CALL sp_actualizar_empresa (
 /* PROCEDIMIENTOS DE CLIENTES ✔️*/ 
 -- REGISTRAR CLIENTES
 CALL sp_cliente_registrar (26558000, NULL, 'Persona');
-CALL sp_cliente_registrar (NULL, 20123456782, 'Empresa');
+CALL sp_cliente_registrar (NULL, 20123456781, 'Empresa');
 select * from clientes;
 --  No debe de registrar a un cliente con dni y ruc
 -- CALL sp_cliente_registrar (26558000, 20123456781,'Empresa'); 
@@ -136,15 +136,15 @@ select * from usuarios;
 select * from empresas;
 select * from clientes;
 select * from personas;
-insert into clientes (idpersona,idempresa,tipo_cliente) VALUES('26558001','20123456781','Empresa');
+
 insert into clientes (idpersona,idempresa,tipo_cliente) VALUES(null,'20123456782','Empresa');
 insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(1,1,'2024/09/22');
 select * from pedidos;
 select * from detalle_pedidos;
 -- Insertar detalles del pedido
 INSERT INTO detalle_pedidos (idpedido, idproducto, cantidad_producto, unidad_medida, precio_unitario, precio_descuento, subtotal) VALUES
-('PED-00000001', 2, 5, 'unidad', 2.00, 1.00, 10.00),
-('PED-00000001', 2, 6, 'unidad', 10.00, 2.00, 90.00);
+('PED-00000009', 2, 5, 'unidad', 2.00, 1.00, 10.00),
+('PED-00000009', 2, 6, 'unidad', 10.00, 2.00, 90.00);
 
 -- Llamar al procedimiento para registrar el movimiento correspondiente
 
@@ -167,6 +167,6 @@ CALL sp_pedido_registrar (2, 21);
 CALL sp_pedido_registrar (1, 1);
 select * from pedidos;
 
-CALL sp_detalle_pedido ('PED-000000006',1,100,'und',8.50);
+CALL sp_detalle_pedido ('PED-000000001',1,1,'und',8.50);
 
 SELECT * FROM detalle_pedidos;

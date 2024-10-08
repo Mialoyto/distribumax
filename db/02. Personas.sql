@@ -111,5 +111,3 @@ BEGIN
 END //
 
 DELIMITER ;
-
-CALL sp_listar_personas();

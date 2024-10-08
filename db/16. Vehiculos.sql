@@ -38,17 +38,7 @@ BEGIN
     WHERE idvehiculo = _idvehiculo;
 END$$
 
--- REGISTRAR BUSQUEDAS DE VEHICULOS
-DELIMITER $$
-CREATE PROCEDURE sp_buscar_vehiculos(
-    IN _marca_vehiculo VARCHAR(100),
-    IN _modelo VARCHAR(100)
-)
-BEGIN
-    SELECT * FROM vehiculos
-    WHERE (marca_vehiculo = _marca_vehiculo OR _marca_vehiculo IS NULL)
-      AND (modelo = _modelo OR _modelo IS NULL);
-END$$
+
 
 -- lista vehiculos
 DROP PROCEDURE IF EXISTS `sp_listar_vehiculo`;
@@ -62,11 +52,11 @@ BEGIN
          vh.placa,
 		 vh.capacidad,
          vh.condicion,
-         pe.nombres,
-         pe.appaterno
+        CONCAT ( pe.appaterno,' ',pe.nombres) AS datos
         FROM vehiculos vh
         INNER JOIN usuarios us ON vh.idusuario=us.idusuario
-        INNER JOIN personas pe ON pe.idpersonanrodoc=us.idpersona;
+        INNER JOIN personas pe ON pe.idpersonanrodoc=us.idpersona
+        ORDER BY idvehiculo DESC;
 END//
 
 
@@ -99,4 +89,23 @@ BEGIN
              CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%'));  -- Filtrar por nombres o apellidos concatenados
 END //
 
-select  * from vehiculos;
+DROP PROCEDURE IF EXISTS `sp_buscar_vehiculos`;
+DELIMITER //
+CREATE PROCEDURE `sp_buscar_vehiculos`
+(	
+	IN _item VARCHAR(50)
+)
+BEGIN	
+	SELECT 
+    VH.idvehiculo,VH.placa,VH.modelo,VH.marca_vehiculo,
+    CONCAT(PE.appaterno,' ',PE.apmaterno,' ',PE.nombres)AS datos
+    FROM vehiculos VH
+    INNER JOIN usuarios US ON US.idusuario=VH.idusuario
+    LEFT JOIN  personas PE ON PE.idpersonanrodoc=US.idpersona
+    WHERE VH.placa LIKE CONCAT('%',_item,'%')
+    OR VH.modelo  LIKE CONCAT('%',_item,'%')
+    OR VH.marca_vehiculo LIKE  CONCAT('%',_item,'%');
+END //
+
+CALL `sp_buscar_vehiculos`('r')
+

@@ -3,7 +3,7 @@ require_once '../../header.php';
 ?>
 <main>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Vehiculos</h1>
+        <h1 class="mt-4">Despacho</h1>
         <ol class="breadcrumb mb-4">
             <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
         </ol>
@@ -11,16 +11,16 @@ require_once '../../header.php';
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
-                Listado de Vehiculos
+                Listado despacho
             </div>
             <div class="card-body">
                 
                 <div class="table-responsive">
-                    <table id="table-vehiculos" class="table" tyle="width: 100%;">
+                    <table id="table-despacho" class="table" tyle="width: 100%;">
                         <thead>
                             <tr>
                                 <!-- <th>Vehiculo</th> -->
-                                <th>Conductor</th>
+                                <th>Despacho</th>
                                 <th>Marca</th>
                                 <th>Modelo</th>
                                 <th>Placa</th>
@@ -36,7 +36,7 @@ require_once '../../header.php';
 
                 </div>
                 <div class="card-footer">
-                    <a href="registrar.php" class="btn btn-primary">Registrar nuevo Vehiculo</a>
+                    <a href="registrar.php" class="btn btn-primary">Registrar nuevo Despacho</a>
                 </div>
             </div>
         </div>

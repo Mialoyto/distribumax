@@ -1,4 +1,4 @@
-function showToast(mensaje = ``,icono = 'success', type = `INFO`, duration = 2500, url = null) {
+function showToast(mensaje = ``, icono = 'success', type = `INFO`, duration = 2500, url = null) {
   const bgColor = {
     'INFO': '#22a6b3',
     'WARNING': '#f9ca24',
@@ -25,4 +25,24 @@ function showToast(mensaje = ``,icono = 'success', type = `INFO`, duration = 250
       window.location.href = url;
     }
   });
+}
+
+async function showConfirm(pregunta = ``, modulo = ``) {
+  const respuesta = await Swal.fire({
+    title: pregunta,
+    text: modulo,
+    icon: 'question',
+    showDenyButton: true,
+    confirmButtonText: 'Guardar',
+    denyButtonText: 'Cancelar',
+    footer: '<b>Distribumax V.1.0</b>',
+  });
+  if (respuesta.isConfirmed) {
+    console.log("respuesta", respuesta.isConfirmed);
+    return true;
+  } else if (respuesta.isDenied) {
+    return false;
+  }
+
+
 }

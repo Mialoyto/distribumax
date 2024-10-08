@@ -1,53 +1,58 @@
 <?php
 require_once 'Conexion.php';
-class Kardex  extends Conexion{
+class Kardex  extends Conexion
+{
     private $pdo;
 
     public function __construct()
     {
-        $this->pdo=parent::getConexion();
+        $this->pdo = parent::getConexion();
     }
 
-    public function add($params=[]) {
-        try{
-            $sql="CALL sp_registrarmovimiento(?,?,?,?,?,?)";
-            $query=$this->pdo->prepare($sql);
-            $query->execute(array(
+    public function add($params = []): bool
+    {
+        $succes = false;
+        try {
+            $sql = "CALL sp_registrarmovimiento_kardex(?,?,?,?,?,?,?)";
+            $query = $this->pdo->prepare($sql);
+            $succes = $query->execute(array(
                 $params['idusuario'],
                 $params['idproducto'],
-                $params['stockactual'],
+                $params['fecha_vencimiento'],
+                $params['numlote'],
                 $params['tipomovimiento'],
                 $params['cantidad'],
                 $params['motivo']
             ));
-            return $query->fetchAll(PDO::FETCH_ASSOC);
-        }catch(Exception $e){
-          die($e->getMessage());
+            
+            return $succes;
+        } catch (Exception $e) {
+            return $succes;
         }
     }
-    public function getAll(){
-        try{
-            $query=$this->pdo->prepare("select * from kardex");
+    public function getAll()
+    {
+        try {
+            $query = $this->pdo->prepare("select * from kardex");
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             die($e->getMessage());
         }
-
     }
 
-    public function getById($params=[]){
-        try{
-            $sql="SELECT k.idkardex, k.stockactual, p.idproducto, p.nombreproducto 
+    public function getById($params = [])
+    {
+        try {
+            $sql = "SELECT k.idkardex, k.stockactual, p.idproducto, p.nombreproducto 
                 FROM kardex k
                 INNER JOIN productos p ON k.idproducto = p.idproducto
                 WHERE p.idproducto = ?";
-            $query=$this->pdo->prepare($sql);
+            $query = $this->pdo->prepare($sql);
             $query->execute(array($params['idproducto']));
             return $query->fetchAll(PDO::FETCH_ASSOC);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             die($e->getMessage());
         }
-        
     }
 }

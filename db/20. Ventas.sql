@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -52,18 +52,69 @@ END$$
 DROP PROCEDURE IF EXISTS `sp_estado_venta`;
 DELIMITER //
 CREATE PROCEDURE `sp_estado_venta`(
-    IN  _estado CHAR(1),
-    IN  _idventa INT 
+    IN _estado CHAR(1),
+    IN _idventa INT
 )
 BEGIN
+    -- Actualizar el estado de la venta
     UPDATE ventas SET
-        estado=_estado,
-        update_at=now()
-        WHERE idventa=_idventa;
+        estado = _estado,
+        update_at = NOW()
+    WHERE idventa = _idventa;
+
+    -- Verificar si el estado de la venta es '0' (cancelado)
+    IF _estado = '0' THEN
+        -- Actualizar el estado del pedido relacionado a 'Cancelado'
+        UPDATE pedidos SET
+            estado = 'Cancelado',
+            update_at = NOW()
+       WHERE idpedido = (SELECT idpedido FROM ventas WHERE idventa = _idventa);
+    END IF;
 END//
 
+-- Trigger que devolvera los productos al kardex
 
--- Cambiar el estado del pedido al registrarlo
+DROP TRIGGER IF EXISTS after_cancelar_venta;
+DELIMITER //
+
+CREATE TRIGGER after_cancelar_venta
+AFTER UPDATE ON ventas
+FOR EACH ROW
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE _idproducto INT;
+    DECLARE _cantidad INT;
+
+    -- Declara el cursor
+    DECLARE cur CURSOR FOR 
+        SELECT idproducto, cantidad_producto
+        FROM detalle_pedidos
+        WHERE idpedido = NEW.idpedido;
+
+    -- Manejo del final del cursor
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    -- Solo ejecuta si el estado es cancelado
+    IF NEW.estado = '0' THEN
+        OPEN cur;
+
+        read_loop: LOOP
+            FETCH cur INTO _idproducto, _cantidad;
+            IF done THEN
+                LEAVE read_loop;
+            END IF;
+
+            -- Llama al procedimiento para registrar el movimiento
+            CALL sp_registrarmovimiento_detallepedido(1, _idproducto, 0, 'Ingreso', _cantidad, 'Venta Cancelada');
+        END LOOP;
+
+        CLOSE cur;
+    END IF;
+END //
+
+
+
+
 DELIMITER $$
 CREATE TRIGGER trg_actualizar_estado_pedido
 AFTER INSERT ON ventas
@@ -78,10 +129,10 @@ END$$
 
 
 -- GENERAR REPORTE
+DROP PROCEDURE IF EXISTS `sp_generar_reporte`;
 DELIMITER //
-CREATE PROCEDURE sp_generar_reporte ( 
-	IN _idventa INT
-)
+CREATE PROCEDURE `sp_generar_reporte` ( 
+	IN _idventa INT)
 BEGIN
     -- Input validation can be added here if needed
     SELECT 
@@ -165,7 +216,7 @@ BEGIN
         p.idpedido DESC;
 END //
 
-
+call `sp_listar_ventas`
 -- listar ventas historial 
 DROP PROCEDURE IF EXISTS `sp_historial_ventas`;
 DELIMITER //
@@ -203,7 +254,7 @@ BEGIN
     LEFT JOIN 
         tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE 
-        p.estado = 'Enviado' AND ve.estado='0'
+        p.estado = 'Enviado' AND ve.estado='1'
         
        -- Filtra las ventas del día actual
     GROUP BY 
@@ -212,7 +263,7 @@ BEGIN
         p.idpedido DESC;
 END //
 
-select * from  ventas;
+call `sp_historial_ventas`
 
 DROP PROCEDURE IF EXISTS `sp_getById_venta`;
 DELIMITER //
@@ -225,6 +276,7 @@ SELECT
     ve.idventa,
     pr.nombreproducto,
     dp.cantidad_producto,
+    dp.unidad_medida,
     cl.tipo_cliente,
    CONCAT( per.nombres,' ',per.appaterno ) AS datos,
     em.razonsocial
@@ -242,9 +294,12 @@ LEFT JOIN
     detalle_pedidos dp ON dp.idpedido = pe.idpedido
 LEFT JOIN 
     productos pr ON pr.idproducto = dp.idproducto
+
 -- Relaciona con la columna idproducto en detalle_pedidos
 WHERE ve.idventa=_idventa;
 
 END //
 
+select * from detalle_productos
+select * from kardex
 

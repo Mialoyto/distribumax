@@ -119,5 +119,3 @@ BEGIN
     LEFT JOIN empresas e ON c.idempresa = e.idempresaruc;
 END $$
 DELIMITER ;
-
-CALL sp_listar_clientes();

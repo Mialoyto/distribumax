@@ -128,7 +128,7 @@ require_once '../../header.php';
                     <label for="idmetodopago_2">Método de Pago 2</label>
                   </div>
                   <div class="form-floating">
-                    <input type="number" step="0.01" class="form-control" id="monto_pago_2" placeholder="Monto">
+                    <input type="number" step="0.01" class="form-control" id="monto_pago_2" placeholder="Monto" >
                     <label for="monto_pago_2">Monto 2</label>
                   </div>
                 </div>
@@ -206,6 +206,48 @@ require_once '../../header.php';
       metodoPago2.style.display = "none"; // Asegúrate de ocultar también el segundo método
     }
   }
+</script>
+<script>
+
+async  function  ValidarSelect(){
+
+  const tipoPagoSelect = $("#tipo_pago");
+  const metodoPago1Select = $("#idmetodopago");
+  const metodoPago2Select = $("#idmetodopago_2");
+  const metodoPago2Container = $("#metodo_pago_2");
+
+  // Función para manejar la selección de tipo de pago
+  tipoPagoSelect.addEventListener("change", () => {
+    if (tipoPagoSelect.value === "mixto") {
+      metodoPago2Container.style.display = "block"; // Mostrar método de pago 2
+    } else {
+      metodoPago2Container.style.display = "none"; // Ocultar método de pago 2
+      metodoPago2Select.value = ""; // Reiniciar selección del método de pago 2
+    }
+  });
+
+  // Función para manejar la selección del primer método de pago
+  metodoPago1Select.addEventListener("change", () => {
+    const selectedOption = metodoPago1Select.value;
+
+    // Habilitar todas las opciones del segundo select antes de proceder
+    Array.from(metodoPago2Select.options).forEach(option => {
+      option.disabled = false;
+    });
+
+    // Deshabilitar la opción seleccionada en el primer select en el segundo select
+    if (selectedOption) {
+      Array.from(metodoPago2Select.options).forEach(option => {
+        if (option.value === selectedOption) {
+          option.disabled = true;
+        }
+      });
+    }
+  });
+}
+//ValidarSelect();
+
+  
 </script>
 </body>
 

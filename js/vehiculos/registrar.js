@@ -26,11 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
         datalist.innerHTML = ''; // Limpiar resultados anteriores
         const response = await buscarConductor();
 
-        if (response && response.length > 0) {
+        if ( response.length > 0) {
             response.forEach(item => {
                 const option = document.createElement('option');
+                option.innerHTML = `${item.nombres} ${item.apellidos}`;
                 option.value = item.idusuario; // Asigna el ID del usuario como valor del 'option'
-                option.textContent = `${item.nombres} ${item.apellidos}`; // Muestra nombres y apellidos
+                 // Muestra nombres y apellidos
                 datalist.appendChild(option);
             });
             datalist.style.display = 'block';
@@ -38,14 +39,14 @@ document.addEventListener("DOMContentLoaded", () => {
             datalist.style.display = 'none';
         }
     };
-
+   
     // Evento para cuando se ingresa texto en el input de idusuario
     $("#idusuario").addEventListener('input', async () => {
         const idusuario = $("#idusuario").value;
-
+       
         if (idusuario) {
             await mostrarResultados();
-            console.log(idusuario);
+            //console.log(idusuario);
         }
     });
     // Evento para agregar un guion -
@@ -61,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
             input.value = value.slice(0, -1); // Borra el guion si lo tiene
         }
     });
+    
     async function registrarVehiculo() {
         const params = new FormData();
         params.append('operation', 'addVehiculo');
@@ -86,15 +88,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    async function Limpiar() {
+        const form=$("#form-registrar-Vehiculo");
+        form.reset();
+    }
     // Manejo del evento de envío del formulario
     $("#form-registrar-Vehiculo").addEventListener("submit", async (event) => {
         event.preventDefault(); // Prevenir comportamiento por defecto
         const resultado = await registrarVehiculo();
-
+        const capacidad =$("#capacidad").value;
         if (resultado) {
             alert("Registro exitoso");
+            await Limpiar();
         } else {
             alert("Error al registrar el vehículo");
+        }
+
+        if(capacidad==0){
+            capacidad.value='';
         }
     });
     

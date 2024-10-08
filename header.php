@@ -17,14 +17,12 @@ $host = "http://localhost/distribumax";
   <meta name="description" content="" />
   <meta name="author" content="" />
   <title>Distribumax</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="<?= $host ?>/css/styles.css" rel="stylesheet" />
   <link href="http://distribumax/css/list.css"/>
 
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
@@ -60,7 +58,7 @@ $host = "http://localhost/distribumax";
     <!-- Navbar-->
     <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
       <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown d-sm-none d-lg-block">
           <a class="nav-link dropdown-toggle" id="navbarDropdown"  role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             <i class="fas fa-user fa-fw"></i>
@@ -112,7 +110,7 @@ $host = "http://localhost/distribumax";
               Productos
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Kardex/">
-              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              <div class="sb-nav-link-icon"><i class="fa-solid fa-boxes-packing fa-lg"></i></div>
               Kardex
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Proveedores/">
@@ -152,6 +150,10 @@ $host = "http://localhost/distribumax";
             <a class="nav-link" href="<?= $host ?>/views/Vehiculos/">
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Vehiculos
+            </a>
+            <a class="nav-link" href="<?= $host ?>/views/Despacho/">
+              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              Despacho
             </a>
 
 

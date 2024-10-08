@@ -3,12 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(selector);
   };
 
-  
+
   // obtener el id del metodo.
   const optionMe = $("#idmetodopago");
   //const opntionMe = $("#idmetodopago_2");
   const optionCo = $("#idtipocomprobante");
-  async  function Validarfecha(){
+  async function Validarfecha() {
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   Validarfecha();
 
-  
+
 
 
   async function metodoPago(idmetodopago) {
@@ -37,11 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(e => console.error(e));
   };
-   //llamando el metodo y mostrarlo con su id.
+  //llamando el metodo y mostrarlo con su id.
   metodoPago('#idmetodopago');
   metodoPago('#idmetodopago_2');
 
-  
+
 
 
   (() => {
@@ -88,11 +88,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (response.length > 0) {
       datalist.style.display = 'block';
       response.forEach((item) => {
-        console.log("item", item);
+        //console.log("item", item);
         const li = document.createElement('li');
         li.classList.add('list-group-item');
         li.value = `${item.idpedido}`;
-        li.innerText = `${item.idpedido}`+'--'+`${item.nombre_o_razonsocial}`;
+        li.innerText = `${item.idpedido}` + '--' + `${item.nombre_o_razonsocial}`;
         li.addEventListener('click', () => {
           $("#idpedido").value = item.idpedido;
           CargarPedido(item.idpedido);
@@ -107,6 +107,82 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const validarmontos = async () => {
+    const tipoPagoSelect = $("#tipo_pago");
+    // tipoPagoSelect.innerHTML = '';
+    //console.log(tipoPagoSelect)
+    
+    tipoPagoSelect.addEventListener("change", () => {
+      const monto1 = parseFloat($("#monto_pago_1").value);
+      const ventatotal = parseFloat($("#total_venta").value);
+
+      if (tipoPagoSelect.value === 'unico') {
+        //console.log("El monto se bloquea en el tipo de pago único.");
+        $("#monto_pago_1").value = ventatotal; // Se asigna el total de la venta al monto único
+        $("#monto_pago_1").setAttribute('readonly', true);// Bloqueamos el campo de monto 1
+
+        //$("#monto_pago_2").value = ''; // Limpiar el segundo campo de monto
+
+      }
+      if (tipoPagoSelect.value === 'mixto') {
+        // Si el tipo de pago es mixto, se habilita la validación
+        $("#monto_pago_1").removeAttribute('readonly');
+        $("#monto_pago_2").setAttribute('readonly', true);
+         // Desabilitamos  el campo de monto 1
+        if (monto1 <= 0 || monto1 >= ventatotal) {
+
+          showToast(`El monto debe de ser mayor a o y menor que la venta`, 'warning', 'WARNING');
+         // $("#monto_pago_1").value = ''; // Limpiar el campo para forzar un nuevo ingreso
+        } else {
+
+          // Actualizar el monto restante en el segundo campo
+          const resto = ventatotal - monto1;
+          $("#monto_pago_2").value = resto.toFixed(2);
+        }
+
+
+
+      }
+    });
+
+  };
+  const ValidarSelect = async () => {
+
+    const tipoPagoSelect = $("#tipo_pago");
+    const metodoPago1Select = $("#idmetodopago");
+    const metodoPago2Select = $("#idmetodopago_2");
+    const metodoPago2Container = $("#metodo_pago_2");
+
+    // Función para manejar la selección de tipo de pago
+    tipoPagoSelect.addEventListener("change", () => {
+      if (tipoPagoSelect.value === "mixto") {
+        metodoPago2Container.style.display = "block"; // Mostrar método de pago 2
+      } else {
+        metodoPago2Container.style.display = "none"; // Ocultar método de pago 2
+        metodoPago2Select.value = ""; // Reiniciar selección del método de pago 2
+      }
+    });
+
+    // Función para manejar la selección del primer método de pago
+    metodoPago1Select.addEventListener("change", () => {
+      const selectedOption = metodoPago1Select.value;
+
+      // Habilitar todas las opciones del segundo select antes de proceder
+      Array.from(metodoPago2Select.options).forEach(option => {
+        option.disabled = false;
+      });
+
+      // Deshabilitar la opción seleccionada en el primer select en el segundo select
+      if (selectedOption) {
+        Array.from(metodoPago2Select.options).forEach(option => {
+          if (option.value === selectedOption) {
+            option.disabled = true;
+          }
+        });
+      }
+    });
+  };
+
   const CargarPedido = async (idpedido) => {
     const params = new URLSearchParams();
     params.append('operation', 'getById');
@@ -115,15 +191,17 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(`../../controller/pedido.controller.php?${params}`);
       const data = await response.json();
-     // console.log("datos del pedido", data);
+      // console.log("datos del pedido", data);
       const tbody = $("#productosTabla tbody");
       tbody.innerHTML = ''; // Limpiar la tabla antes de añadir los nuevos resultados
       let subtotal = 0;
       let descuentoTotal = 0; // Variable para acumular el descuento total
       const fechaActual = generarFechaActual();
       $("#fecha_venta").value = fechaActual; // Establecer la fecha actual
-      const tipoComprobanteSelect = $("#idtipocomprobante"); // El select de tipo de comprobante
-      tipoComprobanteSelect.innerHTML = '';
+      const tipoComprobanteSelect = $("#idtipocomprobante");
+       // El select de tipo de comprobante
+       tipoComprobanteSelect.innerHTML = '';
+     
       data.forEach(pedido => {
 
         const tipo_cliente = $("#tipocliente").value = pedido.tipo_cliente;
@@ -181,11 +259,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const cantidad_producto = parseFloat(pedido.cantidad_producto);
         const preciounitario = parseFloat(pedido.precio_unitario);
         const total_producto = cantidad_producto * preciounitario; // Calcular total por producto
-        
+
         row.innerHTML = `
                     <td>${pedido.nombreproducto}</td>
-                     <td>${pedido.unidad_medida}</td>
+                    <td>${pedido.unidad_medida}</td>
                     <td>${cantidad_producto}</td>
+                    
                     <td>${preciounitario.toFixed(2)}</td>
                     <td>${pedido.precio_descuento}</td>
                     <td>${total_producto.toFixed(2)}</td>
@@ -206,40 +285,42 @@ document.addEventListener("DOMContentLoaded", () => {
       $("#igv").value = igv.toFixed(2);
       $("#total_venta").value = total_venta.toFixed(2);
       $("#descuento").value = descuentoTotal.toFixed(2);
-      const tipo_pago=$("#tipo_pago");
-      
-      
-      tipo_pago.addEventListener("click",()=>{
+      const tipo_pago = $("#tipo_pago");
+
+
+      tipo_pago.addEventListener("click", () => {
         //console.log(tipo_pago.value);
-        
-        if(tipo_pago.value=='unico'){
-          $("#monto_pago_1").value=total_venta;
-        }else{
-          $("#monto_pago_1").value=``;
+
+        if (tipo_pago.value == 'unico') {
+          $("#monto_pago_1").value = total_venta;
+        } else {
+          $("#monto_pago_1").value = ``;
           let total = $("#total_venta").value
-          
-          $("#monto_pago_1").addEventListener('input',()=>{
-           let monto =parseFloat($("#monto_pago_1").value);
-           
-           //console.log(monto)
-           let resto = total - monto;
-          // console.log(resto)
-          
-           $("#monto_pago_2").value=resto;
-           $("#monto_pago_2").innerHTML='';
-           
+
+          $("#monto_pago_1").addEventListener('input', () => {
+            let monto = parseFloat($("#monto_pago_1").value);
+
+            //console.log(monto)
+            let resto = total - monto;
+            // console.log(resto)
+
+            $("#monto_pago_2").value = resto;
+            $("#monto_pago_2").innerHTML = '';
+
+
           })
 
         }
-  
 
-      })
-      
-      
-    //  $("#monto_pago_2").value=total_venta-monto1;
-      
+
+      });
+
+        // ValidarSelect();
+         
+      //  $("#monto_pago_2").value=total_venta-monto1;
+
       // console.log(tipo_pago);
-      
+
     } catch (e) {
       console.error(e);
     }
@@ -301,10 +382,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Limpiar el select de tipo de comprobante
     const tipoComprobanteSelect = $("#idtipocomprobante");
     tipoComprobanteSelect.innerHTML = ''; // Limpiar opciones previas
-    $("#tipo_pago").value='';
+    $("#tipo_pago").value = '';
 
     // Ocultar el contenedor de métodos de pago
-    document.getElementById('paymentMethodsContainer').style.display = 'none'; 
+    document.getElementById('paymentMethodsContainer').style.display = 'none';
 
     // Si tienes un campo de método de pago adicional
     const select = $(".form-select");
@@ -312,7 +393,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Ocultar la lista de resultados de búsqueda
     $("#datalistIdPedido").style.display = 'none';
-}
+  }
+
+
 
 
 
@@ -321,11 +404,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultado = await RegistrarVenta();
     if (resultado) {
       alert("Venta registrada exitosamente");
-       $("#form-venta-registrar").reset();
+      $("#form-venta-registrar").reset();
       console.log(resultado);
       limpiarDatosPedido();
     }
   });
 
-
+ // ValidarSelect();
+  validarmontos();
 });

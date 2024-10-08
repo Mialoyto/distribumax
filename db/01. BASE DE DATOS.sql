@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribuMax;
 USE distribuMax;
@@ -401,7 +401,7 @@ CREATE TABLE kardex(
 	idproducto			INT NOT NULL,
     fecha_vencimiento   DATE  NULL,
     numlote				VARCHAR(60) NULL,
-	stockactual     	INT,
+	stockactual     	INT NULL DEFAULT 0,
     tipomovimiento  	ENUM('Ingreso', 'Salida') NOT NULL,
 	cantidad        	INT NOT NULL,
 	motivo          	VARCHAR(255),

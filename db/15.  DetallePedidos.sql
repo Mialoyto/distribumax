@@ -1,7 +1,8 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR DETALLE PEDIDOSDELIMITER $$
+DROP PROCEDURE IF EXISTS sp_detalle_pedido;
 DELIMITER $$
 CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido            CHAR(15),
@@ -22,9 +23,7 @@ BEGIN
     WHERE idproducto = _idproducto
     LIMIT 1;
     SET v_descuento = (_cantidad_producto * _precio_unitario) * (v_descuento_unitario / 100);
-
     SET _subtotal = (_cantidad_producto * _precio_unitario) - v_descuento;
-
     INSERT INTO detalle_pedidos 
     (idpedido, idproducto, cantidad_producto, unidad_medida, precio_unitario, precio_descuento, subtotal) 
     VALUES
@@ -34,6 +33,7 @@ END$$
 
 
 -- ACTUALIZAR EL STOCK
+drop TRIGGER trg_actualizar_stock;
 DELIMITER $$
 CREATE TRIGGER trg_actualizar_stock
 AFTER INSERT ON detalle_pedidos
@@ -41,6 +41,8 @@ FOR EACH ROW
 BEGIN
     DECLARE v_stock_actual          INT;
     DECLARE v_idusuario             INT;
+    DECLARE v_fecha_vencimiento     DATE;
+    DECLARE v_numlote               VARCHAR(60);
 
     SELECT stockactual INTO v_stock_actual
     FROM kardex
@@ -52,9 +54,16 @@ BEGIN
     WHERE idpedido = NEW.idpedido
     LIMIT 1;
 
+    SELECT fecha_vencimiento, numlote INTO v_fecha_vencimiento, v_numlote
+    FROM kardex
+    WHERE idproducto = NEW.idproducto
+    AND  stockactual > 0
+    ORDER BY fecha_vencimiento ASC
+    LIMIT 1;
+
     IF v_stock_actual >= NEW.cantidad_producto THEN
-        CALL sp_registrarmovimiento_detallepedido
-        (v_idusuario, NEW.idproducto, v_stock_actual, 'Salida', NEW.cantidad_producto, 'Venta de producto');
+        CALL sp_registrarmovimiento_kardex
+        (v_idusuario, NEW.idproducto,v_fecha_vencimiento,v_numlote, 'Salida', NEW.cantidad_producto, 'Venta de producto');
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para esta operación';
     END IF;

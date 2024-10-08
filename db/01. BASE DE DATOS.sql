@@ -452,7 +452,6 @@ DROP TABLE IF EXISTS ventas;
 CREATE TABLE ventas (
     idventa 				INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idpedido 				CHAR(15) NOT NULL,
-    idmetodopago 			INT NOT NULL,
     idtipocomprobante		INT NOT NULL,
     fecha_venta 			DATETIME NOT NULL DEFAULT NOW(),
     subtotal 				DECIMAL(10, 2) NOT NULL,
@@ -463,7 +462,6 @@ CREATE TABLE ventas (
 	update_at		DATETIME NULL,
 	estado          CHAR(1) NOT NULL DEFAULT "1",		-- 1: VENTA 	0: CANCELADO
     CONSTRAINT fk_idpedido_venta FOREIGN KEY (idpedido) REFERENCES pedidos(idpedido),
-    CONSTRAINT fk_idmetodopago_venta FOREIGN KEY (idmetodopago) REFERENCES metodos_pago(idmetodopago),
     CONSTRAINT fk_idtipocomprobante_venta FOREIGN KEY (idtipocomprobante) REFERENCES tipo_comprobante_pago(idtipocomprobante),
     CONSTRAINT fk_estado_venta   CHECK(estado IN ("0", "1")),
     CONSTRAINT ck_subtotal_venta CHECK(subtotal > 0),
@@ -472,6 +470,7 @@ CREATE TABLE ventas (
     CONSTRAINT ck_totalventa CHECK(total_venta > 0),
     CONSTRAINT uk_idpedido UNIQUE (idpedido)
 ) ENGINE = INNODB;
+
 
 DROP TABLE IF EXISTS detalle_meto_Pago;
 CREATE TABLE detalle_meto_Pago(

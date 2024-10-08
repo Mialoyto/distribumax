@@ -97,7 +97,7 @@ CREATE PROCEDURE `sp_buscar_vehiculos`
 )
 BEGIN	
 	SELECT 
-    VH.idvehiculo,VH.placa,VH.modelo,VH.marca_vehiculo,
+    VH.idvehiculo,VH.placa,VH.modelo,VH.marca_vehiculo,VH.capacidad,
     CONCAT(PE.appaterno,' ',PE.apmaterno,' ',PE.nombres)AS datos
     FROM vehiculos VH
     INNER JOIN usuarios US ON US.idusuario=VH.idusuario

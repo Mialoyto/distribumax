@@ -28,10 +28,15 @@ document.addEventListener("DOMContentLoaded",()=>{
         if(response.length > 0){
             response.forEach(element => {
                 const option =document.createElement('option');
-                option.textContent=`${element.marca_vehiculo}-${element.modelo}-${element.placa}`;
+                option.text=`${element.marca_vehiculo}-${element.modelo}-${element.placa}`;
                 //option.innerHTML=`${element.modelo}`;
                 option.value=`${element.idvehiculo}`;
                 datalist.appendChild(option);
+
+                $("#datos").value=element.datos;
+                $("#modelo").value=element.modelo;
+                $("#capacidad").value=element.capacidad;
+                $("#placa").value=element.placa;
             });
             datalist.style.display='block';
         }else{

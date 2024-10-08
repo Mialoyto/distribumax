@@ -10,18 +10,21 @@ class DetalleMetodo extends Conexion{
         $this->pdo=parent::getConexion();
     }
 
-    public function addDetalleMetodo($params=[]){
+    public function addDetalleMetodo($params=[]):int{
         $id=-1;
         try{
-            $sql="CALL sp_registrar_detalleMetodo";
+            
+            $sql="CALL sp_registrar_detalleMetodo (?,?,?)";
             $query=$this->pdo->prepare($sql);
             $query->execute(array(
                 $params['idventa'],
                 $params['idmetodopago'],
                 $params['monto']
             ));
-            $id=$query->fetch(PDO::FETCH_ASSOC);
-            return $id['iddetallemetodo'];
+
+            $row =$query->fetch(PDO::FETCH_ASSOC);
+
+            return $row['iddetalle_pago'];
         }catch(Exception $e){
                 return $id;
         }

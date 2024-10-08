@@ -27,7 +27,7 @@ require_once '../../header.php';
             </div>
             <div class="col-md-6 mb-3">
               <div class="form-floating">
-                <input type="datetime-local" class="form-control" id="marca_vehiculo" name="marca_vehiculo" maxlength="23" minlength="3" required>
+                <input type="datetime-local" class="form-control" id="fecha_despacho" name="marca_vehiculo" maxlength="23" minlength="3" required>
                 <label for="marca"><i class="fas fa-car me-2"></i> Fecha Despacho</label>
               </div>
             </div>
@@ -36,22 +36,28 @@ require_once '../../header.php';
 
 
 
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="search" class="form-control" id="marca_vehiculo" name="marca_vehiculo" maxlength="23" minlength="3" readonly>
+                <input type="search" class="form-control" id="datos" name="marca_vehiculo" maxlength="23" minlength="3" readonly>
                 <label for="marca"><i class="fas fa-car me-2"></i> Conductor</label>
               </div>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="search" class="form-control" id="marca_vehiculo" name="marca_vehiculo" maxlength="23" minlength="3" readonly>
+                <input type="search" class="form-control" id="modelo" name="marca_vehiculo" maxlength="23" minlength="3" readonly>
                 <label for="marca"><i class="fas fa-car me-2"></i> Modelo</label>
               </div>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="search" class="form-control" id="marca_vehiculo" name="marca_vehiculo" maxlength="23" minlength="3" readonly>
+                <input type="search" class="form-control" id="capacidad" name="marca_vehiculo" maxlength="23" minlength="3" readonly>
                 <label for="marca"><i class="fas fa-car me-2"></i> Capacidad</label>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="form-floating">
+                <input type="search" class="form-control" id="placa" name="marca_vehiculo" maxlength="23" minlength="3" readonly>
+                <label for="marca"><i class="fas fa-car me-2"></i> Placa</label>
               </div>
             </div>
           </div>

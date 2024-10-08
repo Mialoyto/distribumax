@@ -9,13 +9,12 @@ class Ventas extends Conexion{
     {
        $this->pdo=parent::getConexion(); 
     }
-    public function addVentas($params=[]):bool{
+    public function addVentas($params=[]):int{
         try{
-            $estado = false;
-            $query=$this->pdo->prepare("CALL sp_registrar_venta(?,?,?,?,?,?,?,?) ");
-            $estado = $query->execute(array(
+            $id = -1;
+            $query=$this->pdo->prepare("CALL sp_registrar_venta(?,?,?,?,?,?,?) ");
+            $id = $query->execute(array(
                 $params['idpedido'],
-                $params['idmetodopago'],
                 $params['idtipocomprobante'],
                 $params['fecha_venta'],
                 $params['subtotal'],
@@ -23,10 +22,10 @@ class Ventas extends Conexion{
                 $params['igv'],
                 $params['total_venta']
             ));
-            $estado = $query->fetch(PDO::FETCH_ASSOC);
-            return $estado;
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+            return $row['idventa'];
         }catch(Exception $e){
-            return $estado;
+            return $id;
         }
     }
     public function upVenta($params=[]){

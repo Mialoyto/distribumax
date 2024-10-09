@@ -2,25 +2,27 @@
 USE distribumax;
 
 -- REGISTRAR VENTAS
+DROP PROCEDURE IF EXISTS `sp_registrar_venta`;
 DELIMITER $$
-CREATE PROCEDURE sp_registrar_venta(
+CREATE PROCEDURE `sp_registrar_venta`(
     IN _idpedido            VARCHAR(15),
-    IN _idmetodopago        INT,
     IN _idtipocomprobante   INT,
     IN _fecha_venta         DATETIME,
     IN _subtotal            DECIMAL(10, 2),
     IN _descuento           DECIMAL(10, 2),
     IN _igv                 DECIMAL(10, 2),
-    IN _total_venta         DECIMAL(10, 2)  
+    IN _total_venta         DECIMAL(10, 2)
+
 )
 BEGIN
     INSERT INTO ventas 
-    (idpedido, idmetodopago, idtipocomprobante,fecha_venta, subtotal, descuento, igv,total_venta) 
+    (idpedido, idtipocomprobante,fecha_venta, subtotal, descuento, igv,total_venta) 
     VALUES
-    (_idpedido, _idmetodopago, _idtipocomprobante,_fecha_venta, _subtotal, _descuento, _igv,_total_venta); 
+    (_idpedido,_idtipocomprobante,_fecha_venta,_subtotal, _descuento,_igv,_total_venta);
+    SELECT  last_insert_id() AS idventa;
 END$$
-
-
+select * from pedidos;
+CALL sp_registrar_venta('PED-000000015',1,'2024/12/21','4343','0','70',636);
 -- CALL sp_registrar_venta('PED-000000009', 1, 1, NOW(), 100.00, 10.00, 18.00, 108.00);
 -- SELECT * FROM ventas INNER JOIN  pedidos  on ventas.idpedido=pedidos.idpedido;
 -- ACTUALIZAR VENTAS

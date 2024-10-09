@@ -76,7 +76,7 @@ require_once '../../header.php';
               </div>
               <div class="col-md-4">
                 <div class="form-floating">
-                  <select id="tipo_pago" class="form-select" required onchange="togglePaymentMethod()">
+                  <select id="tipo_pago" class="form-select"  onchange="togglePaymentMethod()">
                     <option value=""></option>
                     <option value="unico">Pago Único</option>
                     <option value="mixto">Pago Mixto</option>
@@ -106,7 +106,7 @@ require_once '../../header.php';
               <div class="row mb-3">
                 <div class="col-md-6" id="">
                   <div class="form-floating">
-                    <select id="idmetodopago" class="form-select" required>
+                    <select id="idmetodopago" class="form-select" >
                       <option value=""></option>
 
                       <!-- Agrega más opciones según sea necesario -->

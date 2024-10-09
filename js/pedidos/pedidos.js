@@ -250,6 +250,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function addDetallePedidos(idpedido) {
+    
     const rows = document.querySelectorAll("#detalle-pedido tr");
     const productos = [];
     let idproducto;

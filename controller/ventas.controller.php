@@ -8,7 +8,6 @@ if(isset($_POST['operation'])){
         case 'addVentas':
             $datos=[
                 'idpedido' =>$_POST['idpedido'],
-                'idmetodopago' =>$_POST['idmetodopago'],
                 'idtipocomprobante' =>$_POST['idtipocomprobante'],
                 'fecha_venta' =>$_POST['fecha_venta'],
                 'subtotal' =>$_POST['subtotal'],
@@ -16,8 +15,8 @@ if(isset($_POST['operation'])){
                 'igv' =>$_POST['igv'],
                 'total_venta'=>$_POST['total_venta']
             ];
-            $estado = $venta->addVentas($datos);
-            echo json_encode(['estado' => $estado]);
+            $id = $venta->addVentas($datos);
+            echo json_encode(['id' => $id]);
         break;
         case 'reporteVenta':
              $datos=[

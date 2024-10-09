@@ -10,4 +10,9 @@ CREATE PROCEDURE `sp_registrar_detalleMetodo`
     IN _monto        DECIMAL(10,2)
 )BEGIN
 	INSERT INTO detalle_meto_Pago(idventa,idmetodopago,monto)VALUES(_idventa,_idmetodopago,_monto);
+    SELECT last_insert_id() AS iddetalle_pago;
 END //
+
+call sp_registrar_detalleMetodo(2,1,100)
+
+select * from ventas INNER JOIN detalle_meto_Pago  dmp ON dmp.idventa=ventas.idventa

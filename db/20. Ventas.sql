@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -21,10 +21,7 @@ BEGIN
     (_idpedido,_idtipocomprobante,_fecha_venta,_subtotal, _descuento,_igv,_total_venta);
     SELECT  last_insert_id() AS idventa;
 END$$
-select * from pedidos;
-CALL sp_registrar_venta('PED-000000015',1,'2024/12/21','4343','0','70',636);
--- CALL sp_registrar_venta('PED-000000009', 1, 1, NOW(), 100.00, 10.00, 18.00, 108.00);
--- SELECT * FROM ventas INNER JOIN  pedidos  on ventas.idpedido=pedidos.idpedido;
+
 -- ACTUALIZAR VENTAS
 DELIMITER $$
 CREATE PROCEDURE sp_actualizar_venta(
@@ -218,7 +215,6 @@ BEGIN
         p.idpedido DESC;
 END //
 
-call `sp_listar_ventas`
 -- listar ventas historial 
 DROP PROCEDURE IF EXISTS `sp_historial_ventas`;
 DELIMITER //
@@ -265,7 +261,7 @@ BEGIN
         p.idpedido DESC;
 END //
 
-call `sp_historial_ventas`
+
 
 DROP PROCEDURE IF EXISTS `sp_getById_venta`;
 DELIMITER //
@@ -302,6 +298,4 @@ WHERE ve.idventa=_idventa;
 
 END //
 
-select * from detalle_productos
-select * from kardex
 

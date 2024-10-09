@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribuMax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
@@ -104,7 +104,7 @@ CALL sp_actualizar_empresa (
 /* PROCEDIMIENTOS DE CLIENTES ✔️*/ 
 -- REGISTRAR CLIENTES
 CALL sp_cliente_registrar (26558000, NULL, 'Persona');
-CALL sp_cliente_registrar (NULL, 20123456781, 'Empresa');
+CALL sp_cliente_registrar (NULL, 20123456782, 'Empresa');
 select * from clientes;
 --  No debe de registrar a un cliente con dni y ruc
 -- CALL sp_cliente_registrar (26558000, 20123456781,'Empresa'); 

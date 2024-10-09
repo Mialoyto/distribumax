@@ -58,7 +58,7 @@
           <div class="row">
             <div class="col-md-4 mt-3">
               <div class="form-floating">
-                <input type="number" step="1" min="0" class="form-control numeros" id="cantidad" name="cantidad" placeholder="">
+                <input type="number" step="1" min="1" class="form-control numeros" id="cantidad" name="cantidad" placeholder="">
                 <label for="cantidad" class="form-label">Cantidad</label>
               </div>
             </div>

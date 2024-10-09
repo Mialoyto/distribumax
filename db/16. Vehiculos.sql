@@ -106,6 +106,3 @@ BEGIN
     OR VH.modelo  LIKE CONCAT('%',_item,'%')
     OR VH.marca_vehiculo LIKE  CONCAT('%',_item,'%');
 END //
-
-CALL `sp_buscar_vehiculos`('r')
-

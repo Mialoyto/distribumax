@@ -13,6 +13,3 @@ CREATE PROCEDURE `sp_registrar_detalleMetodo`
     SELECT last_insert_id() AS iddetalle_pago;
 END //
 
-call sp_registrar_detalleMetodo(2,1,100)
-
-select * from ventas INNER JOIN detalle_meto_Pago  dmp ON dmp.idventa=ventas.idventa

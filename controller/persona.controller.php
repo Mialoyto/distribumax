@@ -11,22 +11,27 @@ switch ($verbo) {
     case 'GET':
         if (isset($_GET['operation'])) {
             switch ($_GET['operation']) {
-                case 'searchDni': {
-                        $datosEnviar = [
-                            'idtipodocumento' => $_GET['idtipodocumento'],
-                            'idpersonanrodoc' => $_GET['idpersonanrodoc']
-                        ];
-                        $send = $persona->getById($datosEnviar);
-                        echo json_encode($send);
-                    }
+                case 'searchDni':
+                    $datosEnviar = [
+                        'idtipodocumento' => $_GET['idtipodocumento'],
+                        'idpersonanrodoc' => $_GET['idpersonanrodoc']
+                    ];
+                    $send = $persona->getById($datosEnviar);
+                    echo json_encode($send);
+                    break;
+                case 'getAll':
+                    // Llama a la función getAll() y devuelve el resultado
+                    $result = $persona->getAll();
+                    echo json_encode($result);
+                    break;
             }
-            break;
         }
+        break;
+
     case 'POST':
         if (isset($_POST['operation'])) {
             switch ($_POST['operation']) {
                 case 'addPersona':
-                    // $datosRecibidos = json_decode($input, true);
                     $datosEnviar = [
                         "idtipodocumento"   => $_POST['idtipodocumento'],
                         "idpersonanrodoc"   => $_POST['idpersonanrodoc'],
@@ -44,6 +49,7 @@ switch ($verbo) {
             }
         }
         break;
+
     case 'PUT':
         $datosRecibidos = json_decode($input, true);
         if (isset($datosRecibidos['operation'])) {
@@ -62,11 +68,12 @@ switch ($verbo) {
                     $estado = $persona->updatePersona($datosActualizar);
                     if($estado){
                         $resultado = ['Actualizado' => true];
-                    }else{
+                    } else {
                         $resultado = ['error' => 'No se pudo desactivar la persona.'];
                     }
                     echo json_encode($resultado);
                     break;
+
                 case 'inactivePersona':
                     $datoActualizar = [
                         "estado"            => $datosRecibidos["estado"],
@@ -79,12 +86,4 @@ switch ($verbo) {
             }
         }
         break;
-        
-        if(isset($_GET['operation'])){
-            switch($_GET['operation']){
-                case 'getAll':
-                    echo json_encode($persona->getAll());
-                break;
-            }
-          }
 }

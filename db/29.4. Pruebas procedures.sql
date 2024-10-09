@@ -1,10 +1,10 @@
--- Active: 1728058749643@@127.0.0.1@3306@distribumax
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 USE distribuMax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
-    '26558000', -- Número de documento
-    1834, -- ID del distrito
+    '26558001', -- Número de documento
+    1, -- ID del distrito
     'Miguel', -- Nombres
     'Loyola', -- Apellido paterno
     'Torres', -- Apellido materno
@@ -14,8 +14,8 @@ CALL spu_registrar_personas (
 
 CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
-    '26558001', -- Número de documento
-    1834, -- ID del distrito
+    '26558000', -- Número de documento
+    1, -- ID del distrito
     'pepito', -- Nombres
     'Levano', -- Apellido paterno
     'Martinez', -- Apellido materno
@@ -26,7 +26,7 @@ CALL spu_registrar_personas (
 CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
     '26558002', -- Número de documento
-    1834, -- ID del distrito
+    2, -- ID del distrito
     'pepito', -- Nombres
     'Levano', -- Apellido paterno
     'Martinez', -- Apellido materno
@@ -35,7 +35,7 @@ CALL spu_registrar_personas (
 );
 CALL sp_actualizar_persona (
     1,
-    1834,
+    2,
     'Juan',
     'Castilla',
     'Maraví',
@@ -46,7 +46,7 @@ CALL sp_actualizar_persona (
 
 CALL sp_actualizar_persona (
     1,
-    1834,
+    2,
     'Messi',
     'Castilla',
     'Maraví',
@@ -64,7 +64,7 @@ CALL sp_buscarpersonadoc (1, '26558000');
 
 
 SELECT * FROM usuarios;
-CALL sp_registrar_usuario(26558000,1,'admin','admin');
+CALL sp_registrar_usuario(26558000,2,'admin','admin');
 CALL sp_actualizar_usuario
 (
 'admin',

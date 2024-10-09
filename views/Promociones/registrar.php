@@ -5,7 +5,7 @@ require_once '../../header.php';
     <!-- Formulario Completo -->
     <div class="card shadow-lg border-0 rounded-lg">
         <div class="card-header">
-            <h3 class="text-center">Registro de Promociones y Detalles</h3>
+            <h3 class="text-center">Registro de Promociones</h3>
         </div>
         <div class="card-body">
             <!-- Sección de Registro de Promociones -->

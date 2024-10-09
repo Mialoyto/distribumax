@@ -131,7 +131,7 @@ $host = "http://localhost/distribumax";
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Promociones
             </a>
-            <a class="nav-link" href="<?= $host ?>/views/Promociones/">
+            <a class="nav-link" href="<?= $host ?>/views/Tipo de Promociones/">
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Tipo de Promociones
             </a>

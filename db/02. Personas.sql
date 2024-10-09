@@ -95,19 +95,19 @@ BEGIN
 END $$
 
 DELIMITER //
-
 CREATE PROCEDURE sp_listar_personas()
 BEGIN
     SELECT 
-        p.idpersonanrodoc AS nro_documento,
         td.documento AS tipo_documento,
+        p.idpersonanrodoc AS nro_documento,
         p.nombres,
         p.appaterno,
         p.apmaterno,
-        d.distrito
+        d.distrito,
+        p.estado
     FROM personas p
     INNER JOIN tipo_documento td ON p.idtipodocumento = td.idtipodocumento
     INNER JOIN distritos d ON p.iddistrito = d.iddistrito;
 END //
 
-DELIMITER ;
+CALL sp_listar_personas;

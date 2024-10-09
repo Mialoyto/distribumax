@@ -12,6 +12,7 @@ BEGIN
     VALUES (_tipopromocion, _descripcion, _estado);
 END$$
 
+select * from tipos_promociones;
 -- ACTUALIZAR TIPO DE PROMOCIONES
 DELIMITER $$
 CREATE PROCEDURE sp_actualizar_tipo_promocion(
@@ -43,3 +44,23 @@ BEGIN
       estado=_estado
       WHERE idtipopromocion =_idtipopromocion;
 END$$
+
+DELIMITER $$
+CREATE PROCEDURE sp_listar_tipo_promociones()
+BEGIN
+    SELECT 
+        tipopromocion,
+        descripcion,
+        create_at,
+        update_at,
+        CASE 
+            WHEN estado = '1' THEN 'Activo'
+            WHEN estado = '0' THEN 'Inactivo'
+        END AS estado
+    FROM 
+        tipos_promociones
+    ORDER BY 
+        create_at DESC;
+END $$
+CALL sp_listar_tipo_promociones();
+

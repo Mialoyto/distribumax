@@ -6,7 +6,7 @@ require_once '../../header.php';
         <div class="card mt-4">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table" id="tabla-categorias" style="width: 100%;">
+                    <table class="table" id="table-categorias" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>Nombre de Categoría</th>
@@ -37,6 +37,6 @@ require_once '../../header.php';
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
 <!-- Enlace del JavaScript de DataTable -->
-<script src="../../js/categorias/dataTable.js"></script>
+<script src="../../js/categorias/listar.js"></script>
 </body>
 </html>

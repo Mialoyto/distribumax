@@ -39,10 +39,14 @@ END $$
 
 
 -- LISTAR CATEGORIAS
+DELIMITER $$
 DROP VIEW IF EXISTS `vw_listar_categorias`;
 CREATE VIEW `vw_listar_categorias` AS
     SELECT
-        CAT.idcategoria,
-        CAT.categoria
+        CAT.categoria,
+        CAT.create_at,
+        CAT.estado
     FROM categorias CAT
-    WHERE CAT.estado = 1
+    WHERE CAT.estado = 1;
+END $$
+SELECT * FROM `vw_listar_categorias`;

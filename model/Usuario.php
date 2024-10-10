@@ -79,4 +79,14 @@ class Usuario extends Conexion
             die($e->getMessage());
         }
     }
+
+    public function getAll(){
+        try{
+            $query=$this->pdo->prepare("CALL spu_listar_usuarios");
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }

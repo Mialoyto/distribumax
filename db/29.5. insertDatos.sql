@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TABLAS NECESARIAS PARA REGISTRAR PERSONAS
 INSERT INTO tipo_documento (documento, descripcion) VALUES
@@ -128,6 +128,8 @@ INSERT INTO productos (idmarca, idsubcategoria, nombreproducto, descripcion, cod
 (7, 17, 'Dog Chow Adultos 4kg', 'Alimento balanceado para perros adultos', 'MASC001PER'),
 (7, 17, 'Dog Chow Cachorros 2kg', 'Alimento para cachorros', 'MASC002PER');
 
+select * from tipos_promociones;
+DELETE FROM tipos_promociones WHERE descripcion='solo aplica a productos seleccionados';
 INSERT INTO tipos_promociones (tipopromocion, descripcion) VALUES 
 ('Descuento por volumen', 'Descuento aplicado al comprar una cantidad mínima de productos.'),
 ('2x1 en productos seleccionados', 'Compra dos productos y paga solo uno.'),

@@ -3,6 +3,9 @@
 require_once '../model/kardex.php';
 
 $kardex = new Kardex();
+header("Content-Type: application/json; charset=utf-8");
+$verbo = $_SERVER["REQUEST_METHOD"];
+$input = file_get_contents('php://input');
 
 if (isset($_POST['operation'])) {
   switch ($_POST['operation']) {

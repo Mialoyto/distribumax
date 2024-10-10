@@ -1,3 +1,4 @@
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 USE distribuMax;
 -- Procedimiento para obtener el último stock
 DROP PROCEDURE IF EXISTS getultimostock;
@@ -13,7 +14,6 @@ BEGIN
     ORDER BY create_at DESC
     LIMIT 1;
 END $$
-
 
 -- Procedimiento para registrar movimiento de detalle de pedido
 DROP PROCEDURE IF EXISTS sp_registrarmovimiento_kardex;
@@ -77,6 +77,19 @@ BEGIN
     INNER JOIN colaboradores COL ON COL.idcolaborador = KAR.idcolaborador
     WHERE KAR.idproducto = _idproducto;
 END $$
+
+DROP PROCEDURE IF EXISTS spu_listar_kardex;
+DELIMITER $$
+CREATE PROCEDURE spu_listar_kardex()
+BEGIN
+    SELECT p.nombreproducto, k.fecha_vencimiento,
+           k.numlote, k.stockactual, k.tipomovimiento, k.cantidad, k.motivo,k.estado
+    FROM kardex k
+    JOIN productos p ON k.idproducto = p.idproducto;
+END $$
+
+CALL spu_listar_kardex();
+
 -- detalle idos
 
 CALL sp_registrarmovimiento_kardex(1, 1,'2023-10-05','LOT002','Ingreso', 100, 'Ingreso de productos adicionales');

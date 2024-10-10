@@ -30,17 +30,7 @@ class Kardex  extends Conexion
             return $succes;
         }
     }
-    public function getAll()
-    {
-        try {
-            $query = $this->pdo->prepare("select * from kardex");
-            $query->execute();
-            return $query->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
-            die($e->getMessage());
-        }
-    }
-
+    
     public function getById($params = [])
     {
         try {
@@ -52,6 +42,16 @@ class Kardex  extends Conexion
             $query->execute(array($params['idproducto']));
             return $query->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function getAll(){
+        try{
+            $query=$this->pdo->prepare("CALL spu_listar_kardex");
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
             die($e->getMessage());
         }
     }

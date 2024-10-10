@@ -49,4 +49,3 @@ CREATE VIEW `vw_listar_categorias` AS
     FROM categorias CAT
     WHERE CAT.estado = 1;
 END $$
-SELECT * FROM `vw_listar_categorias`;

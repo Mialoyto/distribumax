@@ -20,11 +20,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 <td class="text-start">${element.fecha_creacion}</td>
                 <td class="text-start">${element.fecha_actualizacion}</td>
                 <td>${element.estado === "1" ? "Activo" : "Inactivo"}</td>
+                <td>
+                      <a href="#" class="btn btn-warning">
+                      <i class="bi bi-pencil-fill"></i>
+                      </a>
+                      <a href="#" class="btn btn-danger">
+                      <i class="bi bi-trash-fill"></i>
+                      </a>
+                      </td>
             </tr>
             `;
         });
   
-        // Destroy the existing DataTable if it exists
         if (dtcliente) {
             dtcliente.destroy();
         }
@@ -33,20 +40,35 @@ document.addEventListener("DOMContentLoaded", function() {
   
     CargarDatos();
   
-    // Función para inicializar DataTable
     function RenderDatatable() {
-      dtcliente = new DataTable("#table-clientes", {
-          columnDefs: [
-              { width: "25%", targets: 0 }, 
-              { width: "25%", targets: 1 }, 
-              { width: "25%", targets: 2 },
-              { width: "25%", targets: 3 } 
-          ],
-          // Add this option if you want to enable pagination, searching, etc.
-          paging: true,
-          searching: true,
-          ordering: true
-      });
+        dtcliente = new DataTable("#table-clientes", {
+            columnDefs: [
+                { width: "25%", targets: 0 }, 
+                { width: "15%", targets: 1 }, 
+                { width: "15%", targets: 2 },
+                { width: "25%", targets: 3 },
+                { width: "20%", targets: 4 }
+            ],
+            language: {
+                "sEmptyTable": "No hay datos disponibles en la tabla",
+                "info": "",
+                "sInfoFiltered": "(filtrado de _MAX_ entradas en total)",
+                "sLengthMenu": "Filtrar: _MENU_",
+                "sLoadingRecords": "Cargando...",
+                "sProcessing": "Procesando...",
+                "sSearch": "Buscar:",
+                "sZeroRecords": "No se encontraron resultados",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
     }
-  });
-  
+});

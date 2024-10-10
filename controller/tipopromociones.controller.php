@@ -9,11 +9,10 @@ if (isset($_POST['operation'])) {
         case 'addTipoPromocion':
             $datos = [
                 'tipopromocion' => $_POST['tipopromocion'],
-                'descripcion'   => $_POST['descripcion'],
-                'estado'        => $_POST['estado']
+                'descripcion'   => $_POST['descripcion']
             ];
-            
-            echo json_encode($tipopromocion->addTipoPromocion($datos));
+            $id = $tipopromocion->addTipoPromocion($datos);
+            echo json_encode($id);
             break;
     }
 }

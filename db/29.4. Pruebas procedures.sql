@@ -1,9 +1,9 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728058749643@@127.0.0.1@3306@distribumax
 USE distribuMax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
-    '26558001', -- Número de documento
+    '26558004', -- Número de documento
     1, -- ID del distrito
     'Miguel', -- Nombres
     'Loyola', -- Apellido paterno
@@ -122,7 +122,7 @@ CALL sp_proovedor_registrar (
 
  /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL sp_empresa_registrar(
-	20123456782,
+	20123456784,
 	954,
     'JRCA',
     'Av. Bancarios ',

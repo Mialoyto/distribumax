@@ -52,6 +52,7 @@
                             <th>Fecha de Creación</th>
                             <th>Fecha de Actualización</th>
                             <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

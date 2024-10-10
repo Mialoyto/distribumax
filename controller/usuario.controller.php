@@ -29,6 +29,11 @@ switch ($verbo) {
                     session_destroy(); // destruye la sesion actual y sus variables
                     header("Location:http://localhost/distribumax/dashboard.php");
                     break;
+                    case 'getAll':
+                        // Llama a la función getAll() y devuelve el resultado
+                        $result = $usuario->getAll();
+                        echo json_encode($result);
+                        break;
             }
         }
         break;

@@ -79,3 +79,22 @@ BEGIN
 		WHERE PER.idtipodocumento = _idtipodocumento
         AND PER.idpersonanrodoc = _idpersonanrodoc;
 END $$
+
+DELIMITER $$
+CREATE PROCEDURE spu_listar_usuarios()
+BEGIN
+    SELECT 
+        p.idpersonanrodoc,
+        r.rol AS nombre_rol,
+        u.nombre_usuario,
+        u.estado
+    FROM 
+        usuarios u
+    JOIN 
+        personas p ON u.idpersona = p.idpersonanrodoc
+    JOIN 
+        roles r ON u.idrol = r.idrol;
+END $$
+
+
+CALL spu_listar_usuarios();

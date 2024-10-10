@@ -80,8 +80,9 @@ BEGIN
 END$$
 
 -- BUSCAR CLIENTE POR DNI O RUC
+DROP PROCEDURE IF EXISTS `sp_buscar_cliente`;
 DELIMITER $$
-CREATE PROCEDURE sp_buscar_cliente(
+CREATE PROCEDURE`sp_buscar_cliente` (
     IN _nro_documento CHAR(12)
 )
 BEGIN
@@ -92,6 +93,8 @@ BEGIN
         PER.appaterno,
         PER.apmaterno,
         EMP.razonsocial,
+        EMP.email,
+       DIS.distrito,DIS.iddistrito,PRO.provincia,DEP.departamento,
         CASE 
             WHEN CLI.idpersona IS NOT NULL THEN PER.direccion
             WHEN CLI.idempresa IS NOT NULL THEN EMP.direccion
@@ -100,6 +103,9 @@ BEGIN
         FROM clientes CLI 
         LEFT JOIN personas PER ON CLI.idpersona= PER.idpersonanrodoc
         LEFT JOIN empresas EMP ON CLI.idempresa= EMP.idempresaruc
+        LEFT JOIN distritos DIS ON DIS.iddistrito=PER.iddistrito
+        LEFT JOIN provincias PRO ON PRO.idprovincia=DIS.idprovincia
+        LEFT JOIN departamentos DEP ON DEP.iddepartamento=PRO.iddepartamento
         WHERE CLI.idpersona = _nro_documento OR CLI.idempresa =_nro_documento;
 END$$
 

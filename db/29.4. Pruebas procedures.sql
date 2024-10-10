@@ -4,7 +4,7 @@ USE distribuMax;
 CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
     '26558001', -- Número de documento
-    1, -- ID del distrito
+    3, -- ID del distrito
     'Miguel', -- Nombres
     'Loyola', -- Apellido paterno
     'Torres', -- Apellido materno
@@ -103,7 +103,7 @@ CALL sp_actualizar_empresa (
 
 /* PROCEDIMIENTOS DE CLIENTES ✔️*/ 
 -- REGISTRAR CLIENTES
-CALL sp_cliente_registrar (26558000, NULL, 'Persona');
+CALL sp_cliente_registrar (26558001, NULL, 'Persona');
 CALL sp_cliente_registrar (NULL, 20123456781, 'Empresa');
 select * from clientes;
 --  No debe de registrar a un cliente con dni y ruc
@@ -137,9 +137,11 @@ select * from empresas;
 select * from clientes;
 select * from personas;
 
-insert into clientes (idpersona,idempresa,tipo_cliente) VALUES(null,'20123456782','Empresa');
+insert into clientes (idpersona,idempresa,tipo_cliente) VALUES(26558000,null,'Persona');
+insert into clientes (idpersona,idempresa,tipo_cliente) VALUES(null,'20123456783','Empresa');
 insert into pedidos(idusuario,idcliente,fecha_pedido)VALUES(1,1,'2024/09/22');
 select * from pedidos;
+
 select * from detalle_pedidos;
 -- Insertar detalles del pedido
 INSERT INTO detalle_pedidos (idpedido, idproducto, cantidad_producto, unidad_medida, precio_unitario, precio_descuento, subtotal) VALUES

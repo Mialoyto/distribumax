@@ -104,31 +104,30 @@ require_once '../../header.php';
               </div>
 
               <div class="row mb-3">
-                <div class="col-md-6" id="">
+                <div class="col-md-6 metodos" id="">
                   <div class="form-floating">
-                    <select id="idmetodopago" class="form-select" >
+                    <select id="idmetodopago" class="form-select  metodo" >
                       <option value=""></option>
-
                       <!-- Agrega más opciones según sea necesario -->
                     </select>
                     <label for="idmetodopago">Método de Pago 1</label>
                   </div>
-                  <div class="form-floating">
-                    <input type="number" step="0.01" class="form-control" id="monto_pago_1" placeholder="Monto">
+                  <div class="form-floating montos">
+                    <input type="number" step="0.01" class="form-control monto" id="monto_pago_1" placeholder="Monto">
                     <label for="monto_pago_2">Monto 1</label>
                   </div>
                 </div>
-                <div class="col-md-6" id="metodo_pago_2" style="display: none;">
+                <div class="col-md-6 metodos" id="metodo_pago_2" style="display: none;">
                   <div class="form-floating">
-                    <select id="idmetodopago_2" class="form-select">
+                    <select id="idmetodopago_2" class="form-select metodo">
                       <option value=""></option>
 
                       <!-- Agrega más opciones según sea necesario -->
                     </select>
                     <label for="idmetodopago_2">Método de Pago 2</label>
                   </div>
-                  <div class="form-floating">
-                    <input type="number" step="0.01" class="form-control" id="monto_pago_2" placeholder="Monto" >
+                  <div class="form-floating montos">
+                    <input type="number" step="0.01" class="form-control monto" id="monto_pago_2" placeholder="Monto" >
                     <label for="monto_pago_2">Monto 2</label>
                   </div>
                 </div>

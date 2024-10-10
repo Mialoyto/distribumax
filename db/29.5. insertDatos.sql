@@ -9,6 +9,7 @@ INSERT INTO tipo_documento (documento, descripcion) VALUES
 ('PAS', 'Pasaporte');
 
 --
+
 INSERT INTO categorias (categoria) VALUES 
 ('Alimentos'),
 ('Bebidas'),

@@ -96,31 +96,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Función para validar y manejar montos
-  const validarmontos = async () => {
-    const tipoPagoSelect = $("#tipo_pago");
+  // // Función para validar y manejar montos
+  // const validarmontos = async () => {
+    
+  //   const tipoPagoSelect = $("#tipo_pago");
+  //   const monto1 = parseFloat($("#monto_pago_1").value);
+  //   const ventatotal = parseFloat($("#total_venta").value);
 
-    tipoPagoSelect.addEventListener("change", () => {
-      const monto1 = parseFloat($("#monto_pago_1").value);
-      const ventatotal = parseFloat($("#total_venta").value);
+  //   if(tipoPagoSelect=='unico'){
+  //     console.log(tipoPagoSelect.value)
+  //   }
+   
+  // };
+ 
 
-      if (tipoPagoSelect.value === 'unico') {
-        $("#monto_pago_1").value = ventatotal;
-        $("#monto_pago_1").setAttribute('readonly', true);
-      }
-      if (tipoPagoSelect.value === 'mixto') {
-        $("#monto_pago_1").removeAttribute('readonly');
-        $("#monto_pago_2").setAttribute('readonly', true);
-        if (monto1 <= 0 || monto1 >= ventatotal) {
-          showToast(`El monto debe ser mayor que 0 y menor que la venta`, 'warning', 'WARNING');
-        } else {
-          const resto = ventatotal - monto1;
-          $("#monto_pago_2").value = resto.toFixed(2);
-        }
-      }
-    });
-  };
-
+  //validarmontos();
   // Validación para mostrar/ocultar campos según tipo de pago
   const ValidarSelect = async () => {
     const tipoPagoSelect = $("#tipo_pago");
@@ -249,20 +239,27 @@ document.addEventListener("DOMContentLoaded", () => {
         //console.log(tipo_pago.value);
 
         if (tipo_pago.value == 'unico') {
-          $("#monto_pago_1").value = total_venta;
+          $("#monto_pago_1").value = totalVenta;
+          $("#monto_pago_1").disabled=true;
         } else {
           $("#monto_pago_1").value = '';
           let total = $("#total_venta").value
-
+          $("#monto_pago_1").disabled = false;
           $("#monto_pago_1").addEventListener('input', () => {
-            let monto = parseFloat($("#monto_pago_1").value);
+           
+           let monto = parseFloat($("#monto_pago_1").value);
+           let resto = parseFloat(total - monto);
+           $("#monto_pago_2").value =resto;
 
-            //console.log(monto)
-            let resto = total - monto;
-            // console.log(resto)
-
-            $("#monto_pago_2").value = resto;
-            $("#monto_pago_2").innerHTML = '';
+            if(monto==0 || monto>total ){
+              $("#monto_pago_1").value = '';
+              console.log("el monto dbe ser menor al total")
+            }
+           
+           
+           
+            //$("#monto_pago_2").innerHTML = '';
+           
         }
 
           )};
@@ -273,7 +270,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Función para registrar venta
+  let idventa;
   async function RegistrarVenta() {
+
+
+
     const params = new FormData();
     params.append('operation', 'addVentas');
     params.append('idpedido', $("#idpedido").value);
@@ -290,9 +291,9 @@ document.addEventListener("DOMContentLoaded", () => {
         body: params
       };
       const response = await fetch(`../../controller/ventas.controller.php`, options);
-      const data = await response.json();
-      console.log(data);
-      return data; // Asegúrate de devolver los datos
+      idventa = await response.json();
+      // console.log("idventa:",idventa);
+      return idventa; // Asegúrate de devolver los datos
     } catch (e) {
       console.error(e);
     }
@@ -300,6 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Registrar detalle del método de pago
   async function RegistrarDetalleMetodo(idventa) {
+ 
     const metodo1Select = $("#idmetodopago");
     const monto1Input = $("#monto_pago_1");
     const metodo2Select = $("#idmetodopago_2");
@@ -327,6 +329,11 @@ document.addEventListener("DOMContentLoaded", () => {
       params.append('metodos[1][monto]', metodo2.monto);
     }
   
+/*     // Inspeccionar los datos antes de enviarlos
+    for (let [key, value] of params.entries()) {
+      console.log(key, value);
+    } */
+  
     try {
       const response = await fetch(`../../controller/detallemetodo.controller.php`, {
         method: 'POST',
@@ -338,6 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error('Error al registrar detalle de método:', e);
     }
   }
+  
   
 
   // Función para limpiar el formulario de pedido
@@ -351,10 +359,13 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#form-venta-registrar").addEventListener("submit", async (event) => {
     event.preventDefault();
     const resultado = await RegistrarVenta();
+    console.log(resultado)
+   const id = resultado[0];
+   console.log(id)
     if (resultado) {
       alert("Venta registrada exitosamente");
       // Aquí asumiendo que `resultado` devuelve el `idventa` del registro recién creado
-      await RegistrarDetalleMetodo(resultado.idventa); 
+      await RegistrarDetalleMetodo(id); 
       $("#form-venta-registrar").reset();
       limpiarDatosPedido();
     }
@@ -362,7 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
 
   // Inicializar funciones de validación y búsqueda
-  validarmontos();
+  //validarmontos();
   ValidarSelect();
 
   $("#idpedido").addEventListener('input', mostraResultados);

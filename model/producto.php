@@ -19,6 +19,7 @@ class Productos extends Conexion
       $status = false;
       $query = $this->pdo->prepare("CALL sp_registrar_producto (?,?,?,?,?,?) ");
       $status = $query->execute(array(
+        $params['idproveedor'], 
         $params['idmarca'],
         $params['idsubcategoria'],
         $params['nombreproducto'],

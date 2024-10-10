@@ -290,23 +290,33 @@ CREATE TABLE unidades_medidas(
     CONSTRAINT fk_estado_uni_med CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
+
+-- TABLA PRODUCTOS
 DROP TABLE IF EXISTS productos;
 CREATE TABLE productos (
-    idproducto      INT             PRIMARY KEY AUTO_INCREMENT,
-    idmarca         INT             NOT NULL,
-    idsubcategoria  INT             NOT NULL,
-    nombreproducto  VARCHAR(250)   	NOT NULL,
-    descripcion     VARCHAR(250)   	NOT NULL,
-    codigo          CHAR(30)        NOT NULL,
-	create_at		DATETIME NOT NULL DEFAULT NOW(),
-	update_at		DATETIME NULL,
-    estado          CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT fk_idmarca_prod FOREIGN KEY(idmarca) REFERENCES marcas(idmarca),
-    CONSTRAINT fk_sbcategoria_prod FOREIGN KEY(idsubcategoria) REFERENCES subcategorias(idsubcategoria),
-    CONSTRAINT uk_nombreproducto_unidad  UNIQUE (nombreproducto),
-    CONSTRAINT uk_codigo         UNIQUE (codigo),
-    CONSTRAINT fk_estado_prod  CHECK(estado IN ("0", "1"))
+    idproducto              INT             PRIMARY KEY AUTO_INCREMENT,
+    idproveedor             INT             NOT NULL,
+    idmarca                 INT             NOT NULL,
+    idsubcategoria          INT             NOT NULL,
+    nombreproducto          VARCHAR(250)   	NOT NULL,
+    idunidadmedida          INT             NOT NULL,
+    cantidad_presentacion   INT             NOT NULL,
+    peso_unitario           DECIMAL         NOT NULL,
+    codigo                  CHAR(30)        NOT NULL,
+    precio_compra           DECIMAL(10,2)   NOT NULL,
+    precio_minorista        DECIMAL(10,2)   NOT NULL,
+    precio_mayorista        DECIMAL(10,2)   NOT NULL,
+	create_at		        DATETIME        NOT NULL DEFAULT NOW(),
+	update_at		        DATETIME NULL,
+    inactive_at             DATETIME NULL,
+    estado                  CHAR(1) NOT NULL DEFAULT "1",
+    CONSTRAINT fk_idproveedor_prod  FOREIGN KEY (idproveedor) REFERENCES proveedores (idproveedor),
+    CONSTRAINT fk_idmarca_prod      FOREIGN KEY(idmarca) REFERENCES marcas(idmarca),
+    CONSTRAINT fk_sbcategoria_prod  FOREIGN KEY(idsubcategoria) REFERENCES subcategorias(idsubcategoria),
+    CONSTRAINT uk_codigo_prod       UNIQUE (codigo),
+    CONSTRAINT fk_estado_prod       CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
+
 
 DROP TABLE IF EXISTS detalle_promociones;
 CREATE TABLE detalle_promociones(
@@ -325,7 +335,7 @@ CREATE TABLE detalle_promociones(
  
  
  -- BORRAR
-DROP TABLE IF EXISTS detalle_productos;
+/* DROP TABLE IF EXISTS detalle_productos;
 CREATE TABLE detalle_productos(
     id_detalle_producto		INT	NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idproveedor				INT NOT NULL,
@@ -341,7 +351,7 @@ CREATE TABLE detalle_productos(
     CONSTRAINT fk_idproducto_deta_prod FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
     CONSTRAINT uk_idproducto_deta_prod UNIQUE(idproducto),
     CONSTRAINT fk_estado_deta_prod  CHECK(estado IN ("0", "1"))
-)ENGINE = INNODB;
+)ENGINE = INNODB; */
 
 DROP TABLE IF EXISTS precios_historicos;
 CREATE TABLE precios_historicos(

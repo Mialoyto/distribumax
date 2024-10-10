@@ -12,6 +12,5 @@ export async function cargarTipoDoc(element) {
     return data;
   } catch (error) {
     console.error("Error al cargar los tipos de documentos :",error);
-    // return [];
   }
 }

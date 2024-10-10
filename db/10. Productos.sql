@@ -3,17 +3,46 @@ USE distribumax;
 -- REGISTRAR PRODUCTOS
 DELIMITER $$
 CREATE PROCEDURE sp_registrar_producto(
-IN _idmarca         INT,
-IN _idsubcategoria  INT,
-IN _nombreproducto  VARCHAR(250),
-IN _descripcion     VARCHAR(250),
-IN _codigo          CHAR(30),
-IN _preciounitario  DECIMAL(8, 2)	
+IN _idproveedor						INT,
+IN _idmarca         			INT,
+IN _idsubcategoria  			INT,
+IN _nombreproducto  			VARCHAR(250),
+IN _idunidadMedida				INT,
+IN _cantidadPresentacion	INT,
+IN _pesoUnitario					DECIMAL(10,2)
+IN _codigo          			CHAR(30),
+IN _precioCompra					DECIMAL(10,2),
+IN _precioMinorista				DECIMAL(10,2),
+IN _precioMayorita				DECIMAL(10,2),
 )BEGIN
 	INSERT INTO productos 
-    (idmarca,idsubcategoria,nombreproducto,descripcion,codigo) 
+    (
+			idproveedor,
+			idmarca,
+			idsubcategoria,
+			nombreproducto,
+			unidadmedida,
+			cantidad_presentacion,
+			peso_unitario,
+			codigo,
+			precio_compra,
+			precio_minorista,
+			precio_mayorista
+		) 
     VALUES
-    (_idmarca,_idsubcategoria,_nombreproducto,_descripcion,_codigo);
+    (
+			_idproveedor,
+			_idmarca,
+			_idsubcategoria,
+			_nombreproducto,
+			_unidadmedida,
+			_cantidad_presentacion,
+			_peso_unitario,
+			_codigo,
+			_precio_compra,
+			_precio_minorista,
+			_precio_mayorista
+		);
 END$$
 
 -- ACTUALIZA PRODUCTOS

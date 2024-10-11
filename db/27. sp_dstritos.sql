@@ -1,6 +1,6 @@
 USE distribumax;
 
-DELIMITER $$
+
 CREATE PROCEDURE sp_buscardistrito(
 IN _distrito VARCHAR(100)
 )
@@ -20,7 +20,7 @@ JOIN
 WHERE
     d.distrito LIKE  CONCAT('%', TRIM(_distrito),'%');
 END IF;
-END$$
+END;
 
 -- call sp_buscardistrito('chincha');
 

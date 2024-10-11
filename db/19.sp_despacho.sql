@@ -1,7 +1,7 @@
 USE distribumax;
 
 -- REGISTRAR DESPACHO
-DELIMITER $$
+
 CREATE PROCEDURE sp_despacho_registrar(
     IN _idvehiculo 		INT,
     IN _idusuario 		INT,
@@ -10,10 +10,10 @@ CREATE PROCEDURE sp_despacho_registrar(
 BEGIN
     INSERT INTO despacho (idvehiculo, idusuario,fecha_despacho) 
     VALUES (_idvehiculo, _idusuario, _fecha_despacho);
-END$$
+END;
 
 -- ACTUALIZAR DESPACHO
-DELIMITER $$
+
 CREATE PROCEDURE sp_actualizar_despacho(
 	IN _iddespacho		INT,
 	IN _idvehiculo 		INT,
@@ -29,4 +29,4 @@ BEGIN
             estado = _estado,
 			update_at=now()
         WHERE iddespacho =_iddespacho;
-END$$
+END;

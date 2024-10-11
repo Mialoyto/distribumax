@@ -1,13 +1,13 @@
 USE distribumax;
 
 -- REGISTRAR
-DELIMITER $$
+
 CREATE PROCEDURE sp_registrar_categoria
 ( IN _categoria  VARCHAR(150)) 
 BEGIN
     INSERT INTO categorias (categoria)
         VALUES (_categoria);
-END $$
+END;
 
 -- ACTUALIZAR
 CREATE PROCEDURE sp_actualizar_categoria
@@ -21,10 +21,10 @@ BEGIN
         categoria = _categoria,
         update_at = NOW()
     WHERE idcategoria = _idcategoria;
-END $$
+END;
 
 -- ELIMINAR 
-DELIMITER $$
+
 CREATE PROCEDURE sp_desactivar_categoria
 ( 
     IN _estado CHAR(1),
@@ -35,12 +35,11 @@ BEGIN
     SET
         estado = _estado
     WHERE idcategoria = _idcategoria;
-END $$
+END;
 
 
 -- LISTAR CATEGORIAS
-DELIMITER $$
-DROP VIEW IF EXISTS `vw_listar_categorias`;
+
 CREATE VIEW `vw_listar_categorias` AS
     SELECT
         CAT.categoria,
@@ -48,4 +47,3 @@ CREATE VIEW `vw_listar_categorias` AS
         CAT.estado
     FROM categorias CAT
     WHERE CAT.estado = 1;
-END $$

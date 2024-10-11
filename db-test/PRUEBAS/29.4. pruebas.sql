@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
@@ -35,6 +35,8 @@ SELECT * FROM  tipo_documento;
 SELECT * FROM kardex;
 SELECT * FROM detalle_productos;
 
+call sp_cliente_registrar('26558000');
+select * from clientes;
 
 SELECT * FROM proveedores;
 SHOW COLUMNS FROM tipos_promociones;
@@ -130,3 +132,4 @@ UPDATE subcategorias SET estado = 1 WHERE idsubcategoria = 1;
 SELECT * FROM detalle_promociones;
 
 select * from kardex WHERE idproducto = 2 and stockactual =0 ORDER BY idkardex DESC ;
+SELECT * from proveedores;

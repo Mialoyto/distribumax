@@ -1,17 +1,20 @@
 USE distribumax;
 
 -- REGISTRAR MARCAS
-DELIMITER $$
+
+
 CREATE PROCEDURE sp_registrar_marca(
+    IN _idproveedor INT,
     IN _marca VARCHAR(150)
 )
 BEGIN
-    INSERT INTO marcas (marca) 
-    VALUES (_marca);
-END$$
+    INSERT INTO marcas (idproveedor,marca) 
+    VALUES (_idproveedor,_marca);
+END;
 
 -- ACTUALIZAR MARCAS
-DELIMITER $$
+
+
 CREATE PROCEDURE sp_actualizar_marca(
     IN _idmarca INT,
     IN _marca 	VARCHAR(150)
@@ -21,10 +24,11 @@ BEGIN
     SET marca = _marca,
         update_at = NOW()
     WHERE idmarca = _idmarca;
-END$$
+END;
 
 -- ELIMINAR MARCAS
-DELIMITER $$
+
+
 CREATE PROCEDURE sp_eliminar_marca(
     IN _idmarca INT,
     IN _estado 	CHAR(1)
@@ -34,10 +38,12 @@ BEGIN
     SET 
         estado = _estado
     WHERE idmarca = _idmarca;
-END$$
+END;
 
 -- LISTAR MARCAS
-CREATE VIEW vw_listar_marcas AS 
-SELECT idmarca,marca FROM marcas
-    WHERE estado = '1'
-    ORDER BY marca ASC;
+CREATE VIEW vw_listar_marcas AS
+SELECT idmarca, marca
+FROM marcas
+WHERE
+    estado = '1'
+ORDER BY marca ASC;

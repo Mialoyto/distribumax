@@ -3,7 +3,7 @@ USE distribumax;
 
 -- REGISTRAR VENTAS
 DROP PROCEDURE IF EXISTS `sp_registrar_venta`;
-DELIMITER $$
+
 CREATE PROCEDURE `sp_registrar_venta`(
     IN _idpedido            VARCHAR(15),
     IN _idtipocomprobante   INT,
@@ -20,10 +20,10 @@ BEGIN
     VALUES
     (_idpedido,_idtipocomprobante,_fecha_venta,_subtotal, _descuento,_igv,_total_venta);
     SELECT  last_insert_id() AS idventa;
-END$$
+END;
 
 -- ACTUALIZAR VENTAS
-DELIMITER $$
+
 CREATE PROCEDURE sp_actualizar_venta(
     IN _idpedido CHAR(15),
     IN _idmetodopago INT,
@@ -44,12 +44,12 @@ BEGIN
             estado=_estado,
             update_at=now()
         WHERE idventa=_idventa; 
-END$$
+END;
 
 
 -- ESTADO VENTAS
 DROP PROCEDURE IF EXISTS `sp_estado_venta`;
-DELIMITER //
+
 CREATE PROCEDURE `sp_estado_venta`(
     IN _estado CHAR(1),
     IN _idventa INT
@@ -69,12 +69,11 @@ BEGIN
             update_at = NOW()
        WHERE idpedido = (SELECT idpedido FROM ventas WHERE idventa = _idventa);
     END IF;
-END//
+END;
 
 -- Trigger que devolvera los productos al kardex
 
 DROP TRIGGER IF EXISTS after_cancelar_venta;
-DELIMITER //
 
 CREATE TRIGGER after_cancelar_venta
 AFTER UPDATE ON ventas
@@ -109,12 +108,9 @@ BEGIN
 
         CLOSE cur;
     END IF;
-END //
+END ;
 
-
-
-
-DELIMITER $$
+-- TRIGGER PARA ACTUALIZAR EL ESTADO DEL PEDIDO
 CREATE TRIGGER trg_actualizar_estado_pedido
 AFTER INSERT ON ventas
 FOR EACH ROW
@@ -123,13 +119,13 @@ BEGIN
     SET estado = 'Enviado'
     WHERE idpedido = NEW.idpedido 
       AND estado <> 'Enviado';  
-END$$
+END;
 
 
 
 -- GENERAR REPORTE
 DROP PROCEDURE IF EXISTS `sp_generar_reporte`;
-DELIMITER //
+
 CREATE PROCEDURE `sp_generar_reporte` ( 
 	IN _idventa INT)
 BEGIN
@@ -167,12 +163,12 @@ BEGIN
     WHERE p.estado = 'Enviado' AND ve.idventa = _idventa
     
     GROUP BY p.idpedido, cli.idpersona, cli.idempresa, cli.tipo_cliente, pe.nombres, pe.appaterno, pe.apmaterno, em.razonsocial;
-END//
+END;
 
 
 -- LISTAR VENTAS DEL DIA
 DROP PROCEDURE IF EXISTS `sp_listar_ventas`;
-DELIMITER //
+
 CREATE PROCEDURE `sp_listar_ventas`()
 BEGIN
     SELECT 
@@ -213,11 +209,11 @@ BEGIN
         ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
     ORDER BY 
         p.idpedido DESC;
-END //
+END ;
 
 -- listar ventas historial 
 DROP PROCEDURE IF EXISTS `sp_historial_ventas`;
-DELIMITER //
+
 CREATE PROCEDURE `sp_historial_ventas`()
 BEGIN
     SELECT 
@@ -259,12 +255,12 @@ BEGIN
         ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
     ORDER BY 
         p.idpedido DESC;
-END //
+END ;
 
 
 
 DROP PROCEDURE IF EXISTS `sp_getById_venta`;
-DELIMITER //
+
 CREATE PROCEDURE `sp_getById_venta`
 (
 	IN _idventa   INT
@@ -296,6 +292,6 @@ LEFT JOIN
 -- Relaciona con la columna idproducto en detalle_pedidos
 WHERE ve.idventa=_idventa;
 
-END //
+END ;
 
 

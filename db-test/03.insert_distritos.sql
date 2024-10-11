@@ -1832,13 +1832,3 @@ INSERT INTO distritos (distrito, idprovincia) VALUES
 ('CURIMANA', '192'),
 ('PURUS', '193'),
 ('MANANTAY', '190');
-
-
-select * from distritos;
-
-
-
-
-
-
-

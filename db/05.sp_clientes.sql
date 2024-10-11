@@ -1,8 +1,9 @@
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR CLIENTES
-DELIMITER $$
 
+DROP PROCEDURE IF EXISTS sp_cliente_registrar;
 CREATE PROCEDURE sp_cliente_registrar(
 	IN _idpersona 		CHAR(11),
     IN _idempresa 		BIGINT,
@@ -24,10 +25,38 @@ BEGIN
             (NULL, _idempresa, _tipo_cliente);
         END IF;
     END IF;
-END$$
+END;
+/* DROP PROCEDURE IF EXISTS sp_cliente_registrar;
+CREATE PROCEDURE sp_cliente_registrar(
+    IN _id CHAR(11)
+)
+BEGIN
+    DECLARE _tipo_cliente CHAR(10);
+    DECLARE _idempresa BIGINT;
+    DECLARE _idpersona CHAR(8);  -- Cambiamos la variable para idpersona a CHAR(8)
+
+    -- Determina el tipo de cliente según la longitud del ID
+    IF LENGTH(_id) = 8 THEN
+        SET _tipo_cliente = 'Persona';
+        SET _idempresa = NULL;  -- Asegúrate de que idempresa sea NULL para persona
+        SET _idpersona = _id;   -- Asigna el id a idpersona
+    ELSEIF LENGTH(_id) = 11 THEN
+        SET _tipo_cliente = 'Empresa';
+        SET _idempresa = CAST(_id AS UNSIGNED);  -- Convierte _id a BIGINT
+        SET _idpersona = NULL;  -- Asegúrate de que idpersona sea NULL para empresa
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ID inválido';
+    END IF;
+
+    -- Inserta el cliente en la tabla
+    INSERT INTO clientes (idpersona, idempresa, tipo_cliente)
+    VALUES (_idpersona, _idempresa, _tipo_cliente);
+END; */
+
+
 
 -- ACTUALIZAR CLIENTES
-DELIMITER $$
+
 
 CREATE PROCEDURE sp_actualizar_cliente(
 IN _idpersona       INT,
@@ -64,10 +93,10 @@ BEGIN
             tipo_cliente = _tipo_cliente,
             update_at = NOW()
         WHERE idcliente = _idcliente;
-END$$
+END;
 
 -- ELIMINAR CLIENTE
-DELIMITER $$
+
 
 CREATE PROCEDURE sp_estado_cliente(
 IN  _estado 	CHAR(1),
@@ -77,10 +106,10 @@ BEGIN
 	UPDATE clientes SET
       estado=_estado
       WHERE idcliente=_idcliente;
-END$$
+END;
 
 -- BUSCAR CLIENTE POR DNI O RUC
-DELIMITER $$
+
 CREATE PROCEDURE sp_buscar_cliente(
     IN _nro_documento CHAR(12)
 )
@@ -101,11 +130,11 @@ BEGIN
         LEFT JOIN personas PER ON CLI.idpersona= PER.idpersonanrodoc
         LEFT JOIN empresas EMP ON CLI.idempresa= EMP.idempresaruc
         WHERE CLI.idpersona = _nro_documento OR CLI.idempresa =_nro_documento;
-END$$
+END;
 
 
 -- LISTAR CLIENTES
-DELIMITER $$
+
 CREATE PROCEDURE sp_listar_clientes()
 BEGIN
     SELECT 
@@ -117,5 +146,4 @@ BEGIN
         clientes c
     LEFT JOIN personas p ON c.idpersona = p.idpersonanrodoc
     LEFT JOIN empresas e ON c.idempresa = e.idempresaruc;
-END $$
-DELIMITER ;
+END ;

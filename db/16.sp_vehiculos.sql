@@ -1,7 +1,7 @@
 USE distribumax;
 
 -- REGISTRAR VEHICULOS
-DELIMITER $$
+
 CREATE PROCEDURE sp_registrar_vehiculo(
     IN _idusuario INT,
     IN _marca_vehiculo VARCHAR(100),
@@ -13,10 +13,10 @@ CREATE PROCEDURE sp_registrar_vehiculo(
 BEGIN
     INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
     VALUES (_idusuario, _marca_vehiculo, _modelo, _placa, _capacidad, _condicion);
-END$$
+END;
 
 -- ACTUALIZAR VEHICULOS
-DELIMITER $$
+
 CREATE PROCEDURE sp_actualizar_vehiculo(
     IN _idvehiculo INT,
     IN _idusuario INT,
@@ -36,13 +36,13 @@ BEGIN
         condicion = _condicion,
         update_at = NOW()
     WHERE idvehiculo = _idvehiculo;
-END$$
+END;
 
 
 
 -- lista vehiculos
 DROP PROCEDURE IF EXISTS `sp_listar_vehiculo`;
-DELIMITER //
+
 CREATE PROCEDURE `sp_listar_vehiculo`()
 BEGIN
 		SELECT 
@@ -57,12 +57,12 @@ BEGIN
         INNER JOIN usuarios us ON vh.idusuario=us.idusuario
         INNER JOIN personas pe ON pe.idpersonanrodoc=us.idpersona
         ORDER BY idvehiculo DESC;
-END//
+END;
 
 
 -- buscador de usuarios, para el rol conductor
 DROP PROCEDURE IF EXISTS `sp_buscar_conductor`;
-DELIMITER //
+
 CREATE PROCEDURE `sp_buscar_conductor`(
     IN _item VARCHAR(80)
 )
@@ -87,10 +87,10 @@ BEGIN
         AND rl.rol = 'Conductor'
         AND (pe.nombres LIKE CONCAT('%', _item, '%') OR 
              CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%'));  -- Filtrar por nombres o apellidos concatenados
-END //
+END;
 
 DROP PROCEDURE IF EXISTS `sp_buscar_vehiculos`;
-DELIMITER //
+
 CREATE PROCEDURE `sp_buscar_vehiculos`
 (	
 	IN _item VARCHAR(50)
@@ -105,4 +105,4 @@ BEGIN
     WHERE VH.placa LIKE CONCAT('%',_item,'%')
     OR VH.modelo  LIKE CONCAT('%',_item,'%')
     OR VH.marca_vehiculo LIKE  CONCAT('%',_item,'%');
-END //
+END;

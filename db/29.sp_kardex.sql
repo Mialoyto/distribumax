@@ -1,7 +1,7 @@
 USE distribuMax;
 -- Procedimiento para obtener el último stock
 DROP PROCEDURE IF EXISTS getultimostock;
-DELIMITER $$
+
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,
     OUT stock_actual    INT
@@ -12,12 +12,12 @@ BEGIN
     WHERE idproducto = _idproducto
     ORDER BY create_at DESC
     LIMIT 1;
-END $$
+END ;
 
 
 -- Procedimiento para registrar movimiento de detalle de pedido
 DROP PROCEDURE IF EXISTS sp_registrarmovimiento_kardex;
-DELIMITER $$
+
 CREATE PROCEDURE sp_registrarmovimiento_kardex (
     IN _idusuario           INT,
     IN _idproducto          INT,
@@ -49,13 +49,13 @@ BEGIN
 
     INSERT INTO kardex (idusuario, idproducto,fecha_vencimiento,numlote, stockactual, tipomovimiento, cantidad, motivo)
     VALUES (_idusuario, _idproducto,_fecha_vencimiento,_numlote, _nuevo_stock_actual, _tipomovimiento, _cantidad, _motivo);
-END$$
+END;
 
 
 
 -- Procedimiento para reporte de producto
 DROP PROCEDURE IF EXISTS spu_producto_reporte;
-DELIMITER $$
+
 CREATE PROCEDURE spu_producto_reporte (
     IN _idproducto INT
 )
@@ -76,32 +76,4 @@ BEGIN
     INNER JOIN tipoProductos TPRO ON TPRO.idtipoproducto = PRO.idtipoproducto
     INNER JOIN colaboradores COL ON COL.idcolaborador = KAR.idcolaborador
     WHERE KAR.idproducto = _idproducto;
-END $$
--- detalle idos
-
-CALL sp_registrarmovimiento_kardex(1, 1,'2023-10-05','LOT002','Ingreso', 100, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 2,'2023-10-05','LOT002','Ingreso', 125, 'Ingreso de productos para venta');
-CALL sp_registrarmovimiento_kardex(1, 3,'2023-10-05','LOT002','Ingreso', 150, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 4,'2023-10-05','LOT002','Ingreso', 200, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 5,'2023-10-05','LOT002','Ingreso', 225, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 6,'2023-10-05','LOT002','Ingreso', 250, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 7,'2023-10-05','LOT002','Ingreso', 300, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 8,'2023-10-05','LOT002','Ingreso', 325, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 9,'2023-10-05','LOT002','Ingreso', 350, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 10,'2023-10-05','LOT002','Ingreso',400, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 11,'2023-10-05','LOT002','Ingreso',425, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 17,'2023-10-05','LOT002','Ingreso',10, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 18,'2023-10-05','LOT002','Ingreso',10, 'Ingreso de productos adicionales');
-
-
-SELECT * FROM kardex;
-SELECT * FROM productos;
-SELECT * FROM empresas;
-DELETE FROM kardex
-WHERE idkardex = 15;
-
--- Consulta de producto específico
-SELECT k.idkardex, k.stockactual, p.idproducto, p.nombreproducto 
-FROM kardex k
-INNER JOIN productos p ON k.idproducto = p.idproducto
-WHERE p.idproducto = 1;
+END ;

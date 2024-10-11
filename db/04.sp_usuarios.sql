@@ -1,6 +1,6 @@
 USE distribumax;
 -- Registrar 
-DELIMITER $$
+
 CREATE PROCEDURE sp_registrar_usuario(
    IN   _idpersona			VARCHAR(11),
    IN 	_idrol				INT,
@@ -12,10 +12,10 @@ BEGIN
     (idpersona, idrol, nombre_usuario, password_usuario) 
     VALUES (_idpersona, _idrol, _nombre_usuario, _password_usuario);
     SELECT LAST_INSERT_ID() AS idusuario;
-END$$
+END;
 
 -- Login 
-DELIMITER $$
+
 CREATE PROCEDURE sp_usuario_login(IN _nombre_usuario	VARCHAR(100))
 BEGIN
 SELECT
@@ -31,10 +31,10 @@ SELECT
 	INNER JOIN personas PER ON USU.idpersona = PER.idpersonanrodoc
     INNER JOIN roles ROL	ON USU.idrol = ROL.idrol
     WHERE USU.nombre_usuario = _nombre_usuario AND USU.estado=1;
-END$$
+END;
 
 -- Actualizar 
-DELIMITER $$
+
 CREATE PROCEDURE sp_actualizar_usuario(
 
    IN     _nombre_usuario		VARCHAR(100),
@@ -48,10 +48,10 @@ BEGIN
             password_usuario = _password_usuario,
             update_at = NOW()
 		WHERE idusuario = _idusuario;
-END$$
+END;
 
 -- Eliminar
-DELIMITER $$
+
 CREATE PROCEDURE sp_desactivar_usuario(
 	IN  _estado	CHAR(1),
     IN 	_nombre_usuario VARCHAR(100)
@@ -61,9 +61,9 @@ BEGIN
 		SET
 			estado = _estado
 		WHERE _nombre_usuario = nombre_usuario;
-END$$
+END;
 
-DELIMITER $$
+
 CREATE PROCEDURE sp_buscarusuarios_registrados(
 IN _idtipodocumento INT ,
 IN _idpersonanrodoc CHAR(11)
@@ -78,4 +78,4 @@ BEGIN
         LEFT JOIN usuarios USU ON USU.idpersona = PER.idpersonanrodoc
 		WHERE PER.idtipodocumento = _idtipodocumento
         AND PER.idpersonanrodoc = _idpersonanrodoc;
-END $$
+END;

@@ -1,6 +1,6 @@
-USE distribuMax;
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
+USE distribumax;
 -- REGISTRAR  ✔️ 
-DELIMITER $$
 CREATE PROCEDURE spu_registrar_personas(
 	IN  _idtipodocumento	INT,
     IN 	_idpersonanrodoc	CHAR(11),
@@ -25,10 +25,10 @@ BEGIN
         _direccion
         );
         SELECT _idpersonanrodoc AS id;
-END$$
+END;
 
 -- ACTUALIZAR  ✔️ 
-DELIMITER $$
+
 CREATE PROCEDURE sp_actualizar_persona(
     IN  _idtipodocumento	INT,
     IN 	_iddistrito			INT,	
@@ -51,10 +51,11 @@ BEGIN
 			direccion = _direccion,
 			update_at = NOW()
 		WHERE idpersonanrodoc = _idpersonanrodoc;
-END$$
+END;
+
 
 -- ELIMINAR PERSONA ✔️
-DELIMITER $$
+
 CREATE PROCEDURE sp_desactivar_persona(
 	IN  _estado				CHAR(1),
     IN 	_idpersonanrodoc 	CHAR(11)
@@ -66,10 +67,11 @@ BEGIN
 		WHERE idpersonanrodoc = _idpersonanrodoc;
         
         select row_count() as filas_afectadas;
-END $$
+END;
+
 
 -- BUSCAR PERSONA POR DOCUMENTO ✔️
-DELIMITER $$
+
 CREATE PROCEDURE sp_buscarpersonadoc(
 IN _idtipodocumento INT ,
 IN _idpersonanrodoc CHAR(11)
@@ -92,9 +94,10 @@ BEGIN
         LEFT JOIN usuarios USU ON USU.idpersona = PER.idpersonanrodoc
 		WHERE PER.idtipodocumento = _idtipodocumento
         AND PER.idpersonanrodoc = _idpersonanrodoc AND PER.estado = "1";
-END $$
+END;
 
-DELIMITER //
+
+
 CREATE PROCEDURE sp_listar_personas()
 BEGIN
     SELECT 
@@ -108,6 +111,4 @@ BEGIN
     FROM personas p
     INNER JOIN tipo_documento td ON p.idtipodocumento = td.idtipodocumento
     INNER JOIN distritos d ON p.iddistrito = d.iddistrito;
-END //
-
-CALL sp_listar_personas;
+END;

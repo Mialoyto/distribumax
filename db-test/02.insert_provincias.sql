@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 use distribumax;
 
 INSERT INTO provincias (iddepartamento, provincia) VALUES
@@ -197,5 +197,3 @@ INSERT INTO provincias (iddepartamento, provincia) VALUES
 (25, 'Coronel Portillo'),
 (25, 'Padre Abad'),
 (25, 'Purús');
-
-select * from provincias;

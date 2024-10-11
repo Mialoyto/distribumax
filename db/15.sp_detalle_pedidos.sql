@@ -1,9 +1,9 @@
 -- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
--- REGISTRAR DETALLE PEDIDOSDELIMITER $$
+-- REGISTRAR DETALLE PEDIDOS
 DROP PROCEDURE IF EXISTS sp_detalle_pedido;
-DELIMITER $$
+
 CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido            CHAR(15),
     IN _idproducto          INT,
@@ -29,12 +29,11 @@ BEGIN
     VALUES
     (_idpedido, _idproducto, _cantidad_producto, _unidad_medida, _precio_unitario, v_descuento, _subtotal);
     SELECT LAST_INSERT_ID() AS iddetallepedido;
-END$$
+END;
 
 
 -- ACTUALIZAR EL STOCK
-drop TRIGGER trg_actualizar_stock;
-DELIMITER $$
+DROP TRIGGER IF EXISTS trg_actualizar_stock;
 CREATE TRIGGER trg_actualizar_stock
 AFTER INSERT ON detalle_pedidos
 FOR EACH ROW
@@ -67,13 +66,13 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para esta operación';
     END IF;
-END$$
+END;
 
 
 
 -- ACTUALIZAR DETALLE PEDIDOS
 /** Se puede actualizar algun campo del proceso de actualizar PROBAR SI SE PUEDE ACTUALIZAR EL PRECIO UNITARIO**/
-DELIMITER $$
+
 CREATE PROCEDURE sp_actualizar_detalle_pedido(
     IN _idpedido          CHAR(15),
     IN _idproducto        INT,
@@ -88,11 +87,11 @@ BEGIN
             cantidad_producto   = _cantidad_producto,
             update_at           = now()
         WHERE iddetallepedido   = _iddetallepedido;
-END$$
+END;
 
 -- ESTADO DETALLE PEDIDOS
 /** Debe de poder eliminar el pedido **/
-DELIMITER $$
+
 CREATE PROCEDURE sp_estado_detalle_pedido(
     IN  _estado           CHAR(1),
     IN  _iddetallepedido  INT 
@@ -101,12 +100,12 @@ BEGIN
     UPDATE detalle_pedidos SET
         estado = _estado
         WHERE iddetallepedido = _iddetallepedido;
-END$$
+END;
 
 
 
 -- buscar productos por nombre o codigo y dependiendo del numero de ruc o dni del cliente cambia los precios
-DELIMITER $$
+
 CREATE PROCEDURE ObtenerPrecioProducto(
     IN _cliente_id       BIGINT,
     IN _item  VARCHAR(255)
@@ -135,13 +134,13 @@ BEGIN
     WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%'))
     AND PRO.estado = '1' 
     AND KAR.stockactual > 0;
-END $$
+END ;
 
 
 -- Obtener el Id del pedido y completar la tabla en ventas
 /* ESTO MODIFICO LOYOLA */
 DROP PROCEDURE IF EXISTS sp_getById_pedido;
-DELIMITER $$
+
 CREATE PROCEDURE sp_getById_pedido(
     IN _idpedido CHAR(15)
 ) 
@@ -174,8 +173,4 @@ BEGIN
         LEFT JOIN tipo_comprobante_pago tp  ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE p.idpedido = _idpedido
       AND ve.idventa IS NULL;
-END $$
-
-/* CALL sp_getById_pedido('PED-000000047');
-select * from detalle_pedidos;
-select * from pedidos;  */
+END ;

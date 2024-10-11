@@ -1,4 +1,3 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribuMax;
 USE distribuMax;
@@ -41,18 +40,6 @@ CREATE TABLE distritos(
         
         CONSTRAINT fk_idprovincia_dist FOREIGN KEY(idprovincia) REFERENCES provincias(idprovincia),
         CONSTRAINT fk_estado_dist CHECK(estado IN ("0", "1"))
-)ENGINE = INNODB;
-
-DROP TABLE IF EXISTS marcas;
-CREATE TABLE marcas(
-		idmarca		INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        marca		VARCHAR(150) NOT NULL,
-        
-        create_at		DATETIME NOT NULL DEFAULT NOW(),
-        update_at		DATETIME NULL,
-        estado			CHAR(1) NOT NULL DEFAULT "1",
-        CONSTRAINT uk_marca UNIQUE(marca),
-        CONSTRAINT fk_estado_mar CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
 DROP TABLE IF EXISTS categorias;
@@ -250,6 +237,19 @@ CREATE TABLE proveedores(
     CONSTRAINT fk_estado_proveedor CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
+DROP TABLE IF EXISTS marcas;
+CREATE TABLE marcas(
+		idmarca		INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        idproveedor INT NOT NULL,
+        marca		VARCHAR(150) NOT NULL,
+        
+        create_at		DATETIME NOT NULL DEFAULT NOW(),
+        update_at		DATETIME NULL,
+        estado			CHAR(1) NOT NULL DEFAULT "1",
+        CONSTRAINT uk_marca UNIQUE(marca),
+        CONSTRAINT fk_estado_mar CHECK(estado IN ("0", "1"))
+)ENGINE = INNODB;
+
 DROP TABLE IF EXISTS tipos_promociones;
 CREATE TABLE tipos_promociones (
     idtipopromocion   INT	NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -301,11 +301,11 @@ CREATE TABLE productos (
     nombreproducto          VARCHAR(250)   	NOT NULL,
     idunidadmedida          INT             NOT NULL,
     cantidad_presentacion   INT             NOT NULL,
-    peso_unitario           DECIMAL         NOT NULL,
+    peso_unitario           VARCHAR(10)     NULL,
     codigo                  CHAR(30)        NOT NULL,
     precio_compra           DECIMAL(10,2)   NOT NULL,
-    precio_minorista        DECIMAL(10,2)   NOT NULL,
     precio_mayorista        DECIMAL(10,2)   NOT NULL,
+    precio_minorista        DECIMAL(10,2)   NOT NULL,
 	create_at		        DATETIME        NOT NULL DEFAULT NOW(),
 	update_at		        DATETIME NULL,
     inactive_at             DATETIME NULL,

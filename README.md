@@ -22,3 +22,23 @@
 - Registro de Kardex %80.
 - Registro de Pedidos %90.
 - Registro de Ventas-Listado-Actualizar-Historial %80
+
+
+> **DEPENDECNIAS**
+> composer install
+
+
+> **MODIFICACION DE PHP.ini**
+> extension=fileinfo
+> extension=gd
+> extension=gettext
+> extension=gmp
+> extension=intl
+> extension=imap
+> extension=mbstring
+> extension=exif
+> extension=mysqli
+
+
+> **INSTALAR Dompdf**
+> composer require dompdf/dompdf

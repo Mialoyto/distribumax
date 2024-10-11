@@ -19,6 +19,7 @@
               <div class="form-floating">
                 <input type="search" class="form-control" id="idproveedor" name="idproveedor" placeholder="Proveedor" required>
                 <label for="idproveedor" class="form-label"> <i class="bi bi-search"></i> Buscar proveedor</label>
+                <ul id="list-proveedor" class="list-group position-absolute w-100 listarDatos" style="z-index: 1000; display: none;"></ul>
               </div>
             </div>
           </div>

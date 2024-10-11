@@ -40,9 +40,9 @@ BEGIN
     WHERE idmarca = _idmarca;
 END;
 
-DROP PROCEDURE IF EXISTS getMarcas;
-CREATE PROCEDURE getMarcas (
-    IN _idempresa   BIGINT
+DROP PROCEDURE IF EXISTS sp_getMarcas;
+CREATE PROCEDURE sp_getMarcas (
+    IN _idproveedor   VARCHAR(100)
     )
 BEGIN
 SELECT 
@@ -51,7 +51,7 @@ SELECT
 FROM marcas MAR
     RIGHT JOIN proveedores PRO ON MAR.idproveedor = PRO.idproveedor
 WHERE
-    PRO.idempresa = _idempresa
+    PRO.idproveedor = _idproveedor
     AND MAR.estado = 1
 ORDER BY MAR.marca ASC;
 END;

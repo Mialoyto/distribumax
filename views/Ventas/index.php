@@ -13,18 +13,15 @@ require_once '../../header.php';
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">
-              Cambiar estado
-            </h5>
+            <h5 class="modal-title">Cambiar estado</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form action="" id="">
+          <form id="form-cambiarestado">
             <div class="modal-body">
-
-              <Select class="form-select" id="estado">
+              <select class="form-select" id="estado">
                 <option value="">Seleccione...</option>
                 <option value="0">Cancelar</option>
-              </Select>
+              </select>
             </div>
           </form>
           <div class="modal-footer">
@@ -34,6 +31,7 @@ require_once '../../header.php';
         </div>
       </div>
     </div>
+
     <!-- Modal para mostrar productos -->
     <div class="modal fade" id="generarReporte" tabindex="-1" aria-labelledby="generarReporte" aria-hidden="true">
       <div class="modal-dialog">
@@ -106,6 +104,7 @@ require_once '../../header.php';
 </main>
 
 <script src="../../js/ventas/listar.js"></script>
+
 <?php
 require_once '../../footer.php';
 ?>

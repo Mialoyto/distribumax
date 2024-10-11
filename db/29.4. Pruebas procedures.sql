@@ -23,9 +23,20 @@ CALL spu_registrar_personas (
     'Calle Falsa 123' -- Dirección
 );
 
+
 CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
-    '26558002', -- Número de documento
+    '26558007', -- Número de documento
+    2, -- ID del distrito
+    'pepito', -- Nombres
+    'Levano', -- Apellido paterno
+    'Martinez', -- Apellido materno
+    NULL, -- Teléfono (NULL)
+    'Calle Falsa 123' -- Dirección
+);
+CALL spu_registrar_personas (
+    1, -- Tipo de documento (dni)
+    '26558006', -- Número de documento
     2, -- ID del distrito
     'pepito', -- Nombres
     'Levano', -- Apellido paterno
@@ -43,6 +54,7 @@ CALL sp_actualizar_persona (
     'Av.Chacarita #123',
     '26558000'
 );
+
 
 CALL sp_actualizar_persona (
     1,
@@ -81,9 +93,21 @@ CALL sp_desactivar_usuario (1, 'admin');
 -- REGISTRAR EMPRESAS
 
 CALL sp_empresa_registrar (
-    20123456782,
+    20123456772,
     954,
-    'Dijisaaa',
+    'Diejirsaaaa',
+    'Av. Bancarios ',
+    'santafe@gmail.com',
+    '987654321'
+);
+
+
+
+
+CALL sp_empresa_registrar (
+    20123456789,
+    954,
+    'Dirwsjia',
     'Av. Bancarios ',
     'santafe@gmail.com',
     '987654321'
@@ -104,7 +128,7 @@ CALL sp_actualizar_empresa (
 /* PROCEDIMIENTOS DE CLIENTES ✔️*/ 
 -- REGISTRAR CLIENTES
 CALL sp_cliente_registrar (26558001, NULL, 'Persona');
-CALL sp_cliente_registrar (NULL, 20123456781, 'Empresa');
+CALL sp_cliente_registrar (NULL, 20123456783, 'Empresa');
 select * from clientes;
 --  No debe de registrar a un cliente con dni y ruc
 -- CALL sp_cliente_registrar (26558000, 20123456781,'Empresa'); 

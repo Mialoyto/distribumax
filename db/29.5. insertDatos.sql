@@ -157,7 +157,7 @@ CALL sp_empresa_registrar (
     954,
     'JRC',
     'Av. Bancarios ',
-    'santafe@gmail.com',
+    'santa1fe@gmail.com',
     '987654321'
 ); 
 select * from proveedores;

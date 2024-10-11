@@ -56,7 +56,7 @@ require_once '../../header.php';
                 <th>Cliente</th>
                 <th>Documento</th>
                 <th>Fecha Venta</th>
-                <th>Acciones</th>
+               
               </tr>
             </thead>
             <tbody>

@@ -19,15 +19,62 @@ switch ($verbos) {
         case 'getAll':
 
           break;
+        case 'searProspecto':
+          $dato = [
+            'item' => $_GET['item'],
+            'tipo_cliente'=>$_GET['tipo_cliente']
+          ];
+
+          // Llamar al método y obtener los prospectos
+          $prospectos = $cliente->searProspecto($dato);
+
+          // Crear un array para la respuesta
+          $response = [];
+
+          // Recorrer los prospectos y agregar a la respuesta
+          foreach ($prospectos as $prospecto) {
+            $response[] = [
+              'tipo_cliente' => $prospecto['tipo_cliente'],
+              'identificador' => $prospecto['identificador'],
+              'nombre_razon_social' => $prospecto['nombre_razon_social'],
+              'apellido_direccion' => $prospecto['apellido_direccion'],
+              'nombres' => $prospecto['nombres'],
+              'direccion' => $prospecto['direccion'],
+              'email' => $prospecto['email'],
+              'distrito' => $prospecto['distrito'],
+              'estado' => $prospecto['estado'] // Agregar el estado aquí
+            ];
+          }
+
+          // Convertir la respuesta a JSON y enviarla
+          echo json_encode($response);
+          break;
       }
     }
-    break;
+  break;
+
+  case 'POST':
+    if(isset($_POST['operation'])){
+      
+      switch($_POST['operation']){
+        case 'addcliente':
+          $datos=[
+            'idpersona'=>$_POST['idpersona'],
+            'idempresa' =>$_POST['idempresa'],
+            'tipo_cliente'=>$_POST['tipo_cliente']
+          ];
+         $datos=$cliente->addcliente($datos);
+         echo json_encode(['id'=>$datos]);
+        break;
+      }
+    }
+  break;
 }
 
-if(isset($_GET['operation'])){
-  switch($_GET['operation']){
-      case 'getAll':
-          echo json_encode($cliente->getAll());
+if (isset($_GET['operation'])) {
+  switch ($_GET['operation']) {
+    case 'getAll':
+      echo json_encode($cliente->getAll());
       break;
   }
 }

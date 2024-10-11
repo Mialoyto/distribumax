@@ -107,9 +107,9 @@ BEGIN
             END IF;
 
             -- Llama al procedimiento para registrar el movimiento
-            CALL sp_registrarmovimiento_detallepedido(1, _idproducto, 0, 'Ingreso', _cantidad, 'Venta Cancelada');
+            CALL sp_registrarmovimiento_kardex(1, _idproducto, '','', 'Ingreso', _cantidad, 'Venta Cancelada');
         END LOOP;
-
+ 
         CLOSE cur;
     END IF;
 END //
@@ -256,7 +256,7 @@ BEGIN
     LEFT JOIN 
         tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE 
-        p.estado = 'Enviado' AND ve.estado='1'
+        p.estado = 'Cancelado' AND ve.estado='0'
         
        -- Filtra las ventas del día actual
     GROUP BY 
@@ -266,7 +266,7 @@ BEGIN
 END //
 
 call `sp_historial_ventas`
-
+select * from ventas;
 DROP PROCEDURE IF EXISTS `sp_getById_venta`;
 DELIMITER //
 CREATE PROCEDURE `sp_getById_venta`

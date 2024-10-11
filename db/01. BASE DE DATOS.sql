@@ -216,7 +216,7 @@ CREATE TABLE usuarios(
 DROP TABLES IF EXISTS clientes;
 CREATE TABLE clientes (
     idcliente       INT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idpersona       CHAR(11)    DEFAULT NULL,
+    idpersona       CHAR(11)   DEFAULT NULL,
     idempresa       BIGINT      DEFAULT NULL,
     tipo_cliente    CHAR(10)    NOT NULL,
     

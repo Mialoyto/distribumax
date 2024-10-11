@@ -2,7 +2,7 @@ USE distribumax;
 
 -- REGISTRAR TIPO DE COMPROBANTES
 DELIMITER $$
-CREATE PROCEDURE sp_tipo_comprobantes_registrar(
+CREATE PROCEDURE sp_tipo_comprobaantes_registrar(
     IN _comprobantepago		VARCHAR(150)
 )
 BEGIN

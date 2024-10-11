@@ -27,10 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td >${documento}</td>
                     <td>${element.fecha_venta}</td>
                     <td>
-                        <button class="btn btn-danger estado" 
-                            data-idventa="${element.idventa}">
-                            Estado
-                        </button>
+                      
                     </td>
                 </tr>
                 `;

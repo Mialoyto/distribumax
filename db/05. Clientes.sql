@@ -1,31 +1,35 @@
 USE distribumax;
 
 -- REGISTRAR CLIENTES
-DELIMITER $$
-
-CREATE PROCEDURE sp_cliente_registrar(
-	IN _idpersona 		CHAR(11),
-    IN _idempresa 		BIGINT,
-    IN _tipo_cliente    CHAR(10)
+DROP PROCEDURE IF EXISTS `sp_cliente_registrar`;
+DELIMITER //
+CREATE PROCEDURE `sp_cliente_registrar`(
+    IN _idpersona     CHAR(11),
+    IN _idempresa     BIGINT,
+    IN _tipo_cliente  CHAR(10)
 )
 BEGIN
-    IF _tipo_cliente = 'Persona'THEN
-        IF _idpersona IS NOT NULL AND _idempresa IS NULL THEN
-            INSERT INTO clientes 
-            (idpersona, idempresa, tipo_cliente) 
-            VALUES 
-            (_idpersona, NULL, _tipo_cliente);
+    IF _tipo_cliente = 'Persona' THEN
+        -- Insertar solo si _idpersona es no nulo
+        IF _idpersona IS NOT NULL THEN
+            INSERT INTO clientes (idpersona, idempresa, tipo_cliente) 
+            VALUES (_idpersona, NULL, _tipo_cliente);
         END IF;
-    ELSEIF _tipo_cliente = 'Empresa'THEN
-        IF _idempresa IS NOT NULL AND _idpersona IS NULL THEN
-            INSERT INTO clientes 
-            (idpersona, idempresa, tipo_cliente) 
-            VALUES 
-            (NULL, _idempresa, _tipo_cliente);
+    ELSEIF _tipo_cliente = 'Empresa' THEN
+        -- Insertar solo si _idempresa es no nulo
+        IF _idempresa IS NOT NULL THEN
+            INSERT INTO clientes (idpersona, idempresa, tipo_cliente) 
+            VALUES (NULL, _idempresa, _tipo_cliente);
         END IF;
     END IF;
-END$$
+END //
+DELIMITER ;
 
+ 
+ CALL sp_cliente_registrar('26558000',null,'Persona')
+ select * from clientes
+ select * from empresas
+  select * from personas
 -- ACTUALIZAR CLIENTES
 DELIMITER $$
 
@@ -109,7 +113,75 @@ BEGIN
         WHERE CLI.idpersona = _nro_documento OR CLI.idempresa =_nro_documento;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_buscar_prospectos`;
+DELIMITER //
 
+CREATE PROCEDURE `sp_buscar_prospectos`(
+    IN _item VARCHAR(50),
+    IN _tipo_cliente VARCHAR(10) -- Nuevo parámetro para filtrar el tipo de cliente ('Persona', 'Empresa' o 'Todos')
+)
+BEGIN
+    -- Condicional para personas
+    IF _tipo_cliente = 'Persona' OR _tipo_cliente = 'Todos' THEN
+        -- Consulta para personas
+        SELECT 
+            'Persona' AS tipo_cliente,
+            PER.idpersonanrodoc AS identificador,
+            PER.appaterno AS nombre_razon_social,
+            PER.apmaterno AS apellido_direccion,
+            PER.nombres AS nombres,
+            PER.direccion AS direccion,
+            NULL AS email, -- columna vacía para personas
+            DIS.distrito,
+            CASE 
+                WHEN EXISTS (
+                    SELECT 1 
+                    FROM clientes CLI 
+                    WHERE CLI.idpersona = PER.idpersonanrodoc
+                ) THEN 'Registrado'
+                ELSE 'No registrado'
+            END AS estado
+        FROM personas PER
+        INNER JOIN distritos DIS ON DIS.iddistrito = PER.iddistrito
+        WHERE PER.idpersonanrodoc LIKE _item;
+    END IF;
+
+    -- Condicional para empresas
+    IF _tipo_cliente = 'Empresa' OR _tipo_cliente = 'Todos' THEN
+        -- Consulta para empresas
+        SELECT 
+            'Empresa' AS tipo_cliente,
+            EMP.idempresaruc AS identificador,
+            EMP.razonsocial AS nombre_razon_social,
+            NULL AS apellido_direccion, -- columna vacía para empresas
+            NULL AS nombres,
+            EMP.direccion AS direccion,
+            EMP.email,
+            DIS.distrito,
+            CASE 
+                WHEN EXISTS (
+                    SELECT 1 
+                    FROM clientes CLI 
+                    WHERE CLI.idempresa = EMP.idempresaruc
+                ) THEN 'Registrado'
+                ELSE 'No registrado'
+            END AS estado
+        FROM empresas EMP
+        INNER JOIN distritos DIS ON DIS.iddistrito = EMP.iddistrito
+        WHERE EMP.idempresaruc LIKE _item;
+    END IF;
+END //
+
+CALL sp_buscar_prospectos ('20123456789','Empresa')
+
+
+
+
+
+CALL sp_buscar_prospectos ('26558007');'20123456784'
+select * from clientes
+select * from personas
+SELECT * FROM EMPRESAS
 -- LISTAR CLIENTES
 DELIMITER $$
 CREATE PROCEDURE sp_listar_clientes()

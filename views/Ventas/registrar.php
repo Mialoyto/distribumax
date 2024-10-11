@@ -18,6 +18,7 @@ require_once '../../header.php';
           <!-- Selección de Pedido -->
           <div class="mb-4">
             <h5>Cliente</h5>
+            <span class="badge text-bg-light text-uppercase text-end " id="iduser" >
             <div class="row mb-3">
               <div class="col-md-4">
                 <input type="text" class="form-control" id="tipocliente" placeholder="Tipo Cliente" readonly>
@@ -70,7 +71,7 @@ require_once '../../header.php';
             <div class="row mb-3">
               <div class="col-md-4">
                 <div class="form-floating">
-                  <input type="datetime-local" class="form-control" id="fecha_venta" name="fecha_venta" required>
+                  <input type="datetime-local" class="form-control" id="fecha_venta" name="fecha_venta" required readonly>
                   <label for="fecha_venta">Fecha de Venta</label>
                 </div>
               </div>

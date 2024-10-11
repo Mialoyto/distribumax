@@ -39,6 +39,7 @@ call sp_cliente_registrar('26558000');
 select * from clientes;
 CALL getSubcategorias (6);
 CALL getMarcas(20266352337);
+CALL sp_search_proveedor('proveedor');
 SELECT * FROM MARCAS;
 SELECT * FROM productos;
 SELECT * FROM PROVEEDORES;

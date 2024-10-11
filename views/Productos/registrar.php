@@ -13,6 +13,15 @@
       </div>
       <div class="card-body">
         <form method="POST" action="#" id="formRegistrarProducto">
+          <!-- FILA 04 -->
+          <div class="row mt-3">
+            <div class="col-md-12 mt-3">
+              <div class="form-floating">
+                <input type="search" class="form-control" id="idproveedor" name="idproveedor" placeholder="Proveedor" required>
+                <label for="idproveedor" class="form-label"> <i class="bi bi-search"></i> Buscar proveedor</label>
+              </div>
+            </div>
+          </div>
           <!-- FILA 01 -->
           <div class="row mt-3">
             <div class="col-md-4 mb-3">
@@ -69,16 +78,8 @@
           </div>
           <h5>Detalle del producto</h5>
           <hr>
+
           <!-- FILA 04 -->
-          <div class="row mt-3">
-            <div class="col-md-12 mt-3">
-              <div class="form-floating">
-                <input type="search" class="form-control" id="idproveedor" name="idproveedor" placeholder="Proveedor" required>
-                <label for="idproveedor" class="form-label">Buscar proveedor</label>
-              </div>
-            </div>
-          </div>
-          <!-- FILA 05 -->
           <div class="row mt-3">
             <div class="col-md-3 mt-3">
               <div class="form-floating">

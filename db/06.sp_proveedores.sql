@@ -1,3 +1,4 @@
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROOVEDORES
@@ -65,4 +66,20 @@ BEGIN
 	UPDATE proveedores SET
       estado=_estado
       WHERE idproveedor =_idproveedor;
+END;
+
+
+-- BUSCAR PROVEEDOR
+DROP PROCEDURE IF EXISTS sp_search_proveedor;
+CREATE PROCEDURE sp_search_proveedor(
+    IN _searchProveedor VARCHAR(100)
+)
+BEGIN
+    SELECT 
+        PROV.idproveedor,
+        PROV.idempresa,
+        PROV.proveedor
+    FROM proveedores PROV
+    WHERE (PROV.proveedor LIKE CONCAT('%',_searchProveedor,'%') OR PROV.idempresa LIKE CONCAT('%',_searchProveedor,'%'))
+    AND PROV.estado = '1';
 END;

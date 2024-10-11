@@ -1,3 +1,4 @@
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 use distribumax;
 INSERT INTO distritos (distrito, idprovincia) VALUES 
 ('CHACHAPOYAS', 1),

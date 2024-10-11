@@ -109,5 +109,3 @@ BEGIN
     INNER JOIN tipo_documento td ON p.idtipodocumento = td.idtipodocumento
     INNER JOIN distritos d ON p.iddistrito = d.iddistrito;
 END //
-
-CALL sp_listar_personas;

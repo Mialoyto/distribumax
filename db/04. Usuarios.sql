@@ -96,5 +96,17 @@ BEGIN
         roles r ON u.idrol = r.idrol;
 END $$
 
+DELIMITER //
+CREATE PROCEDURE VerificarUsuarioUnico(
+    IN _nombre_usuario VARCHAR(50),
+    OUT _unico TINYINT
+)
+BEGIN
+    -- Inicializa la variable de salida
+    SET _unico = 1; -- Suponemos que es único por defecto
 
-CALL spu_listar_usuarios();
+    -- Verificamos si el nombre de usuario ya existe
+    IF EXISTS (SELECT 1 FROM usuarios WHERE nombre_usuario = _nombre_usuario) THEN
+        SET _unico = 0; -- No es único
+    END IF;
+END //

@@ -1,4 +1,4 @@
--- Active: 1728058749643@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TABLAS NECESARIAS PARA REGISTRAR PERSONAS
 INSERT INTO tipo_documento (documento, descripcion) VALUES
@@ -129,23 +129,6 @@ INSERT INTO productos (idmarca, idsubcategoria, nombreproducto, descripcion, cod
 (7, 17, 'Dog Chow Adultos 4kg', 'Alimento balanceado para perros adultos', 'MASC001PER'),
 (7, 17, 'Dog Chow Cachorros 2kg', 'Alimento para cachorros', 'MASC002PER');
 
-select * from tipos_promociones;
-DELETE FROM tipos_promociones WHERE descripcion='solo aplica a productos seleccionados';
-INSERT INTO tipos_promociones (tipopromocion, descripcion) VALUES 
-('Descuento por volumen', 'Descuento aplicado al comprar una cantidad mínima de productos.'),
-('2x1 en productos seleccionados', 'Compra dos productos y paga solo uno.'),
-('Descuento por temporada', 'Descuento especial durante temporadas específicas.'),
-('Combo promocional', 'Combo de productos con precio reducido al comprarlos juntos.'),
-('Descuento para clientes frecuentes', 'Descuento exclusivo para clientes que han realizado más de tres compras.');
-
-INSERT INTO promociones (idtipopromocion, descripcion, fechainicio, fechafin, valor_descuento) VALUES 
-(1, '10% de descuento en la compra de 10 cajas de galletas', '2024-10-01', '2024-10-31', 10.00),
-(2, 'Compra 2 cajas de leche y paga solo 1', '2024-10-05', '2024-10-15', 50.00),
-(3, 'Descuento del 15% por el Día de la Madre en todas las golosinas', '2024-05-01', '2024-05-10', 15.00),
-(4, 'Combo especial de galletas y leche con 20% de descuento', '2024-11-01', '2024-11-30', 20.00),
-(5, '5% de descuento adicional para clientes que hayan realizado 3 compras en el último mes', '2024-10-01', '2024-12-31', 5.00);
-
-
 -- Subcategoría Alimento para Gatos (idsubcategoria = 18)
 -- Marca Pedigree (idmarca = 8)
 INSERT INTO productos (idmarca, idsubcategoria, nombreproducto, descripcion, codigo) VALUES 
@@ -160,15 +143,13 @@ CALL sp_empresa_registrar (
     'santa1fe@gmail.com',
     '987654321'
 ); 
-select * from proveedores;
+
 
 -- Insertar un registro en la tabla proveedores
 INSERT INTO proveedores (idempresa, proveedor, contacto_principal, telefono_contacto, direccion, email)
 VALUES 
 (20123456783, 'Proveedor Ejemplo', 'Juan Pérez', '987654321', 'Av. Principal 123, Ciudad', 'contacto@proveedorejemplo.com');
 
-select * from proveedores;
-select * from unidades_medidas;
 -- Insertar registros en detalle_productos sin las columnas create_at y estado
 INSERT INTO detalle_productos (idproveedor, idproducto, idunidadmedida, precio_compra, precio_venta_minorista, precio_venta_mayorista)
 VALUES
@@ -195,19 +176,13 @@ VALUES
     (1, 18, 2, 12.00, 17.00, 15.00);
 
 
--- select * from detalle_productos
-SELECT * FROM productos;
 
 INSERT INTO tipos_promociones (tipopromocion, descripcion)
 VALUES ('Descuento de Temporada', 'Descuento especial aplicado durante la temporada de invierno.');
 INSERT INTO tipos_promociones (tipopromocion, descripcion)
 VALUES ('Porcentaje', 'Se aplica un porcentaje de descuento por und.');
 
-SELECT * FROM tipos_promociones;
-SELECT * FROM promociones;
-SELECT * FROM detalle_promociones;
--- Registrando 2 metodos de pago
- -- Segundo método de pago
+
 
 INSERT INTO promociones (idtipopromocion, descripcion, fechainicio, fechafin, valor_descuento)
 VALUES
@@ -218,14 +193,9 @@ VALUES
 
 INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
 VALUES (1, 1, 5.00);
-select * from promociones;
-select * from detalle_promociones;
+
 INSERT INTO detalle_promociones (idpromocion, idproducto, descuento)
 VALUES (2, 2, 5.00);
 -- Registrando vehiculos (2 vehiculos)
-INSERT INTO vehiculos (idusuario, marca_vehiculo, modelo, placa, capacidad, condicion)
-VALUES
-    (1, 'Toyota', 'Corolla', 'ABC123', 5, 'operativo' ),
-    (1, 'Honda', 'Civic', 'XYZ789', 5, 'operativo' );
 
-SELECT * FROM vehiculos;
+

@@ -26,4 +26,3 @@ INSERT INTO departamentos (departamento) VALUES
 ('Tacna'),
 ('Tumbes'),
 ('Ucayali');
-select * from departamentos;

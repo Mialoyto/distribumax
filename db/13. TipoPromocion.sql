@@ -14,7 +14,6 @@ BEGIN
     SELECT LAST_INSERT_ID() as "id";
 END$$
 
-select * from tipos_promociones;
 -- ACTUALIZAR TIPO DE PROMOCIONES
 DELIMITER $$
 CREATE PROCEDURE sp_actualizar_tipo_promocion(
@@ -64,5 +63,3 @@ BEGIN
     ORDER BY 
         create_at DESC;
 END $$
-CALL sp_listar_tipo_promociones();
-

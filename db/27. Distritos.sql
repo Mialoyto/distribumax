@@ -22,8 +22,6 @@ WHERE
 END IF;
 END$$
 
--- call sp_buscardistrito('chincha');
-
 
 -- LISTAR DISTRITOS
 CREATE VIEW view_distritos  AS

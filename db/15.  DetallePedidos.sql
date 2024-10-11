@@ -1,4 +1,4 @@
--- Active: 1728058749643@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR DETALLE PEDIDOSDELIMITER $$
@@ -33,7 +33,6 @@ END$$
 
 
 -- ACTUALIZAR EL STOCK
-drop TRIGGER trg_actualizar_stock;
 DELIMITER $$
 CREATE TRIGGER trg_actualizar_stock
 AFTER INSERT ON detalle_pedidos
@@ -175,7 +174,3 @@ BEGIN
     WHERE p.idpedido = _idpedido
       AND ve.idventa IS NULL;
 END $$
-
-/* CALL sp_getById_pedido('PED-000000047');
-select * from detalle_pedidos;
-select * from pedidos;  */

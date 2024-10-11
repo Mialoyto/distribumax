@@ -12,6 +12,3 @@ CREATE PROCEDURE `sp_registrar_detalleMetodo`
 	INSERT INTO detalle_meto_Pago(idventa,idmetodopago,monto)VALUES(_idventa,_idmetodopago,_monto);
     SELECT last_insert_id() AS iddetalle_pago;
 END //
-
-
-select * from detalle_meto_Pago

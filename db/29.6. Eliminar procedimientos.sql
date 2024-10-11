@@ -1,4 +1,4 @@
--- Active: 1726291702198@@localhost@3306@distribumax
+/* -- Active: 1726291702198@@localhost@3306@distribumax
 USE distribuMax;
 -- 02 personas
 DROP PROCEDURE IF EXISTS spu_registrar_personas;
@@ -132,3 +132,4 @@ DROP PROCEDURE IF EXISTS sp_registrarmovimiento_detallepedido;
 
 
 
+ */

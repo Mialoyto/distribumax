@@ -25,11 +25,6 @@ BEGIN
 END //
 DELIMITER ;
 
- 
- CALL sp_cliente_registrar('26558000',null,'Persona')
- select * from clientes
- select * from empresas
-  select * from personas
 -- ACTUALIZAR CLIENTES
 DELIMITER $$
 
@@ -86,7 +81,7 @@ END$$
 -- BUSCAR CLIENTE POR DNI O RUC
 DROP PROCEDURE IF EXISTS `sp_buscar_cliente`;
 DELIMITER $$
-CREATE PROCEDURE`sp_buscar_cliente` (
+CREATE PROCEDURE `sp_buscar_cliente` (
     IN _nro_documento CHAR(12)
 )
 BEGIN
@@ -172,16 +167,6 @@ BEGIN
     END IF;
 END //
 
-CALL sp_buscar_prospectos ('20123456789','Empresa')
-
-
-
-
-
-CALL sp_buscar_prospectos ('26558007');'20123456784'
-select * from clientes
-select * from personas
-SELECT * FROM EMPRESAS
 -- LISTAR CLIENTES
 DELIMITER $$
 CREATE PROCEDURE sp_listar_clientes()

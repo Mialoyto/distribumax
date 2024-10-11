@@ -3,6 +3,8 @@ USE distribumax;
 select * from categorias;
 select * from subcategorias;
 select * from productos;
+select * from proveedores;
+
 
 
 

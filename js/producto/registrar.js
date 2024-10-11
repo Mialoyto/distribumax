@@ -30,37 +30,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
-  // Función asincrónica para obtener marcas y subcategorías
-  async function obtenerMarcasYSubcategorias() {
-    try {
-      // Obtener marcas
-      const responseMarcas = await fetch(`../../controller/marca.controller.php?operation=getAll`);
-      const marcas = await responseMarcas.json();
-      marcas.forEach(element => {
-        const tagOption = document.createElement('option');
-        tagOption.value = element.idmarca;
-        tagOption.innerText = element.marca;
-        optionEmpresa.appendChild(tagOption);
-      });
+  // obtener proveedores
 
-      // Obtener subcategorías
-      const responseSubcategorias = await fetch(`../../controller/subcategoria.controller.php?operation=getAll`);
-      const subcategorias = await responseSubcategorias.json();
-      console.log(subcategorias);
-      subcategorias.forEach(element => {
-        const tagOption = document.createElement('option');
-        tagOption.value = element.idsubcategoria;
-        tagOption.innerText = element.subcategoria;
-        optionsub.appendChild(tagOption);
-      });
+  async function getProveedor(proveedor) {
+    const params = new URLSearchParams();
+    params.append('operation', 'getProveedor');
+    params.append('proveedor', proveedor);
+    try {
+      const response = await fetch(`../../controller/proveedor.controller.php?${params}`);
+      return response.json();
+
     } catch (e) {
       console.error(e);
     }
   }
 
-  // Llamar a la función para obtener marcas y subcategorías
-  obtenerMarcasYSubcategorias();
+  async function renderData() {
+    const response = await getProveedor(proveedores);
+    $("#list-proveedor").innerHTML = "";
+    // console.log(response);
+    if (response.data.length > 0) {
+      $("#list-proveedor").style.display = "block";
 
+      response.data.forEach(item => {
+        const li = document.createElement("li");
+        li.classList.add("list-group-item");
+        li.innerHTML = `${item.proveedor} <h6 class="btn btn-secondary btn-sm h-25 d-inline-block">${item.idempresa}</h6>`;
+        li.addEventListener("click", () => {
+          $("#list-proveedor").innerHTML = ``;
+          $("#idproveedor").setAttribute("data-id", item.idproveedor);
+          $("#idproveedor").value = item.proveedor;
+        });
+        $("#list-proveedor").appendChild(li);
+      });
+    }
+  }
+  let proveedores;
+  $("#idproveedor").addEventListener("input", async () => {
+    await renderData();
+    proveedores = $("#idproveedor").value;
+    if (proveedores === "") {
+      $("#list-proveedor").style.display = "none";
+      $("#list-proveedor").innerHTML = "";
+    }
+  });
+
+  // Llamar a la función para obtener marcas y subcategorías
   async function registrarproducto() {
     const params = new FormData();
     params.append('operation', 'addProducto');

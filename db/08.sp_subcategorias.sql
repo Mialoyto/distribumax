@@ -39,8 +39,26 @@ BEGIN
         WHERE idsubcategoria = _idsubcategoria;
 END;
 
--- LISTAR SUBCATEGORIAS
 
+
+DROP PROCEDURE IF EXISTS getSubcategorias;
+CREATE PROCEDURE getSubcategorias (
+    IN _idcategoria INT
+    ) 
+BEGIN
+SELECT SUB.idsubcategoria, SUB.subcategoria
+FROM
+    categorias CAT
+    RIGHT JOIN subcategorias SUB ON CAT.idcategoria = SUB.idcategoria
+WHERE
+    CAT.idcategoria = _idcategoria
+    AND CAT.estado = 1
+    AND SUB.estado = 1
+ORDER BY SUB.idsubcategoria ASC;
+END;
+
+
+-- LISTAR SUBCATEGORIAS
 CREATE VIEW vw_listar_subcategorias AS
     SELECT idsubcategoria,subcategoria FROM subcategoriaS
     WHERE estado = '1'

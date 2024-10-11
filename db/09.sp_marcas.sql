@@ -40,6 +40,24 @@ BEGIN
     WHERE idmarca = _idmarca;
 END;
 
+DROP PROCEDURE IF EXISTS getMarcas;
+CREATE PROCEDURE getMarcas (
+    IN _idempresa   BIGINT
+    )
+BEGIN
+SELECT 
+    MAR.idmarca, 
+    MAR.marca
+FROM marcas MAR
+    RIGHT JOIN proveedores PRO ON MAR.idproveedor = PRO.idproveedor
+WHERE
+    PRO.idempresa = _idempresa
+    AND MAR.estado = 1
+ORDER BY MAR.marca ASC;
+END;
+
+
+
 -- LISTAR MARCAS
 CREATE VIEW vw_listar_marcas AS
 SELECT idmarca, marca

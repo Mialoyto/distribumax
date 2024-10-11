@@ -65,23 +65,23 @@ CALL sp_proovedor_registrar (
 
 /* REGISTRAR MARCAS */
 -- Registrar las marcas
-CALL sp_registrar_marca (20100085063, 'Ajinomoto');
+CALL sp_registrar_marca (1, 'Ajinomoto');
 
-CALL sp_registrar_marca (20100085063, 'Ajino-men');
+CALL sp_registrar_marca (1, 'Ajino-men');
 
-CALL sp_registrar_marca (20100085063, 'Ajino-mix');
+CALL sp_registrar_marca (1, 'Ajino-mix');
 
-CALL sp_registrar_marca (20100055237, 'Primor');
+CALL sp_registrar_marca (2, 'Primor');
 
-CALL sp_registrar_marca (20100055237, 'Casino');
+CALL sp_registrar_marca (2, 'Casino');
 
-CALL sp_registrar_marca (20100055237, 'Glacitas');
+CALL sp_registrar_marca (2, 'Glacitas');
 
-CALL sp_registrar_marca (20266352337, 'Elite');
+CALL sp_registrar_marca (3, 'Elite');
 
-CALL sp_registrar_marca (20266352337, 'Babysec');
+CALL sp_registrar_marca (3, 'Babysec');
 
-CALL sp_registrar_marca (20266352337, 'Ladysoft');
+CALL sp_registrar_marca (3, 'Ladysoft');
 
 /* REGISTRAR CATEGORIAS  */
 

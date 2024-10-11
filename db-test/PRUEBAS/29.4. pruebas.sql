@@ -37,6 +37,12 @@ SELECT * FROM detalle_productos;
 
 call sp_cliente_registrar('26558000');
 select * from clientes;
+CALL getSubcategorias (6);
+CALL getMarcas(20266352337);
+SELECT * FROM MARCAS;
+SELECT * FROM productos;
+SELECT * FROM PROVEEDORES;
+
 
 SELECT * FROM proveedores;
 SHOW COLUMNS FROM tipos_promociones;

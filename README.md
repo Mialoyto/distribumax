@@ -40,6 +40,9 @@
   extension=mbstring
   extension=exif
   extension=mysqli
+  extension=openssl
+  extension=dom
+
 ```
 
 **INSTALAR Dompdf**

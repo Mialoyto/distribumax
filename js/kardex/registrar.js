@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let stock = $("#stockactual");
   let datalist = $("#listProductKardex");
   let medida = $("#medida");
+  let cantidad = $("#cantidad");
 
   let producto = "";
   // OK ✔️
@@ -57,9 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         datalist.appendChild(li);
       });
-      if (response.data.stockactual == 0) {
-        alert("Producto sin stock");
-      }
     }
   };
   // OK ✔️
@@ -71,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // PROBANDO EL REGISTRO DE KARDEX
   let fecha;
   let anio;
-  $("#fechaVP").addEventListener("change", () => {
+  $("#fechaVP").addEventListener("input", () => {
     fecha = $("#fechaVP").value;
     anio = new Date(fecha).getFullYear();
     console.log(fecha);
@@ -92,6 +90,45 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
   });
+
+  /*   $("#cantidad").addEventListener("input", async () => {
+      const data = await searchProducto(producto);
+      console.log(data.data[0].stockactual);
+  
+    }) */
+
+  async function validarFormulario() {
+    const data = await searchProducto(producto)
+    const stock = data.data[0].stockactual;
+    const movimiento = $("#tipomovimiento");
+
+    if (stock == 0 && movimiento.value == 'Salida') {
+      showToast(`Este producto no cuenta con stock, registre un movimiento tipo 'Ingreso'.`, 'info', 'INFO');
+      return;
+    }
+    else if ((stock < cantidad.value) && (movimiento.value == 'Salida')) {
+      showToast(`La cantidad no debe ser mayor al stock actual de ${stock}`, "warning", "WARNING");
+      return;
+    } else if (cantidad.value <= 0) {
+      showToast(`La cantidad debe ser mayor a 0`, "warning", "WARNING");
+      return;
+    } else if (fecha <= new Date().toISOString().split("T")[0]) {
+      showToast(
+        "La fecha de vencimiento debe ser mayor a la fecha actual",
+        "warning",
+        "WARNING",
+        2500
+      );
+      return;
+    } else if ($("#loteP").value == "") {
+      showToast("El campo lote es obligatorio", "warning", "WARNING", 2500);
+      return;
+    }
+
+
+  }
+
+  // funcion para registrar en le kardex 
   async function registrarkardex() {
     const params = new FormData();
     params.append("operation", "add");
@@ -124,40 +161,31 @@ document.addEventListener("DOMContentLoaded", () => {
   // EVENTO DE REGISTRO DE KARDEX
   $("#form-registrar-kardex").addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (fecha <= new Date().toISOString().split("T")[0]) {
-      showToast(
-        "La fecha de vencimiento debe ser mayor a la fecha actual",
-        "warning",
-        "WARNING",
-        2500
-      );
-      return;
-    } else {
-      if (
-        await showConfirm(
-          "¿Desea registrar el producto en el kardex?",
-          "Kardex"
-        )
-      ) {
-        const resultado = await registrarkardex();
-        if (resultado.estado) {
-          showToast(
-            "Registro exitoso del producto en el kardex",
-            "success",
-            "SUCCESS",
-            2500
-          );
-          $("#form-registrar-kardex").reset();
-        } else {
-          showToast(
-            "Error al registrar el producto en el kardex",
-            "error",
-            "ERROR",
-            2500
-          );
-        }
+
+    validarFormulario();
+    if (
+      await showConfirm(
+        "¿Desea registrar el producto en el kardex?",
+        "Kardex"
+      )
+    ) {
+
+      const resultado = await registrarkardex();
+      if (resultado.estado) {
+        showToast(
+          "Registro exitoso del producto en el kardex",
+          "success",
+          "SUCCESS",
+          2500
+        );
+        $("#form-registrar-kardex").reset();
       } else {
-        showToast("Registro cancelado", "error", "ERROR", 2500);
+        showToast(
+          "Error al registrar el producto en el kardex",
+          "error",
+          "ERROR",
+          2500
+        );
       }
     }
   });

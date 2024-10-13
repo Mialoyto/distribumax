@@ -169,8 +169,8 @@ CALL sp_registrar_producto(
     '27 GR',       -- pesoUnitario
     'AJI-SZ-001',   -- codigo
     10.50,          -- precioCompra
-    15.00,          -- precioMinorista
-    13.03           -- precioMayorita
+    13.03,           -- precioMayorita
+    15.00           -- precioMinorista
 );
 
 CALL sp_registrar_producto(
@@ -212,8 +212,8 @@ CALL sp_registrar_producto(
     '80 GR',        -- pesoUnitario
     'AJI-RM-002',   -- codigo
     28.00,          -- precioCompra
-    31.50,          -- precioMinorista
-    30.00           -- precioMayorita
+    30.00,           -- precioMayorita
+    31.50          -- precioMinorista
 );
 
 /* Alicorp - Aceite de Oliva */
@@ -299,8 +299,8 @@ CALL sp_registrar_producto(
     '18 m',       -- pesoUnitario
     'ELI-PH-002',   -- codigo
     14.00,          -- precioCompra
-    18.00,          -- precioMinorista
-    17.00           -- precioMayorista
+    17.00,           -- precioMayorista
+    18.00          -- precioMinorista
 );
 
 /* Softys - Pañales */
@@ -314,8 +314,8 @@ CALL sp_registrar_producto(
     '',       -- pesoUnitario
     'BBS-PN-001',   -- codigo
     30.00,          -- precioCompra
-    38.00,          -- precioMinorista
-    35.00           -- precioMayorista
+    35.00,           -- precioMayorista
+    38.00          -- precioMinorista
 );
 
 CALL sp_registrar_producto(
@@ -328,6 +328,6 @@ CALL sp_registrar_producto(
     '',       -- pesoUnitario
     'BBS-PN-002',   -- codigo
     32.00,          -- precioCompra
-    40.00,          -- precioMinorista
-    37.00           -- precioMayorista
+    37.00,           -- precioMayorista
+    40.00          -- precioMinorista
 );

@@ -52,7 +52,88 @@ SELECT * FROM MARCAS;
 SELECT * FROM productos;
 SELECT * FROM PROVEEDORES;
 
+SELECT 
+    KAR.idproducto,
+    PRO.nombreproducto,
+    KAR.numlote,
+    KAR.stockactual,
+    KAR.tipomovimiento
+FROM kardex KAR
+    LEFT JOIN productos PRO ON KAR.idproducto = PRO.idproducto
+    SELECT KAR.numlote,KAR.idproducto, MAX(KAR.stockactual) 
+    FROM kardex KAR
+    GROUP BY idproducto, numlote
+;
 
+
+SELECT 
+    KAR.idproducto,
+    PRO.nombreproducto,
+    KAR.numlote,
+    KAR.stockactual,
+    KAR.tipomovimiento
+FROM kardex KAR
+INNER JOIN productos PRO ON KAR.idproducto = PRO.idproducto
+INNER JOIN (
+    SELECT idproducto, numlote, MAX(stockactual) AS max_stock 
+    FROM kardex 
+    GROUP BY idproducto, numlote
+) AS MaxKAR ON KAR.idproducto = MaxKAR.idproducto 
+            AND KAR.numlote = MaxKAR.numlote 
+            AND KAR.stockactual = MaxKAR.max_stock;
+
+
+
+
+
+--  LISTAR PRODUCTOS CON STOCK ACTUAL POR IDPRODUCTO Y NUMLOTE
+SELECT 
+    KAR.idproducto,
+    PRO.nombreproducto,
+    KAR.numlote,
+    KAR.fecha_vencimiento,
+    SUM(KAR.stockactual ) AS stock_total,
+    KAR.tipomovimiento
+FROM kardex KAR
+LEFT JOIN productos PRO ON KAR.idproducto = PRO.idproducto
+GROUP BY KAR.idproducto, KAR.numlote
+ORDER BY KAR.idproducto, KAR.numlote;
+
+SELECT
+    SUM(
+        CASE 
+            WHEN KAR.tipomovimiento = 'Ingreso' THEN KAR.cantidad
+            WHEN KAR.tipomovimiento = 'Salida' THEN -KAR.cantidad
+            ELSE 0
+        END
+        
+        ) AS stock_total
+    FROM kardex KAR
+    WHERE KAR.idproducto = 1;
+
+
+    
+CREATE VIEW vw_stock_total AS
+SELECT 
+    KAR.idproducto,
+    PRO.nombreproducto,
+    KAR.numlote,
+    KAR.fecha_vencimiento,
+    SUM(CASE 
+        WHEN KAR.tipomovimiento = 'Ingreso' THEN KAR.cantidad
+        WHEN KAR.tipomovimiento = 'Salida' THEN -KAR.cantidad
+        ELSE 0
+    END) AS stock_total
+FROM kardex KAR
+INNER JOIN productos PRO ON KAR.idproducto = PRO.idproducto
+GROUP BY KAR.idproducto, PRO.nombreproducto, KAR.numlote, KAR.fecha_vencimiento;
+
+DROP VIEW IF EXISTS vw_stock_total;
+SELECT * FROM vw_stock_total;
+
+
+SELECT * FROM PRODUCTOS;
+select * from kardex;
 SELECT * FROM proveedores;
 SHOW COLUMNS FROM tipos_promociones;
 
@@ -166,3 +247,24 @@ CALL sp_registrar_producto(
     5.10,
     4.60
 );
+
+CALL ObtenerPrecioProducto(2655800, 'Galletas Casino');
+
+
+SELECT * FROM kardex 
+WHERE (idproducto,stockactual) IN(
+    SELECT idproducto, MAX(stockactual) 
+    FROM kardex
+    GROUP BY idproducto
+);
+
+SELECT *
+FROM kardex k1
+JOIN (
+    SELECT idproducto, MAX(create_at) AS last_fecha
+    FROM kardex
+    GROUP BY idproducto
+) AS k2 ON k1.idproducto = k2.idproducto AND k1.create_at = k2.last_fecha;
+
+select * from clientes;
+SELECT * FROM productos;

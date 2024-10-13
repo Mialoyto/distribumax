@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR DETALLE PEDIDOS
@@ -105,10 +105,11 @@ END;
 
 
 -- buscar productos por nombre o codigo y dependiendo del numero de ruc o dni del cliente cambia los precios
+DROP PROCEDURE IF EXISTS ObtenerPrecioProducto;
 
 CREATE PROCEDURE ObtenerPrecioProducto(
-    IN _cliente_id       BIGINT,
-    IN _item  VARCHAR(255)
+    IN _cliente_id      BIGINT,
+    IN _item            VARCHAR(255)
 )
 BEGIN
     SELECT 
@@ -118,15 +119,14 @@ BEGIN
         DET.descuento,
         UNDM.unidadmedida,
         CASE 
-            WHEN LENGTH(CLI.idpersona) = 8 THEN DETP.precio_venta_minorista
-            WHEN LENGTH(CLI.idempresa) = 11 THEN DETP.precio_venta_mayorista
+            WHEN LENGTH(CLI.idempresa) = 11 THEN PRO.precio_mayorista
+            WHEN LENGTH(CLI.idpersona) = 8 THEN PRO.precio_minorista
         END 
         AS precio_venta,
         kAR.stockactual
     FROM  productos PRO
         LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
-        LEFT JOIN detalle_productos DETP ON PRO.idproducto = DETP.idproducto
-        INNER JOIN unidades_medidas UNDM ON UNDM.idunidadmedida = DETP.idunidadmedida
+        INNER JOIN unidades_medidas UNDM ON PRO.idunidadmedida = UNDM.idunidadmedida
         INNER JOIN clientes CLI ON CLI.idempresa = _cliente_id OR CLI.idpersona = _cliente_id
         -- kardex
         INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto

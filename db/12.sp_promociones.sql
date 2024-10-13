@@ -1,22 +1,49 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 
--- REGISTRAR PROMOCIONES
+-- REGISDTRAR PROMOCIONES
+DROP PROCEDURE IF EXISTS sp_promocion_registrar;
 
 CREATE PROCEDURE sp_promocion_registrar(
-	IN _idpromocion      	INT,
     IN _idtipopromocion       INT,
     IN _descripcion       	  VARCHAR(250),
-    IN _fechaincio    		  DATETIME,
-    IN _fechafin			  DATETIME,
-    IN _valor_descuento  	  DECIMAL(8, 2),
-    IN _estado				  BIT
+    IN _fechainicio    		  DATE,
+    IN _fechafin			  DATE,
+    IN _valor_descuento  	  DECIMAL(8, 2)
 )
 BEGIN
+
+    IF _fechainicio < CURDATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'La fecha de inicio debe ser mayor o igual a la fecha actual';
+    END IF;
+
+    -- Validar que fechafin sea mayor a la fecha actual
+    IF _fechafin <= CURDATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'La fecha de finalización debe ser mayor a la fecha actual';
+    END IF;
+
+    -- Validar que fechafin sea mayor que fechainicio
+    IF _fechafin <= _fechainicio THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'La fecha de finalización debe ser mayor que la fecha de inicio';
+    END IF;
+
     INSERT INTO promociones
-    (idpromocion,idtipopromocion, descripcion, fechaincio, fechafin, valor_descuento, estado) 
+    (
+    idtipopromocion, 
+    descripcion, 
+    fechainicio, 
+    fechafin, 
+    valor_descuento) 
     VALUES 
-    (_idpromocion,_idtipopromocion, _descripcion, _fechaincio, _fechafin, _valor_descuento, _estado);
+    (
+    _idtipopromocion,
+    _descripcion,
+    _fechainicio,
+    _fechafin,
+    _valor_descuento);
 END;
 
 -- ACTUALIZAR PROMOCIONES
@@ -28,7 +55,7 @@ CREATE PROCEDURE sp_actualizar_promocion(
     IN _fechaincio			DATETIME,
     IN _fechafin			DATETIME,
 	IN _valor_descuento  	DECIMAL(8, 2),
-	IN _estado					BIT
+	IN _estado				CHAR(1)
 )
 BEGIN
 	UPDATE promociones
@@ -52,8 +79,8 @@ IN  _idpromocion 	INT
 )
 BEGIN
 	UPDATE promociones SET
-      estado=_estado
-      WHERE idpromocion =_idpromocion;
+        estado=_estado
+        WHERE idpromocion =_idpromocion;
 END;
 
 -- PROCEDIMIENTO PARA LISTAR PROMOCIONES
@@ -73,4 +100,3 @@ BEGIN
     ORDER BY 
         p.fechainicio DESC;
 END ;
-

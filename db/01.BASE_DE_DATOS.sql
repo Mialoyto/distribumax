@@ -270,12 +270,13 @@ CREATE TABLE promociones(
     fechainicio			DATE            NOT NULL,
     fechafin			DATE            NOT NULL,
 	valor_descuento  	DECIMAL(8, 2)   NOT NULL,
-    create_at		    DATETIME        NOT NULL DEFAULT NOW(),
-	update_at		    DATETIME        NULL,
+    create_at		    DATE            NOT NULL DEFAULT NOW(),
+	update_at		    DATE            NULL,
 	estado			    CHAR(1)         NOT NULL DEFAULT "1",
 	CONSTRAINT fk_idtipopromociones FOREIGN KEY(idtipopromocion) REFERENCES tipos_promociones(idtipopromocion),
     CONSTRAINT ck_valor_descuento CHECK (valor_descuento > 0),
-    CONSTRAINT fk_estado_prom  CHECK(estado IN ("0", "1"))
+    CONSTRAINT fk_estado_prom  CHECK(estado IN ("0", "1")),
+    CONSTRAINT ck_fecha_fin_mayor_inicio CHECK (fechafin > fechainicio)
 ) ENGINE=INNODB;
 
 DROP TABLE IF EXISTS unidades_medidas;
@@ -336,25 +337,6 @@ CREATE TABLE detalle_promociones(
         CONSTRAINT fk_estado_deta_prom  CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
 
-
--- BORRAR
-/* DROP TABLE IF EXISTS detalle_productos;
-CREATE TABLE detalle_productos(
-    id_detalle_producto		INT	NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idproveedor				INT NOT NULL,
-    idproducto				INT NOT NULL,
-    idunidadmedida          INT NOT NULL,
-    precio_compra           DECIMAL(10, 2) NOT NULL, -- Nuevo: Precio de compra
-    precio_venta_minorista  DECIMAL(10, 2) NOT NULL DEFAULT 0.00, -- Nuevo: Precio de venta minorista
-    precio_venta_mayorista  DECIMAL(10, 2) NOT NULL DEFAULT 0.00, -- Precio mayorista
-    create_at				DATETIME NOT NULL DEFAULT NOW(),
-    update_at				DATETIME NULL,
-    estado          		CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT fk_idproveedor_deta_prod FOREIGN KEY(idproveedor) REFERENCES proveedores(idproveedor),
-    CONSTRAINT fk_idproducto_deta_prod FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
-    CONSTRAINT uk_idproducto_deta_prod UNIQUE(idproducto),
-    CONSTRAINT fk_estado_deta_prod  CHECK(estado IN ("0", "1"))
-)ENGINE = INNODB; */
 
 DROP TABLE IF EXISTS precios_historicos;
 CREATE TABLE precios_historicos(

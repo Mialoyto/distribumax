@@ -2,14 +2,16 @@ USE distribumax;
 
 -- REGISTRAR TIPO DE PROMOCIONES
 
+DROP PROCEDURE IF EXISTS sp_tipo_promocion_registrar;
 CREATE PROCEDURE sp_tipo_promocion_registrar(
     IN _tipopromocion       VARCHAR(150),
-    IN _descripcion         VARCHAR(250),
-    IN _estado              CHAR(1)
+    IN _descripcion         VARCHAR(250)
 )
 BEGIN
-    INSERT INTO tipos_promociones (tipopromocion, descripcion, estado) 
-    VALUES (_tipopromocion, _descripcion, _estado);
+    INSERT INTO tipos_promociones (tipopromocion, descripcion) 
+    VALUES (_tipopromocion, _descripcion);
+
+    SELECT LAST_INSERT_ID() as "id";
 END;
 
 
@@ -18,7 +20,7 @@ CREATE PROCEDURE sp_actualizar_tipo_promocion(
 	IN _idtipopromocion INT,
     IN _tipopromocion   VARCHAR(150),
     IN _descripcion     VARCHAR(250),
- 	IN _estado			CHAR(1)
+    IN _estado			CHAR(1)
 )
 BEGIN
 	UPDATE tipos_promociones

@@ -64,7 +64,7 @@
             </div>
             <div class="col-md-4 mt-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="loteP" name="loteP" placeholder="" maxlength="255" minlength="">
+                <input type="text" class="form-control" id="loteP" name="loteP" placeholder="" maxlength="255" minlength="" required>
                 <label for="loteP" class="form-label">Lote del Producto</label>
               </div>
             </div>
@@ -80,7 +80,7 @@
           <div class="row">
             <div class="col-md-12 mt-3">
               <div class="form-floating">
-                <textarea class="form-control" placeholder="Motivo del movimiento" id="motivo" style="height: 100px"></textarea>
+                <textarea class="form-control" placeholder="Motivo del movimiento" id="motivo" style="height: 100px" required></textarea>
                 <label for="motivo">Motivo del movimiento</label>
               </div>
             </div>

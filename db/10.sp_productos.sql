@@ -13,8 +13,8 @@ CREATE PROCEDURE sp_registrar_producto (
     IN _peso_unitario            VARCHAR (10), 
     IN _codigo                  CHAR (30),
     IN _precio_compra            DECIMAL(10, 2),
-    IN _precio_minorista         DECIMAL(10, 2),
-    IN _precio_mayorista          DECIMAL(10, 2)
+    IN _precio_mayorista          DECIMAL(10, 2),
+    IN _precio_minorista         DECIMAL(10, 2)
 ) BEGIN
 INSERT INTO
     productos (
@@ -27,8 +27,8 @@ INSERT INTO
         peso_unitario,
         codigo,
         precio_compra,
-        precio_minorista,
-        precio_mayorista
+        precio_mayorista,
+        precio_minorista
         )
 VALUES
     (
@@ -41,8 +41,8 @@ VALUES
         _peso_unitario,
         _codigo,
         _precio_compra,
-        _precio_minorista,
-        _precio_mayorista
+        _precio_mayorista,
+        _precio_minorista
         );
         SELECT LAST_INSERT_ID() AS idproducto;
 END;
@@ -88,7 +88,7 @@ END;
 
 -- PRUEBA DE BUSQUEDA
 DROP PROCEDURE IF EXISTS sp_buscar_productos;
-CREATE PROCEDURE `sp_buscar_productos`(
+CREATE PROCEDURE sp_buscar_productos(
     IN _item VARCHAR (250)) 
 BEGIN
 SELECT
@@ -105,8 +105,7 @@ FROM
         FROM kardex K2
         WHERE K2.idproducto = PRO.idproducto
     )
-    INNER JOIN detalle_productos DET ON DET.idproducto = PRO.idproducto
-    INNER JOIN unidades_medidas UME ON UME.idunidadmedida = DET.idunidadmedida
+    INNER JOIN unidades_medidas UME ON UME.idunidadmedida = PRO.idunidadmedida
 WHERE
     (
         codigo LIKE CONCAT ('%', _item, '%')
@@ -119,7 +118,7 @@ END;
 
 
 -- BUSCAR PRODUCTOS
-DROP PROCEDURE IF EXISTS sp_buscar_productos;
+/* DROP PROCEDURE IF EXISTS sp_buscar_productos;
 CREATE PROCEDURE sp_buscar_productos(
     IN _item VARCHAR (250)
 ) 
@@ -132,8 +131,7 @@ SELECT
     UME.unidadmedida
 FROM
     productos PRO
-    INNER JOIN detalle_productos DTP ON PRO.idproducto = DTP.idproducto
-    INNER JOIN unidades_medidas UME ON DTP.idunidadmedida = UME.idunidadmedida
+    INNER JOIN unidades_medidas UME ON PRO.idunidadmedida = UME.idunidadmedida
     INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
     AND KAR.idkardex = (
         SELECT MAX(K2.idkardex)
@@ -147,7 +145,7 @@ WHERE
     )
     AND PRO.estado = '1'
     AND KAR.stockactual > 0;
-END;
+END; */
 
 -- BUSCAR PRODUCTOS
 DROP PROCEDURE IF EXISTS sp_get_codigo_producto;

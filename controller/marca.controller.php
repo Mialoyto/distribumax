@@ -1,24 +1,30 @@
 <?php
 
 
-require_once '../model/Marca.php';
-$marca = new Mara();
+require_once '../model/Marcas.php';
+$marca = new Marca();
 
-if(isset($_POST['operation'])){
-    switch($_POST['operation']){
+if (isset($_POST['operation'])) {
+    switch ($_POST['operation']) {
         case 'addMarca':
-            $datos=[
-                'marca' =>$_POST['marca']
+            $datos = [
+                'marca' => $_POST['marca']
             ];
             echo json_encode($marca->addMarca($datos));
-        break;
+            break;
     }
 }
-if(isset($_GET['operation'])){
-    switch($_GET['operation']){
-        case 'getAll' :
+if (isset($_GET['operation'])) {
+    switch ($_GET['operation']) {
+        case 'getAll':
             echo json_encode($marca->getAll());
-
-        break; 
+            break;
+        case 'getMarcas':
+            $dataEnviar = [
+                'id' => $_GET['id']
+            ];
+            $datosRecibidos = $marca->getMarca($dataEnviar);
+            echo json_encode(['marcas' => $datosRecibidos]);
+            break;
     }
 }

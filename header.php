@@ -104,7 +104,7 @@ $host = "http://localhost/distribumax";
               Empresas
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Productos/">
-              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              <div class="sb-nav-link-icon"><i class="fa-solid fa-boxes-stacked fa-lg"></i></div>
               Productos
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Kardex/">

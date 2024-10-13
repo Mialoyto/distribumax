@@ -43,15 +43,15 @@ require_once '../../header.php';
             </div>
             <div class="col-md-6 mb-3">
               <div class="form-floating">
-                <input type="text" 
-                class="form-control" 
-                id="telefono_contacto" 
-                name="telefono_contacto"
-                pattern="[0-9]+" 
-                title="solo numeros"
-                maxlength="9"
-                minlength="9" 
-                required>
+                <input type="text"
+                  class="form-control"
+                  id="telefono_contacto"
+                  name="telefono_contacto"
+                  pattern="[0-9]+"
+                  title="solo numeros"
+                  maxlength="9"
+                  minlength="9"
+                  required>
                 <label for="telefono_contacto">Teléfono de Contacto</label>
               </div>
             </div>
@@ -60,7 +60,7 @@ require_once '../../header.php';
           <div class="row">
             <div class="col-md-6 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="direccion" name="direccion" minlength="1" maxlength="100" required  >
+                <input type="text" class="form-control" id="direccion" name="direccion" minlength="1" maxlength="100" required>
                 <label for="direccion">Dirección</label>
               </div>
             </div>

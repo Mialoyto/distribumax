@@ -6,6 +6,13 @@ USE distribumax;
 select * from categorias;
 SELECT * FROM subcategorias;
 SELECT * from productos;
+SELECT * FROM proveedores;
+SELECT * FROM marcas;
+SELECT * FROM subcategorias;
+SELECT * FROM unidades_medidas;
+CALL getSubcategorias(5);
+CALL sp_get_codigo_producto('AJI-SZ-001');
+select codigo from productos where codigo = '265580';
 SELECT * FROM ventas;
 SELECT * FROM detalle_meto_pago;
 SELECT * FROM despacho;
@@ -33,7 +40,8 @@ delete from usuarios where idpersona = '26558000';
 SELECT * FROM productos;
 SELECT * FROM  tipo_documento;
 SELECT * FROM kardex;
-SELECT * FROM detalle_productos;
+SELECT * FROM detalle_productos;vw_unidades_medidas;
+SELECT * FROM vw_unidades_medidas;
 
 call sp_cliente_registrar('26558000');
 select * from clientes;
@@ -143,3 +151,18 @@ SELECT * from proveedores;
 CALL sp_listar_categorias();
 
 CALL getSubcategorias(3);
+
+
+CALL sp_registrar_producto(
+    2, 
+    5, 
+    5, 
+    'Galleta Casino tres leches',
+    2, 
+    12,
+    '200 GR',
+    'CAS-0000002',
+    3.60,
+    5.10,
+    4.60
+);

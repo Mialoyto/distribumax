@@ -314,6 +314,9 @@ CREATE TABLE productos (
     CONSTRAINT fk_idmarca_prod      FOREIGN KEY(idmarca) REFERENCES marcas(idmarca),
     CONSTRAINT fk_sbcategoria_prod  FOREIGN KEY(idsubcategoria) REFERENCES subcategorias(idsubcategoria),
     CONSTRAINT uk_codigo_prod       UNIQUE (codigo),
+    CONSTRAINT ck_precio_compra_prod CHECK (precio_compra > 0),
+    CONSTRAINT ck_precio_mayorista_prod CHECK (precio_mayorista > 0),
+    CONSTRAINT ck_precio_minorista_prod CHECK (precio_minorista > 0),
     CONSTRAINT fk_estado_prod       CHECK(estado IN ("0", "1"))
 ) ENGINE=INNODB;
 
@@ -332,9 +335,9 @@ CREATE TABLE detalle_promociones(
         CONSTRAINT id_producto_deta_prom FOREIGN KEY(idproducto) REFERENCES productos(idproducto),
         CONSTRAINT fk_estado_deta_prom  CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;
- 
- 
- -- BORRAR
+
+
+-- BORRAR
 /* DROP TABLE IF EXISTS detalle_productos;
 CREATE TABLE detalle_productos(
     id_detalle_producto		INT	NOT NULL AUTO_INCREMENT PRIMARY KEY,

@@ -3,12 +3,38 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(object);
   }
 
-  const optionEmpresa = $("#idmarca");
-  const optionsub = $("#idsubcategoria");
   const optMarca = $("#idmarca");
+  const optionsub = $("#idsubcategoria");
   let proveedores;
   let id;
 
+  // obtener proveedores
+  async function getProveedor(proveedor) {
+    const params = new URLSearchParams();
+    params.append('operation', 'getProveedor');
+    params.append('proveedor', proveedor);
+    try {
+      const response = await fetch(`../../controller/proveedor.controller.php?${params}`);
+      return response.json();
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  // function getMarcas
+  async function getMarcas(id) {
+    const params = new URLSearchParams();
+    params.append('operation', 'getMarcas');
+    params.append('id', id);
+    try {
+      const response = await fetch(`../../controller/marca.controller.php?${params}`);
+      return await response.json();
+
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
   // obtener categorias
   async function getCategorias() {
     const params = new URLSearchParams();
@@ -27,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(e);
     }
   }
-
   // obtener subcategorias
   async function getSubcategorias(id) {
     const params = new URLSearchParams();
@@ -41,16 +66,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-
-  // obtener proveedores
-  async function getProveedor(proveedor) {
+  // funcion para obtener unidades de medida
+  async function getUnidades() {
     const params = new URLSearchParams();
-    params.append('operation', 'getProveedor');
-    params.append('proveedor', proveedor);
+    params.append('operation', 'getUnidades');
     try {
-      const response = await fetch(`../../controller/proveedor.controller.php?${params}`);
+      const response = await fetch(`../../controller/unidades.controller.php?${params}`);
       return response.json();
-
     } catch (e) {
       console.error(e);
     }
@@ -58,8 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // renderizar datos lista
   async function renderData() {
-    const response = await getProveedor(proveedores);
     $("#list-proveedor").innerHTML = "";
+    const response = await getProveedor(proveedores);
     console.log(response);
     if (response.data.length > 0) {
       $("#list-proveedor").style.display = "block";
@@ -73,28 +95,18 @@ document.addEventListener("DOMContentLoaded", () => {
           $("#idproveedor").setAttribute("data-id", item.idproveedor);
           $("#idproveedor").value = item.proveedor;
           id = item.idproveedor;
+          cleanCampos()
           await renderOption();
         });
         $("#list-proveedor").appendChild(li);
       });
+    } else {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+      li.innerHTML = `<b>Proveedor no encontrado</b>`;
+      $("#list-proveedor").appendChild(li);
     }
   }
-
-  // function getMarcas
-  async function getMarcas(id) {
-    const params = new URLSearchParams();
-    params.append('operation', 'getMarcas');
-    params.append('id', id);
-    try {
-      const response = await fetch(`../../controller/marca.controller.php?${params}`);
-      return await response.json();
-
-
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
   // renderizar option de marcas
   async function renderOption() {
     const data = await getMarcas(id);
@@ -108,7 +120,52 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     await getCategorias();
   }
+  // render options de presentaciones / unidades de medida
+  async function renderOptions() {
+    const data = await getUnidades();
+    const options = $("#unidadmedida");
+    data.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.idunidadmedida;
+      option.innerText = item.unidadmedida;
+      options.appendChild(option);
+    });
+  }
+  renderOptions();
 
+  // limpiar campos
+  function cleanCampos() {
+    $("#idmarca").innerHTML = "";
+    $("#idcategoria").value = "";
+    $("#idcategoria").innerHTML = "";
+    $("#idsubcategoria").value = "";
+    $("#unidadmedida").value = "";
+    $("#nombreproducto").value = "";
+    $("#cantidad").value = "";
+    $("#cantidad").removeAttribute("disabled");
+    $("#peso").value = "";
+    $("#unidad").value = "";
+    $("#codigo").value = "";
+    $("#preciocompra").value = "";
+    $("#precio-minorista").value = "";
+    $("#precio-mayorista").value = "";
+    $("#idcategoria").innerHTML = `<option value="">Seleccione una categoría</option>`
+    $("#idmarca").innerHTML = `<option value="">Seleccione una marca</option>`
+  }
+
+  // verificar si el codigo ya existe
+  async function verificarCodigo(codigo) {
+    const params = new URLSearchParams();
+    params.append('operation', 'getCodeProducto');
+    params.append('codigo', codigo);
+    try {
+      const response = await fetch(`../../controller/producto.controller.php?${params}`);
+      return response.json();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  // evento input para seleccionar categoria y cargar subcategorias
   $("#idcategoria").addEventListener("change", async () => {
     const id = $("#idcategoria").value;
     console.log(id);
@@ -125,28 +182,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // evento input para buscar proveedor
   $("#idproveedor").addEventListener("input", async () => {
-    await renderData();
-    proveedores = $("#idproveedor").value;
-    if (proveedores === "") {
+    proveedores = $("#idproveedor").value.trim();
+    console.log("letra de proveedore:" + proveedores.length);
+
+    if (!proveedores) {
       $("#list-proveedor").style.display = "none";
-      $("#list-proveedor").innerHTML = "";
-      $("#idmarca").innerHTML = "";
-      $("#idmarca").innerHTML = '<option value="">Seleccione una marca</option>';
-      $("#idcategoria").innerHTML = '<option value="">Seleccione una categoria</option>';
-      $("#idsubcategoria").innerHTML = '<option value="">Seleccione una subcategoria</option>';
+      console.log("no hay proveedores");
+      // $("#list-proveedor").innerHTML = "";
+      cleanCampos();
+    } else {
+      await renderData();
     }
   });
+
+  $("#unidadmedida").addEventListener("change", async (Event) => {
+    if ($("#unidadmedida").value != 1) {
+      $("#cantidad").removeAttribute("disabled");
+      $("#cantidad").value = "";
+    } else {
+      $("#cantidad").setAttribute("disabled", true);
+      $("#cantidad").value = "1";
+    }
+  });
+
 
   // registrar producto aun no terminado
   async function registrarproducto() {
     const params = new FormData();
     params.append('operation', 'addProducto');
-    params.append('idmarca', optionEmpresa.value);
+    params.append('idproveedor', $("#idproveedor").getAttribute("data-id"));
+    params.append('idmarca', optMarca.value);
     params.append('idsubcategoria', optionsub.value);
     params.append('nombreproducto', $("#nombreproducto").value);
-    params.append('descripcion', $("#descripcion").value);
+    params.append('idunidadmedida', $("#unidadmedida").value);
+    params.append('cantidad_presentacion', $("#cantidad").value);
+    params.append('peso_unitario', $("#peso").value + " " + $("#unidad").value);
     params.append('codigo', $("#codigo").value);
-    params.append('preciounitario', $("#preciounitario").value);
+    params.append('precio_compra', $("#preciocompra").value);
+    params.append('precio_mayorista', $("#precio-mayorista").value);
+    params.append('precio_minorista', $("#precio-minorista").value);
+
+    for (let [key, value] of params.entries()) {
+      console.log(key, value);
+    }
 
     const options = {
       method: 'POST',
@@ -155,15 +233,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const response = await fetch(`../../controller/producto.controller.php`, options);
     return response.json()
-    // .catch(e => { console.error(e) });
   }
+
+
 
   $("#formRegistrarProducto").addEventListener("submit", async (event) => {
     event.preventDefault();
-    const resultado = await registrarproducto();
-
-    if (resultado) {
-      alert("Registro exitoso");
+    const codigo = $("#codigo").value;
+    const response = await verificarCodigo(codigo);
+    console.log(response);
+    if (response.length > 0) {
+      showToast(`El código ${response[0].codigo} ya existe. \n Producto: ${response[0].nombreproducto}`, "error", "ERROR");
+      return;
+    } else {
+      const resultado = await registrarproducto();
+      console.log(resultado.id);
+      if (resultado.id != null && resultado.id > 0) {
+        showToast("Producto registrado correctamente", "success", "SUCCESS");
+      } else {
+        showToast("Error al registrar producto", "error", "ERROR");
+      }
     }
   });
   // fin registrar producto

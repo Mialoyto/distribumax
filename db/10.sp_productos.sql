@@ -1,3 +1,4 @@
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -43,6 +44,7 @@ VALUES
         _precio_minorista,
         _precio_mayorista
         );
+        SELECT LAST_INSERT_ID() AS idproducto;
 END;
 
 
@@ -145,4 +147,21 @@ WHERE
     )
     AND PRO.estado = '1'
     AND KAR.stockactual > 0;
+END;
+
+-- BUSCAR PRODUCTOS
+DROP PROCEDURE IF EXISTS sp_get_codigo_producto;
+CREATE PROCEDURE sp_get_codigo_producto(
+    IN _codigo CHAR(30)
+)
+BEGIN
+    SELECT
+        CONCAT(PRO.nombreproducto,'-',UNM.unidadmedida,' ',PRO.cantidad_presentacion, 'X', PRO.peso_unitario) AS nombreproducto,
+        codigo
+    FROM
+        productos PRO
+    INNER JOIN unidades_medidas UNM ON UNM.idunidadmedida = PRO.idunidadmedida
+    WHERE
+        PRO.codigo = _codigo
+        AND PRO.estado = '1';
 END;

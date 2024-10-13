@@ -11,7 +11,7 @@
         <i class="fas fa-table me-1"></i>Registrar producto
       </div>
       <div class="card-body">
-        <form method="POST" action="#" id="formRegistrarProducto">
+        <form method="POST" action="#" id="formRegistrarProducto" autocomplete="off">
           <!-- FILA 01 -->
           <!-- Busador del proveedor -->
           <div class="row mt-3">
@@ -77,14 +77,14 @@
             </div>
             <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="cantidad" name="codigo" maxlength="11" placeholder="Código del producto" required>
+                <input type="number" class="form-control numeros" id="cantidad" name="codigo" min="1" max="200" placeholder="Código del producto" required>
                 <label for="cantidad" class="form-label">Cantidad por presentación</label>
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <div class="input-group">
                 <div class="form-floating">
-                  <input type="number" min="1" class="form-control" id="peso" placeholder="20">
+                  <input type="number" min="1" class="form-control numeros" id="peso" placeholder="20">
                   <label for="peso" class="form-label">Peso unitario (opcional)</label>
                 </div>
                 <!-- <label for="peso" class="form-label">Peso</label> -->
@@ -94,6 +94,7 @@
                     <option value="GR">GR</option>
                     <option value="ML">ML</option>
                     <option value="KG">KG</option>
+                    <option value="LT">LT</option>
                     <!-- Agrega más opciones según sea necesario -->
                   </select>
                   <label for="unidad" class="form-label">Unidad medida</label>
@@ -106,28 +107,29 @@
           <div class="row mt-3">
             <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="codigo" name="codigo"placeholder required>
+                <input type="text" class="form-control" id="codigo" name="codigo" placeholder required>
                 <label for="código" class="form-label">Código</label>
               </div>
             </div>
             <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="number" step="0.05" min="1" class="form-control" id="preciocompra" name="preciocompra" placeholder="Precio de compra" required>
+                <input type="number" step="0.01" class="form-control numeros" id="preciocompra" name="preciocompra" placeholder="Precio de compra" required>
                 <label for="preciocompra" class="form-label">Precio de compra</label>
               </div>
             </div>
             <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="number" step="0.05"  min="1" class="form-control" id="precio-minorista" name="precio-minorista" placeholder="Stock mínimo" required>
-                <label for="precio-minorista" class="form-label">Precio venta minorista</label>
+                <input type="number" step="0.01" class="form-control numeros" id="precio-mayorista" name="precio-mayorista" placeholder="Precio venta mayorista" required>
+                <label for="precio-mayorista" class="form-label">Precio venta mayorista</label>
               </div>
             </div>
             <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="number" step="0.05" min="1" class="form-control" id="precio-mayorista" name="precio-mayorista" placeholder="Precio venta mayorista" required>
-                <label for="precio-mayorista" class="form-label">Precio venta mayorista</label>
+                <input type="number" step="0.01" class="form-control numeros" id="precio-minorista" name="precio-minorista" placeholder="Stock mínimo" required>
+                <label for="precio-minorista" class="form-label">Precio venta minorista</label>
               </div>
             </div>
+
           </div>
           <!-- Botones -->
           <div class="d-flex justify-content-end mt-3">

@@ -8,3 +8,9 @@ BEGIN
   INSERT INTO unidades_medidas (unidadmedida)
     VALUES(_unidad);
 END;
+
+CREATE VIEW vw_unidades_medidas AS
+  SELECT idunidadmedida, unidadmedida
+    FROM unidades_medidas
+    WHERE estado = 1 
+    ORDER BY unidadmedida ASC;

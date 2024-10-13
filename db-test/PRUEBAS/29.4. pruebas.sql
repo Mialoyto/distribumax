@@ -140,3 +140,6 @@ SELECT * FROM detalle_promociones;
 
 select * from kardex WHERE idproducto = 2 and stockactual =0 ORDER BY idkardex DESC ;
 SELECT * from proveedores;
+CALL sp_listar_categorias();
+
+CALL getSubcategorias(3);

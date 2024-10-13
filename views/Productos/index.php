@@ -35,7 +35,7 @@ require_once '../../header.php';
                     </table>
                 </div>
                 <div class="card-footer">
-                    <a href="registrar.php" class="btn btn-primary">Registrar nuevo producto</a>
+                    <a href="registrar-productos.php" class="btn btn-primary">Registrar nuevo producto</a>
                 </div>
             </div>
         </div>

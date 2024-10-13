@@ -37,9 +37,20 @@ BEGIN
     WHERE idcategoria = _idcategoria;
 END;
 
+DROP PROCEDURE IF EXISTS sp_listar_categorias;
+CREATE PROCEDURE sp_listar_categorias
+()
+BEGIN
+    SELECT
+        CAT.idcategoria,
+        CAT.categoria
+    FROM categorias CAT
+    WHERE CAT.estado = 1
+    ORDER BY CAT.categoria ASC;
+END;
+
 
 -- LISTAR CATEGORIAS
-
 CREATE VIEW `vw_listar_categorias` AS
     SELECT
         CAT.categoria,

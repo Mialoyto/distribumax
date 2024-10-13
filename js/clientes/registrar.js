@@ -1,8 +1,45 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  // Helper para simplificar el uso de querySelector
   function $(object = null) {
     return document.querySelector(object);
   }
 
+  // (() => {
+    // fetch(`../../controller/documento.controller.php?operation=getAllDocumentos`)
+      // .then(response => response.json())
+      // .then(data => {
+// 
+        // data.forEach(element => {
+          // optionEmp = document.querySelector("#idtipodocumento");
+          // const tagOption = document.createElement('option');
+          // tagOption.value = element.idtipodocumento;
+          // tagOption.innerText = element.documento;
+          // optionEmp.appendChild(tagOption);
+        // })
+      // })
+      // .catch(e => {
+        // console.error(e);
+      // })
+  // })();
+// 
+  // Botón cancelar: Resetea el formulario y habilita los campos
+  $('#cliente').addEventListener('click', function () {
+    var activeTab = document.querySelector('.nav-link.active')?.getAttribute('href');
+    if (activeTab === '#persona') {
+      resetCampos();
+      $("#nro-doc-persona").value = '';
+    } else if (activeTab === '#empresa') {
+      //console.log("empresa")
+      $("#nro-doc-empresa").value = '';
+      resetCampos();
+
+    }
+    habilitarCampos();
+
+  });
+
+  // Función de debounce: Espera para ejecutar una función después de un tiempo sin eventos
   function debounce(func, wait) {
     let timeout;
     return function (...args) {
@@ -11,190 +48,165 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  async function dataCliente() {
-    if (!$("#nro-doc")) {
-      return;
-    }
-    const params = new URLSearchParams();
-    params.append("operation", "searProspecto");
-    params.append("item", $("#nro-doc").value.trim());
-    params.append("tipo_cliente",$("#cliente").value)
-
-    try {
-      const response = await fetch(`../../controller/cliente.controller.php?${params}`);
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
+  // Función para desactivar los campos del formulario
   function desactivarCampos() {
-    $("#nombres").setAttribute("disabled", true);
-    $("#appaterno").setAttribute("disabled", true);
-    $("#apmaterno").setAttribute("disabled", true);
-    $("#razon-social").setAttribute("disabled", true);
-    $("#direccion-cliente").setAttribute("disabled", true);
-    $("#distrito").setAttribute("disabled", true);
-    $("#email").setAttribute("disabled", true);
+    ["#iddistrito", "#email", "#razon-social", "#direccion", "#telefono-empresa", "#registrarEmpresa"].forEach(id => {
+      $(id)?.setAttribute("disabled", true);
+    });
   }
 
+  // Función para habilitar los campos del formulario
+  function habilitarCampos() {
+    ["#iddistrito", "#email", "#razon-social", "#direccion", "#telefono-empresa", "#registrarEmpresa"].forEach(id => {
+      $(id)?.removeAttribute("disabled");
+    });
+  }
+
+  // Función para resetear los campos del formulario
   function resetCampos() {
-    $("#cliente").value = "";
-    $("#nro-doc").value = ""; // Reiniciar el número de documento
-    $("#appaterno").value = "";
-    $("#apmaterno").value = "";
-    $("#nombres").value = "";
-    $("#razon-social").value = "";
-    $("#direccion-cliente").value = "";
-    $("#distrito").value = "";
-    $("#email").value = "";
+    ["#razon-social", "#direccion", "#email", "#iddistrito", "#telefono-empresa", "#registrarEmpresa"].forEach(id => {
+      $(id).value = "";
+    });
   }
 
+  // Función para validar el número de documento de la empresa
   async function validarNroDoc(response) {
-    if (response.length === 0) {
-      // resetCampos();
-       alert("No existe la Persona o Empresa");
-    } else {
-      const clienteData = response[0];
-  
-      // Si el cliente está registrado pero es una empresa o una persona.
-      if (clienteData.estado === 'Registrado') {
-        resetCampos();
-        desactivarCampos();
-        alert(clienteData.estado);
-      } else {
-        // Ajusta los datos según sea Persona o Empresa
-        $("#cliente").value = clienteData.tipo_cliente;
-        $("#nro-doc").value = clienteData.identificador;
-  
-        if (clienteData.tipo_cliente === "Persona" && clienteData.identificador.length === 8) {
-          // Manejo para "Persona"
-          $("#nombres").value = clienteData.nombres;
-          $("#appaterno").value = clienteData.nombre_razon_social;
-          $("#apmaterno").value = clienteData.apellido_direccion;
-          $("#direccion-cliente").value = clienteData.direccion;
-          $("#distrito").value = clienteData.distrito;
-          desactivarCampos();
-          toggleForm("Persona");
-        } else if (clienteData.tipo_cliente === "Empresa" && clienteData.identificador.length === 11) {
-          // Manejo para "Empresa"
-          $("#razon-social").value = clienteData.nombre_razon_social;
-          $("#email").value = clienteData.email;  // Asegúrate de tener el campo email en el objeto clienteData
-          $("#direccion-cliente").value = clienteData.direccion;
-          $("#distrito").value = clienteData.distrito;
-          
-          desactivarCampos();
-          toggleForm("Empresa");
-        }
-      }
-    }
-  }
-  
-  
-
-
-  function toggleForm(tipoCliente) {
-    const formPersona = $("#form-persona");
-    const formEmpresa = $("#form-empresa");
-    const nroDocInput = $("#nro-doc");
-
-    if (tipoCliente === 'Persona') {
-      formPersona.style.display = 'block';
-      formEmpresa.style.display = 'none';
-
-      // Para personas, ajusta el `maxlength` y `minlength` a 8 (DNI)
-      nroDocInput.setAttribute('maxlength', '8');
-      nroDocInput.setAttribute('minlength', '8');
-      nroDocInput.setAttribute('pattern', '[0-9]{8}');
-      //nroDocInput.value = ""; // Limpiar el campo para ingresar el nuevo documento
-
-    } else {
-      formPersona.style.display = 'none';
-     formEmpresa.style.display = 'block';
-//
-     // // Para empresas, ajusta el `maxlength` y `minlength` a 11 (RUC)
-      nroDocInput.setAttribute('maxlength', '11');
-      nroDocInput.setAttribute('minlength', '11');
-      nroDocInput.setAttribute('pattern', '[0-9]{11}');
-      //nroDocInput.value = ""; // Limpiar el campo para ingresar el nuevo documento
+    if (response.length === 0 || response[0].estado === 'No data') {
+      // La empresa no está registrada como cliente ni como empresa
+      habilitarCampos();
+      resetCampos();
+      console.log("La empresa no está registrada, puedes registrarla.");
+    } else if (response[0].estado === 'No registrado') {
+      // La empresa está registrada, pero no como cliente
+      habilitarCampos();
+      $("#razon-social").value = response[0].razonsocial;
+      $("#email").value = response[0].email;
+      $("#iddistrito").value = response[0].distrito;
+      $("#direccion").value = response[0].direccion;
+      $("#telefono-empresa").value = response[0].telefono;
+      console.log("La empresa está registrada, pero no es cliente. Puedes registrarla como cliente.");
+    } else if (response[0].estado === 'Registrado') {
+      // La empresa ya está registrada como cliente
+      desactivarCampos();
+      $("#razon-social").value = response[0].razonsocial;
+      $("#email").value = response[0].email;
+      $("#iddistrito").value = response[0].distrito;
+      $("#direccion").value = response[0].direccion;
+      $("#telefono-empresa").value = response[0].telefono;
+      showToast('La empresa ya está registrada como cliente', 'WARNING', 'WARNING');
+      console.log("La empresa ya está registrada como cliente.");
     }
   }
 
-  // Detectar el cambio en el select para ajustar el formulario y nro-doc
+  // Función para buscar los datos del cliente (empresa o persona)
+  async function dataCliente() {
+    const nroDocEmpresa = $("#nro-doc-empresa");
+    if (!nroDocEmpresa || nroDocEmpresa.value.trim() === "") {
+      return [];
+    }
 
-
-  async function registrarCliente() {
-    const params = new FormData();
-    params.append('operation', 'addcliente');
-    params.append('idpersona', $("#nro-doc").value);
-    params.append('idempresa', $("#nro-doc").value);
-    params.append('tipo_cliente', $("#cliente").value);
-    console.log();
-    //console.log($("#nro-doc"))
-    const option = {
-      method: 'POST',
-      body: params,
-    };
+    const params = new URLSearchParams();
+    params.append("operation", "search");
+    params.append("ruc", nroDocEmpresa.value.trim());
 
     try {
-      const response = await fetch(`../../controller/cliente.controller.php`, option);
-      const data = await response.json();
-      //console.log(data);
-      console.log("id:", data);
-      return data; // Retornar los datos para poder validar el resultado
-
-    } catch (error) {
-      console.error('Error al registrar cliente:', error);
-      return null; // Retornar null en caso de error
+      const response = await fetch(`../../controller/empresa.controller.php?${params}`);
+      if (!response.ok) {
+        throw new Error("Error en la respuesta del servidor");
+      }
+      return await response.json();  // Parsear la respuesta como JSON
+    } catch (e) {
+      console.error("Error en dataCliente: ", e);
+      return [];
     }
   }
 
-  $("#nro-doc").addEventListener("input", debounce(async () => {
-    if ($("#nro-doc").value === "") {
+  // Evento para buscar y validar número de documento con debounce
+  $("#nro-doc-empresa").addEventListener("input", debounce(async () => {
+    if ($("#nro-doc-empresa").value === "") {
       resetCampos();
-      // desactivarCampos();
+      habilitarCampos();
     } else {
       const response = await dataCliente();
       await validarNroDoc(response);
     }
   }, 500));
 
+  // Función para registrar la empresa como cliente
+  async function registrarEmpresa() {
+    const params = new FormData();
+    params.append('operation', 'add');
+    params.append('idempresaruc', $("#nro-doc-empresa").value);
+    params.append('iddistrito', $("#iddistrito").value);
+    params.append('razonsocial', $("#razon-social").value);
+    params.append('direccion', $("#direccion").value);
+    params.append('email', $("#email").value);
+    params.append('telefono', $("#telefono-empresa").value);
 
-  $("#cliente").addEventListener("change", () => {
-    const tipo_cliente = $("#cliente").value;
-    toggleForm(tipo_cliente); // Asegúrate de que esto esté habilitado
-    console.log(tipo_cliente);
-    
-    //if (tipo_cliente === 'Persona') {
-    //  resetCampos();
-    //} else {
-    //  resetCampos();
-    //}
-  });
-  
+    const options = {
+      method: 'POST',
+      body: params
+    };
 
-  $("#form-registrar-Cliente").addEventListener("submit", async (event) => {
-    const form = $("#form-registrar-Cliente");
-    const idcliente = $("#nro-doc").value;
-    event.preventDefault();
-    if (confirm("desea registrar")) {
 
-      const response = await registrarCliente();
-      if (response) {
-        alert("registro exitoso");
-        form.reset();
+    const response = await fetch(`../../controller/empresa.controller.php`, options);
+    const data = await response.json();
+    console.log(data);
+
+
+  }
+  async function registrarCliente(idempresa) {
+    var cliente = document.querySelector('.nav-link.active')?.getAttribute('href');
+    console.log(cliente);
+    const params = new FormData();
+    params.append('operation', 'addcliente');
+    params.append('idpersona', $("#nor-doc-persona").value); // Asegúrate de que este campo tenga el valor correcto
+    params.append('idempresa', idempresa); // Usa el ID de la empresa que acabas de registrar
+    params.append('tipo_cliente', cliente);
+
+    const options = {
+      method: 'POST',
+      body: params
+    };
+
+    try {
+      const response = await fetch(`../../controller/cliente.controller.php`, options);
+      const data = await response.json();
+      console.log(data);
+      if (data.success) {
+        // Manejar la respuesta exitosa, por ejemplo, mostrar un mensaje al usuario
+        console.log("Cliente registrado exitosamente.");
+      } else {
+        console.error("Error al registrar el cliente:", data.message);
       }
+    } catch (error) {
+      console.error("Error al registrar el cliente:", error);
     }
+  }
 
+  // Prevenir el envío del formulario al presionar Enter
+  $("#nro-doc-empresa").addEventListener('keydown', (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      $("#nro-doc-empresa").focus();
+    }
   });
 
-  // $("#reset").addEventListener("click",async (event)=>{
-  // $("#form-registrar-Cliente").reset();
-  // 
-  // });
+  // Evento para registrar la empresa o persona
+  $("#registrar-empresa").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (showConfirm("¿Desea registrar la empresa y el cliente?", "Clientes")) {
+      // Primero, registra la empresa y espera a que se complete
+      const empresaResponse = await registrarEmpresa();
+      console.log(empresaResponse)
+      const id = empresaResponse;
+      if (empresaResponse) {
+        await registrarCliente(id);
 
-
+      }
+    } else {
+      console.log("Registro cancelado");
+    }
+  });
 
 });

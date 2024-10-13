@@ -19,7 +19,9 @@
           <h5 class="mb-3 mt-3 card-title">Datos del cliente</h5>
           <!-- fila 01 -->
           <div class="row g-3 mb-3">
+
             <div class="col-md-6 mb-2">
+              
               <div class="form-floating">
                 <input type="search" class="form-control numeros" id="nro-doc" name="nro-doc" placeholder="Número de documento" type="number" min="1" pattern="^[0-9]+" required>
                 <label for="nro-doc" class="form-label"> <i class="bi bi-search"></i> Número de documento</label>

@@ -14,6 +14,7 @@ BEGIN
     (idempresaruc, iddistrito, razonsocial, direccion, email, telefono) 
     VALUES 
     (_idempresaruc, _iddistrito, _razonsocial, _direccion, _email, _telefono);
+    SELECT _idempresaruc AS idmepresas;
 END;
 
 
@@ -50,6 +51,51 @@ BEGIN
 	UPDATE empresas SET
       estado=_estado
       WHERE idempresaruc=_idempresaruc;
+END;
+-- buscar empresa 
+
+CREATE PROCEDURE sp_buscar_empresa(
+    IN _ruc BIGINT
+)
+BEGIN
+    DECLARE _empresa_count INT DEFAULT 0;
+
+    -- Verificar si la empresa existe
+    SELECT COUNT(*)
+    INTO _empresa_count
+    FROM empresas EMP
+    WHERE EMP.idpersonanrodoc = _ruc
+    AND EMP.estado = '1';
+
+    -- Si no existe la empresa, devolver 'No data'
+    IF _empresa_count = 0 THEN
+        SELECT 'No data' AS estado;
+
+    -- Si existe, devolver los detalles
+    ELSE
+        SELECT 
+            DIST.iddistrito,
+            DIST.distrito,
+            EMP.idempresaruc,
+            EMP.razonsocial,
+            EMP.email,
+            EMP.telefono,
+            EMP.direccion,
+            EMP.estado,
+            CASE 
+                WHEN EXISTS (
+                    SELECT 1 
+                    FROM clientes CLI 
+                    WHERE CLI.idempresa = EMP.idempresaruc
+                ) THEN 'Registrado'
+                ELSE 'No registrado'
+            END AS estado
+        FROM empresas EMP
+        INNER JOIN personas PER ON EMP.idpersonanrodoc = PER.idpersonanrodoc
+        INNER JOIN distritos DIST ON PER.iddistrito = DIST.iddistrito
+        WHERE EMP.idpersonanrodoc = _ruc
+        AND EMP.estado = '1';
+    END IF;
 END;
 
 -- LISTAR EMPRESAS

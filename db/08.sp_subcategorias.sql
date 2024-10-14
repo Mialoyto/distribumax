@@ -41,7 +41,7 @@ END;
 
 
 
-DROP PROCEDURE IF EXISTS getSubcategorias;
+
 CREATE PROCEDURE getSubcategorias (
     IN _idcategoria INT
     ) 
@@ -60,7 +60,7 @@ END;
 
 
 --  GET SUBCATEGORIAS
-DELIMITER $$
+
 CREATE PROCEDURE getSubcategorias(
     IN _idsubcategoria INT
 )
@@ -73,7 +73,7 @@ SELECT
     WHERE CAT.idcategoria = _idsubcategoria
     AND CAT.estado = 1 AND SUB.estado = 1
     ORDER BY SUB.idsubcategoria ASC;
-END $$
+END;
 
 -- LISTAR SUBCATEGORIAS
 CREATE VIEW vw_listar_subcategorias AS

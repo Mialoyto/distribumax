@@ -37,7 +37,7 @@ BEGIN
     WHERE idcategoria = _idcategoria;
 END;
 
-DROP PROCEDURE IF EXISTS sp_listar_categorias;
+
 CREATE PROCEDURE sp_listar_categorias
 ()
 BEGIN

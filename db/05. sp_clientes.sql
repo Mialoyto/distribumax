@@ -1,8 +1,7 @@
 USE distribumax;
 
 -- REGISTRAR CLIENTES
-DROP PROCEDURE IF EXISTS `sp_cliente_registrar`;
-DELIMITER //
+
 CREATE PROCEDURE `sp_cliente_registrar`(
     IN _idpersona     CHAR(11),
     IN _idempresa     BIGINT,
@@ -22,11 +21,11 @@ BEGIN
             VALUES (NULL, _idempresa, _tipo_cliente);
         END IF;
     END IF;
-END //
-DELIMITER ;
+END ;
+
 
 -- ACTUALIZAR CLIENTES
-DELIMITER $$
+
 
 CREATE PROCEDURE sp_actualizar_cliente(
 IN _idpersona       INT,
@@ -63,10 +62,10 @@ BEGIN
             tipo_cliente = _tipo_cliente,
             update_at = NOW()
         WHERE idcliente = _idcliente;
-END$$
+END;
 
 -- ELIMINAR CLIENTE
-DELIMITER $$
+
 
 CREATE PROCEDURE sp_estado_cliente(
 IN  _estado 	CHAR(1),
@@ -76,11 +75,11 @@ BEGIN
 	UPDATE clientes SET
       estado=_estado
       WHERE idcliente=_idcliente;
-END$$
+END;
 
 -- BUSCAR CLIENTE POR DNI O RUC
-DROP PROCEDURE IF EXISTS `sp_buscar_cliente`;
-DELIMITER $$
+
+
 CREATE PROCEDURE `sp_buscar_cliente` (
     IN _nro_documento CHAR(12)
 )
@@ -106,5 +105,5 @@ BEGIN
         LEFT JOIN provincias PRO ON PRO.idprovincia=DIS.idprovincia
         LEFT JOIN departamentos DEP ON DEP.iddepartamento=PRO.iddepartamento
         WHERE CLI.idpersona = _nro_documento OR CLI.idempresa =_nro_documento;
-END$$
+END;
 

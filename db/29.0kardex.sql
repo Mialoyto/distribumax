@@ -2,7 +2,7 @@
 USE distribuMax;
 -- Procedimiento para obtener el último stock
 DROP PROCEDURE IF EXISTS getultimostock;
-DELIMITER $$
+
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,
     OUT stock_actual    INT
@@ -13,11 +13,11 @@ BEGIN
     WHERE idproducto = _idproducto
     ORDER BY create_at DESC
     LIMIT 1;
-END $$
+END;
 
 -- Procedimiento para registrar movimiento de detalle de pedido
 DROP PROCEDURE IF EXISTS sp_registrarmovimiento_kardex;
-DELIMITER $$
+
 CREATE PROCEDURE sp_registrarmovimiento_kardex (
     IN _idusuario           INT,
     IN _idproducto          INT,
@@ -49,13 +49,13 @@ BEGIN
 
     INSERT INTO kardex (idusuario, idproducto,fecha_vencimiento,numlote, stockactual, tipomovimiento, cantidad, motivo)
     VALUES (_idusuario, _idproducto,_fecha_vencimiento,_numlote, _nuevo_stock_actual, _tipomovimiento, _cantidad, _motivo);
-END$$
+END;
 
 
 
 -- Procedimiento para reporte de producto
 DROP PROCEDURE IF EXISTS spu_producto_reporte;
-DELIMITER $$
+
 CREATE PROCEDURE spu_producto_reporte (
     IN _idproducto INT
 )
@@ -76,30 +76,14 @@ BEGIN
     INNER JOIN tipoProductos TPRO ON TPRO.idtipoproducto = PRO.idtipoproducto
     INNER JOIN colaboradores COL ON COL.idcolaborador = KAR.idcolaborador
     WHERE KAR.idproducto = _idproducto;
-END $$
+END;
 
 DROP PROCEDURE IF EXISTS spu_listar_kardex;
-DELIMITER $$
+
 CREATE PROCEDURE spu_listar_kardex()
 BEGIN
     SELECT p.nombreproducto, k.fecha_vencimiento,
            k.numlote, k.stockactual, k.tipomovimiento, k.cantidad, k.motivo,k.estado
     FROM kardex k
     JOIN productos p ON k.idproducto = p.idproducto;
-END $$
-
-CALL spu_listar_kardex();
-
-
-
-SELECT * FROM kardex;
-SELECT * FROM productos;
-SELECT * FROM empresas;
-DELETE FROM kardex
-WHERE idkardex = 15;
-
--- Consulta de producto específico
-SELECT k.idkardex, k.stockactual, p.idproducto, p.nombreproducto 
-FROM kardex k
-INNER JOIN productos p ON k.idproducto = p.idproducto
-WHERE p.idproducto = 1;
+END;

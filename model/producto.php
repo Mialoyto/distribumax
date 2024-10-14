@@ -1,7 +1,5 @@
 <?php
 
-use FFI\Exception;
-
 require_once 'Conexion.php';
 
 class Productos extends Conexion
@@ -13,27 +11,29 @@ class Productos extends Conexion
     $this->pdo = parent::getConexion();
   }
 
-  public function addProducto($params = [])
+  public function addProducto($params = []):int|null
   {
+    $id = null;
     try {
-      $status = false;
-      $query = $this->pdo->prepare("CALL sp_registrar_producto (?,?,?,?,?,?) ");
-      $status = $query->execute(array(
+      $sql = "CALL sp_registrar_producto (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      $query = $this->pdo->prepare($sql);
+      $query->execute(array(
+        $params['idproveedor'],
         $params['idmarca'],
         $params['idsubcategoria'],
         $params['nombreproducto'],
-        $params['descripcion'],
+        $params['idunidadmedida'],
+        $params['cantidad_presentacion'],
+        $params['peso_unitario'],
         $params['codigo'],
-        $params['preciounitario']
-
+        $params['precio_compra'],
+        $params['precio_mayorista'],
+        $params['precio_minorista']
       ));
-      if ($status) {
-        return $status;
-      } else {
-        return false;
-      }
+      $id = $query->fetch(PDO::FETCH_ASSOC);
+      return $id['idproducto'];
     } catch (Exception $e) {
-      die($e->getMessage());
+      return $id;
     }
   }
   public function getAll()
@@ -71,6 +71,20 @@ class Productos extends Conexion
       $query->execute(array(
         $params['_cliente_id'],
         $params['_item']
+      ));
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+
+  public function getCodigoProducto($params = [])
+  {
+    try {
+      $sql = "CALL sp_get_codigo_producto(?)";
+      $query = $this->pdo->prepare($sql);
+      $query->execute(array(
+        $params['codigo']
       ));
       return $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {

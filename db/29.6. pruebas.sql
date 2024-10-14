@@ -60,3 +60,5 @@ SELECT * FROM kardex;
 SELECT * FROM detalle_productos;
 
 SELECT * FROM proveedores;
+
+SELECT * FROM detalle_proveedores;

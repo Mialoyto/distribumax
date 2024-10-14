@@ -19,8 +19,8 @@
   /* Cambiar el color al pasar el ratón */
 }
 
-.numeros[type=number]::-webkit-inner-spin-button,
-.numeros[type=number]::-webkit-outer-spin-button {
+.numeros input[type=number]::-webkit-inner-spin-button,
+.numeros input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }

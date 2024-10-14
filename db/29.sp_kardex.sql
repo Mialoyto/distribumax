@@ -14,7 +14,6 @@ BEGIN
     LIMIT 1;
 END ;
 
-
 -- Procedimiento para registrar movimiento de detalle de pedido
 DROP PROCEDURE IF EXISTS sp_registrarmovimiento_kardex;
 
@@ -51,8 +50,6 @@ BEGIN
     VALUES (_idusuario, _idproducto,_fecha_vencimiento,_numlote, _nuevo_stock_actual, _tipomovimiento, _cantidad, _motivo);
 END;
 
-
-
 -- Procedimiento para reporte de producto
 DROP PROCEDURE IF EXISTS spu_producto_reporte;
 
@@ -77,3 +74,12 @@ BEGIN
     INNER JOIN colaboradores COL ON COL.idcolaborador = KAR.idcolaborador
     WHERE KAR.idproducto = _idproducto;
 END ;
+
+DROP PROCEDURE IF EXISTS spu_listar_kardex;
+CREATE PROCEDURE spu_listar_kardex()
+BEGIN
+    SELECT p.nombreproducto, k.fecha_vencimiento,
+           k.numlote, k.stockactual, k.tipomovimiento, k.cantidad, k.motivo,k.estado
+    FROM kardex k
+    JOIN productos p ON k.idproducto = p.idproducto;
+END;

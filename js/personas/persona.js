@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function $(object = null) {
     return document.querySelector(object);
   }
-/* rama backup */
+  /* rama backup */
   const tipodoc = $("#tipo_documento");
   const nrodoc = $("#numero_documento");
   // const btnBuscarDni = $("#buscar-dni");
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error(e);
       })
   })();
-
+  
 
 
   // FUNCIONES
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
       }
-    }else{
+    } else {
       alert("Esta persona ya esta registrada")
     }
   });
@@ -222,6 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
   addPersona(false);
 
   // FIN DE EVENTO
- 
+
 
 });

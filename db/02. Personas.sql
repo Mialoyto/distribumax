@@ -69,30 +69,59 @@ BEGIN
 END $$
 
 -- BUSCAR PERSONA POR DOCUMENTO ✔️
+DROP PROCEDURE IF EXISTS sp_buscarpersonadoc;
 DELIMITER $$
 CREATE PROCEDURE sp_buscarpersonadoc(
-IN _idtipodocumento INT ,
-IN _idpersonanrodoc CHAR(11)
+    IN _idtipodocumento INT,
+    IN _idpersonanrodoc CHAR(11)
 )
 BEGIN
-	SELECT 
-		DIST.iddistrito,
-		DIST.distrito,
-        PER.nombres,
-        PER.appaterno,
-        PER.apmaterno,
-        PER.telefono,
-        PER.direccion,
-        PER.idpersonanrodoc,
-        USU.idusuario,
-        PER.estado
+    DECLARE _persona_count INT DEFAULT 0;
+
+    -- Verificar si la persona existe
+    SELECT COUNT(*)
+    INTO _persona_count
+    FROM personas PER
+    WHERE PER.idpersonanrodoc = _idpersonanrodoc
+    AND PER.idtipodocumento = _idtipodocumento
+    AND PER.estado = '1';
+
+    -- Si no existe la persona, devolver 'No data'
+    IF _persona_count = 0 THEN
+        SELECT 'No data' AS estado;
+
+    -- Si existe, devolver los detalles
+    ELSE
+        SELECT 
+            DIST.iddistrito,
+            DIST.distrito,
+            PER.nombres,
+            PER.appaterno,
+            PER.apmaterno,
+            PER.telefono,
+            PER.direccion,
+            PER.idpersonanrodoc,
+            USU.idusuario,
+            PER.estado,
+            CASE 
+                WHEN EXISTS (
+                    SELECT 1 
+                    FROM clientes CLI 
+                    WHERE CLI.idpersona = PER.idpersonanrodoc
+                ) THEN 'Registrado'
+                ELSE 'No registrado'
+            END AS estado
         FROM personas PER
         INNER JOIN distritos DIST ON PER.iddistrito = DIST.iddistrito
         INNER JOIN tipo_documento TDOC ON PER.idtipodocumento = TDOC.idtipodocumento
         LEFT JOIN usuarios USU ON USU.idpersona = PER.idpersonanrodoc
-		WHERE PER.idtipodocumento = _idtipodocumento
-        AND PER.idpersonanrodoc = _idpersonanrodoc AND PER.estado = "1";
+        WHERE PER.idtipodocumento = _idtipodocumento
+        AND PER.idpersonanrodoc = _idpersonanrodoc 
+        AND PER.estado = '1';
+    END IF;
 END $$
+
+
 
 DELIMITER //
 CREATE PROCEDURE sp_listar_personas()

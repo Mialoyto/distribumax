@@ -11,7 +11,7 @@ require_once '../../header.php';
     <div class="card">
       <ul class="nav nav-tabs" id="cliente" role="tablist">
         <li class="nav-item" role="presentation">
-          <a class="nav-link active" id="persona-tab" data-bs-toggle="tab" href="#persona" role="tab" aria-controls="persona" aria-selected="true">Persona</a>
+          <a class="nav-link" id="persona-tab" data-bs-toggle="tab" href="#persona" role="tab" aria-controls="persona" aria-selected="false">Persona</a>
         </li>
         <li class="nav-item" role="presentation">
           <a class="nav-link" id="empresa-tab" data-bs-toggle="tab" href="#empresa" role="tab" aria-controls="empresa" aria-selected="false">Empresa</a>
@@ -20,7 +20,7 @@ require_once '../../header.php';
 
       <div class="tab-content mt-4">
         <!-- Formulario de Persona -->
-        <div class="tab-pane fade show active" id="persona" role="tabpanel" aria-labelledby="persona-tab">
+        <div class="tab-pane fade" id="persona" role="tabpanel" aria-labelledby="persona-tab">
           <form action="" id="registrar-persona">
             <div class="card">
               <div class="card-body">
@@ -63,15 +63,21 @@ require_once '../../header.php';
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-3">
+                <div class="col-md-3 mb-4">
                     <div class="form-floating">
-                      <input type="tel" class="form-control" placeholder="Teléfono">
+                      <input type="text" class="form-control" placeholder="Distrito" id="iddistrito-persona">
+                      <label for="">Distrito</label>
+                    </div>
+                  </div>
+                  <div class="col-md-3 mb-4">
+                    <div class="form-floating">
+                      <input type="tel" class="form-control" placeholder="Teléfono" id="telefono-persona">
                       <label for="">Teléfono</label>
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3 mb-4">
                     <div class="form-floating">
-                      <input type="text" class="form-control" placeholder="Dirección">
+                      <input type="text" class="form-control" placeholder="Dirección" id="direccion-persona">
                       <label for="">Dirección</label>
                     </div>
                   </div>
@@ -79,7 +85,7 @@ require_once '../../header.php';
               </div>
             </div>
             <div class="card-footer d-flex justify-content-end">
-              <button type="button" class="btn btn-danger" id="btnCancelarPersona">Cancelar</button>
+              <button type="reset" class="btn btn-danger" id="btnCancelarPersona">Cancelar</button>
               <button type="submit" class="btn btn-success" id="registrarPersona">Registrar</button>
             </div>
           </form>
@@ -150,45 +156,67 @@ require_once '../../header.php';
     </div>
   </div>
 </main>
-<script>
-  // Función para cargar los tipos de documentos
-  (() => {
-    fetch(`../../controller/documento.controller.php?operation=getAllDocumentos`)
-      .then(response => response.json())
-      .then(data => {
-        const optionEmp = document.querySelector("#idtipodocumento");
-        data.forEach(element => {
-          const tagOption = document.createElement('option');
-          tagOption.value = element.idtipodocumento;
-          tagOption.innerText = element.documento;
-          optionEmp.appendChild(tagOption);
-        });
-      })
-      .catch(e => {
-        console.error(e);
-      });
-  })();
 
-  // Función para seleccionar el tipo de documento
-  function seleccionarTipoDocumento(numeroDocumento) {
-    const tipoDocSelect = document.getElementById("idtipodocumento");
-    
-    // Verifica si el número de documento tiene 8 dígitos
-    if (numeroDocumento.length === 8) {
-      tipoDocSelect.value = "DNI"; // Selecciona automáticamente DNI
-      const opciones = tipoDocSelect.options;
-      for (let i = 0; i < opciones.length; i++) {
-        if (opciones[i].innerText === "DNI") {
-          tipoDocSelect.value = opciones[i].value; // Asigna el ID del tipo de documento
-          break;
-        }
-      }
-    } else {
-      tipoDocSelect.value = ""; // Restablece la selección si no tiene 8 dígitos
-    }
-  }
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Inicialmente oculta ambas secciones
+    document.querySelector("#persona").classList.remove("show", "active");
+    document.querySelector("#empresa").classList.remove("show", "active");
+
+    // Escucha los clics en las pestañas y muestra el contenido correspondiente
+    const personaTab = document.querySelector("#persona-tab");
+    const empresaTab = document.querySelector("#empresa-tab");
+
+    personaTab.addEventListener("click", function () {
+      document.querySelector("#persona").classList.add("show", "active");
+      document.querySelector("#empresa").classList.remove("show", "active");
+    });
+
+    empresaTab.addEventListener("click", function () {
+      document.querySelector("#empresa").classList.add("show", "active");
+      document.querySelector("#persona").classList.remove("show", "active");
+    });
+  });
+
+  // Función para cargar los tipos de documentos
+   (() => {
+   fetch(`../../controller/documento.controller.php?operation=getAllDocumentos`)
+   .then(response => response.json())
+   .then(data => {
+   const optionEmp = document.querySelector("#idtipodocumento");
+   data.forEach(element => {
+   const tagOption = document.createElement('option');
+   tagOption.value = element.idtipodocumento;
+   tagOption.innerText = element.documento;
+   optionEmp.appendChild(tagOption);
+   });
+   })
+   .catch(e => {
+   console.error(e);
+   });
+   })();
+   
+  //  Función para seleccionar el tipo de documento
+   function seleccionarTipoDocumento(numeroDocumento) {
+   const tipoDocSelect = document.getElementById("idtipodocumento");
+   
+  //  Verifica si el número de documento tiene 8 dígitos
+   if (numeroDocumento.length === 8) {
+   tipoDocSelect.value = "DNI"; // Selecciona automáticamente DNI
+   const opciones = tipoDocSelect.options;
+   for (let i = 0; i < opciones.length; i++) {
+   if (opciones[i].innerText === "DNI") {
+   tipoDocSelect.value = opciones[i].value; // Asigna el ID del tipo de documento
+   break;
+   }
+   }
+   } else {
+   tipoDocSelect.value = ""; // Restablece la selección si no tiene 8 dígitos
+   }
+   }
 </script>
 <script src="../../js/clientes/registrar.js"></script>
+<script src="../../js/clientes/registrarPersonas.js"></script>
 <?php
 require_once '../../footer.php';
 ?>

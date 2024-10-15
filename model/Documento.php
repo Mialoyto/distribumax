@@ -14,7 +14,7 @@ class Documento extends Conexion
     public function getAllDocumentos()
     {
         try {
-            $tsql = "SELECT * FROM view_tipos_documentos";
+            $tsql = "SELECT * FROM vw_tipos_documentos";
             $query = $this->pdo->prepare($tsql);
             $query->execute();
 

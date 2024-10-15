@@ -14,7 +14,7 @@ BEGIN
     (idempresaruc, iddistrito, razonsocial, direccion, email, telefono) 
     VALUES 
     (_idempresaruc, _iddistrito, _razonsocial, _direccion, _email, _telefono);
-    SELECT _idempresaruc AS idmepresas;
+    SELECT _idempresaruc AS idempresas;
 END;
 
 
@@ -64,16 +64,16 @@ BEGIN
     SELECT COUNT(*)
     INTO _empresa_count
     FROM empresas EMP
-    WHERE EMP.idpersonanrodoc = _ruc
+    WHERE EMP.idempresaruc = _ruc
     AND EMP.estado = '1';
 
     -- Si no existe la empresa, devolver 'No data'
     IF _empresa_count = 0 THEN
         SELECT 'No data' AS estado;
-
-    -- Si existe, devolver los detalles
     ELSE
+        -- Si existe, devolver los detalles
         SELECT 
+			'Empresa' AS tipo_cliente,
             DIST.iddistrito,
             DIST.distrito,
             EMP.idempresaruc,
@@ -91,12 +91,12 @@ BEGIN
                 ELSE 'No registrado'
             END AS estado
         FROM empresas EMP
-        INNER JOIN personas PER ON EMP.idpersonanrodoc = PER.idpersonanrodoc
-        INNER JOIN distritos DIST ON PER.iddistrito = DIST.iddistrito
-        WHERE EMP.idpersonanrodoc = _ruc
+        INNER JOIN distritos DIST ON EMP.iddistrito = DIST.iddistrito
+        WHERE EMP.idempresaruc = _ruc
         AND EMP.estado = '1';
     END IF;
 END;
+
 
 -- LISTAR EMPRESAS
 CREATE VIEW view_empresas AS

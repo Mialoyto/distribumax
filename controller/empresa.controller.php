@@ -16,40 +16,9 @@ if (isset($_GET['operation'])) {
       $dato = [
         'ruc' => $_GET['ruc']
       ];
-
-      // Llamada al método de búsqueda (usando el procedimiento almacenado)
       $entidades = $empresa->search($dato);
 
-      // Preparar la respuesta
-      $response = [];
-
-      if (count($entidades) > 0) {
-        // Recorrer los resultados de búsqueda
-        foreach ($entidades as $entidad) {
-          // Si el estado es 'No data', indicar que no está registrada
-          if ($entidad['estado'] == 'No data') {
-            $response[] = [
-              'estado' => 'No data',  // No hay datos, la empresa no está registrada
-              'message' => 'La empresa no está registrada. Puedes agregarla como nueva empresa.'
-            ];
-          } else {
-            // Si está registrada (como empresa y/o cliente), devolver los detalles
-            $response[] = [
-              'tipo_cliente' => $entidad['tipo_cliente'],
-              'idempresaruc' => $entidad['idempresaruc'],
-              'razonsocial'  => $entidad['razonsocial'],
-              'direccion'    => $entidad['direccion'],
-              'email'        => $entidad['email'],
-              'telefono'     => $entidad['telefono'],
-              'distrito'     => $entidad['distrito'],
-              'estado'       => $entidad['estado'] // Registrado o No registrado
-            ];
-          }
-        }
-      }
-
-      // Enviar la respuesta como JSON
-      echo json_encode($response);
+      echo json_encode($entidades);
     break;
   }
 }

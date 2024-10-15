@@ -24,14 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // })();
 // 
   // Botón cancelar: Resetea el formulario y habilita los campos
-  $('#cliente').addEventListener('click', function () {
-    var activeTab = document.querySelector('.nav-link.active')?.getAttribute('href');
-    if (activeTab === '#persona') {
+  let cliente ;
+  $("#cliente").addEventListener('click', function () {
+    var cliente = document.querySelector('.nav-link.active')?.getAttribute('href');
+    if (cliente === '#persona') {
       resetCampos();
       $("#nro-doc-persona").value = '';
-    } else if (activeTab === '#empresa') {
+      console.log(cliente)
+    } else if (cliente === '#empresa') {
       //console.log("empresa")
       $("#nro-doc-empresa").value = '';
+      console.log(cliente)
       resetCampos();
 
     }
@@ -156,13 +159,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
   async function registrarCliente(idempresa) {
-    var cliente = document.querySelector('.nav-link.active')?.getAttribute('href');
-    console.log(cliente);
+   
+   
     const params = new FormData();
     params.append('operation', 'addcliente');
     params.append('idpersona', $("#nor-doc-persona").value); // Asegúrate de que este campo tenga el valor correcto
-    params.append('idempresa', idempresa); // Usa el ID de la empresa que acabas de registrar
-    params.append('tipo_cliente', cliente);
+    params.append('idempresa', $("#nor-doc-empresa").value ); // Usa el ID de la empresa que acabas de registrar
+    params.append('tipo_cliente',cliente);
 
     const options = {
       method: 'POST',
@@ -173,12 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(`../../controller/cliente.controller.php`, options);
       const data = await response.json();
       console.log(data);
-      if (data.success) {
-        // Manejar la respuesta exitosa, por ejemplo, mostrar un mensaje al usuario
-        console.log("Cliente registrado exitosamente.");
-      } else {
-        console.error("Error al registrar el cliente:", data.message);
-      }
+      
     } catch (error) {
       console.error("Error al registrar el cliente:", error);
     }

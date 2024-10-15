@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
     habilitarCampos();
-
   });
+
   function desactivarCampos() {
     $("#nombres").setAttribute("disabled", true)
     $("#apellido-paterno").setAttribute("disabled", true)
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
   function limpiarCampos() {
-  
+
     $("#nombres").value = "";
     $("#apellido-paterno").value = "";
     $("#apellido-materno").value = "";
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
       $("#idtipodocumento").setAttribute("disabled", true)
       $("#registrarPersona").setAttribute("disabled", true)
       desactivarCampos();
-      showToast('La persona ya está registrada como cliente', 'WARNING', 'WARNING');
+      showToast('La persona ya está registrada como cliente', 'warning', 'WARNING');
     }
   }
 
@@ -90,12 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
     params.append('operation', 'addPersona')
     params.append('idtipodocumento', $('#idtipodocumento').value);
     params.append('idpersonanrodoc', $('#nro-doc-persona').value);
-    params.append('iddistrito',      $('#iddistrito-persona').value);
-    params.append('nombres',         $('#nombres').value);
-    params.append('appaterno',       $('#apellido-paterno').value);
-    params.append('apmaterno',       $('#apellido-materno').value);
-    params.append('telefono',        $('#telefono-persona').value);
-    params.append('direccion',       $('#direccion-persona').value);
+    params.append('iddistrito', $('#iddistrito-persona').value);
+    params.append('nombres', $('#nombres').value);
+    params.append('appaterno', $('#apellido-paterno').value);
+    params.append('apmaterno', $('#apellido-materno').value);
+    params.append('telefono', $('#telefono-persona').value);
+    params.append('direccion', $('#direccion-persona').value);
     const options = {
       method: 'POST',
       body: params
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Evento para buscar DNI cuando el usuario ingrese el número de documento
-  $("#nro-doc-persona").addEventListener("input",debounce(async() => {
+  $("#nro-doc-persona").addEventListener("input", debounce(async () => {
     if ($("#nro-doc-persona").value === '') {
       limpiarCampos();
       habilitarCampos();
@@ -115,12 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await buscarDni();
       validarDni(response);
     }
-  },100));
-  $("#registrar-persona").addEventListener("submit",async(event)=>{
-      event.preventDefault();
-      if(showConfirm("¿Desea Registrar?","Registrar Cliente")){
-         const resultado = await registradoPersona();
-         console.log(resultado);
-      }
+  }, 100));
+  $("#registrar-persona").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (showConfirm("¿Desea Registrar?", "Registrar Cliente")) {
+      const resultado = await registradoPersona();
+      console.log(resultado);
+    }
   })
 });

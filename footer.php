@@ -9,7 +9,7 @@
 </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script><!-- jquey-->
+<!-- jquey-->
 <script src="<?= $host ?>/js/scripts.js"></script>
 <!-- SWEETALERT -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -19,8 +19,9 @@
 <!--Extension BS5-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <!--Datatable Core-->
-<script src="//cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <!--Dtatable estilos BS5-->
-<script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<!-- CSS PARA TABLAS -->
 <!-- utils sweetalert2 -->
 <script src="http://localhost/distribumax/js/utils/sweetalert.js"></script>

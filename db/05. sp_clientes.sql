@@ -25,8 +25,6 @@ END ;
 
 
 -- ACTUALIZAR CLIENTES
-
-
 CREATE PROCEDURE sp_actualizar_cliente(
 IN _idpersona       INT,
 IN _idempresa       BIGINT,
@@ -73,8 +71,8 @@ IN  _idcliente 	INT
 )
 BEGIN
 	UPDATE clientes SET
-      estado=_estado
-      WHERE idcliente=_idcliente;
+        estado=_estado
+        WHERE idcliente=_idcliente;
 END;
 
 -- BUSCAR CLIENTE POR DNI O RUC
@@ -92,7 +90,7 @@ BEGIN
         PER.apmaterno,
         EMP.razonsocial,
         EMP.email,
-       DIS.distrito,DIS.iddistrito,PRO.provincia,DEP.departamento,
+        DIS.distrito,DIS.iddistrito,PRO.provincia,DEP.departamento,
         CASE 
             WHEN CLI.idpersona IS NOT NULL THEN PER.direccion
             WHEN CLI.idempresa IS NOT NULL THEN EMP.direccion
@@ -107,3 +105,27 @@ BEGIN
         WHERE CLI.idpersona = _nro_documento OR CLI.idempresa =_nro_documento;
 END;
 
+
+-- LISTAR CLIENTES
+DROP PROCEDURE IF EXISTS sp_listar_clientes;
+CREATE PROCEDURE sp_listar_clientes()
+BEGIN
+    SELECT 
+        CLI.idcliente AS id_cliente,
+        CASE
+            WHEN CLI.tipo_cliente = 'Persona' THEN CLI.idpersona
+            WHEN CLI.tipo_cliente = 'Empresa' THEN CLI.idempresa
+        END AS idcliente,
+        CLI.tipo_cliente,
+        CASE
+            WHEN CLI.tipo_cliente = 'Persona' THEN CONCAT(PER.nombres, ' ', PER.appaterno, ' ', PER.apmaterno)
+            WHEN CLI.tipo_cliente = 'Empresa' THEN EMP.razonsocial
+        END AS cliente,
+        CLI.create_at AS fecha_creacion,
+        CLI.estado AS estado_cliente
+    FROM 
+        clientes CLI
+    LEFT JOIN personas PER ON CLI.idpersona = PER.idpersonanrodoc
+    LEFT JOIN empresas EMP ON CLI.idempresa = EMP.idempresaruc
+    WHERE CLI.estado = '1';
+END;

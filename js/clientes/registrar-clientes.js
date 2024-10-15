@@ -5,24 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(object);
   }
 
-  // (() => {
-    // fetch(`../../controller/documento.controller.php?operation=getAllDocumentos`)
-      // .then(response => response.json())
-      // .then(data => {
-// 
-        // data.forEach(element => {
-          // optionEmp = document.querySelector("#idtipodocumento");
-          // const tagOption = document.createElement('option');
-          // tagOption.value = element.idtipodocumento;
-          // tagOption.innerText = element.documento;
-          // optionEmp.appendChild(tagOption);
-        // })
-      // })
-      // .catch(e => {
-        // console.error(e);
-      // })
-  // })();
-// 
   // Botón cancelar: Resetea el formulario y habilita los campos
   let cliente ;
   $("#cliente").addEventListener('click', function () {
@@ -30,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cliente === '#persona') {
       resetCampos();
       $("#nro-doc-persona").value = '';
-      console.log(cliente)
+      // console.log(cliente)
     } else if (cliente === '#empresa') {
       //console.log("empresa")
       $("#nro-doc-empresa").value = '';

@@ -56,14 +56,14 @@ class Cliente extends Conexion
 
   public function getAll(){
     try{
-        $query=$this->pdo->prepare("CALL sp_listar_clientes");
+        $query=$this->pdo->prepare("CALL sp_listar_clientes()");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }catch(Exception $e){
         die($e->getMessage());
     }
   }
-
+  
   public function searProspecto($params=[]){
     try{
       
@@ -77,7 +77,4 @@ class Cliente extends Conexion
         die($e->getMessage());
       }
   }
-
- 
-
 }

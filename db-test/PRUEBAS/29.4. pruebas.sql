@@ -268,3 +268,7 @@ JOIN (
 
 select * from clientes;
 SELECT * FROM productos;
+
+select * from clientes;
+SELECT * FROM PERSONAS;
+CALL sp_listar_clientes();

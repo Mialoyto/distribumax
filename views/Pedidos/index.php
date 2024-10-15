@@ -19,7 +19,6 @@
           <h5 class="mb-3 mt-3 card-title">Datos del cliente</h5>
           <!-- fila 01 -->
           <div class="row g-3 mb-3">
-
             <div class="col-md-6 mb-2">
               
               <div class="form-floating">
@@ -27,7 +26,6 @@
                 <label for="nro-doc" class="form-label"> <i class="bi bi-search"></i> Número de documento</label>
               </div>
             </div>
-
             <div class="col-md-6 mb-2">
               <!-- selecc de tipo de documento -->
               <div class="form-floating">
@@ -38,11 +36,9 @@
               </div>
               <!-- fin de selec de tipo de documento -->
             </div>
-
           </div>
           <!-- fila 2 -->
           <div class="row g-3 mb-3">
-
             <div class="col-md-4 mt-3">
               <div class="form-floating">
                 <input class="form-control" id="nombres" disabled="true" name="nombres" type="text" placeholder="nombres" required />
@@ -76,11 +72,8 @@
                 <label for="direccion-cliente">Dirección cliente</label>
               </div>
             </div>
-
           </div>
-          <div>
             <hr class="my-3">
-
             <!-- Sección de Detalle de Pedido -->
             <div>
               <h5 class="mb-3">Detalle del Pedido</h5>
@@ -94,7 +87,6 @@
               </div>
             </div>
             <!-- FIN BUSCADOR PETICIONES -->
-
             <!-- Tabla de productos del pedido -->
             <div class="table-responsive">
               <table class="table table-striped table-hover table-secondar" id="detalle-productos">
@@ -133,5 +125,4 @@
 <?php require_once '../../footer.php'; ?>
 <script type="module" src="http://localhost/distribumax/js/pedidos/pedidos.js"></script>
 </body>
-
 </html>

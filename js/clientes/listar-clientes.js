@@ -13,7 +13,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       },
       columns: [
-        { data: 'idcliente', width: "10%" },
+        {
+          data: 'idcliente', width: "10%",className: "text-start",
+          render: function (data) {
+            return `<b>${data}</b>`;
+          }
+        },
         { data: 'tipo_cliente', width: "10%" },
         { data: 'cliente', width: "20%" },
         { data: 'fecha_creacion', width: "15%" },

@@ -16,7 +16,7 @@ $host = "http://localhost/distribumax";
 <meta name="author" content="" />
 <title>Distribumax</title>
 <link href="<?= $host ?>/css/styles.css" rel="stylesheet" />
-<link href="http://distribumax/css/list.css" rel="stylesheet"/>
+<link href="http://localhost/distribumax/css/list.css" rel="stylesheet"/>
 
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 

@@ -68,7 +68,7 @@
     </div>
 </main>
 <?php require_once '../../footer.php'; ?>
-<script src="../../js/clientes/listar-clientes.js"></script>
+ <script src="../../js/clientes/listar-clientes.js"></script> 
 <script>
   // Manejar el cambio entre los campos de Persona y Empresa
   /*   document.getElementById('tipo_cliente').addEventListener('change', function() {

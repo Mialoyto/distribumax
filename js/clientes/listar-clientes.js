@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function RenderDatatable() {
     const dtcliente = new DataTable("#table-clientes", {
       scrollX: true,
-      serverSide: true,
+     // serverSide: true,
       ajax: {
         url: `../../controller/cliente.controller.php?operation=getAll`,
         dataSrc: function (data) {

@@ -72,7 +72,8 @@ END;
 
 -- BUSCAR PERSONA POR DOCUMENTO ✔️
 
-CREATE PROCEDURE sp_buscarpersonadoc(
+
+CREATE PROCEDURE sp_buscar_percliente(
     IN _idtipodocumento INT,
     IN _idpersonanrodoc CHAR(11)
 )

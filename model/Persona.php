@@ -106,6 +106,8 @@ class Persona extends Conexion
         }
     }
 
+    
+
     public function getAll(){
         try{
             $query=$this->pdo->prepare("CALL sp_listar_personas");

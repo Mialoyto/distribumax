@@ -1,3 +1,4 @@
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribuMax;
 -- Procedimiento para obtener el último stock
 DROP PROCEDURE IF EXISTS getultimostock;
@@ -82,4 +83,21 @@ BEGIN
            k.numlote, k.stockactual, k.tipomovimiento, k.cantidad, k.motivo,k.estado
     FROM kardex k
     JOIN productos p ON k.idproducto = p.idproducto;
+END;
+
+
+-- LISTAR LOS 20 ULTIMO MOVIMIENTOS DE KARDEX DE UN PRODUCTO
+DROP PROCEDURE IF EXISTS spu_listar_producto_kardex;
+CREATE PROCEDURE spu_listar_producto_kardex(
+    IN _idproducto INT
+)
+BEGIN
+    SELECT p.nombreproducto, k.fecha_vencimiento,
+           k.numlote, k.stockactual, k.tipomovimiento, k.cantidad, k.motivo,k.estado
+    FROM kardex k
+    JOIN productos p ON k.idproducto = p.idproducto
+    WHERE k.idproducto = _idproducto
+    AND K.estado = 1
+    ORDER BY k.create_at DESC
+    LIMIT 20;
 END;

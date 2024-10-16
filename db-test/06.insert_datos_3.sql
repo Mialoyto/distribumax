@@ -111,3 +111,13 @@ CALL sp_detalle_promociones_registrar (2,10, 5);
 /* CALL sp_detalle_promociones_registrar (2,18, 5);
 CALL sp_detalle_promociones_registrar (2,19, 5);
 CALL sp_detalle_promociones_registrar (2,20, 5);  */
+
+
+CALL sp_registrar_vehiculo(
+    1,               -- ID del usuario (reemplaza con el ID correcto)
+    'Toyota',        -- Marca del vehículo
+    'Hilux',         -- Modelo del vehículo
+    'ABC-123',       -- Placa del vehículo
+    1500,            -- Capacidad en Kg
+    'operativo'      -- Condición del vehículo ('operativo', 'taller', 'averiado')
+);

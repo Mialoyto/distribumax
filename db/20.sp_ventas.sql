@@ -290,8 +290,9 @@ LEFT JOIN
     productos pr ON pr.idproducto = dp.idproducto
 
 -- Relaciona con la columna idproducto en detalle_pedidos
-WHERE ve.idventa=_idventa;
+WHERE ve.idventa = _idventa;
+END;
 
-END ;
+
 
 

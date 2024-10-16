@@ -26,13 +26,13 @@ switch ($verbo) {
 
                 // Captura el resultado de cada inserción
                 $resultado = $detallemetodo->addDetalleMetodo($datosEnviar);
-
+                $datos[] = ["iddetalle" => $resultado];
                 // Verifica si hubo error en la inserción
 
               }
             }
             // Retorna el arreglo con los resultados de las inserciones
-            echo json_encode(['id' => $datos]);
+            echo json_encode($datos);
           }
           break;
       }

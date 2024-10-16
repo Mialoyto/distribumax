@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+
 USE distribumax;
 --  REGISTRAR PEDIDOS
 
@@ -48,7 +48,7 @@ END;
 
 -- buscador para pedidos por id
 
-
+DROP PROCEDURE IF EXISTS sp_buscar_pedido;
 CREATE PROCEDURE sp_buscar_pedido(
    IN _idpedido CHAR(15)
 )
@@ -67,6 +67,7 @@ BEGIN
         empresas em ON em.idempresaruc = cl.idempresa
     WHERE 
         pd.idpedido LIKE CONCAT( _idpedido, '%')  -- Búsqueda flexible por idpedido
+     -- Búsqueda flexible por nombre o razón social
         AND pd.estado = 'Pendiente';  -- Solo muestra pedidos pendientes
 
     -- Actualización del estado si el pedido se encuentra "Enviado"

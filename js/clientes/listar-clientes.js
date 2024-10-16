@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-
-
   // funcion para deshabilitar un cliente
   async function deshabilitarCliente(estado, idCliente) {
 
@@ -39,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function RenderDatatable() {
     const dtcliente = new DataTable("#table-clientes", {
       scrollX: true,
-     // serverSide: true,
+      processing: true,
+      serverSide: true,
       ajax: {
         url: `../../controller/cliente.controller.php?operation=getAll`,
         dataSrc: function (data) {

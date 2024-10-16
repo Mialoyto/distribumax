@@ -3,7 +3,7 @@
 require_once '../model/kardex.php';
 
 $kardex = new Kardex();
-header("Content-Type: application/json; charset=utf-8");
+header("Content-Type: application/json");
 $verbo = $_SERVER["REQUEST_METHOD"];
 $input = file_get_contents('php://input');
 
@@ -34,6 +34,7 @@ if (isset($_POST['operation'])) {
     case 'getById':
       echo json_encode($kardex->getById(['idproducto' => $_POST['idproducto']]));
       break;
+
   }
 }
 
@@ -42,5 +43,12 @@ if (isset($_GET['operation'])) {
     case 'getAll':
       echo json_encode($kardex->getAll());
       break;
+      case 'getMovimientoProducto':
+        $datosEnviar = [
+          'idproducto' => $_GET['idproducto']
+        ];
+        $datosRecibidos = $kardex->getMovimientoProducto($datosEnviar);
+        echo json_encode(['data' => $datosRecibidos]);
+        break;
   }
 }

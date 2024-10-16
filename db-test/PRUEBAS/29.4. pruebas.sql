@@ -272,3 +272,5 @@ SELECT * FROM productos;
 select * from clientes;
 SELECT * FROM PERSONAS;
 CALL sp_listar_clientes();
+CALL sp_estado_cliente(1, 2);
+select * from clientes;

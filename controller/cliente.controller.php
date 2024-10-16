@@ -62,24 +62,13 @@ if (isset($_POST['operation'])) {
       $datos = $cliente->addcliente($datos);
       echo json_encode(['id' => $datos]);
       break;
+      case 'activeCliente':
+        $datosEnviar = [
+          'estado'    => $_POST['estado'],
+          'idcliente' => $_POST['idcliente']
+        ];
+        $datosRecibidos = $cliente->activeCliente($datosEnviar);
+        echo json_encode(['row' => $datosRecibidos]);
+        break;
   }
 }
-
-
-
-// if(isset($_POST['operation'])){
-//   switch ($_POST['operation']){
-//   case 'addCliente': //Registrar un cliente
-//       if (isset($data['idpersona'], $data['idempresa'], $data['tipo_cliente'])) {
-//           $resultado = $cliente->addCliente(
-//               $data['idpersona'],
-//               $data['idempresa'],
-//               $data['tipo_cliente']
-//           );
-//           echo json_encode($resultado);
-//       } else {
-//           echo json_encode(["error" => "Datos incompletos."]);
-//       }
-//       break;
-// }
-// }

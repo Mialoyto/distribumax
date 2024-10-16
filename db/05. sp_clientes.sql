@@ -64,10 +64,10 @@ END;
 
 -- ELIMINAR CLIENTE
 
-
+DROP PROCEDURE IF EXISTS sp_estado_cliente;
 CREATE PROCEDURE sp_estado_cliente(
 IN  _estado 	CHAR(1),
-IN  _idcliente 	INT 
+IN  _idcliente 	CHAR(1)
 )
 BEGIN
 	UPDATE clientes SET
@@ -75,9 +75,9 @@ BEGIN
         WHERE idcliente=_idcliente;
 END;
 
+
+
 -- BUSCAR CLIENTE POR DNI O RUC
-
-
 CREATE PROCEDURE `sp_buscar_cliente` (
     IN _nro_documento CHAR(12)
 )

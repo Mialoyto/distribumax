@@ -16,7 +16,7 @@ $host = "http://localhost/distribumax";
 <meta name="author" content="" />
 <title>Distribumax</title>
 <link href="<?= $host ?>/css/styles.css" rel="stylesheet" />
-<link href="http://distribumax/css/list.css" />
+<link href="http://distribumax/css/list.css" rel="stylesheet"/>
 
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
@@ -30,8 +30,7 @@ $host = "http://localhost/distribumax";
   integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<!-- JQUERY -->
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
 
 <!--Datatables CSS-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">

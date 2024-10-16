@@ -474,7 +474,7 @@ CREATE TABLE detalle_meto_Pago(
 	iddetallemetodo   INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idventa           INT NOT NULL,
     idmetodopago      INT NOT NULL,
-    monto 			  DECIMAL(10.2) NOT NULL,
+    monto 			  DECIMAL(10,2) NOT NULL,
 	create_at		  DATETIME NOT NULL DEFAULT NOW(),
     update_at		  DATETIME NULL,
     estado           CHAR(1) NOT NULL DEFAULT "1",

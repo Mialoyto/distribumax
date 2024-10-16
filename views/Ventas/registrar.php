@@ -78,7 +78,7 @@ require_once '../../header.php';
               <div class="col-md-4">
                 <div class="form-floating">
                   <select id="tipo_pago" class="form-select"  onchange="togglePaymentMethod()">
-                    <option value=""></option>
+                    <option value="">Seleccione tipo de pago</option>
                     <option value="unico">Pago Único</option>
                     <option value="mixto">Pago Mixto</option>
                   </select>
@@ -88,7 +88,7 @@ require_once '../../header.php';
               <div class="col-md-4" id="tipo_comprobante_container">
                 <div class="form-floating">
                   <select id="idtipocomprobante" class="form-select" required>
-                    <option value=""></option>
+                    <option value="">Selecione Tipo de comprobante</option>
                   </select>
                   <label for="idtipocomprobante">Tipo de Comprobante</label>
                 </div>
@@ -104,34 +104,37 @@ require_once '../../header.php';
                 <button type="button" id="agregar" class="btn btn-primary btn-sm" onclick="addPaymentMethod()">+</button>
               </div>
 
-              <div class="row mb-3">
-                <div class="col-md-6 metodos" id="">
+              <div class="row mb-3" id="metodos">
+                <div class="col-md-6 metodos"> <!-- imprime esto-->
                   <div class="form-floating">
-                    <select id="idmetodopago" class="form-select  metodo" >
-                      <option value=""></option>
+                    <select id="idmetodopago" class="form-select  metodo" name="idmetodopago" >
+                      <option value="">Selecione método de pago</option>
                       <!-- Agrega más opciones según sea necesario -->
                     </select>
                     <label for="idmetodopago">Método de Pago 1</label>
                   </div>
+
                   <div class="form-floating montos">
-                    <input type="number" step="0.01" class="form-control monto" id="monto_pago_1" placeholder="Monto">
+                    <input type="number" step="0.01" class="form-control monto monto_pago_1" id="monto_pago_1" name="monto_pago_1" placeholder="Monto">
                     <label for="monto_pago_2">Monto 1</label>
                   </div>
                 </div>
+                
                 <div class="col-md-6 metodos" id="metodo_pago_2" style="display: none;">
                   <div class="form-floating">
-                    <select id="idmetodopago_2" class="form-select metodo">
-                      <option value=""></option>
+                    <select id="idmetodopago_2" class="form-select metodo" name="idmetodopago_2">
+                      <option value="">Selecione método de pago</option>
 
                       <!-- Agrega más opciones según sea necesario -->
                     </select>
                     <label for="idmetodopago_2">Método de Pago 2</label>
                   </div>
                   <div class="form-floating montos">
-                    <input type="number" step="0.01" class="form-control monto" id="monto_pago_2" placeholder="Monto" >
+                    <input type="number" step="0.01" class="form-control monto monto_pago_2" id="monto_pago_2" name="monto_pago_2" placeholder="Monto" >
                     <label for="monto_pago_2">Monto 2</label>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>

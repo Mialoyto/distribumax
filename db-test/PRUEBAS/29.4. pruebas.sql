@@ -272,5 +272,11 @@ SELECT * FROM productos;
 select * from clientes;
 SELECT * FROM PERSONAS;
 CALL sp_listar_clientes();
-CALL sp_estado_cliente(1, 2);
+CALL sp_estado_cliente(1, 1);
 select * from clientes;
+SELECT * from vehiculos;
+
+call spu_listar_producto_kardex(1);
+
+SELECT * FROM ventas;
+SELECT * FROM detalle_meto_pago;

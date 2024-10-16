@@ -33,9 +33,6 @@ require_once '../../header.php';
             </div>
           </div>
           <div class="row">
-
-
-
             <div class="col-md-3 mb-3">
               <div class="form-floating">
                 <input type="search" class="form-control" id="datos" name="marca_vehiculo" maxlength="23" minlength="3" readonly>

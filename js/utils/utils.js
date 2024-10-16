@@ -1,5 +1,5 @@
 /* funcion para cargar datos tipo de documentos */
-export async function cargarTipoDoc(element) {
+async function cargarTipoDoc(element) {
   try {
     const response = await fetch(`../../controller/documento.controller.php`);
     const data = await response.json();
@@ -15,4 +15,27 @@ export async function cargarTipoDoc(element) {
   }
 }
 
+async function renderListaSearch(buscador, targetId, dataListId, id,itemFormater){
+  const response = await buscador();
+  const dataList = $(dataListId);
+  dataList.innerHTML = ``;
+
+  if(response.length >0){
+    dataList.style.display = 'block';
+    response.forEach((item) =>{
+      const li = document.createElement('li');
+      li.classList.add('list-group-item');
+      li.value =`${item[id]}`
+      li.innerText = itemFormater(item);
+      li.addEventListener('click', () =>{
+        $(targetId).value = li.id;
+        dataList.style.display = 'none';
+        dataList.innerHTML = ``;
+      });
+      dataList.appendChild(li);
+    })
+  }else{
+    dataList.style.display = 'none';
+  }
+}
 

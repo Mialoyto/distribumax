@@ -88,13 +88,25 @@
           </div> <!-- FIN FILA 03 -->
 
           <!-- Botones -->
-          <div class="d-flex justify-content-end mt-3">
-            <button type="submit" class="btn btn-primary me-2">Registrar</button>
-            <button type="reset" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+          <div class="d-flex justify-content-between mt-3">
+            <a href="index.php" class="btn btn-primary mt-3 text-end">Listar Kardex</a>
+            <div class="d-flex justify-content-end mt-3">
+              <button type="submit" class="btn btn-primary me-2">Registrar</button>
+              <button type="reset" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+            </div>
           </div>
         </form>
         <div class="card-footer mt-3">
-          <a href="index.php" class="btn btn-primary mt-3">Listar Kardex</a>
+        <table id="table-productos" class="table table-striped" style="width: 100%;">
+          <thead>
+            <tr>
+            </tr>
+          </thead>
+          <tbody>
+      
+          </tbody>
+        </table>
+
         </div>
       </div>
     </div>
@@ -103,6 +115,7 @@
 
 <?php require_once '../../footer.php'; ?>
 <script src="../../js/kardex/registrar.js"></script>
+<script src="../../js/kardex/listar-producto-kardex.js"></script>
 </body>
 
 </html>

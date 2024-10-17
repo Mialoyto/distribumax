@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TABLAS NECESARIAS PARA REGISTRAR PERSONAS
 -- TIPO DE DOCUMENTOS
@@ -63,25 +63,7 @@ CALL sp_proovedor_registrar (
     'proveedor@softys.com.pe'
 );
 
-/* REGISTRAR MARCAS */
--- Registrar las marcas
-CALL sp_registrar_marca (1, 'Ajinomoto');
 
-CALL sp_registrar_marca (1, 'Ajino-men');
-
-CALL sp_registrar_marca (1, 'Ajino-mix');
-
-CALL sp_registrar_marca (2, 'Primor');
-
-CALL sp_registrar_marca (2, 'Casino');
-
-CALL sp_registrar_marca (2, 'Glacitas');
-
-CALL sp_registrar_marca (3, 'Elite');
-
-CALL sp_registrar_marca (3, 'Babysec');
-
-CALL sp_registrar_marca (3, 'Ladysoft');
 
 /* REGISTRAR CATEGORIAS  */
 
@@ -122,6 +104,28 @@ CALL sp_registrar_subcategoria (6, 'Papel higiénico');
 CALL sp_registrar_subcategoria (6, 'Toallas higiénicas');
 
 CALL sp_registrar_subcategoria (6, 'Pañales');
+
+
+
+/* REGISTRAR MARCAS */
+-- Registrar las marcas
+CALL sp_registrar_marca (1, 'Ajinomoto',1);
+
+CALL sp_registrar_marca (1, 'Ajino-men',2);
+
+CALL sp_registrar_marca (1, 'Ajino-mix',2);
+
+CALL sp_registrar_marca (2, 'Primor',3);
+
+CALL sp_registrar_marca (2, 'Casino',4);
+
+CALL sp_registrar_marca (2, 'Glacitas',4);
+
+CALL sp_registrar_marca (3, 'Elite',6);
+
+CALL sp_registrar_marca (3, 'Babysec',6);
+
+CALL sp_registrar_marca (3, 'Ladysoft',6);
 
 -- INSERT ROLES
 CALL sp_registrar_roles ('Administrador');

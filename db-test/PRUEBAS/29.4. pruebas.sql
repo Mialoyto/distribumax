@@ -280,3 +280,7 @@ call spu_listar_producto_kardex(1);
 
 SELECT * FROM ventas;
 SELECT * FROM detalle_meto_pago;
+
+CALL sp_search_proveedor("A")
+
+select * from categorias;

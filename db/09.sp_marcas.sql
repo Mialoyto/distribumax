@@ -2,14 +2,15 @@ USE distribumax;
 
 -- REGISTRAR MARCAS
 
-
+DROP PROCEDURE IF EXISTS sp_registrar_marca;
 CREATE PROCEDURE sp_registrar_marca(
     IN _idproveedor INT,
-    IN _marca VARCHAR(150)
+    IN _marca       VARCHAR(150),
+    IN _idcategoria INT
 )
 BEGIN
-    INSERT INTO marcas (idproveedor,marca) 
-    VALUES (_idproveedor,_marca);
+    INSERT INTO marcas (idproveedor,marca,idcategoria) 
+    VALUES (_idproveedor,_marca,_idcategoria);
 END;
 
 -- ACTUALIZAR MARCAS

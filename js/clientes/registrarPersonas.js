@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nrodoc = $("#nro-doc-persona");
 
     const params = new URLSearchParams();
-    params.append('operation', 'searchDni');
+    params.append('operation', 'search');
     params.append('idtipodocumento', tipodoc.value);
     params.append('idpersonanrodoc', nrodoc.value);
 

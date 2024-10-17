@@ -105,6 +105,20 @@ class Persona extends Conexion
             $e->getCode();
         }
     }
+    public function search($params = [])
+    {
+        try {
+            $tsql = "CALL sp_buscar_persona_cliente (?, ?)";
+            $query = $this->pdo->prepare($tsql);
+            $query->execute(array(
+                $params['idtipodocumento'],
+                $params['idpersonanrodoc']
+            ));
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            $e->getCode();
+        }
+    }
 
     
 

@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROOVEDORES
@@ -78,7 +78,11 @@ BEGIN
     SELECT 
         PROV.idproveedor,
         PROV.idempresa,
-        PROV.proveedor
+        PROV.proveedor,
+        PROV.contacto_principal,
+        PROV.telefono_contacto,
+        PROV.direccion,
+        PROV.email
     FROM proveedores PROV
     WHERE (PROV.proveedor LIKE CONCAT('%',_searchProveedor,'%') OR PROV.idempresa LIKE CONCAT('%',_searchProveedor,'%'))
     AND PROV.estado = '1';

@@ -19,11 +19,10 @@ require_once '../../header.php';
           <div class="row">
             <div class="col-md-6 mb-3">
               <div class="form-floating">
-                <select class="form-control" id="idempresaruc" name="" required>
-                  <option value="">Seleccione una empresa</option>
-                  <!-- Las opciones se cargarán dinámicamente con JavaScript -->
-                </select>
-                <label for="idempresaruc">Empresa</label>
+              <input type="search" class="form-control" id="idproveedor" name="idproveedor" placeholder="Proveedor" required>
+                  <label for="idproveedor" class="form-label"> <i class="bi bi-search"></i> Buscar proveedor</label>
+                  <ul id="list-proveedor" class="list-group position-absolute w-100 listarDatos" style="z-index: 1000; display: none;"></ul>
+                <!-- <label for="idempresaruc">Empresa</label> -->
               </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -70,6 +69,10 @@ require_once '../../header.php';
                 <label for="email">Correo Electrónico</label>
               </div>
             </div>
+          </div>
+          <div class="row">
+            <h5>Marcas</h5>
+             <div class="table-responsive"></div>
           </div>
 
           <!-- Botones -->

@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribuMax;
 USE distribuMax;
@@ -243,10 +243,12 @@ CREATE TABLE marcas(
 		idmarca		INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         idproveedor INT NOT NULL,
         marca		VARCHAR(150) NOT NULL,
+        idcategoria INT NOT NULL,
         
         create_at		DATETIME NOT NULL DEFAULT NOW(),
         update_at		DATETIME NULL,
         estado			CHAR(1) NOT NULL DEFAULT "1",
+        CONSTRAINT fk_categoria_marca FOREIGN KEY (idcategoria) REFERENCES categorias (idcategoria), 
         CONSTRAINT uk_marca UNIQUE(marca),
         CONSTRAINT fk_estado_mar CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;

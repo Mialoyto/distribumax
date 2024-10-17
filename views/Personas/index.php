@@ -17,6 +17,7 @@
                             <th>Apellido materno</th>
                             <th>Distrito</th>
                             <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -4,7 +4,7 @@
     <div class="card mt-4">
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table" id="tabla-proveedores" style="width: 100%;">
+          <table class="table" id="table-proveedores" style="width: 100%;">
             <thead>
               <tr>
                 <th>RUC</th>
@@ -13,6 +13,7 @@
                 <th>Teléfono</th>
                 <th>Correo</th>
                 <th>Dirección</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -35,6 +36,6 @@
 <!-- DataTables Bootstrap 5 -->
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <!-- Incluye el script de JavaScript -->
-<script src="../../js/proveedor/dataTable.js"></script>
+<script src="../../js/proveedor/listar.js"></script>
 </body>
 </html>

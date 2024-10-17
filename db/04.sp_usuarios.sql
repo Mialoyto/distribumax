@@ -1,3 +1,4 @@
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- Registrar 
 
@@ -79,3 +80,23 @@ BEGIN
 		WHERE PER.idtipodocumento = _idtipodocumento
         AND PER.idpersonanrodoc = _idpersonanrodoc;
 END;
+
+CREATE PROCEDURE spu_listar_usuarios()
+BEGIN
+    SELECT 
+        p.idpersonanrodoc,
+        r.rol,
+        u.nombre_usuario,
+        CASE u.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS 'Estado'
+    FROM 
+        usuarios u
+    INNER JOIN 
+        personas p ON u.idpersona = p.idpersonanrodoc
+    INNER JOIN 
+        roles r ON u.idrol = r.idrol;
+END;
+
+CALL spu_listar_usuarios();

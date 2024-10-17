@@ -3,7 +3,7 @@ require_once '../../header.php';
 ?>
 <main>
   <div class="container-fluid px-4">
-    <h1 class="mt-4">Empresas</h1>
+    <h1 class="mt-4">Marcas</h1>
     <ol class="breadcrumb mb-4">
       <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
     </ol>
@@ -11,7 +11,7 @@ require_once '../../header.php';
     <div class="card mb-4">
       <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Registro de Empresas
+        Registro de Marcas
       </div>
       <div class="card-body">
         <!-- Formulario de Registro de Marca -->
@@ -71,11 +71,10 @@ require_once '../../header.php';
             </button>
           </div>
         </form>
-        
-      </div>
-      <div class="card-footer">
-          <a href="index.php" class="btn btn-primary">Listar empresas</a>
+        <div class="card-footer">
+          <a href="index.php" class="btn btn-primary">Listar Marcas</a>
         </div>
+      </div>
     </div>
   </div>
 </main>

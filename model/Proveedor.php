@@ -28,13 +28,7 @@ class Proveedor extends Conexion{
     }
     public function getAll(){
         try{
-            $sql="SELECT 
-                    empresas.idempresaruc,empresas.razonsocial,
-		            proveedores.idproveedor, proveedores.proveedor,proveedores.contacto_principal,proveedores.telefono_contacto,
-                    proveedores.direccion,proveedores.email
-                  FROM proveedores 
-                  INNER JOIN empresas 
-                  ON empresas.idempresaruc = proveedores.idempresa;";
+            $sql="CALL sp_listar_proveedor";
             $query=$this->pdo->prepare($sql);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);

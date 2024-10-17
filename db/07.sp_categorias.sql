@@ -55,6 +55,9 @@ CREATE VIEW `vw_listar_categorias` AS
     SELECT
         CAT.categoria,
         CAT.create_at,
-        CAT.estado
+        CASE CAT.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS 'Estado'
     FROM categorias CAT
     WHERE CAT.estado = 1;

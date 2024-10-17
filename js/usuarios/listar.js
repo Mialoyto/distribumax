@@ -18,9 +18,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 Tablausuarios.innerHTML += `
                   <tr>
                       <td>${element.idpersonanrodoc}</td>
-                      <td>${element.nombre_rol}</td>
+                      <td>${element.rol}</td>
                       <td>${element.nombre_usuario}</td>
-                      <td>${element.estado === "1" ? "Activo" : "Inactivo"}</td>
+                      <td>${element.Estado}</td>
                       <td>
                       <a href="#" class="btn btn-warning">
                       <i class="bi bi-pencil-fill"></i>

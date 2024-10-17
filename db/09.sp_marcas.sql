@@ -59,9 +59,27 @@ END;
 
 
 -- LISTAR MARCAS
-CREATE VIEW vw_listar_marcas AS
-SELECT idmarca, marca
-FROM marcas
-WHERE
-    estado = '1'
-ORDER BY marca ASC;
+-- CREATE VIEW vw_listar_marcas AS
+-- SELECT idmarca, marca
+-- FROM marcas
+-- WHERE
+--     estado = '1'
+-- ORDER BY marca ASC;
+
+CREATE PROCEDURE sp_listar_marca()
+BEGIN
+    SELECT 
+        p.proveedor AS nombre_proveedor,
+        p.contacto_principal,
+        m.marca,
+        CASE m.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS 'Estado'
+    FROM 
+        marcas m
+    INNER JOIN 
+        proveedores p ON m.idproveedor = p.idproveedor;
+END;
+
+CALL sp_listar_marca();

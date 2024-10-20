@@ -280,3 +280,23 @@ call spu_listar_producto_kardex(1);
 
 SELECT * FROM ventas;
 SELECT * FROM detalle_meto_pago;
+select * from pedidos;
+select * from detalle_pedidos;
+
+select * from detalle_pedidos;
+select* from detalle_meto_pago;
+select * from metodos_pago;
+select * from tipo_comprobante_pago;
+call sp_listar_comprobate();
+call sp_buscar_pedido('em');
+
+select
+    VEN.idventa,
+    MET.metodopago,
+    DETP.monto
+    from detalle_meto_pago DETP
+    INNER JOIN ventas VEN ON DETP.idventa = VEN.idventa
+    INNER JOIN metodos_pago MET ON DETP.idmetodopago = MET.idmetodopago
+    WHERE VEN.idventa = 35 AND DETP.estado = 1;
+
+SELECT * FROM empresas;

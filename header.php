@@ -85,11 +85,11 @@ $host = "http://localhost/distribumax";
           <div class="nav">
             <div class="sb-sidenav-menu-heading">Modulos</div>
             <a class="nav-link" href="<?= $host ?>/views/Pedidos/">
-              <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-plus fa-lg"></i></div>
+              <div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-list fa-lg"></i></div>
               Pedidos
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Ventas/">
-              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-plus fa-lg"></i></div>
               Ventas
             </a>
 
@@ -98,7 +98,7 @@ $host = "http://localhost/distribumax";
               Clientes
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Empresas/">
-              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              <div class="sb-nav-link-icon"><i class="fa-solid fa-building fa-lg"></i></div>
               Empresas
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Productos/">

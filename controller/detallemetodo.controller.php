@@ -10,12 +10,12 @@ switch ($verbo) {
     if (isset($_POST['operation'])) {
       switch ($_POST['operation']) {
         case 'addDetalleMetodo':
-          if (isset($_POST['idventa']) && isset($_POST['metodos']) && is_array($_POST['metodos'])) {
+          if (isset($_POST['idventa']) && isset($_POST['montos']) && is_array($_POST['montos'])) {
             $idventa = $_POST['idventa'];
-            $metodos = $_POST['metodos'];
+            $montos = $_POST['montos'];
             $datos = [];
 
-            foreach ($metodos as $item) {
+            foreach ($montos as $item) {
               // Verifica que los campos requeridos existen en el array $item
               if (isset($item['idmetodopago'], $item['monto'])) {
                 $datosEnviar = [

@@ -90,16 +90,16 @@ document.addEventListener("DOMContentLoaded", function () {
         "sSearch": "Buscar:",
         "sZeroRecords": "No se encontraron resultados",
         "oPaginate": {
-          "sFirst": "Primero",
-          "sLast": "Último",
-          "sNext": "Siguiente",
-          "sPrevious": "Anterior"
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
         },
         "oAria": {
-          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
         }
-      }
+    }
     });
     // Agregar el evento click a los botones de deshabilitar después de que se dibuje la tabla
     dtcliente.on('draw', function () {

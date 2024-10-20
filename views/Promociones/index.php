@@ -15,6 +15,7 @@
                             <th>Fecha de Inicio</th>
                             <th>Fecha de Fin</th>
                             <th>Valor de Descuento</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

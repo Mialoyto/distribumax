@@ -12,10 +12,11 @@ require_once '../../header.php';
                                 <th>Nombre de Categoría</th>
                                 <th>Fecha Creación</th>
                                 <th>Estado</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            <!--Las filas se llenarán aqui-->
                         </tbody>
                     </table>
                 </div>
@@ -27,16 +28,7 @@ require_once '../../header.php';
         </div>
     </div><!-- Fin del container -->
 </main>
-<?php require_once '../../footer.php';?>
-
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<!-- DataTables Core -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<!-- DataTables Bootstrap 5 -->
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-<!-- Enlace del JavaScript de DataTable -->
 <script src="../../js/categorias/listar.js"></script>
+<?php require_once '../../footer.php';?>
 </body>
 </html>

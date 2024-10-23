@@ -1,7 +1,7 @@
 function showToast(mensaje = ``, icono = 'success', type = `INFO`, duration = 2500, url = null) {
   const bgColor = {
     'INFO': '#22a6b3',
-    'WARNING': '#f9ca24',
+    'WARNING': '#FFFF00',
     'SUCCESS': '#6ab04c',
     'ERROR': '#eb4d4b'
   };

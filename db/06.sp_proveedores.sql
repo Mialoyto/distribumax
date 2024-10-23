@@ -89,7 +89,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS sp_listar_proveedor;
-DELIMITER $$
 CREATE PROCEDURE sp_listar_proveedor()
 BEGIN
     SELECT 
@@ -103,7 +102,4 @@ BEGIN
         proveedores.email
     FROM proveedores
     INNER JOIN empresas ON empresas.idempresaruc = proveedores.idempresa;
-END $$
-DELIMITER ;
-
-CALL sp_listar_proveedor();
+END;

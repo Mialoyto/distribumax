@@ -1,4 +1,5 @@
 <?php require_once '../../header.php'; ?>
+
 <main>
   <div class="container-fluid px-4">
     <ol class="breadcrumb mb-4">
@@ -43,7 +44,7 @@
         Listado de Clientes
         <div class="ms-auto"> <!-- Utilizamos ms-auto para alinear a la derecha -->
           <div class="text-end">
-            <a href="generar-pdf.php" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
+            <a href="../reports/Clientes/contenidoPDF.php" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
               <i class="fas fa-file-pdf me-1"></i> Generar PDF
             </a>
             <a href="generar-excel.php" class="btn btn-success">

@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728671418404@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROOVEDORES
@@ -89,7 +89,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS sp_listar_proveedor;
-DELIMITER $$
 CREATE PROCEDURE sp_listar_proveedor()
 BEGIN
     SELECT 
@@ -103,7 +102,6 @@ BEGIN
         proveedores.email
     FROM proveedores
     INNER JOIN empresas ON empresas.idempresaruc = proveedores.idempresa;
-END $$
-DELIMITER ;
+END ;
 
 CALL sp_listar_proveedor();

@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td >${documento}</td>
         <td>${element.fecha_venta}</td>
         <td>
-            <button class="btn btn-primary info reporte" 
+            <button href="../../views/reports/Ventas/contenidoPDF.php" class="btn btn-primary info reporte" 
                 data-idventa="${element.idventa}">
                 Reporte
             </button>

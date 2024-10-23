@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 data.forEach(element => {
                     Tablapromociones.innerHTML += `
                     <tr>
-                        <td>${element.tipopromocion}</td>  <!-- Mostrar el nombre del tipo de promoción -->
+                        <td>${element.tipopromocion}</td>  
                         <td class="text-start">${element.descripcion}</td>
                         <td class="text-start">${element.fechainicio}</td>
                         <td class="text-start">${element.fechafin}</td>

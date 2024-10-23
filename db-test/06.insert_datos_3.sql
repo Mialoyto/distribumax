@@ -1,3 +1,4 @@
+-- Active: 1728671418404@@127.0.0.1@3306@distribumax
 USE distribuMax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
@@ -251,7 +252,7 @@ CALL sp_tipo_promocion_registrar (
 CALL sp_promocion_registrar (
     1,
     "Descuento en productos seleccionados",
-    '2024-10-20',
+    '2024-10-26',
     '2024-10-31',
     5
 );
@@ -259,7 +260,7 @@ CALL sp_promocion_registrar (
 CALL sp_promocion_registrar (
     1,
     "Descuento en productos en galletas Casino",
-    '2024-10-20',
+    '2024-10-23',
     '2024-10-31',
     5
 );

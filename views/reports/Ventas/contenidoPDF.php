@@ -1,5 +1,7 @@
 <?php
 require_once '../../../vendor/autoload.php';
+require_once '../../../model/ventas.php';
+$venta = new Ventas();
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -9,22 +11,8 @@ $options->set('defaultFont', 'Arial');
 $dompdf = new Dompdf($options);
 
 
-$dsn = 'mysql:host=localhost;port=3306;dbname=distribumax;charset=utf8';
-$username = 'root';
-$password = '';
-
-try {
-    $pdo = new PDO($dsn, $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Error al conectar a la base de datos: " . $e->getMessage());
-}
-
-
-$query = "CALL sp_listar_ventas";
-$stmt = $pdo->prepare($query);
-$stmt->execute();
-$ventas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$ventas = $venta->getAll();
+// echo $ventas;
 
 
 $html = '<h1>Listado de Ventas</h1>';

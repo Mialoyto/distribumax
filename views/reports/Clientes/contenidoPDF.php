@@ -10,8 +10,8 @@ $options = new Options();
 $options->set('defaultFont', 'Arial');
 $dompdf = new Dompdf($options);
 
-$clientes = $cliente->getAll();
 
+$clientes = $cliente ->getAll();
 
 
 

@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td >${documento}</td>
         <td>${element.fecha_venta}</td>
         <td>
-            <button href="../../views/reports/Ventas/contenidoPDF.php" class="btn btn-primary info reporte" 
+            <button href="http://localhost/views/reports/ventas/contenidoPDF.php" class="btn btn-primary info reporte" 
                 data-idventa="${element.idventa}">
                 Reporte
             </button>
@@ -149,9 +149,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const response = await fetch(`../../controller/ventas.controller.php`, option);
         const data = await response.json();
         if (data[0].comprobantepago == 'Boleta') {
-            window.open(`../../views/Reportes/Boleta.php?idventa=${idventa}`, '_blank');
+            window.open(`../../views/reports/Clientes/Ventas/contenidoPDF.php?idventa=${idventa}`, '_blank');
         } else {
-            window.open(`../../views/Reportes/Factura.php?idventa=${idventa}`, '_blank');
+            window.open(`../../views/reports/Clientes/Ventas/contenidoPDF.php`, '_blank');
         }
 
     }

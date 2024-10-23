@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TABLAS NECESARIAS PARA REGISTRAR PERSONAS
 -- TIPO DE DOCUMENTOS
@@ -81,6 +81,9 @@ CALL sp_registrar_categoria ('Conservas');
 -- softys
 CALL sp_registrar_categoria ('Higiene Personal');
 
+CALL sp_registrar_categoria ('Pastas');
+CALL sp_registrar_categoria ('Harina');
+CALL sp_registrar_categoria ('Salsas');
 /*  REGISTRAR SUBCATERIAS */
 -- ajinomoto
 

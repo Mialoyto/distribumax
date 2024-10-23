@@ -205,6 +205,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  function validarPrecio() {
+    const preciocompra = parseFloat($("#preciocompra").value);
+    const precioMayorista = parseFloat($("#precio-mayorista").value);
+    const preciominorista = parseFloat($("#precio-minorista").value);
+
+    if (preciocompra == "" || precioMayorista == "" || preciominorista == "") {
+      showToast("Los campos de precio no pueden estar vacíos", "info", "INFO");
+      return false;
+    } if (preciominorista <= precioMayorista) {
+      showToast("El precio minorista no puede ser menor o igual al precio mayorista", "info", "INFO");
+      return false;
+    } if (precioMayorista >= preciominorista) {
+      showToast("El precio mayorista no puede ser mayor o igual al precio minorista", "info", "INFO");
+      return false;
+    } if (precioMayorista <= preciocompra) {
+      showToast("El precio mayorista no puede ser menor o igual al precio de compra", "info", "INFO");
+      return false;
+    }if(preciocompra >= precioMayorista){
+      showToast("El precio de compra no puede ser menor o igual al precio mayorista", "info", "INFO");
+      return false;
+    }if(preciocompra >= preciominorista){
+      showToast("El precio de compra no puede ser menor o igual al precio minorista", "info", "INFO");
+      return false;
+    }
+    return true;
+  }
+
+
+
+
 
   // registrar producto aun no terminado
   async function registrarproducto() {
@@ -222,9 +252,9 @@ document.addEventListener("DOMContentLoaded", () => {
     params.append('precio_mayorista', $("#precio-mayorista").value);
     params.append('precio_minorista', $("#precio-minorista").value);
 
-    for (let [key, value] of params.entries()) {
-      console.log(key, value);
-    }
+    /*  for (let [key, value] of params.entries()) {
+       console.log(key, value);
+     } */
 
     const options = {
       method: 'POST',
@@ -240,12 +270,20 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#formRegistrarProducto").addEventListener("submit", async (event) => {
     event.preventDefault();
     const codigo = $("#codigo").value;
+    // validarPrecio();
+    const data = await validarPrecio();
+    if (data == false) {
+      return;
+    }
     const response = await verificarCodigo(codigo);
     console.log(response);
     if (response.length > 0) {
       showToast(`El código ${response[0].codigo} ya existe. \n Producto: ${response[0].nombreproducto}`, "error", "ERROR");
       return;
     } else {
+
+
+      console.log(data);
       const resultado = await registrarproducto();
       console.log(resultado.id);
       if (resultado.id != null && resultado.id > 0) {
@@ -253,6 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         showToast("Error al registrar producto", "error", "ERROR");
       }
+
     }
   });
   // fin registrar producto

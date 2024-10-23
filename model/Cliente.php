@@ -67,7 +67,7 @@ class Cliente extends Conexion
 
   public function activeCliente($params = []): bool
   {
-    $resultado =false;  // Valor por defecto en caso de fallo
+    $resultado = false;  // Valor por defecto en caso de fallo
     try {
       $tsql = "CALL sp_estado_cliente(?, ?)";
       $query = $this->pdo->prepare($tsql);
@@ -99,4 +99,5 @@ class Cliente extends Conexion
       die($e->getMessage());
     }
   }
+
 }

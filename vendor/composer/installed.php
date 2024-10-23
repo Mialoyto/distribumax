@@ -19,6 +19,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'datatables/datatables' => array(
+            'pretty_version' => '1.10.21',
+            'version' => '1.10.21.0',
+            'reference' => '83e59694a105225ff889ddfa0d723a3ab24fda78',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../datatables/datatables',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'dompdf/dompdf' => array(
             'pretty_version' => 'v3.0.0',
             'version' => '3.0.0.0',

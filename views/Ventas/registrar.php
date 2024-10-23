@@ -172,8 +172,8 @@ require_once '../../header.php';
 
           <!-- Botones -->
           <div class="d-flex justify-content-end mt-4">
-            <button type="submit" class="btn btn-primary me-2">Registrar Venta</button>
-            <button type="reset" class="btn btn-secondary">Cancelar</button>
+            <button type="submit" id="btnRVenta" class="btn btn-success me-2">Registrar Venta</button>
+            <button type="reset" class="btn btn-outline-danger">Cancelar</button>
           </div>
 
         </form>

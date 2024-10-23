@@ -18,7 +18,7 @@
                         <div class="col-md-4">
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="tipo_documento" name="tipo_documento" required>
-                                    <option>Seleccione un documento</option>
+                                    <option value="">Seleccione un documento</option>
                                 </select>
                                 <label>Tipo de documento</label>
                             </div>
@@ -30,6 +30,7 @@
                                         id="numero_documento"
                                         name="numero_documento"
                                         type="text" placeholder="Número de documento"
+                                        minlength="8"
                                         maxlength="8" pattern="[0-9]+"
                                         title="Solo se permite números"
                                         autofocus
@@ -39,6 +40,7 @@
                                 </div>
                                 <button type="button" class="btn btn-lg btn-outline-success" id="buscar-dni"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
+                            <span id="status" class="d-none">Buscando por favor espere...</span>
                         </div>
                         <!-- BUSCADOR PETICIONES -->
                         <div class="col-md-4 mb-3">
@@ -85,8 +87,7 @@
                                     placeholder="Número de télefono"
                                     maxlength="9" minlength="9"
                                     pattern="[0-9]+"
-                                    title="Solo se permite números"
-                                    required />
+                                    title="Solo se permite números" />
                                 <label for="telefono">Telefono</label>
                             </div>
                         </div>

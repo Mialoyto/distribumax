@@ -102,6 +102,4 @@ BEGIN
         proveedores.email
     FROM proveedores
     INNER JOIN empresas ON empresas.idempresaruc = proveedores.idempresa;
-END ;
-
-CALL sp_listar_proveedor();
+END;

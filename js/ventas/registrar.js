@@ -88,9 +88,11 @@ document.addEventListener("DOMContentLoaded", () => {
           CargarPedido(item.idpedido);
           datalist.style.display = 'none';
           datalist.innerHTML = '';
+          focusCP();
         });
         datalist.appendChild(li);
       });
+      $("#idpedido").focus();
       await moverse();
       Validarfecha();
     } else if (response.length == 0) {
@@ -101,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
       datalist.appendChild(li);
     }
   };
+
 
   async function loadComprobante() {
     const response = await fetch(`../../controller/comprobante.controller.php?operation=getAll`);
@@ -179,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (tipo_pago.value == 'unico') {
           $("#monto_pago_1").value = totalVenta.toFixed(2);
           $("#monto_pago_1").disabled = true;
-        }else{
+        } else {
           $("#monto_pago_1").value = '';
           $("#monto_pago_1").disabled = false;
         }
@@ -313,59 +316,125 @@ document.addEventListener("DOMContentLoaded", () => {
     const comprobante = $("#idtipocomprobante").value;
     let sumaMontos = 0;
     let montos = [];
-  
+    console.log("campo de metodo de pago", rows.length);
+
+
     if (comprobante === '') {
       showToast("Debe seleccionar un comprobante", "warning", "WARNING");
       return [];
     }
-  
+
     if (tipo_pago === '') {
       showToast("Debe seleccionar un tipo de pago", "warning", "WARNING");
       return [];
     }
-  
+
     if ($("#idmetodopago").value === '') {
       showToast("Debe seleccionar un método de pago", "warning", "WARNING");
       return [];
     }
-  
-    // Validar los métodos de pago y montos
-    for (let i = 0; i < rows.length; i++) {
-      const selectMetodoPago = rows[i].querySelector(".metodo");
-      const inputMonto = rows[i].querySelector(".monto");
-  
-      let metodoPago = selectMetodoPago.value;
-      let monto = parseFloat(inputMonto.value);
-  
-      // Validación del método de pago
-      if (metodoPago === '') {
-        showToast(`Debe seleccionar un método de pago en la fila ${i + 1}`, "warning", "WARNING");
-        return []; // Detener la validación si no hay método seleccionado
+
+    if ((rows.length > 1 && tipo_pago == 'mixto')) {
+
+      if (comprobante === '') {
+        showToast("Debe seleccionar un comprobante", "warning", "WARNING");
+        return [];
       }
-  
-      // Validación del monto
-      if (!monto || monto <= 0) {
-        showToast(`El monto en la fila ${i + 1} debe ser mayor que 0`, "warning", "WARNING");
-        return []; // Detener la validación si el monto es inválido
+
+      if (tipo_pago === '') {
+        showToast("Debe seleccionar un tipo de pago", "warning", "WARNING");
+        return [];
       }
-  
-      sumaMontos += monto;
-      montos.push({
-        metodo_pago: metodoPago,
-        monto_01: monto.toFixed(2),
-      });
-    }
-  
-    // Validar que la suma de los montos sea igual al total de la venta
-    if (sumaMontos !== totalVenta) {
-      showToast("La suma de los montos de los métodos de pago debe ser igual al total de la venta", "warning", "WARNING");
+
+      if ($("#idmetodopago").value === '') {
+        showToast("Debe seleccionar un método de pago", "warning", "WARNING");
+        return [];
+      }
+
+      // Validar los métodos de pago y montos
+      for (let i = 0; i < rows.length; i++) {
+        const selectMetodoPago = rows[i].querySelector(".metodo");
+        const inputMonto = rows[i].querySelector(".monto");
+
+        let metodoPago = selectMetodoPago.value;
+        let monto = parseFloat(inputMonto.value);
+
+        // Validación del método de pago
+        if (metodoPago === '') {
+          showToast(`Debe seleccionar un método de pago en la fila ${i + 1}`, "warning", "WARNING");
+          return []; // Detener la validación si no hay método seleccionado
+        }
+
+        // Validación del monto
+        if (!monto || monto <= 0) {
+          showToast(`El monto en la fila ${i + 1} debe ser mayor que 0`, "warning", "WARNING");
+          return []; // Detener la validación si el monto es inválido
+        }
+
+        sumaMontos += monto;
+        montos.push({
+          metodo_pago: metodoPago,
+          monto_01: monto.toFixed(2),
+        });
+      }
+
+      // Validar que la suma de los montos sea igual al total de la venta
+      if (sumaMontos !== totalVenta) {
+        showToast("La suma de los montos de los métodos de pago debe ser igual al total de la venta", "warning", "WARNING");
+        return [];
+      }
+
+      console.log("Montos validados:", montos);
+      return montos;
+    } else if (rows.length == 1 && tipo_pago == 'unico') {
+
+      if (comprobante === '') {
+        showToast("Debe seleccionar un comprobante", "warning", "WARNING");
+        return [];
+      }
+
+      if (tipo_pago === '') {
+        showToast("Debe seleccionar un tipo de pago", "warning", "WARNING");
+        return [];
+      }
+
+      if ($("#idmetodopago").value === '') {
+        showToast("Debe seleccionar un método de pago", "warning", "WARNING");
+        return [];
+      }
+      for (let i = 0; i < rows.length; i++) {
+        const selectMetodoPago = rows[i].querySelector(".metodo");
+        const inputMonto = rows[i].querySelector(".monto");
+
+        let metodoPago = selectMetodoPago.value;
+        let monto = parseFloat(inputMonto.value);
+
+        // Validación del método de pago
+        if (metodoPago === '') {
+          showToast(`Debe seleccionar un método de pago en la fila ${i + 1}`, "warning", "WARNING");
+          return []; // Detener la validación si no hay método seleccionado
+        }
+
+        // Validación del monto
+        if (!monto || monto <= 0) {
+          showToast(`El monto en la fila ${i + 1} debe ser mayor que 0`, "warning", "WARNING");
+          return []; // Detener la validación si el monto es inválido
+        }
+
+        sumaMontos += monto;
+        montos.push({
+          metodo_pago: metodoPago,
+          monto_01: monto.toFixed(2),
+        });
+      }
+      return montos;
+
+    } else if (rows.length == 1 && tipo_pago == 'mixto') {
+      showToast("El tipo de pago es mixto, debe agregar más de un método de pago", "info", "INFO");
       return [];
     }
-  
-    console.log("Montos validados:", montos);
-    return montos;
   }
-  
+
 
   // Función para cargar métodos de pago en los selectores existentes y nuevos
   async function metodoPago() {
@@ -420,8 +489,6 @@ document.addEventListener("DOMContentLoaded", () => {
         limpiarDatosPedido();
       }
     }
-
-
   });
 
   let inputPedido;
@@ -446,7 +513,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const mostrar = $("#loadMetodos")
     if (tipo_pago == 'unico') {
       mostrar.removeAttribute("style")
-      $("#add-metodo").setAttribute("disabled", true);
+      $("#add-metodo").style.display = 'none';
       $("#monto_pago_1").value = $("#total_venta").value;
       $("#monto_pago_1").disabled = true;
       const selector = document.querySelectorAll(".load");
@@ -455,7 +522,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } if (tipo_pago == 'mixto') {
       mostrar.removeAttribute("style")
-      $("#add-metodo").removeAttribute("disabled");
+      $("#add-metodo").style.display = 'block';
+      $("#monto_pago_1").removeAttribute("disabled");
     }
   });
 
@@ -476,21 +544,42 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (e.key === 'Enter') {
         pedido[positionY].click();
       }
-      pedido[positionY].classList.add('active');
-      pedido[positionY].scrollIntoView({ block: 'nearest' });
-
+      pedido[positionY].classList.add('active'); // Agregar clase active
+      pedido[positionY].scrollIntoView({ block: 'nearest' }); // Hacer scroll al elemento
     });
   }
 
   // eliminar metodo de pago
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('btn-outline-danger') ||
-    (e.target.tagName === 'I' && e.target.classList.contains('bi-trash-fill'))) {
+      (e.target.tagName === 'I' && e.target.classList.contains('bi-trash-fill'))) {
       $(".load").remove();
     }
   });
 
-  metodoPago();
+  function focusCP() {
+    const tipocomprobante = $("#idtipocomprobante");
+    const tipoPago = $("#tipo_pago");
+    const metodoPago = $("#idmetodopago");
+    const btnVenta = $("#btnRVenta");
 
+    // Verificar secuencialmente si cada campo está vacío, y enfocarlo en consecuencia
+    if (tipocomprobante.value === '') {
+      tipocomprobante.focus();
+    } else if (tipoPago.value === '') {
+      tipoPago.focus();
+    } else if (metodoPago.value === '') {
+      metodoPago.focus();
+    } else {
+      btnVenta.focus(); // Si todos los anteriores tienen valor, enfocar el botón del formulario
+    }
+  }
+
+  function focopedido() {
+    $("#idpedido").focus();
+  }
+
+  focopedido();
+  metodoPago();
   addMetodoPago();
 });

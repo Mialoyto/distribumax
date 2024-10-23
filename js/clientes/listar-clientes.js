@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           const table = $('#table-clientes').DataTable();
           table.rows(function (idx, data, node) {
-            return data.idcliente == idCliente; 
+            return data.idcliente == idCliente;
           }).remove().draw(false);
         } else {
           showToast("Error al deshabilitar cliente", 'error', 'ERROR');
@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
       scrollX: true,
       processing: true,
       serverSide: true,
+      deferLoading: 5,
       ajax: {
         url: `../../controller/cliente.controller.php?operation=getAll`,
         dataSrc: function (data) {
@@ -69,12 +70,34 @@ document.addEventListener("DOMContentLoaded", function () {
           render: function (row) {
             return `
               <div class="mt-1 d-flex justify-content-evenly">
-                <button href="#" class="btn btn-warning" data-idusuario="${row.id_cliente}">
+                <button href="#" class="btn btn-warning" data-idusuario="${row.id_cliente}" data-bs-toggle="modal" data-bs-target="#updatecustome">
                   <i class="bi bi-pencil-fill"></i>
                 </button>
+
+              
+
+
+
                 <button href="#" class="btn btn-danger" data-idusuario="${row.id_cliente}" value="0">
                   <i class="bi bi-trash-fill"></i>
                 </button>
+              </div>
+
+                <div class="modal fade" id="updatecustome" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                      ...
+                      </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Understood</button>
+                    </div>
+                </div>
               </div>
             `;
           }
@@ -90,16 +113,16 @@ document.addEventListener("DOMContentLoaded", function () {
         "sSearch": "Buscar:",
         "sZeroRecords": "No se encontraron resultados",
         "oPaginate": {
-            "sFirst": "Primero",
-            "sLast": "Último",
-            "sNext": "Siguiente",
-            "sPrevious": "Anterior"
+          "sFirst": "<<",
+          "sLast": ">>",
+          "sNext": ">",
+          "sPrevious": "<"
         },
         "oAria": {
-            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
         }
-    }
+      }
     });
     // Agregar el evento click a los botones de deshabilitar después de que se dibuje la tabla
     dtcliente.on('draw', function () {
@@ -110,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const idCliente = this.getAttribute("data-idusuario");
           const estado = this.getAttribute("value");
           await deshabilitarCliente(estado, idCliente);
-          
+
         });
       });
     });

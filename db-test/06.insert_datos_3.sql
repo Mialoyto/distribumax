@@ -1,4 +1,4 @@
--- Active: 1728671418404@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribuMax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
@@ -188,6 +188,49 @@ CALL spu_registrar_personas (
     'Av. Las Acacias 369' -- Dirección
 );
 
+CALL spu_registrar_personas (
+    1, -- Tipo de documento (dni)
+    '26558017', -- Número de documento
+    13, -- ID del distrito
+    'Miguel', -- Nombres
+    'Jiménez', -- Apellido paterno
+    'Medina', -- Apellido materno
+    '998654321', -- Teléfono
+    'Av. Las Acacias 369' -- Dirección
+);
+
+CALL spu_registrar_personas (
+    1, -- Tipo de documento (dni)
+    '26558018', -- Número de documento
+    13, -- ID del distrito
+    'Miguel', -- Nombres
+    'Jiménez', -- Apellido paterno
+    'Medina', -- Apellido materno
+    '998654321', -- Teléfono
+    'Av. Las Acacias 369' -- Dirección
+);
+
+CALL spu_registrar_personas (
+    1, -- Tipo de documento (dni)
+    '26558019', -- Número de documento
+    13, -- ID del distrito
+    'Miguel', -- Nombres
+    'Jiménez', -- Apellido paterno
+    'Medina', -- Apellido materno
+    '998654321', -- Teléfono
+    'Av. Las Acacias 369' -- Dirección
+);
+
+CALL spu_registrar_personas (
+    1, -- Tipo de documento (dni)
+    '26558020', -- Número de documento
+    13, -- ID del distrito
+    'Miguel', -- Nombres
+    'Jiménez', -- Apellido paterno
+    'Medina', -- Apellido materno
+    '998654321', -- Teléfono
+    'Av. Las Acacias 369' -- Dirección
+);
 
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/
 CALL sp_registrar_usuario ( 26558000, 1, 'administrador', 'admin' );
@@ -241,6 +284,30 @@ CALL sp_cliente_registrar (26558007, NULL, 'Persona');
 
 CALL sp_cliente_registrar (26558008, NULL, 'Persona');
 
+CALL sp_cliente_registrar (26558009, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558010, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558011, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558012, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558013, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558014, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558015, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558016, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558017, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558018, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558019, NULL, 'Persona');
+
+CALL sp_cliente_registrar (26558020, NULL, 'Persona');
+
 CALL sp_cliente_registrar (NULL, 20100055237, 'Empresa');
 
 -- PRROMOCIONES
@@ -252,16 +319,16 @@ CALL sp_tipo_promocion_registrar (
 CALL sp_promocion_registrar (
     1,
     "Descuento en productos seleccionados",
-    '2024-10-26',
-    '2024-10-31',
+    '2024-10-25',
+    '2024-11-30',
     5
 );
 
 CALL sp_promocion_registrar (
     1,
     "Descuento en productos en galletas Casino",
-    '2024-10-23',
-    '2024-10-31',
+    '2024-10-25',
+    '2024-11-30',
     5
 );
 

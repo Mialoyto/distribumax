@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
       scrollX: true,
       processing: true,
       serverSide: true,
-      deferLoading: 5,
+      // deferLoading: 5,
       ajax: {
         url: `../../controller/cliente.controller.php?operation=getAll`,
         dataSrc: function (data) {

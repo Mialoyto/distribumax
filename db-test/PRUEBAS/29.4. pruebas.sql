@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728671418404@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
@@ -484,3 +484,7 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+UPDATE productos
+    set precio_mayorista = 7.20, precio_minorista = 7.80 WHERE
+    idproducto = 1;

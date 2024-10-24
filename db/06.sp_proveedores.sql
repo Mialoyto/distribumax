@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728671418404@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROOVEDORES

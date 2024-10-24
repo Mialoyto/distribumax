@@ -98,9 +98,11 @@ BEGIN
 END;
 
 
--- LISTAR EMPRESAS
-CREATE VIEW view_empresas AS
-    SELECT E.idempresaruc, E.razonsocial, E.direccion,E.email,E.telefono, D.iddistrito,D.distrito
-    FROM empresas E
-    INNER JOIN  distritos D ON E.iddistrito=D.iddistrito
-    ORDER BY razonsocial ASC;
+CREATE PROCEDURE sp_listar_empresas()
+BEGIN
+    SELECT 
+    razonsocial,
+    direccion,
+    email
+    FROM empresas;
+END;

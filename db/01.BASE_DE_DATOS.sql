@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728671418404@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribuMax;
 USE distribuMax;
@@ -322,7 +322,10 @@ CREATE TABLE productos (
     CONSTRAINT ck_precio_compra_prod CHECK (precio_compra > 0),
     CONSTRAINT ck_precio_mayorista_prod CHECK (precio_mayorista > 0),
     CONSTRAINT ck_precio_minorista_prod CHECK (precio_minorista > 0),
-    CONSTRAINT fk_estado_prod       CHECK(estado IN ("0", "1"))
+    CONSTRAINT fk_estado_prod       CHECK(estado IN ("0", "1")),
+    CONSTRAINT ck_precio_prod_may   CHECK(precio_mayorista > precio_compra),
+    CONSTRAINT ck_precio_prod_min   CHECK(precio_minorista > precio_compra),
+    CONSTRAINT ck_precio_prod       CHECK(precio_mayorista < precio_minorista)
 ) ENGINE=INNODB;
 
 

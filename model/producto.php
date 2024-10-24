@@ -39,7 +39,7 @@ class Productos extends Conexion
   public function getAll()
   {
     try {
-      $sql = "SELECT * FROM";
+      $sql = "CALL sp_listar_productos";
       $query = $this->pdo->prepare($sql);
       $query->execute();
       return $query->fetchAll(PDO::FETCH_ASSOC);

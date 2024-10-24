@@ -1,21 +1,21 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   function $(object = null) { return document.querySelector(object); }
   let dtproductos;
 
   async function CargarDatos() {
-      const Tablaproductos = $("#table-productos tbody");
+    const Tablaproductos = $("#table-productos tbody");
 
-      try {
-          const response = await fetch(`../../controller/producto.controller.php?operation=getAll`);
-          const data = await response.json();
+    try {
+      const response = await fetch(`../../controller/producto.controller.php?operation=getAll`);
+      const data = await response.json();
 
-          console.log(data);
+      console.log(data);
 
-          Tablaproductos.innerHTML = '';
+      Tablaproductos.innerHTML = '';
 
-          if (data.length > 0) {
-              data.forEach(element => {
-                  Tablaproductos.innerHTML += `
+      if (data.length > 0) {
+        data.forEach(element => {
+          Tablaproductos.innerHTML += `
                   <tr>
                       <td>${element.marca}</td>
                       <td>${element.categoria}</td>
@@ -31,54 +31,54 @@ document.addEventListener("DOMContentLoaded", function() {
                       </td>
                   </tr>
                   `;
-              });
-          } else {
-              // Cambia el colspan a 8 porque hay 8 columnas en total
-              Tablaproductos.innerHTML = '<tr><td colspan="8" class="text-center">No hay datos disponibles</td></tr>';
-          }
-
-          if (dtproductos) {
-              dtproductos.destroy(); // Destruye la tabla si ya está inicializada
-          }
-          RenderDatatable(); // Inicializa DataTable de nuevo
-
-      } catch (error) {
-          console.error("Error al cargar los datos:", error);
+        });
+      } else {
+        // Cambia el colspan a 8 porque hay 8 columnas en total
+        Tablaproductos.innerHTML = '<tr><td colspan="8" class="text-center">No hay datos disponibles</td></tr>';
       }
+
+      if (dtproductos) {
+        dtproductos.destroy(); // Destruye la tabla si ya está inicializada
+      }
+      RenderDatatable(); // Inicializa DataTable de nuevo
+
+    } catch (error) {
+      console.error("Error al cargar los datos:", error);
+    }
   }
 
   CargarDatos();
 
   // Función para inicializar DataTable
   function RenderDatatable() {
-      dtproductos = new DataTable("#table-productos", {
-          columnDefs: [
-              { width: "10%", targets: 0 }, 
-              { width: "10%", targets: 1 },
-              { width: "10%", targets: 2 },
-              { width: "5%", targets: 3 },
-              { width: "5%", targets: 4 }
-          ],
-          language: {
-              "sEmptyTable": "No hay datos disponibles en la tabla",
-              "info": "",
-              "sInfoFiltered": "(filtrado de _MAX_ entradas en total)",
-              "sLengthMenu": "Filtrar: _MENU_",
-              "sLoadingRecords": "Cargando...",
-              "sProcessing": "Procesando...",
-              "sSearch": "Buscar:",
-              "sZeroRecords": "No se encontraron resultados",
-              "oPaginate": {
-                  "sFirst": "Primero",
-                  "sLast": "Último",
-                  "sNext": "Siguiente",
-                  "sPrevious": "Anterior"
-              },
-              "oAria": {
-                  "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                  "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-              }
-          }
-      });
+    dtproductos = new DataTable("#table-productos", {
+      columnDefs: [
+        { width: "10%", targets: 0 },
+        { width: "10%", targets: 1 },
+        { width: "10%", targets: 2 },
+        { width: "5%", targets: 3 },
+        { width: "5%", targets: 4 }
+      ],
+      language: {
+        "sEmptyTable": "No hay datos disponibles en la tabla",
+        "info": "",
+        "sInfoFiltered": "(filtrado de _MAX_ entradas en total)",
+        "sLengthMenu": "Filtrar: _MENU_",
+        "sLoadingRecords": "Cargando...",
+        "sProcessing": "Procesando...",
+        "sSearch": "Buscar:",
+        "sZeroRecords": "No se encontraron resultados",
+        "oPaginate": {
+          "sFirst": "Primero",
+          "sLast": "Último",
+          "sNext": "Siguiente",
+          "sPrevious": "Anterior"
+        },
+        "oAria": {
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+      }
+    });
   }
 });

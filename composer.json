@@ -1,6 +1,7 @@
 {
     "require": {
         "dompdf/dompdf": "^3.0",
-        "datatables/datatables": "*"
+        "datatables/datatables": "*",
+        "masterminds/html5": "^2.9"
     }
 }

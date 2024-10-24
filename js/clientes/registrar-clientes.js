@@ -5,8 +5,29 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(object);
   }
 
+  // fucntion para buscar ruc por api
+  async function getApiRuc() {
+    const ruc = $("#nro-doc-empresa").value
+    try {
+      const response = await fetch(`../../app/api/api.ruc.php?ruc=${ruc}`, {
+        method: 'GET'
+      }
+      );
+      const data = await response.json();  // Parsear la respuesta como JSON
+      
+      if (data.hasOwnProperty('message')) {
+
+      }else{
+        showToast("No se encontro datos", "info", "INFO");
+      }
+
+    } catch (e) {
+      console.error("Error en buscarRuc: ", e);
+    }
+  }
+
   // Botón cancelar: Resetea el formulario y habilita los campos
-  let cliente ;
+  let cliente;
   $("#cliente").addEventListener('click', function () {
     var cliente = document.querySelector('.nav-link.active')?.getAttribute('href');
     if (cliente === '#persona') {
@@ -108,6 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Evento para buscar y validar número de documento con debounce
   $("#nro-doc-empresa").addEventListener("input", debounce(async () => {
+
+  
+
     if ($("#nro-doc-empresa").value === "") {
       resetCampos();
       habilitarCampos();
@@ -141,13 +165,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
   async function registrarCliente(idempresa) {
-   
-   
+
     const params = new FormData();
     params.append('operation', 'addcliente');
     params.append('idpersona', $("#nor-doc-persona").value); // Asegúrate de que este campo tenga el valor correcto
-    params.append('idempresa', $("#nor-doc-empresa").value ); // Usa el ID de la empresa que acabas de registrar
-    params.append('tipo_cliente',cliente);
+    params.append('idempresa', $("#nor-doc-empresa").value); // Usa el ID de la empresa que acabas de registrar
+    params.append('tipo_cliente', cliente);
 
     const options = {
       method: 'POST',
@@ -158,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(`../../controller/cliente.controller.php`, options);
       const data = await response.json();
       console.log(data);
-      
+
     } catch (error) {
       console.error("Error al registrar el cliente:", error);
     }

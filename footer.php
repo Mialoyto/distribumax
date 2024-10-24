@@ -8,21 +8,22 @@
 </footer>
 </div>
 </div>
-
-<!-- jquey-->
 <script src="<?= $host ?>/js/scripts.js"></script>
-<!-- SWEETALERT -->
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+<!-- SweetAlert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-<!-- JQUERY -->
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<!--Extension BS5-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<!--Datatable Core-->
+
+<!-- Datatables Core -->
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-<!--Dtatable estilos BS5-->
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-<!-- CSS PARA TABLAS -->
-<!-- utils sweetalert2 -->
+
+<!-- Utils SweetAlert2 -->
 <script src="http://localhost/distribumax/js/utils/sweetalert.js"></script>

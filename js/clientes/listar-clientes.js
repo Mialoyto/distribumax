@@ -39,7 +39,18 @@ document.addEventListener("DOMContentLoaded", function () {
       scrollX: true,
       processing: true,
       serverSide: true,
-      // deferLoading: 5,
+      lengthMenu: [5, 10, 15, 20, 100, 200, 500],
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'pdfHtml5',
+          text: 'Exportar a PDF',
+          title: 'Listado de Clientes',
+          customize: function (doc) {
+            doc.content[1].table.widths = ['20%', '20%', '20%', '20%', '20%']; // Personalizar ancho de columnas
+          }
+        }
+      ],
       ajax: {
         url: `../../controller/cliente.controller.php?operation=getAll`,
         dataSrc: function (data) {
@@ -73,11 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 <button href="#" class="btn btn-warning" data-idusuario="${row.id_cliente}" data-bs-toggle="modal" data-bs-target="#updatecustome">
                   <i class="bi bi-pencil-fill"></i>
                 </button>
-
-              
-
-
-
                 <button href="#" class="btn btn-danger" data-idusuario="${row.id_cliente}" value="0">
                   <i class="bi bi-trash-fill"></i>
                 </button>

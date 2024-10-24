@@ -29,11 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error(e);
       })
   })();
-  
+
   // API
-  async function getdniapi(){
+  async function getdniapi() {
     const dni = $("#numero_documento").value;
-    if(dni.length == 8){
+    if (dni.length == 8) {
       $("#status").classList.remove("d-none");
       const response = await fetch(`../../app/api/api.dni.php?dni=${dni}`, {
         method: 'GET'
@@ -41,21 +41,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
       $("#status").classList.add("d-none");
       // console.log(data);
-      if(data.hasOwnProperty('message')){
+      if (data.hasOwnProperty('message')) {
         $("#nombres").value = ''
         $("#appaterno").value = ''
         $("#apmaterno").value = ''
-        $("#tipo_documento").value = '';	
-        showToast("No se encontro datos", "info","INFO");
-      }else{
-          $("#nombres").value = data['nombres'];
-          $("#appaterno").value =  data['apellidoPaterno'];
-          $("#apmaterno").value =  data['apellidoMaterno'];
-          $("#tipo_documento").value = 1;	
+        $("#tipo_documento").value = '';
+        showToast("No se encontro datos", "info", "INFO");
+      } else {
+        $("#nombres").value = data['nombres'];
+        $("#appaterno").value = data['apellidoPaterno'];
+        $("#apmaterno").value = data['apellidoMaterno'];
+        $("#tipo_documento").value = 1;
       }
     }
   }
-  
+
 
   // FUNCIONES
   async function registradoPersona() {
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // peticion ✔️
-  const searchDist = async () => {
+  async function searchDist(distrito) {
     let searchData = new FormData();
     searchData.append('operation', 'searchDistrito');
     searchData.append('distrito', distrito.value);
@@ -105,20 +105,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   // mostrar resultados ✔️
-  const mostraResultados = () => {
-    searchDist()
-      .then(response => {
-        dataList.innerHTML = '';
-
-        // errorList.style.display = 'none';
-        response.forEach(item => {
-          const option = document.createElement('option');
-          option.setAttribute('data-id', item.iddistrito);
-          option.textContent = item.distrito;
-          dataList.appendChild(option);
-        })
-        console.log(response);
-      })
+  const mostraResultados = async () => {
+    const response = await searchDist(searchDistrito);
+    dataList.innerHTML = '';
+    if (response.length > 0) {
+      response.forEach(element => {
+        const li = document.createElement('li');
+        li.classList.add('list-group-item');
+        li.innerText = element.distrito;
+        li.setAttribute('id-distrito', element.iddistrito);
+        dataList.appendChild(li);
+      });
+    }else{
+      const li = document.createElement('li');
+      li.classList.add('list-group-item');
+      li.innerText = 'No se encontraron resultados';
+      dataList.appendChild(li);
+    }
   }
   // validar documento ✔️
   async function validarDni(response) {
@@ -144,6 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
       dataList.appendChild(option);
       console.log('ID del distrito obtenido:', selectedId);
       addPersona(false);
+      showToast("Persona ya registrada", "info", "INFO");
     }
   }
 
@@ -201,25 +205,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  $("#numero_documento").addEventListener("input", async () => {  
-    if($("#numero_documento").value.length == 8){
+  $("#numero_documento").addEventListener("input", async () => {
+    if ($("#numero_documento").value.length == 8) {
       $("#tipo_documento").value = 1;
-    }else{
-      $("#tipo_documento").value="";
+    } else {
+      $("#tipo_documento").value = "";
       limpiarCampos();
     }
   });
-
-
 
   // evento para buscar dni ✔️
   $("#buscar-dni").addEventListener("click", async () => {
     const response = await buscarDni();
     validarDni(response);
     console.log(response);
-    if(response.length == 0){
-        await getdniapi();
-      }else{
+    if (response.length == 0) {
+      await getdniapi();
+    } else {
     }
   });
 
@@ -234,8 +236,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // buscar distrito ✔️
+  let searchDistrito;
   distrito.addEventListener('input', event => {
-    nomDistrito = event.target.value;
+    searchDistrito = distrito.value;
     mostraResultados();
   });
 
@@ -243,17 +246,20 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     let response1;
     if (dataNew) {
-      if (confirm("¿Guardar datos?")) {
+      if (showConfirm("¿Desea guardar los datos?", "Persona")) {
         response1 = await registradoPersona();
         idpersona = response1.id;
         console.log("Datos guardados, ID: ", idpersona);
         if (idpersona == -1) {
-          alert("No se guarda los datos");
+          showToast("Error al guardar los datos", "error", "ERROR");
           return;
+        } else {
+          showToast("Datos guardados", "success", "SUCCESS");
+          limpiarCampos();
         }
       }
     } else {
-      alert("Esta persona ya esta registrada")
+      showToast("Persona ya registrada", "info", "INFO");
     }
   });
 

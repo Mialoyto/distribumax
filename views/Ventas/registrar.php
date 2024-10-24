@@ -49,7 +49,7 @@ require_once '../../header.php';
                 <input type="search" class="form-control" id="idpedido" list="datalistIdPedido" placeholder="Buscar ID pedido" required>
                 <label for="idpedido">Buscar pedido (PED-)</label>
                 <ul id="datalistIdPedido" class="list-group position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
-                <div id="mensaje-error" style="color: red; display: none;">No existe el pedido</div>
+                <!-- <div id="mensaje-error" style="color: red; display: none;">No existe el pedido</div> -->
               </div>
             </div>
           </div>

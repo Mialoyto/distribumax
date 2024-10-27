@@ -15,18 +15,19 @@ require_once '../../header.php';
 
       <ul class="nav nav-tabs" id="cliente" role="tablist">
         <li class="nav-item" role="presentation">
-          <a class="nav-link" id="persona-tab" data-bs-toggle="tab" href="#persona" role="tab" aria-controls="persona" aria-selected="false">Persona</a>
+          <a class="nav-link active" id="persona-tab" data-bs-toggle="tab" data-bs-target="#persona" role="tab" type="button" aria-controls="persona" aria-selected="true">Persona</a>
         </li>
         <li class="nav-item" role="presentation">
-          <a class="nav-link" id="empresa-tab" data-bs-toggle="tab" href="#empresa" role="tab" aria-controls="empresa" aria-selected="false">Empresa</a>
+          <a class="nav-link" id="empresa-tab" data-bs-toggle="tab" data-bs-target="#empresa" role="tab" type="button" aria-controls="empresa" aria-selected="false">Empresa</a>
         </li>
       </ul>
 
       <div class="card-body">
-        <div class="tab-content mt-4">
+        <div class="tab-content mt-4" id="cliente">
           <!-- Formulario de Persona -->
-          <div class="tab-pane fade" id="persona" role="tabpanel" aria-labelledby="persona-tab">
-            <form action="" id="registrar-persona">
+
+          <div class="tab-pane fade show active" id="persona" role="tabpanel" aria-labelledby="persona-tab" tabindex="0">
+            <form id="registrar-persona">
               <div class="card">
                 <div class="card-body">
                   <!-- Campos específicos para Persona -->
@@ -89,66 +90,85 @@ require_once '../../header.php';
                   </div>
                 </div>
                 <div class="card-footer d-flex justify-content-end">
-                  <button type="reset" class="btn btn-danger mt-2 mb-2" id="btnCancelarPersona">Cancelar</button>
-                  <button type="submit" class="btn btn-success mt-2 mb-2" id="registrarPersona">Registrar</button>
+                  <button type="submit" class="btn btn-success mt-2 mb-2 me-2" id="registrarPersona">Registrar</button>
+                  <button type="reset" class="btn btn-outline-danger mt-2 mb-2" id="btnCancelarPersona">Cancelar</button>
                 </div>
               </div>
             </form>
           </div>
 
           <!-- Formulario de Empresa -->
-          <div class="tab-pane fade" id="empresa" role="tabpanel" aria-labelledby="empresa-tab">
+          <div class="tab-pane fade" id="empresa" role="tabpanel" aria-labelledby="empresa-tab" tabindex="0">
             <form action="" id="registrar-empresa">
               <div class="card">
                 <div class="card-body">
                   <!-- Campos específicos para Empresa -->
                   <div class="row mb-3">
                     <div class="col-md-6">
-                      <div class="form-floating">
-                        <input type="number" class="form-control" id="nro-doc-empresa" name="nro-doc-empresa" placeholder="Ruc" min="0" max="99999999999" required oninput="this.value = this.value.slice(0, 11)">
-                        <label for="nro-doc-empresa"><i class="bi bi-search"></i> Buscar ruc</label>
+                      <div class="input-group">
+                        <div class="form-floating">
+                          <input type="number"
+                          
+                            class="form-control"
+                            id="nro-doc-empresa"
+                            name="nro-doc-empresa"
+                            placeholder="Ruc"
+                            minlength="11"
+                            maxlength="11"
+                            title="Por favor, ingresa solo números."
+                            required>
+                          <label for="nro-doc-empresa"><i class="bi bi-search"></i> Buscar ruc</label>
+                        </div>
+                        <button class="btn btn-primary" type="button" id="btn-cliente-empresa"><i class="bi bi-search"></i></button>
                       </div>
+                      <span id="status" class="d-none">Buscando por favor espere...</span>
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-3">
                       <div class="form-floating">
-                        <input type="text" class="form-control" id="iddistrito" placeholder="Distrito" required>
+                        <input type="text" class="form-control" id="iddistrito" placeholder="Distrito" required disabled="true">
                         <label for="">Distrito</label>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-8 mt-3">
                       <div class="form-floating">
-                        <input type="text" class="form-control" id="razon-social" placeholder="Razón Social" required>
+                        <input type="text" class="form-control" id="razon-social" placeholder="Razón Social" required disabled="true">
                         <label for="razon-social" class="form-label">Razón Social</label>
-                      </div>
-                    </div>
-
-                    <div class="col-md-4">
-                      <div class="form-floating">
-                        <input type="email" class="form-control" id="email" placeholder="Email" required>
-                        <label for="email" class="form-label">Email</label>
                       </div>
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-3">
                       <div class="form-floating">
-                        <input type="text" class="form-control" id="direccion" placeholder="Dirección" required>
+                        <input type="email" class="form-control" id="email" placeholder="Email" disabled="true">
+                        <label for="email" class="form-label">Email</label>
+                      </div>
+                    </div>
+                    <div class="col-md-5 mt-3">
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="direccion" placeholder="Dirección" required disabled="true">
                         <label for="">Dirección</label>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3 mt-3">
                       <div class="form-floating">
-                        <input type="text" class="form-control" id="telefono-empresa" placeholder="Teléfono" required>
+                        <input 
+                        type="number" 
+                        minlength="9"
+                        maxlength="9"
+                        class="form-control" 
+                        id="telefono-empresa" 
+                        placeholder="Teléfono" 
+                        disabled="true">
                         <label for="">Teléfono</label>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="card-footer d-flex justify-content-end mt-3">
-                  <button type="reset" class="btn btn-danger mt-2 mb-2">Cancelar</button>
-                  <button type="" class="btn btn-success mt-2 mb-2" id="registrarEmpresa">Registrar</button>
+                  <button type="submit" class="btn btn-success mt-2 mb-2 me-2" id="registrarEmpresa" disabled="true"> Registrar</button>
+                  <button type="reset" class="btn btn-outline-danger mt-2 mb-2">Cancelar</button>
                 </div>
               </div>
             </form>
@@ -161,67 +181,6 @@ require_once '../../header.php';
     </div>
   </div>
 </main>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Inicialmente oculta ambas secciones
-    document.querySelector("#persona").classList.remove("show", "active");
-    document.querySelector("#empresa").classList.remove("show", "active");
-
-    // Escucha los clics en las pestañas y muestra el contenido correspondiente
-    const personaTab = document.querySelector("#persona-tab");
-    const empresaTab = document.querySelector("#empresa-tab");
-
-    personaTab.addEventListener("click", function() {
-      document.querySelector("#persona").classList.add("show", "active");
-      document.querySelector("#empresa").classList.remove("show", "active");
-    });
-
-    empresaTab.addEventListener("click", function() {
-      document.querySelector("#empresa").classList.add("show", "active");
-      document.querySelector("#persona").classList.remove("show", "active");
-    });
-  });
-
-  // Función para cargar los tipos de documentos
-  (() => {
-    fetch(`../../controller/documento.controller.php?operation=getAllDocumentos`)
-      .then(response => response.json())
-      .then(data => {
-        const optionEmp = document.querySelector("#idtipodocumento");
-        data.forEach(element => {
-          const tagOption = document.createElement('option');
-          tagOption.value = element.idtipodocumento;
-          tagOption.innerText = element.documento;
-          optionEmp.appendChild(tagOption);
-        });
-      })
-      .catch(e => {
-        console.error(e);
-      });
-  })();
-
-  //  Función para seleccionar el tipo de documento
-  function seleccionarTipoDocumento(numeroDocumento) {
-    const tipoDocSelect = document.getElementById("idtipodocumento");
-
-    //  Verifica si el número de documento tiene 8 dígitos
-    if (numeroDocumento.length === 8) {
-      tipoDocSelect.value = "DNI"; // Selecciona automáticamente DNI
-      const opciones = tipoDocSelect.options;
-      for (let i = 0; i < opciones.length; i++) {
-        if (opciones[i].innerText === "DNI") {
-          tipoDocSelect.value = opciones[i].value; // Asigna el ID del tipo de documento
-          break;
-        }
-      }
-    } else {
-      tipoDocSelect.value = ""; // Restablece la selección si no tiene 8 dígitos
-    }
-  }
-</script>
+<?php require_once '../../footer.php'; ?>
 <script src="../../js/clientes/registrar-clientes.js"></script>
 <script src="../../js/clientes/registrarPersonas.js"></script>
-<?php
-require_once '../../footer.php';
-?>

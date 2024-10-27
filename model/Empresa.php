@@ -102,8 +102,13 @@ class Empresas extends Conexion
   public function search($params = [])
   {
     try {
-      $query = $this->pdo->prepare("CALL sp_buscar_empresa(?)");
-      $query->execute(array($params['ruc']));
+      $sql = "CALL sp_buscar_empresa(?)";
+      $query = $this->pdo->prepare($sql);
+      $query->execute(
+        array(
+          $params['ruc']
+        )
+      );
       return $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
       die($e->getMessage());

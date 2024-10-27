@@ -53,24 +53,13 @@ BEGIN
       WHERE idempresaruc=_idempresaruc;
 END;
 -- buscar empresa 
-
+drop procedure if exists sp_buscar_empresa;
 CREATE PROCEDURE sp_buscar_empresa(
     IN _ruc BIGINT
 )
 BEGIN
     DECLARE _empresa_count INT DEFAULT 0;
 
-    -- Verificar si la empresa existe
-    SELECT COUNT(*)
-    INTO _empresa_count
-    FROM empresas EMP
-    WHERE EMP.idempresaruc = _ruc
-    AND EMP.estado = '1';
-
-    -- Si no existe la empresa, devolver 'No data'
-    IF _empresa_count = 0 THEN
-        SELECT 'No data' AS estado;
-    ELSE
         -- Si existe, devolver los detalles
         SELECT 
 			'Empresa' AS tipo_cliente,
@@ -94,7 +83,6 @@ BEGIN
         INNER JOIN distritos DIST ON EMP.iddistrito = DIST.iddistrito
         WHERE EMP.idempresaruc = _ruc
         AND EMP.estado = '1';
-    END IF;
 END;
 
 

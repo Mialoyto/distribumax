@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let idpersona = -1;
   let dataNew = true;
+  let selectedId;
   // AUTOEJECUTABLES
   // funcion de documentos
   (() => {
@@ -40,12 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       const data = await response.json();
       $("#status").classList.add("d-none");
-      // console.log(data);
       if (data.hasOwnProperty('message')) {
-        $("#nombres").value = ''
-        $("#appaterno").value = ''
-        $("#apmaterno").value = ''
-        $("#tipo_documento").value = '';
+        limpiarCampos();
         showToast("No se encontro datos", "info", "INFO");
       } else {
         $("#nombres").value = data['nombres'];
@@ -54,6 +51,17 @@ document.addEventListener("DOMContentLoaded", () => {
         $("#tipo_documento").value = 1;
       }
     }
+  }
+
+  // buscar dni
+  async function buscarDni() {
+    const params = new URLSearchParams();
+    params.append('operation', 'searchDni');
+    params.append('idtipodocumento', tipodoc.value);
+    params.append('idpersonanrodoc', nrodoc.value);
+
+    const response = await fetch(`../../controller/persona.controller.php?${params}`);
+    return response.json();
   }
 
 
@@ -77,22 +85,13 @@ document.addEventListener("DOMContentLoaded", () => {
     return id.json();
   }
 
-  // buscar dni
-  async function buscarDni() {
-    const params = new URLSearchParams();
-    params.append('operation', 'searchDni');
-    params.append('idtipodocumento', tipodoc.value);
-    params.append('idpersonanrodoc', nrodoc.value);
 
-    const response = await fetch(`../../controller/persona.controller.php?${params}`);
-    return response.json();
-  }
 
   // peticion ✔️
-  async function searchDist(distrito) {
+  const searchDist = async () => {
     let searchData = new FormData();
     searchData.append('operation', 'searchDistrito');
-    searchData.append('distrito', distrito.value);
+    searchData.append('distrito', distrito.value.trim());
     const option = {
       method: 'POST',
       body: searchData
@@ -106,20 +105,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // mostrar resultados ✔️
   const mostraResultados = async () => {
-    const response = await searchDist(searchDistrito);
+    const response = await searchDist()
     dataList.innerHTML = '';
-    if (response.length > 0) {
-      response.forEach(element => {
+    if (response.length != 0) {
+      dataList.style.display = 'block';
+      response.forEach(item => {
+
         const li = document.createElement('li');
         li.classList.add('list-group-item');
-        li.innerText = element.distrito;
-        li.setAttribute('id-distrito', element.iddistrito);
+        li.setAttribute('data-id', item.iddistrito);
+        li.textContent = item.distrito;
+        li.addEventListener('click', () => {
+          distrito.value = li.textContent;
+          selectedId = li.getAttribute('data-id');
+          dataList.innerHTML = '';
+        });
         dataList.appendChild(li);
-      });
+      })
     }else{
+      dataList.innerHTML = '';
       const li = document.createElement('li');
       li.classList.add('list-group-item');
-      li.innerText = 'No se encontraron resultados';
+      li.innerHTML = "<b>No se encontraron resultados<b>";
       dataList.appendChild(li);
     }
   }
@@ -145,9 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
       option.setAttribute('data-id', selectedId);
       option.value = response[0].distrito; // Usa el nombre del distrito
       dataList.appendChild(option);
-      console.log('ID del distrito obtenido:', selectedId);
       addPersona(false);
-      showToast("Persona ya registrada", "info", "INFO");
     }
   }
 
@@ -164,9 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
       $("#btnRegistrar").setAttribute("disabled", true)
     } else {
       $("#buscar-distrito").removeAttribute("disabled")
-      // $("#nombres").removeAttribute("disabled")
-      // $("#appaterno").removeAttribute("disabled")
-      // $("#apmaterno").removeAttribute("disabled")
       $("#telefono").removeAttribute("disabled")
       $("#direccion").removeAttribute("disabled")
       $("#btnRegistrar").removeAttribute("disabled")
@@ -181,18 +183,12 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#apmaterno").value = "";
     $("#telefono").value = "";
     $("#direccion").value = "";
+    $("#tipo_documento").value = '';
   }
   // FIN FUNCIONES
 
-  //  EVENTOS DE PRUEBAS
-
-  // Agregar evento change para capturar el id del tipo de documento ✔️ BORRAR
-  tipodoc.addEventListener("change", () => {
-    console.log("ID tipo documento seleccionado =>", tipodoc.value);
-  });
-
   // capturar el id del distrito ✔️
-  let selectedId;
+
   distrito.addEventListener("change", event => {
     const selectDistrito = event.target.value;
     const options = dataList.children;
@@ -200,7 +196,6 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let i = 0; i < options.length; i++) {
       if (options[i].value === selectDistrito) {
         selectedId = options[i].getAttribute('data-id');
-        console.log("ID distrito selecionado =>", selectedId);
       }
     }
   });
@@ -214,56 +209,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // evento para buscar dni ✔️
-  $("#buscar-dni").addEventListener("click", async () => {
-    const response = await buscarDni();
-    validarDni(response);
-    console.log(response);
-    if (response.length == 0) {
-      await getdniapi();
-    } else {
-    }
-  });
-
-  // evento para buscar si se encuentra registrado ✔️
-  $("#buscar-dni").addEventListener("keyPress", async () => {
-    if (e.keyCode == 13) {
-      const response = await buscarDni();
-      console.log(response);
-      validarDni(response);
-      console.log("Buscar dni");
-    }
-  });
-
   // buscar distrito ✔️
-  let searchDistrito;
-  distrito.addEventListener('input', event => {
-    searchDistrito = distrito.value;
-    mostraResultados();
+  distrito.addEventListener('input', async (e) => { 
+    e.target.value = e.target.value.toUpperCase();
+    await mostraResultados() 
+    if (e.target.value === '') {
+      dataList.style.display = 'none';
+    }
   });
 
   $("#form-persona").addEventListener("submit", async (e) => {
     e.preventDefault();
     let response1;
     if (dataNew) {
-      if (showConfirm("¿Desea guardar los datos?", "Persona")) {
+      if (await showConfirm("¿Desea guardar los datos?", "Persona")) {
         response1 = await registradoPersona();
         idpersona = response1.id;
-        console.log("Datos guardados, ID: ", idpersona);
-        if (idpersona == -1) {
-          showToast("Error al guardar los datos", "error", "ERROR");
-          return;
-        } else {
+        if (idpersona != -1) {
           showToast("Datos guardados", "success", "SUCCESS");
-          limpiarCampos();
+          $("#form-persona").reset();
+          addPersona(false);
+        } else {
+          showToast("Datos no guardados", "error", "ERROR");
         }
       }
     } else {
-      showToast("Persona ya registrada", "info", "INFO");
+      showToast("Datos ya registrados", "info", "INFO");
     }
   });
 
-  // FIN DE EVENTOS DE PRUEBAS
+  // evento para buscar dni ✔️
+  $("#buscar-dni").addEventListener("click", async () => {
+    const response = await buscarDni();
+    validarDni(response);
+    if (response.length == 0) {
+      await getdniapi();
+    }
+  });
+
+  // evento para buscar si se encuentra registrado ✔️
+  document.querySelector("#buscar-dni").addEventListener("keydown", async (e) => {
+    if (e.key === "Enter") {
+      const response = await buscarDni();
+      validarDni(response);
+      if (response.length == 0) {
+        await getdniapi();
+      }
+    }
+  });
   // desabilitar campos
   addPersona(false);
 

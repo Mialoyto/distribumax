@@ -31,7 +31,6 @@ async function showConfirm(pregunta = ``, modulo = ``) {
   const respuesta = await Swal.fire({
     title: pregunta,
     text: modulo,
-    icon: 'question',
     showDenyButton: true,
     confirmButtonText: 'Guardar',
     denyButtonText: 'Cancelar',

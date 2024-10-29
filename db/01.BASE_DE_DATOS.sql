@@ -250,7 +250,7 @@ CREATE TABLE marcas(
         create_at		DATETIME NOT NULL DEFAULT NOW(),
         update_at		DATETIME NULL,
         estado			CHAR(1) NOT NULL DEFAULT "1",
-        CONSTRAINT fk_categoria_marca FOREIGN KEY (idcategoria) REFERENCES categorias (idcategoria), 
+        CONSTRAINT fk_categorias_marca FOREIGN KEY (idcategoria) REFERENCES categorias (idcategoria), 
         CONSTRAINT uk_marca UNIQUE(marca),
         CONSTRAINT fk_estado_mar CHECK(estado IN ("0", "1"))
 )ENGINE = INNODB;

@@ -12,14 +12,15 @@ class Marca extends Conexion
     public function addMarca($params = [])
     {
         try {
+            $status=false;
             $query = $this->pdo->prepare("CALL sp_registrar_marca (?,?,?)");
-            $query->execute(array(
+           $status= $query->execute(array(
                 $params['idproveedor'],
                 $params['marca'],
                 $params['idcategoria']
 
             ));
-            return $query;
+            return $status;
         } catch (Exception $e) {
             die($e->getMessage());
         }

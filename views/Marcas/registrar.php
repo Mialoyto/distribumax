@@ -52,7 +52,7 @@ require_once '../../header.php';
             </div>
             <div class="col-4 mb-3">
               <div class="form-floating">
-                <select name="" id="idcategoria" class="form-select" placeholder="Buscar categoria">
+                <select name="" id="idcategoria" class="form-select" >
                   <option value=""></option>
                   <!-- Aquí puedes agregar más opciones de categorías -->
                 </select>
@@ -71,10 +71,11 @@ require_once '../../header.php';
             </button>
           </div>
         </form>
-        <div class="card-footer">
+        
+      </div>
+      <div class="card-footer">
           <a href="index.php" class="btn btn-primary">Listar Marcas</a>
         </div>
-      </div>
     </div>
   </div>
 </main>

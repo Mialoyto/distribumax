@@ -91,6 +91,7 @@ BEGIN
     SELECT 
     razonsocial,
     direccion,
-    email
+    email,
+    telefono
     FROM empresas;
 END;

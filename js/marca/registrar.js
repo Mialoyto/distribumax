@@ -5,19 +5,26 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(object);
   }
 
-  (()=>{
-    fetch(`../../controller/categoria.controller.php?operation=getAll`)
-    .then(response=>response.json())
-    .then(data=>{
-        const Tagoption=$("#idcategoria");
-        data.forEach(element => {
-            const option=document.createElement('option');
-            option.value=element.idcategoria;
-            option.innerText=element.categoria;
-            Tagoption.appendChild(option);   
-       });
-    })
-  })();
+  async function getCategorias() {
+    const params = new URLSearchParams();
+    params.append('operation', 'getCategorias');
+    try {
+      const response = await fetch(`../../controller/categoria.controller.php?${params}`);
+      const categorias = await response.json();
+      console.log(categorias);
+      categorias.forEach(element => {
+        const tagOption = document.createElement('option');
+        tagOption.value = element.idcategoria;
+        tagOption.innerText = element.categoria;
+        $("#idcategoria").appendChild(tagOption);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  getCategorias();
+
   async function getProveedor(proveedor) {
     const params = new URLSearchParams();
     params.append("operation", "getProveedor");
@@ -31,22 +38,24 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(e);
     }
   }
+
   function desabilitarCampos() {
     $("#idcategoria").setAttribute("disabled", true);
     $("#marca").setAttribute("disabled", true);
-    $("#btn-registrar").setAttribute("disabled",true);
+    $("#btn-registrar").setAttribute("disabled", true);
   }
-  function habilitarCampos(){
-      $("#idcategoria").removeAttribute("disabled");
-      $("#marca").removeAttribute("disabled");
-      $("#btn-registrar").removeAttribute("disabled");
- 
+
+  function habilitarCampos() {
+    $("#idcategoria").removeAttribute("disabled");
+    $("#marca").removeAttribute("disabled");
+    $("#btn-registrar").removeAttribute("disabled");
   }
-  function cleanCampos(){
+
+  function cleanCampos() {
     $("#idcategoria").value = '';
     $("#marca").value = '';
-    
-}
+  }
+
   async function renderData() {
     $("#list-proveedor").innerHTML = "";
     const response = await getProveedor(proveedores);
@@ -63,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
           $("#idproveedor").setAttribute("data-id", item.idproveedor);
           $("#idproveedor").value = item.proveedor;
           cleanCampos();
-          // Guarda el proveedor seleccionado
+          habilitarCampos();  // Habilitar los campos cuando se selecciona un proveedor
         });
         $("#list-proveedor").appendChild(li);
       });
@@ -72,45 +81,53 @@ document.addEventListener("DOMContentLoaded", () => {
       li.classList.add("list-group-item");
       li.innerHTML = `<b>Proveedor no encontrado</b>`;
       $("#list-proveedor").appendChild(li);
-      desabilitarCampos();
+      desabilitarCampos(); // Mantener deshabilitados si no hay proveedor
     }
   }
 
-  async function registrarempresa() {
+  async function registrarmarca() {
     const params = new FormData();
     params.append("operation", "addMarca");
-    params.append("marca", marca.value);
+    params.append("idproveedor", $("#idproveedor").value);
+    params.append("marca", $("#marca").value);
+    params.append("idcategoria", $("#idcategoria").value);
 
     const options = {
       method: "POST",
       body: params,
     };
 
-    const response = await fetch(
-      `../../controller/marca.controller.php`,
-      options
-    );
-    return response
-      .json()
-
-      .catch((e) => {
-        console.error(e);
-      });
+    try {
+      const response = await fetch(`../../controller/marca.controller.php`, options);
+      const data = await response.json();
+      console.log(data);
+      // Aquí puedes agregar lógica para mostrar el mensaje en la interfaz de usuario si es necesario
+    } catch (e) {
+      console.error('Error al registrar la marca:', e);
+    }
   }
+
   $("#idproveedor").addEventListener("input", async () => {
     proveedores = $("#idproveedor").value.trim();
 
     if (!proveedores) {
       $("#list-proveedor").style.display = "none";
       cleanCampos();
-      habilitarCampos();
+      desabilitarCampos();  // Deshabilitar los campos si no hay proveedor
     } else {
       await renderData();
-      habilitarCampos();
+      // Se habilitarán los campos cuando se seleccione un proveedor en renderData()
     }
   });
 
-  desabilitarCampos();
+  desabilitarCampos(); // Inicialmente deshabilitar los campos
 
-  $("#form-")
+  $("#form-registrar-marca").addEventListener("submit", async (event) => {
+    event.preventDefault();
+  
+    if (showConfirm("Desea registrar", "Marcas")) {
+      await registrarmarca();
+      $("#form-registrar-marca").reset();
+    }
+  });
 });

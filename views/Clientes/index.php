@@ -39,17 +39,17 @@
     </div>
 
     <div class="card mb-4">
-      <div class="card-header">
-        <i class="fas fa-table me-1 fa-lg"></i>
-        Listado de Clientes
+      <div class="card-header d-flex align-items-center">
+        <i class="fas fa-table me-1 fa-lg"></i> Listado de Clientes
         <div class="ms-auto"> <!-- Utilizamos ms-auto para alinear a la derecha -->
           <div class="text-end">
-            <a href="../reports/Clientes/contenidoPDF.php" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
+            <a href="../reports/Clientes/contenidoPDF.php" class="me-2 btn btn-danger" style="color: white;">
               <i class="fas fa-file-pdf me-1"></i> Generar PDF
             </a>
-            <a href="generar-excel.php" class="btn btn-success">
+            <button class="btn btn-success" id="exportExcel" style="color: white;">
               <i class="fas fa-file-excel me-1"></i> Generar Excel
-            </a>
+            </button>
+
           </div>
         </div>
       </div>
@@ -75,10 +75,11 @@
       </div>
     </div>
 </main>
+
 <?php require_once '../../footer.php'; ?>
+
+<!-- Archivo JavaScript que controla la funcionalidad de listado y exportación de clientes -->
 <script src="../../js/clientes/listar-clientes.js"></script>
 
-
 </body>
-
 </html>

@@ -2,6 +2,6 @@
     "require": {
         "dompdf/dompdf": "^3.0",
         "datatables/datatables": "*",
-        "masterminds/html5": "^2.9"
+        "phpoffice/phpspreadsheet": "^3.3"
     }
 }

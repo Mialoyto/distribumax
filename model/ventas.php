@@ -94,4 +94,14 @@ class Ventas extends Conexion
 			die($e->getMessage());
 		}
 	}
+
+	public function buscarventa($params=[]){
+		try{
+			$query=$this->pdo->prepare("call sp_buscar_venta(?)");
+			$query->execute(array($params['item']));
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		}catch(Exception $e){
+			die($e->getMessage());
+		}
+	}
 }

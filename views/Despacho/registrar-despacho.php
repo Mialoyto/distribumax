@@ -66,8 +66,21 @@ require_once '../../header.php';
             </div>
             <div class="col-md-6 mb-3">
               <div class="form-floating">
-                <input type="search" class="form-control" id="detalle_despacho" name="marca_vehiculo" maxlength="23" minlength="3" required>
-                <label for="marca"><i class="fas fa-car me-2"></i> Agregar Ventas</label>
+              <input
+                  type="search"
+                  class="form-control"
+                  id="idventa"
+                  name="idproveedor"
+                  placeholder="Venta"
+                  required>
+                <label for="idproveedor" class="form-label">
+                  <i class="bi bi-search"></i> Buscar Venta
+                </label>
+                <ul
+                  id="list-venta"
+                  class="list-group position-absolute w-100 listarDatos"
+                  style="z-index: 1000; display: none;">
+                </ul>
               </div>
             </div>
           </div>
@@ -105,7 +118,7 @@ require_once '../../header.php';
   </div>
 </main>
 <script src="../../js/despacho/registrar.js"></script>
-
+<script src="../../js/Despacho/buscar-pedidos.js"></script>
 <?php
 require_once '../../footer.php';
 ?>

@@ -56,8 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
           await viewStock(item.stockactual, item.unidadmedida);
           datalist.innerHTML = "";
         });
+
         datalist.appendChild(li);
       });
+
     }
   };
   // OK ✔️
@@ -91,21 +93,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /*   $("#cantidad").addEventListener("input", async () => {
-      const data = await searchProducto(producto);
-      console.log(data.data[0].stockactual);
-  
-    }) */
-
   async function validarFormulario() {
-    const data = await searchProducto(producto)
-    const stock = data.data[0].stockactual;
+    const dato = await mostraResultados();
+    // const data = await searchProducto(producto)
+    const stock = $("#stockactual").value;
+    console.log("stock", stock);
+
     const movimiento = $("#tipomovimiento");
 
     if (stock == 0 && movimiento.value == 'Salida') {
       showToast(`Este producto no cuenta con stock, registre un movimiento tipo 'Ingreso'.`, 'info', 'INFO');
       return;
-    }
+    }else if(cantidad.value > stock && movimiento.value == 'Salida'){
+      showToast(`La cantidad no debe ser mayor al stock actual de ${stock}`, "warning", "WARNING");
+    } 
     else if ((stock < cantidad.value) && (movimiento.value == 'Salida')) {
       showToast(`La cantidad no debe ser mayor al stock actual de ${stock}`, "warning", "WARNING");
       return;
@@ -124,8 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast("El campo lote es obligatorio", "warning", "WARNING", 2500);
       return;
     }
-
-
   }
 
   // funcion para registrar en le kardex 

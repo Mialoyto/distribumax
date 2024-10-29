@@ -1,4 +1,5 @@
 <?php require_once '../../header.php'; ?>
+
 <main>
   <div class="container-fluid px-4">
     <ol class="breadcrumb mb-4">
@@ -43,7 +44,7 @@
         Listado de Clientes
         <div class="ms-auto"> <!-- Utilizamos ms-auto para alinear a la derecha -->
           <div class="text-end">
-            <a href="generar-pdf.php" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
+            <a href="../reports/Clientes/contenidoPDF.php" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
               <i class="fas fa-file-pdf me-1"></i> Generar PDF
             </a>
             <a href="generar-excel.php" class="btn btn-success">
@@ -75,20 +76,7 @@
     </div>
 </main>
 <?php require_once '../../footer.php'; ?>
- <script src="../../js/clientes/listar-clientes.js"></script> 
-<script>
-  // Manejar el cambio entre los campos de Persona y Empresa
-  /*   document.getElementById('tipo_cliente').addEventListener('change', function() {
-      var tipoCliente = this.value;
-      if (tipoCliente === 'Persona') {
-        document.getElementById('personaFields').style.display = 'block';
-        document.getElementById('empresaFields').style.display = 'none';
-      } else if (tipoCliente === 'Empresa') {
-        document.getElementById('personaFields').style.display = 'none';
-        document.getElementById('empresaFields').style.display = 'block';
-      }
-    }); */
-</script>
+<script src="../../js/clientes/listar-clientes.js"></script>
 
 
 </body>

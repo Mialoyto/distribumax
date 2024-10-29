@@ -4,8 +4,7 @@ USE distribumax;
 -- TIPO DE DOCUMENTOS
 CALL sp_registrar_tipo_documento ('DNI');
 CALL sp_registrar_tipo_documento ('RUC');
-CALL sp_registrar_tipo_documento ('PASAPORTE');
-CALL sp_registrar_tipo_documento ('CARNET DE EXTRANJERÍA');
+
 
 /* REGISTRAR EMPRESAS */
 CALL sp_empresa_registrar (

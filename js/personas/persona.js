@@ -30,7 +30,32 @@ document.addEventListener("DOMContentLoaded", () => {
       })
   })();
   
-
+  // API
+  async function getdniapi(){
+    const dni = $("#numero_documento").value;
+    if(dni.length == 8){
+      $("#status").classList.remove("d-none");
+      const response = await fetch(`../../app/api/api.dni.php?dni=${dni}`, {
+        method: 'GET'
+      });
+      const data = await response.json();
+      $("#status").classList.add("d-none");
+      // console.log(data);
+      if(data.hasOwnProperty('message')){
+        $("#nombres").value = ''
+        $("#appaterno").value = ''
+        $("#apmaterno").value = ''
+        $("#tipo_documento").value = '';	
+        showToast("No se encontro datos", "info","INFO");
+      }else{
+          $("#nombres").value = data['nombres'];
+          $("#appaterno").value =  data['apellidoPaterno'];
+          $("#apmaterno").value =  data['apellidoMaterno'];
+          $("#tipo_documento").value = 1;	
+      }
+    }
+  }
+  
 
   // FUNCIONES
   async function registradoPersona() {
@@ -96,9 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
       })
   }
   // validar documento ✔️
-  function validarDni(response) {
+  async function validarDni(response) {
     if (response.length == 0) {
-      $("#numero_documento").focus();
       idpersona = -1;
       dataNew = true;
       addPersona(true);
@@ -126,6 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // habilitar campos ✔️
   function addPersona(add = false) {
     if (!add) {
+      $("#tipo_documento").setAttribute("disabled", true)
       $("#buscar-distrito").setAttribute("disabled", true)
       $("#nombres").setAttribute("disabled", true)
       $("#appaterno").setAttribute("disabled", true)
@@ -135,9 +160,9 @@ document.addEventListener("DOMContentLoaded", () => {
       $("#btnRegistrar").setAttribute("disabled", true)
     } else {
       $("#buscar-distrito").removeAttribute("disabled")
-      $("#nombres").removeAttribute("disabled")
-      $("#appaterno").removeAttribute("disabled")
-      $("#apmaterno").removeAttribute("disabled")
+      // $("#nombres").removeAttribute("disabled")
+      // $("#appaterno").removeAttribute("disabled")
+      // $("#apmaterno").removeAttribute("disabled")
       $("#telefono").removeAttribute("disabled")
       $("#direccion").removeAttribute("disabled")
       $("#btnRegistrar").removeAttribute("disabled")
@@ -176,11 +201,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  $("#numero_documento").addEventListener("input", async () => {  
+    if($("#numero_documento").value.length == 8){
+      $("#tipo_documento").value = 1;
+    }else{
+      $("#tipo_documento").value="";
+      limpiarCampos();
+    }
+  });
+
+
+
   // evento para buscar dni ✔️
   $("#buscar-dni").addEventListener("click", async () => {
     const response = await buscarDni();
-    console.log(response);
     validarDni(response);
+    console.log(response);
+    if(response.length == 0){
+        await getdniapi();
+      }else{
+    }
   });
 
   // evento para buscar si se encuentra registrado ✔️

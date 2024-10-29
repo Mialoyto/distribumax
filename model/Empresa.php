@@ -39,10 +39,7 @@ class Empresas extends Conexion
   public function getAll()
   {
     try {
-      $sql = "SELECT E.idempresaruc, E.razonsocial, E.direccion,E.email,E.telefono, D.iddistrito,D.distrito
-    FROM empresas E
-    INNER JOIN  distritos D ON E.iddistrito=D.iddistrito
-    ORDER BY razonsocial ASC";
+      $sql = "CALL sp_listar_empresas";
       $query = $this->pdo->prepare($sql);
       $query->execute();
 

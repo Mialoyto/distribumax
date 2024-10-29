@@ -50,32 +50,29 @@ END;
 
 DROP PROCEDURE IF EXISTS sp_buscar_pedido;
 CREATE PROCEDURE sp_buscar_pedido(
-   IN _idpedido CHAR(15)
+    IN _idpedido CHAR(100)
 )
 BEGIN
-    -- Selección de datos de los pedidos, mostrando los nombres o la razón social
     SELECT 
         pd.idpedido,
         COALESCE(CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno), em.razonsocial) AS nombre_o_razonsocial
     FROM  
         pedidos pd
-    INNER JOIN 
-        clientes cl ON pd.idcliente = cl.idcliente
-    LEFT JOIN 
-        personas pe ON pe.idpersonanrodoc = cl.idpersona
-    LEFT JOIN 
-        empresas em ON em.idempresaruc = cl.idempresa
+    INNER JOIN clientes cl  ON pd.idcliente         = cl.idcliente
+    LEFT JOIN personas pe   ON pe.idpersonanrodoc   = cl.idpersona
+    LEFT JOIN empresas em   ON em.idempresaruc      = cl.idempresa
     WHERE 
-        pd.idpedido LIKE CONCAT( _idpedido, '%')  -- Búsqueda flexible por idpedido
-     -- Búsqueda flexible por nombre o razón social
-        AND pd.estado = 'Pendiente';  -- Solo muestra pedidos pendientes
+        (pd.idpedido LIKE CONCAT('%', _idpedido, '%')  OR
+        CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _idpedido, '%') OR
+        em.razonsocial LIKE CONCAT('%', _idpedido, '%'))
 
-    -- Actualización del estado si el pedido se encuentra "Enviado"
+        AND pd.estado = 'Pendiente';
+
     UPDATE pedidos 
-    SET estado = ''  -- Cambia el estado a un valor significativo
+    SET estado = 'Enviado'
     WHERE 
         idpedido = _idpedido
-        AND estado = 'Enviado';  -- Solo actualiza si el pedido estaba "Enviado"
+        AND estado = 'Pendiente';
 END;
 
 -- insertar id antes de insertar los datos

@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728671418404@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribuMax;
 USE distribuMax;
@@ -322,7 +322,10 @@ CREATE TABLE productos (
     CONSTRAINT ck_precio_compra_prod CHECK (precio_compra > 0),
     CONSTRAINT ck_precio_mayorista_prod CHECK (precio_mayorista > 0),
     CONSTRAINT ck_precio_minorista_prod CHECK (precio_minorista > 0),
-    CONSTRAINT fk_estado_prod       CHECK(estado IN ("0", "1"))
+    CONSTRAINT fk_estado_prod       CHECK(estado IN ("0", "1")),
+    CONSTRAINT ck_precio_prod_may   CHECK(precio_mayorista > precio_compra),
+    CONSTRAINT ck_precio_prod_min   CHECK(precio_minorista > precio_compra),
+    CONSTRAINT ck_precio_prod       CHECK(precio_mayorista < precio_minorista)
 ) ENGINE=INNODB;
 
 
@@ -458,15 +461,15 @@ CREATE TABLE ventas (
     descuento 				DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     igv 					DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     total_venta 			DECIMAL(10, 2) NOT NULL,
-	create_at		DATETIME NOT NULL DEFAULT NOW(),
-	update_at		DATETIME NULL,
-	estado          CHAR(1) NOT NULL DEFAULT "1",		-- 1: VENTA 	0: CANCELADO
+	create_at		        DATETIME NOT NULL DEFAULT NOW(),
+	update_at		        DATETIME NULL,
+	estado                  CHAR(1) NOT NULL DEFAULT "1",		-- 1: VENTA 	0: CANCELADO
     CONSTRAINT fk_idpedido_venta FOREIGN KEY (idpedido) REFERENCES pedidos(idpedido),
     CONSTRAINT fk_idtipocomprobante_venta FOREIGN KEY (idtipocomprobante) REFERENCES tipo_comprobante_pago(idtipocomprobante),
     CONSTRAINT fk_estado_venta   CHECK(estado IN ("0", "1")),
     CONSTRAINT ck_subtotal_venta CHECK(subtotal > 0),
     CONSTRAINT ck_descuento CHECK (descuento >= 0),
-    CONSTRAINT ck_igv CHECK(igv > 0),
+    CONSTRAINT ck_igv CHECK(igv >= 0),
     CONSTRAINT ck_totalventa CHECK(total_venta > 0),
     CONSTRAINT uk_idpedido UNIQUE (idpedido)
 ) ENGINE = INNODB;
@@ -480,7 +483,7 @@ CREATE TABLE detalle_meto_Pago(
     monto 			  DECIMAL(10,2) NOT NULL,
 	create_at		  DATETIME NOT NULL DEFAULT NOW(),
     update_at		  DATETIME NULL,
-    estado           CHAR(1) NOT NULL DEFAULT "1",
+    estado            CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idventa FOREIGN KEY (idventa) REFERENCES ventas(idventa),
     CONSTRAINT fk_idmetodopago FOREIGN KEY (idmetodopago)REFERENCES metodos_pago(idmetodopago),
     CONSTRAINT fk_estado_deta_me  CHECK(estado IN ("0", "1"))
@@ -490,7 +493,7 @@ DROP TABLE IF EXISTS comprobantes;
 CREATE TABLE comprobantes (
     idcomprobante 	INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idventa 		INT NOT NULL,
-   
+
 	create_at		DATETIME NOT NULL DEFAULT NOW(),
 	update_at		DATETIME NULL,
 	estado          CHAR(1) NOT NULL DEFAULT "1", -- 	1: EMITIDO 	0: CANCELADO

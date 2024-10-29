@@ -7,9 +7,9 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="table-promociones" class="table" style="width: 100%;">
+                <table id="table-promociones" class="display" style="width: 100%;">
                     <thead>
-                        <tr class="text-center">
+                        <tr>
                             <th>Tipo de Promoción</th>
                             <th>Descripción de la Promoción</th>
                             <th>Fecha de Inicio</th>

@@ -56,6 +56,7 @@ class Ventas extends Conexion
 			die($e->getMessage());
 		}
 	}
+
 	public function historial()
 	{
 		try {

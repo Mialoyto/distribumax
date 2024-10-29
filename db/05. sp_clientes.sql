@@ -129,3 +129,6 @@ BEGIN
     LEFT JOIN empresas EMP ON CLI.idempresa = EMP.idempresaruc
     WHERE CLI.estado = '1';
 END;
+
+
+

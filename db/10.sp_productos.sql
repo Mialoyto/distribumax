@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728671418404@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -162,4 +162,22 @@ BEGIN
     WHERE
         PRO.codigo = _codigo
         AND PRO.estado = '1';
+END;
+
+
+CREATE PROCEDURE sp_listar_productos()
+BEGIN
+    SELECT 
+        m.marca,
+        c.categoria,
+        p.nombreproducto,
+        p.codigo
+    FROM 
+        productos p
+    JOIN 
+        marcas m ON p.idmarca = m.idmarca
+    JOIN 
+        categorias c ON m.idcategoria = c.idcategoria
+    WHERE 
+        p.estado = '1'; -- Solo productos activos
 END;

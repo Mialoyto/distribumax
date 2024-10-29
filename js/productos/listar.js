@@ -1,4 +1,32 @@
 document.addEventListener("DOMContentLoaded", function() {
+
+    document.getElementById("exportExcel").addEventListener("click", function () {
+        const table = $('#table-productos').DataTable();
+        const data = table.rows({ search: 'applied' }).data().toArray();
+    
+        // Enviar datos al servidor
+        fetch('../../reports-excel/Productos/exportar_excel.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ data: data })
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'productos.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error al exportar a Excel:', error));
+      });
+  
+
   function $(object = null) { return document.querySelector(object); }
   let dtproductos;
 

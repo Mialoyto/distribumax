@@ -11,19 +11,18 @@ $options->set('defaultFont', 'Arial');
 $dompdf = new Dompdf($options);
 
 
-$empresas = $empresa ->getAll();
-
-
+$empresa = $empresa ->getAll();
 
 $html = '<h1>Listado de Empresas</h1>';
 $html .= '<table border="1" cellpadding="5" cellspacing="0">';
-$html .= '<thead><tr><th>Razón Social</th><th>Direccion</th><th>Telefono</th></tr></thead>';
+$html .= '<thead><tr><th>Razón Social</th><th>Direccion</th><th>Email</th><th>Telefono</th></tr></thead>';
 $html .= '<tbody>';
 
-foreach ($empresas as $empresa) {
+foreach ($empresa as $empresa) {
     $html .= '<tr>';
     $html .= '<td><b>' . htmlspecialchars($producto['razon_social']) . '</b></td>';
     $html .= '<td>' . htmlspecialchars($producto['direccion']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($producto['email']) . '</td>';
     $html .= '<td>' . htmlspecialchars($producto['telefono']) . '</td>';
     $html .= '</tr>';
 }

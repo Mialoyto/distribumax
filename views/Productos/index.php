@@ -9,9 +9,9 @@
             <a href="../reports/Productos/contenidoPDF.php" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
               <i class="fas fa-file-pdf me-1"></i> Generar PDF
             </a>
-            <a href="generar-excel.php" class="btn btn-success">
+            <button class="btn btn-success" id="exportExcel" style="color: white;">
               <i class="fas fa-file-excel me-1"></i> Generar Excel
-            </a>
+            </button>
           </div>
         </div>
         </div>

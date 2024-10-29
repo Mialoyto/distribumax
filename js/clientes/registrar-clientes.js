@@ -144,6 +144,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  const searchDist = async (distrito) => {
+    let searchData = new FormData();
+    searchData.append('operation', 'searchDistrito');
+    searchData.append('distrito', distrito);
+    const option = {
+      method: 'POST',
+      body: searchData
+    }
+    try {
+      const response = await fetch(`../../controller/distrito.controller.php`, option);
+      const data =await response.json();
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  const mostraResultados = async () => {
+    $("#iddistrito").innerHTML = '';
+    const response = await searchDist(nomdistrito);
+    response.forEach(element => {
+      $("#iddistrito").setAttribute('id-distrito', element.iddistrito);
+      $("#iddistrito").value = element.distrito;
+    });
+  }
+  let nomdistrito;
+  $("#nro-doc-empresa").addEventListener('click', async () => {
+    nomdistrito = $("#iddistrito").value.trim();
+    console.log(nomdistrito);
+    await mostraResultados();
+  });
+
   // Evento para registrar la empresa o persona
   $("#registrar-empresa").addEventListener("submit", async (event) => {
     event.preventDefault();

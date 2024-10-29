@@ -493,3 +493,6 @@ UPDATE productos
 SELECT * FROM clientes;
 SELECT * FROM empresas;
 SELECT * FROM proveedores;
+
+SELECT * from provincias;
+call sp_buscardistrito('grocio');

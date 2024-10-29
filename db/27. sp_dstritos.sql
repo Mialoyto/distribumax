@@ -22,7 +22,7 @@ WHERE
 END IF;
 END;
 
-call sp_buscardistrito('San Juan de Lurigancho');
+
 
 
 -- LISTAR DISTRITOS

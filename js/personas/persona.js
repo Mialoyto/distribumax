@@ -148,10 +148,10 @@ document.addEventListener("DOMContentLoaded", () => {
       $("#telefono").value = response[0].telefono ? response[0].telefono : '';
       $("#direccion").value = response[0].direccion;
       selectedId = response[0].iddistrito;
-      const option = document.createElement('option');
-      option.setAttribute('data-id', selectedId);
-      option.value = response[0].distrito; // Usa el nombre del distrito
-      dataList.appendChild(option);
+      const li = document.createElement('li');
+      li.setAttribute('data-id', selectedId);
+      li.innerText = response[0].distrito; // Usa el nombre del distrito
+      dataList.appendChild(li);
       addPersona(false);
     }
   }

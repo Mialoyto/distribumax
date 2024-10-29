@@ -1,6 +1,6 @@
 <?php
-require_once '../../../vendor/autoload.php';
-require_once '../../../model/Cliente.php';
+require_once '../../vendor/autoload.php';
+require_once '../../model/Cliente.php';
 $cliente = new Cliente();
 
 use Dompdf\Dompdf;

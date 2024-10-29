@@ -1,6 +1,6 @@
 <?php
-require_once '../../../vendor/autoload.php';
-require_once '../../../model/Persona.php';
+require_once '../../vendor/autoload.php';
+require_once '../../model/Persona.php';
 $persona = new Persona();
 
 use Dompdf\Dompdf;

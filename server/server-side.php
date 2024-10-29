@@ -3,6 +3,19 @@
 require_once '../controller/kardex.controller.php';
 require_once '../model/Conexion.php';
 
+$productos = new Kardex();
+
+foreach ($productos->getAll() as $producto) {
+    $data[] = array(
+        $producto->idkardex,
+        $producto->idusuario,
+        $producto->idproducto,
+        $producto->numlote
+    );
+}
+
+echo json_encode(['data' => $data]);
+
 $conexion = new Conexion();
 
 $sql_details = array(
@@ -27,10 +40,3 @@ $sql_details = array(
     'db'   => $conexion->getConexion(),
     'host' => $conexion->getConexion()
 );
-
-
-
-
-
-
-

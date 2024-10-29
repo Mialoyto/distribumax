@@ -1,6 +1,6 @@
 <?php
-require_once '../../../vendor/autoload.php';
-require_once '../../../model/Empresa.php';
+require_once '../../vendor/autoload.php';
+require_once '../../model/Empresa.php';
 $empresa = new Empresas();
 
 use Dompdf\Dompdf;

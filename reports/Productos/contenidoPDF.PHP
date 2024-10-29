@@ -1,6 +1,6 @@
 <?php
-require_once '../../../vendor/autoload.php';
-require_once '../../../model/producto.php';
+require_once '../../vendor/autoload.php';
+require_once '../../model/producto.php';
 $producto = new Productos();
 
 use Dompdf\Dompdf;

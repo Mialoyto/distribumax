@@ -1,4 +1,5 @@
 <?php require_once '../../header.php';?>
+<?php require_once '../../app/config/App.php' ?>
 <main>
     <div class="card mb-4">
         <div class="card-header">
@@ -6,7 +7,7 @@
             Listado de Productos
             <div class="ms-auto"> <!-- Utilizamos ms-auto para alinear a la derecha -->
           <div class="text-end">
-            <a href="../reports/Productos/contenidoPDF.php" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
+            <a href="<?= $URL.'reports/Productos/contenidoPDF.php' ?>" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
               <i class="fas fa-file-pdf me-1"></i> Generar PDF
             </a>
             <button class="btn btn-success" id="exportExcel" style="color: white;">

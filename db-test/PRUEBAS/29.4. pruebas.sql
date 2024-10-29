@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
@@ -495,4 +495,4 @@ SELECT * FROM empresas;
 SELECT * FROM proveedores;
 
 SELECT * from provincias;
-call sp_buscardistrito('grocio');
+call sp_buscardistrito('pueblo nuevo');

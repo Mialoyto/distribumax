@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -294,5 +294,30 @@ WHERE ve.idventa = _idventa;
 END;
 
 
+-- buscar un pedido o seleccionar todos
+CREATE PROCEDURE sp_buscar_venta(IN _item INT)
+BEGIN
+    SELECT 
+        VE.idventa,
+        VE.fecha_venta,
+        VE.subtotal,
+        PO.nombreproducto,
+        DP.cantidad_producto,
+        DP.unidad_medida,
+        DP.precio_unitario,
+        VE.descuento,
+        VE.total_venta
+    FROM 
+        ventas VE
+    LEFT JOIN 
+        pedidos PE ON PE.idpedido = VE.idventa
+    LEFT JOIN 
+        detalle_pedidos DP ON DP.idpedido = VE.idpedido
+    LEFT JOIN 
+        productos PO ON PO.idproducto = DP.idproducto
+    WHERE 
+        VE.idpedido LIKE CONCAT('%', _item, '%') OR 
+        PE.idpedido LIKE CONCAT('%', _item, '%');
+END;
 
 

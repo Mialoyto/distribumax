@@ -48,5 +48,11 @@ if (isset($_GET['operation'])) {
       ];
       echo json_encode($venta->getByID($dato));
       break;
+    case 'buscarventa':
+      $dato=[
+        'item'=>$_GET['item']
+      ];
+      echo json_encode($venta->buscarventa($dato));
+      break;
   }
 }

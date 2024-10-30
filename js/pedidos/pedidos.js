@@ -26,18 +26,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         `../../controller/cliente.controller.php?${params}`
       );
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (e) {
       console.error(e);
     }
   }
+
   function desactivarCampos() {
     $("#nombres").setAttribute("disabled", true);
     $("#appaterno").setAttribute("disabled", true);
     $("#apmaterno").setAttribute("disabled", true);
     $("#razon-social").setAttribute("disabled", true);
     $("#direccion-cliente").setAttribute("disabled", true);
+    $("#addProducto").removeAttribute("disabled");
+    // $("#addProducto").focus();
   }
 
   let idCliente;
@@ -53,9 +55,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         $("#appaterno").value = response[0].appaterno;
         $("#apmaterno").value = response[0].apmaterno;
         desactivarCampos();
+        $("#addProducto").focus();
       } else {
         $("#razon-social").value = response[0].razonsocial;
         desactivarCampos();
+        $("#addProducto").focus();
       }
 
       $("#direccion-cliente").value = response[0].direccion_cliente;
@@ -78,6 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     $("#apmaterno").value = "";
     $("#razon-social").value = "";
     $("#direccion-cliente").value = "";
+    $("#addProducto").value = "";
   }
 
   async function getIdPedido() {
@@ -106,11 +111,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if ($("#nro-doc").value === "") {
       desactivarCampos();
+      $("#addProducto").setAttribute("disabled", true);
       $("#detalle-pedido").innerHTML = "";
       resetCampos();
     } else {
       const response = await dataCliente();
-      await validarNroDoc(response);
+      console.log(response);
+      if (response.length != 0) {
+        // desactivarCampos();
+        await validarNroDoc(response);
+      }else{
+        // desactivarCampos();
+        $("#detalle-pedido").innerHTML = "";
+        resetCampos();
+        $("#addProducto").value = "";
+        $("#addProducto").setAttribute("disabled", true);
+      }
       $("#nro-doc").addEventListener('keydown', (event) => {
         if (event.keyCode == 13) {
           event.preventDefault();
@@ -247,7 +263,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function addDetallePedidos(idpedido) {
-    
+
     const rows = document.querySelectorAll("#detalle-pedido tr");
     const productos = [];
     let idproducto;
@@ -332,6 +348,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
           showToast(`Pedido registrado con éxito\n ID: ${idpedido}`, 'success', 'SUCCESS');
           $("#registrar-pedido").reset();
+          $("#addProducto").setAttribute("disabled", true);
           $("#detalle-pedido").innerHTML = "";
         }
       }

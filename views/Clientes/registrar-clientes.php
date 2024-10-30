@@ -33,9 +33,12 @@ require_once '../../header.php';
                   <!-- Campos específicos para Persona -->
                   <div class="row mb-3">
                     <div class="col-md-6">
-                      <div class="form-floating">
-                        <input type="number" class="form-control" id="nro-doc-persona" placeholder="Número de documento" min="0" required >
-                        <label for="nro-doc-persona"><i class="bi bi-search"></i> Buscar número de documento</label>
+                      <div class="input-group">
+                        <div class="form-floating">
+                          <input type="number" class="form-control" id="nro-doc-persona" placeholder="Número de documento" min="0" required>
+                          <label for="nro-doc-persona"><i class="bi bi-search"></i> Buscar número de documento</label>
+                        </div>
+                        <button class="btn btn-primary" type="button" id="btn-cliente-persona"><i class="bi bi-search"></i></button>
                       </div>
                     </div>
                   </div>
@@ -108,7 +111,6 @@ require_once '../../header.php';
                       <div class="input-group">
                         <div class="form-floating">
                           <input type="number"
-
                             class="form-control"
                             id="nro-doc-empresa"
                             name="nro-doc-empresa"

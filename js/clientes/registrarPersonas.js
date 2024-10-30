@@ -3,7 +3,28 @@ document.addEventListener("DOMContentLoaded", () => {
   function $(object = null) {
     return document.querySelector(object); // Debe retornar el valor
   }
-  function debounce(func, wait) {
+
+  async function getApiDni(dni) {
+    try {
+      const response = await fetch(`../../app/api/api.dni.php?dni=${dni}`, {
+        method: 'GET'
+      });
+      const data = await response.json();  // Parsear la respuesta como JSON
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.error("Error en buscarDni: ", e);
+    }
+  }
+
+  $("#btn-cliente-persona").addEventListener("click", async () => {
+    const dni = $("#nro-doc-empresa").value;
+    const data = await getApiDni(dni);
+    console.log(data);
+  });
+
+
+  /* function debounce(func, wait) {
     let timeout;
     return function (...args) {
       clearTimeout(timeout);
@@ -16,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
       desactivarCampos();
       $("#nro-doc-persona").value = '';
     } else if (activeTab === '#empresa') {
-      //console.log("empresa")
       $("#nro-doc-empresa").value = '';
       desactivarCampos();
 
@@ -67,11 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function validarDni(response) {
     if (response.length === 0 || response[0].estado === 'No data') {
-      //hablilitar camposr
-      //resetcampos 
+
       console.log("Puede registrar a la persona")
     } else if (response[0].estado === 'Registrado') {
-      //$("#buscar-distrito").value = response[0].distrito;
       $("#nombres").value = response[0].nombres;
       $("#apellido-paterno").value = response[0].appaterno;
       $("#apellido-materno").value = response[0].appaterno;
@@ -102,10 +120,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const id = await fetch(`../../controller/persona.controller.php`, options)
     return id.json();
-  }
+  } */
 
   // Evento para buscar DNI cuando el usuario ingrese el número de documento
-  $("#nro-doc-persona").addEventListener("input", debounce(async () => {
+  /* $("#nro-doc-persona").addEventListener("input", debounce(async () => {
     if ($("#nro-doc-persona").value === '') {
       limpiarCampos();
       habilitarCampos();
@@ -122,5 +140,5 @@ document.addEventListener("DOMContentLoaded", () => {
       const resultado = await registradoPersona();
       console.log(resultado);
     }
-  })
+  }) */
 });

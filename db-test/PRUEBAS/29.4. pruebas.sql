@@ -54,7 +54,7 @@ limit 10;
 SELECT * FROM empresas;
 
 SELECT * FROM clientes;
-call `sp_cliente_registrar` (null,20266352337, 'Empresa');
+call `sp_cliente_registrar` (null,20297868790, 'Empresa');
 
 SELECT * FROM pedidos;
 

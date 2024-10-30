@@ -1,3 +1,4 @@
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 --  REGISTRAR PEDIDOS
@@ -66,7 +67,8 @@ BEGIN
         CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _idpedido, '%') OR
         em.razonsocial LIKE CONCAT('%', _idpedido, '%'))
 
-        AND pd.estado = 'Pendiente';
+        AND pd.estado = 'Pendiente'
+        ORDER BY pd.idpedido DESC;
 
     UPDATE pedidos 
     SET estado = 'Enviado'

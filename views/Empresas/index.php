@@ -1,5 +1,5 @@
 <?php require_once '../../header.php'; ?>
-<?php require_once '../../app/config.php'; ?>
+<?php require_once '../../app/config/App.php'; ?>
 <main>
   <div class="card mb-4">
     <div class="card-header">

@@ -47,11 +47,14 @@ SELECT * FROM marcas;
 
 SELECT * FROM usuarios;
 
-SELECT * FROM personas;
+SELECT * FROM personas 
+ORDER BY idpersonanrodoc DESC
+limit 10;
 
 SELECT * FROM empresas;
 
 SELECT * FROM clientes;
+call `sp_cliente_registrar` (null,20266352337, 'Empresa');
 
 SELECT * FROM pedidos;
 

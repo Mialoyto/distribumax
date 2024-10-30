@@ -1,7 +1,6 @@
 USE distribumax;
 
 -- REGISTRAR CLIENTES
-
 CREATE PROCEDURE `sp_cliente_registrar`(
     IN _idpersona     CHAR(11),
     IN _idempresa     BIGINT,
@@ -21,6 +20,7 @@ BEGIN
             VALUES (NULL, _idempresa, _tipo_cliente);
         END IF;
     END IF;
+    SELECT LAST_INSERT_ID() AS idcliente;
 END ;
 
 

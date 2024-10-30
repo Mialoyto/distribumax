@@ -34,7 +34,7 @@ require_once '../../header.php';
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <div class="form-floating">
-                        <input type="number" class="form-control" id="nro-doc-persona" placeholder="Número de documento" min="0" required oninput="seleccionarTipoDocumento(this.value)">
+                        <input type="number" class="form-control" id="nro-doc-persona" placeholder="Número de documento" min="0" required >
                         <label for="nro-doc-persona"><i class="bi bi-search"></i> Buscar número de documento</label>
                       </div>
                     </div>
@@ -99,7 +99,7 @@ require_once '../../header.php';
 
           <!-- Formulario de Empresa -->
           <div class="tab-pane fade" id="empresa" role="tabpanel" aria-labelledby="empresa-tab" tabindex="0">
-            <form action="" id="registrar-empresa">
+            <form action="" id="registrar-empresa" autocomplete="off">
               <div class="card">
                 <div class="card-body">
                   <!-- Campos específicos para Empresa -->
@@ -108,7 +108,7 @@ require_once '../../header.php';
                       <div class="input-group">
                         <div class="form-floating">
                           <input type="number"
-                          
+
                             class="form-control"
                             id="nro-doc-empresa"
                             name="nro-doc-empresa"
@@ -127,8 +127,9 @@ require_once '../../header.php';
                   <div class="row mb-3">
                     <div class="col-md-4 mt-3">
                       <div class="form-floating">
-                        <input type="text" class="form-control" id="iddistrito" placeholder="Distrito" required disabled="true">
+                        <input type="text" class="form-control" id="iddistrito" placeholder="Distrito" disabled="true" required>
                         <label for="">Distrito</label>
+                        <ul id="datalistDistrito" class="list-group position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
                       </div>
                     </div>
                     <div class="col-md-8 mt-3">
@@ -153,14 +154,14 @@ require_once '../../header.php';
                     </div>
                     <div class="col-md-3 mt-3">
                       <div class="form-floating">
-                        <input 
-                        type="number" 
-                        minlength="9"
-                        maxlength="9"
-                        class="form-control" 
-                        id="telefono-empresa" 
-                        placeholder="Teléfono" 
-                        disabled="true">
+                        <input
+                          type="number"
+                          minlength="9"
+                          maxlength="9"
+                          class="form-control"
+                          id="telefono-empresa"
+                          placeholder="Teléfono"
+                          disabled="true">
                         <label for="">Teléfono</label>
                       </div>
                     </div>

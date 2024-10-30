@@ -45,7 +45,7 @@
             <!-- BUSCADOR PETICIONES -->
             <div class="col-md-4 mb-3">
               <div class="form-floating">
-                <input type="search" class="form-control" id="buscar-distrito" list="datalistDistrito" placeholder="Buscar distrito" required>
+                <input type="search" class="form-control" id="buscar-distrito" list="datalistDistrito" placeholder="Buscar distrito"  required >
                 <label for="datalistDistrito">Buscar distrito</label>
                 <ul id="datalistDistrito" class="list-group position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
               </div>

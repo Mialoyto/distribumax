@@ -14,7 +14,7 @@ BEGIN
     (idempresaruc, iddistrito, razonsocial, direccion, email, telefono) 
     VALUES 
     (_idempresaruc, _iddistrito, _razonsocial, _direccion, _email, _telefono);
-    SELECT _idempresaruc AS idempresas;
+    SELECT _idempresaruc AS idempresa;
 END;
 
 

@@ -10,10 +10,10 @@ class Empresas extends Conexion
   {
     $this->pdo = parent::getConexion();
   }
-  public function add($params = [])
+  public function add($params = []):int
   {
+    $id = -1;
     try {
-      $id = '';
       $sql = "CALL sp_empresa_registrar(?, ?, ?, ?, ?, ?)";
       $query = $this->pdo->prepare($sql);
       $query->execute([
@@ -29,6 +29,7 @@ class Empresas extends Conexion
       $row = $query->fetch(PDO::FETCH_ASSOC);
       if ($row) {
         $id = $row['idempresas']; // Asegúrate de usar el nombre correcto de la columna
+        return $id;
       }
     } catch (Exception $e) {
       die($e->getMessage());

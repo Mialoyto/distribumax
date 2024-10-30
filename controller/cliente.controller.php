@@ -54,11 +54,19 @@ if (isset($_POST['operation'])) {
 
   switch ($_POST['operation']) {
     case 'addcliente':
-      $datos = [
-        'idpersona' => $_POST['idpersona'],
-        'idempresa' => $_POST['idempresa'],
-        'tipo_cliente' => $_POST['tipo_cliente']
-      ];
+      if($_POST['tipo_cliente'] === 'Persona') {
+        $datos = [
+          'idpersona' => $_POST['idpersona'],
+          'idempresa' => null,
+          'tipo_cliente' => $_POST['tipo_cliente']
+        ];
+      } else {
+        $datos = [
+          'idpersona' => null,
+          'idempresa' => $_POST['idempresa'],
+          'tipo_cliente' => $_POST['tipo_cliente']
+        ];
+      }
       $datos = $cliente->addcliente($datos);
       echo json_encode(['id' => $datos]);
       break;

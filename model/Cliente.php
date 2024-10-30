@@ -45,13 +45,12 @@ class Cliente extends Conexion
       ]);
 
       // Obtener el valor devuelto (1 si fue exitoso, -1 si falló)
-      $resultado = $query->fetchColumn();
+      $resultado = $query->fetch(PDO::FETCH_COLUMN);
+      return $resultado;
     } catch (Exception $e) {
       // Manejar el error y devolver -1 en caso de fallo
       return $resultado;
     }
-
-    return $resultado;  // Devolver el resultado obtenido del procedimiento
   }
 
   public function getAll()

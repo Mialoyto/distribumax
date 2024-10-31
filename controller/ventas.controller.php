@@ -54,5 +54,8 @@ if (isset($_GET['operation'])) {
       ];
       echo json_encode($venta->buscarventa($dato));
       break;
+    case 'getventas':
+      echo json_encode($venta->getventas());
+    break;
   }
 }

@@ -299,6 +299,7 @@ CREATE PROCEDURE sp_buscar_venta(IN _item INT)
 BEGIN
     SELECT 
         VE.idventa,
+        VE.idpedido,
         VE.fecha_venta,
         VE.subtotal,
         PO.nombreproducto,
@@ -306,7 +307,8 @@ BEGIN
         DP.unidad_medida,
         DP.precio_unitario,
         VE.descuento,
-        VE.total_venta
+        VE.total_venta,
+        VE.igv
     FROM 
         ventas VE
     LEFT JOIN 

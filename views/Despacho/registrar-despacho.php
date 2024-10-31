@@ -20,8 +20,8 @@ require_once '../../header.php';
 
             <div class="col-md-6 mb-3">
               <div class="form-floating">
-              <input type="search" class="form-control" id="idvehiculo"  list="datalistVehiculo" required>
-              <datalist id="datalistVehiculo" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist>
+                <input type="search" class="form-control" id="idvehiculo" list="datalistVehiculo" required>
+                <datalist id="datalistVehiculo" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist>
                 <label for="marca"><i class="fas fa-car me-2"></i> Buscar Vehiculo</label>
               </div>
             </div>
@@ -65,17 +65,18 @@ require_once '../../header.php';
               <h5 class="mb-3">Detalle del Pedido</h5>
             </div>
             <div class="col-md-6 mb-3">
-              <div class="form-floating">
-              <input
+              <div class="input-group">
+                <input
                   type="search"
                   class="form-control"
                   id="idventa"
-                  name="idproveedor"
-                  placeholder="Venta"
+                  name="idventa"
+                  placeholder="Buscar Venta"
                   required>
-                <label for="idproveedor" class="form-label">
-                  <i class="bi bi-search"></i> Buscar Venta
-                </label>
+                
+                <button class="btn btn-outline-primary" type="button" id="btnGetAll">
+                  GetAll <!-- Cambia el ícono si deseas otro -->
+                </button>
                 <ul
                   id="list-venta"
                   class="list-group position-absolute w-100 listarDatos"
@@ -83,29 +84,31 @@ require_once '../../header.php';
                 </ul>
               </div>
             </div>
+
+
           </div>
           <div class="table-responsive">
-              <table class="table table-striped table-hover table-secondar" id="detalle-productos">
-                <thead class="bg-primary">
-                  <tr>
-                    <th scope="col">código</th>
-                    <th scope="col">Producto</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Unidad Medida</th>
-                    <th scope="col">Precio Unitario</th>
-                    <th scope="col">Subtotal</th>
-                    <th scope="col span-2">% Descuento</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody id="detalle-pedido">
-                  <!-- primer detalle -->
+            <table class="table table-striped table-hover table-secondar" id="detalle-ventas">
+              <thead class="bg-primary">
+                <tr>
+                  <th scope="col">código</th>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Unidad Medida</th>
+                  <th scope="col">Precio Unitario</th>
+                  <th scope="col">Subtotal</th>
+                  <th scope="col span-2">% Descuento</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="detalle-ventas">
+                <!-- primer detalle -->
 
-                  <!-- fin del detalle -->
-                </tbody>
-              </table>
-            </div>
+                <!-- fin del detalle -->
+              </tbody>
+            </table>
+          </div>
           <button type="submit" class="btn btn-primary">Registrar Vehículo</button>
           <button type="reset" class="btn btn-danger">Cancelar</button>
         </form>

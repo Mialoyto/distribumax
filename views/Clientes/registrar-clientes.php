@@ -187,3 +187,6 @@ require_once '../../header.php';
 <?php require_once '../../footer.php'; ?>
 <script src="../../js/clientes/registrar-clientes.js"></script>
 <script src="../../js/clientes/registrarPersonas.js"></script>
+</body>
+
+</html>

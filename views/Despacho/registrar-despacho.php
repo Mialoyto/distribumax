@@ -65,26 +65,29 @@ require_once '../../header.php';
               <h5 class="mb-3">Detalle del Pedido</h5>
             </div>
             <div class="col-md-6 mb-3">
-              <div class="input-group">
+              <div class="form-floating position-relative">
                 <input
                   type="search"
                   class="form-control"
                   id="idventa"
-                  name="idventa"
-                  placeholder="Buscar Venta"
+                  name="idproveedor"
+                  placeholder="Venta"
                   required>
-                
-                <button class="btn btn-outline-primary" type="button" id="btnGetAll">
-                  GetAll <!-- Cambia el ícono si deseas otro -->
-                </button>
+                <label for="idventa" class="form-label">Buscar Venta</label>
+
+                <!-- Botón GetAll posicionado dentro de la estructura de input group -->
+                <div class="input-group-append position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
+                  <button class="btn btn-primary" id="btnGetAll">Get All</button>
+                </div>
+
+                <!-- Lista de ventas para mostrar resultados de búsqueda -->
                 <ul
                   id="list-venta"
                   class="list-group position-absolute w-100 listarDatos"
-                  style="z-index: 1000; display: none;">
+                  style="z-index: 1000; display: none; top: 100%;">
                 </ul>
               </div>
             </div>
-
 
           </div>
           <div class="table-responsive">

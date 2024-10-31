@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
@@ -499,3 +499,7 @@ SELECT * FROM proveedores;
 
 SELECT * from provincias;
 call sp_buscardistrito('pueblo nuevo');
+
+select * from ventas;
+UPDATE ventas set estado=1 WHERE idventa=2;
+SELECT * FROM pedidos;

@@ -105,6 +105,7 @@ BEGIN
         WHERE CLI.idpersona = _nro_documento OR CLI.idempresa =_nro_documento;
 END;
 
+call sp_buscar_cliente ('26558000');
 
 -- LISTAR CLIENTES
 DROP PROCEDURE IF EXISTS sp_listar_clientes;

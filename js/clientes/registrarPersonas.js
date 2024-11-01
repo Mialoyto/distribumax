@@ -4,23 +4,81 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(object); // Debe retornar el valor
   }
 
+  const tipodoc = $("#idtipodocumento");
+  (() => {
+    fetch(`../../controller/documento.controller.php`)
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(element => {
+          const tagOption = document.createElement('option');
+          tagOption.value = element.idtipodocumento;
+          tagOption.innerText = element.documento;
+          tipodoc.appendChild(tagOption);
+        });
+      })
+      .catch(e => {
+        console.error(e);
+      })
+  })();
+
   async function getApiDni(dni) {
     try {
       const response = await fetch(`../../app/api/api.dni.php?dni=${dni}`, {
         method: 'GET'
       });
-      const data = await response.json();  // Parsear la respuesta como JSON
-      console.log(data);
-      return data;
+      return response.json();  // Parsear la respuesta como JSON
     } catch (e) {
       console.error("Error en buscarDni: ", e);
     }
   }
+  $("#btn-cliente-persona").addEventListener('keydown', (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      renderData();
+    }
+  });
 
-  $("#btn-cliente-persona").addEventListener("click", async () => {
-    const dni = $("#nro-doc-empresa").value;
+  async function renderData() {
+    const dni = $("#nro-doc-persona").value;
     const data = await getApiDni(dni);
     console.log(data);
+    if (data.hasOwnProperty('message')) {
+      showToast("No se encontraron datos", "info", "INFO");
+    } else {
+      tipodoc.value = data['tipoDocumento'];
+      $("#nombres").value = data['nombres'];
+      $("#apellido-paterno").value = data['apellidoPaterno'];
+      $("#apellido-materno").value = data['apellidoMaterno'];
+      addClientePersona(true);
+    }
+  }
+
+  $("#btn-cliente-persona").addEventListener("click", async () => {
+    await renderData();
+  });
+
+  function addClientePersona(newData = false) {
+    console.log(newData);
+    console.log(!newData);
+    if (newData) {
+      $("#iddistrito-persona").removeAttribute("disabled");
+      $("#telefono-persona").removeAttribute("disabled");
+      $("#direccion-persona").removeAttribute("disabled");
+    } else {
+      $("#iddistrito-persona").setAttribute("disabled", true);
+      $("#telefono-persona").setAttribute("disabled", true);
+      $("#direccion-persona").setAttribute("disabled", true);
+    }
+  }
+
+  addClientePersona(false);
+
+  $("#registrar-persona").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (showConfirm("¿Desea Registrar?", "Registrar Cliente")) {
+      const resultado = await registradoPersona();
+      console.log(resultado);
+    }
   });
 
 

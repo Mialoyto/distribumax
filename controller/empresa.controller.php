@@ -29,6 +29,7 @@ if (isset($_POST['operation'])) {
   switch ($_POST['operation']) {
     case 'add':
       $datos = [
+        'idtipodocumento' => $_POST['idtipodocumento'],
         'idempresaruc' => $_POST['idempresaruc'],
         'iddistrito'   => $_POST['iddistrito'],
         'razonsocial'  => $_POST['razonsocial'],

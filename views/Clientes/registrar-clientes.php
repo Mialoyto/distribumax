@@ -35,7 +35,16 @@ require_once '../../header.php';
                     <div class="col-md-6">
                       <div class="input-group">
                         <div class="form-floating">
-                          <input type="number" class="form-control" id="nro-doc-persona" placeholder="Número de documento" min="0" required>
+                          <input 
+                          type="number" 
+                          class="form-control" 
+                          id="nro-doc-persona" 
+                          placeholder="Número de documento" 
+                          minlength="8"
+                          maxlength="8"
+                          pattern="\d{8}"
+                          inputmode="numeric"
+                          required>
                           <label for="nro-doc-persona"><i class="bi bi-search"></i> Buscar número de documento</label>
                         </div>
                         <button class="btn btn-primary" type="button" id="btn-cliente-persona"><i class="bi bi-search"></i></button>
@@ -43,48 +52,48 @@ require_once '../../header.php';
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                       <div class="form-floating">
-                        <select name="" id="idtipodocumento" class="form-control">
-                          <option value="">Seleccione un tipo de documento</option>
+                        <select name="" id="idtipodocumento" class="form-control" disabled="true">
+                          <option value="">Tipo de documento</option>
                           <!-- Las opciones se llenarán dinámicamente aquí -->
                         </select>
                         <label for="idtipodocumento" class="form-label">Tipo Documento</label>
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                       <div class="form-floating">
-                        <input type="text" class="form-control" id="apellido-paterno" placeholder="Apellido Paterno" required>
+                        <input type="text" class="form-control" disabled="true" id="nombres" placeholder="Nombres" required>
+                        <label for="nombres" class="form-label">Nombres</label>
+                      </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                      <div class="form-floating">
+                        <input type="text" class="form-control" disabled="true" id="apellido-paterno" placeholder="Apellido Paterno" required>
                         <label for="apellido-paterno" class="form-label">Apellido Paterno</label>
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                       <div class="form-floating">
-                        <input type="text" class="form-control" id="apellido-materno" placeholder="Apellido Materno" required>
+                        <input type="text" class="form-control" disabled="true" id="apellido-materno" placeholder="Apellido Materno" required>
                         <label for="apellido-materno" class="form-label">Apellido Materno</label>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-floating">
-                        <input type="text" class="form-control" id="nombres" placeholder="Nombres" required>
-                        <label for="nombres" class="form-label">Nombres</label>
                       </div>
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                       <div class="form-floating">
                         <input type="text" class="form-control" placeholder="Distrito" id="iddistrito-persona">
                         <label for="">Distrito</label>
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                       <div class="form-floating">
                         <input type="tel" class="form-control" placeholder="Teléfono" id="telefono-persona">
                         <label for="">Teléfono</label>
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6 mb-3">
                       <div class="form-floating">
                         <input type="text" class="form-control" placeholder="Dirección" id="direccion-persona">
                         <label for="">Dirección</label>

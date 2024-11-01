@@ -10,13 +10,14 @@ class Empresas extends Conexion
   {
     $this->pdo = parent::getConexion();
   }
-  public function add($params = []):int
+  public function add($params = []): int
   {
     $id = -1;
     try {
-      $sql = "CALL sp_empresa_registrar(?, ?, ?, ?, ?, ?)";
+      $sql = "CALL sp_empresa_registrar(?,?, ?, ?, ?, ?, ?)";
       $query = $this->pdo->prepare($sql);
       $query->execute([
+        $params['idtipodocumento'],
         $params['idempresaruc'],
         $params['iddistrito'],
         $params['razonsocial'],

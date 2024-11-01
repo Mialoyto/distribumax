@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
@@ -170,6 +170,7 @@ CREATE TABLE personas (
 DROP TABLES IF EXISTS empresas;
 
 CREATE TABLE empresas (
+    idtipodocumento INT NOT NULL,
     idempresaruc BIGINT NOT NULL PRIMARY KEY,
     iddistrito INT NOT NULL,
     razonsocial VARCHAR(100) NOT NULL,
@@ -180,6 +181,7 @@ CREATE TABLE empresas (
     update_at DATETIME NULL,
     inactive_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
+    CONSTRAINT fk_idtipodoc_emp FOREIGN KEY (idtipodocumento) REFERENCES tipo_documento (idtipodocumento),
     CONSTRAINT fk_distrito_emp FOREIGN KEY (iddistrito) REFERENCES distritos (iddistrito),
     CONSTRAINT uk_razonsocial_emp UNIQUE (razonsocial),
     CONSTRAINT fk_estado_emp CHECK (estado IN ("0", "1"))

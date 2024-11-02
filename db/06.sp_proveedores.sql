@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROOVEDORES
@@ -105,4 +105,4 @@ BEGIN
     INNER JOIN empresas ON empresas.idempresaruc = proveedores.idempresa;
 END;
 
-
+CALL sp_listar_proveedor;

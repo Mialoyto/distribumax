@@ -186,8 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
           dataList.innerHTML = '';
         });
         dataList.appendChild(li);
-      }
-      )
+      });
     }
   }
 

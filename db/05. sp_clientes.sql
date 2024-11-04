@@ -78,6 +78,7 @@ END;
 
 
 -- BUSCAR CLIENTE POR DNI O RUC
+DROP PROCEDURE IF EXISTS `sp_buscar_cliente`;
 CREATE PROCEDURE `sp_buscar_cliente` (
     IN _nro_documento CHAR(12)
 )
@@ -90,11 +91,15 @@ BEGIN
         PER.apmaterno,
         EMP.razonsocial,
         EMP.email,
-        DIS.distrito,DIS.iddistrito,PRO.provincia,DEP.departamento,
+        DIS.iddistrito,
+        DIS.distrito,
+        PER.telefono,
+        PER.direccion,
         CASE 
             WHEN CLI.idpersona IS NOT NULL THEN PER.direccion
             WHEN CLI.idempresa IS NOT NULL THEN EMP.direccion
-        END AS direccion_cliente
+        END AS direccion_cliente,
+        CLI.estado
         
         FROM clientes CLI 
         LEFT JOIN personas PER ON CLI.idpersona= PER.idpersonanrodoc
@@ -102,10 +107,13 @@ BEGIN
         LEFT JOIN distritos DIS ON DIS.iddistrito=PER.iddistrito
         LEFT JOIN provincias PRO ON PRO.idprovincia=DIS.idprovincia
         LEFT JOIN departamentos DEP ON DEP.iddepartamento=PRO.iddepartamento
-        WHERE CLI.idpersona = _nro_documento OR CLI.idempresa =_nro_documento;
+        WHERE CLI.idpersona = _nro_documento OR CLI.idempresa =_nro_documento
+        AND CLI.estado = '1';
 END;
 
-call sp_buscar_cliente ('26558000');
+CALL `sp_buscar_cliente` ('26558000');
+SELECT * FROM clientes;
+SELECT * FROM personas;
 
 -- LISTAR CLIENTES
 DROP PROCEDURE IF EXISTS sp_listar_clientes;
@@ -128,7 +136,8 @@ BEGIN
         clientes CLI
     LEFT JOIN personas PER ON CLI.idpersona = PER.idpersonanrodoc
     LEFT JOIN empresas EMP ON CLI.idempresa = EMP.idempresaruc
-    WHERE CLI.estado = '1';
+    WHERE CLI.estado = '1'
+    ORDER BY CLI.create_at DESC;
 END;
 
 

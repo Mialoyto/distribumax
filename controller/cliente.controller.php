@@ -8,8 +8,8 @@ header('Content-Type: application/json');
 if (isset($_GET['operation'])) {
   switch ($_GET['operation']) {
     case 'searchCliente':
-      if (isset($_GET['nro_documento'])) {
-        echo json_encode($cliente->searchCliente(['_nro_documento' => $_GET['nro_documento']]));
+      if (isset($_GET['_nro_documento'])) {
+        echo json_encode($cliente->searchCliente(['_nro_documento' => $_GET['_nro_documento']]));
       } else {
         echo json_encode(["error" => "Falta el número de documento."]);
       }

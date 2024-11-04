@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
       scrollX: true,
       processing: true,
       serverSide: true,
-      lengthMenu: [5, 10, 15, 20, 100, 200, 500],
+      lengthMenu: [10, 15, 20, 100, 200, 500],
       dom: 'Bfrtip',
       buttons: [
         {

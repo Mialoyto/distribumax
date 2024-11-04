@@ -1,3 +1,4 @@
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- REGISTRAR EMPRESAS
 
@@ -58,10 +59,9 @@ CREATE PROCEDURE sp_buscar_empresa(
     IN _ruc BIGINT
 )
 BEGIN
-    DECLARE _empresa_count INT DEFAULT 0;
-
         -- Si existe, devolver los detalles
         SELECT 
+            EMP.idtipodocumento,
 			'Empresa' AS tipo_cliente,
             DIST.iddistrito,
             DIST.distrito,

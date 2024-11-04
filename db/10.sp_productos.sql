@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -181,3 +181,18 @@ BEGIN
     WHERE 
         p.estado = '1'; -- Solo productos activos
 END;
+
+
+CREATE PROCEDURE sp_eliminar_producto(IN _idproducto INT)
+BEGIN
+  -- Verifica que el producto existe antes de eliminarlo
+  IF EXISTS (SELECT 1 FROM productos WHERE idproducto = _idproducto) THEN
+    DELETE FROM productos WHERE idproducto = _idproducto;
+  ELSE
+    -- Si el producto no existe, puedes lanzar un mensaje de error o simplemente terminar
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El producto no existe';
+  END IF;
+END;
+
+CALL sp_eliminar_producto(12);
+select * from detalle_pedidos;

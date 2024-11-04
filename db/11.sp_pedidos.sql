@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 --  REGISTRAR PEDIDOS
@@ -59,16 +59,21 @@ BEGIN
         COALESCE(CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno), em.razonsocial) AS nombre_o_razonsocial
     FROM  
         pedidos pd
-    INNER JOIN clientes cl  ON pd.idcliente         = cl.idcliente
-    LEFT JOIN personas pe   ON pe.idpersonanrodoc   = cl.idpersona
-    LEFT JOIN empresas em   ON em.idempresaruc      = cl.idempresa
+    INNER JOIN clientes cl ON pd.idcliente = cl.idcliente
+    LEFT JOIN personas pe ON pe.idpersonanrodoc = cl.idpersona
+    LEFT JOIN empresas em ON em.idempresaruc = cl.idempresa
     WHERE 
         (pd.idpedido LIKE CONCAT('%', _idpedido, '%')  OR
-        CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _idpedido, '%') OR
-        em.razonsocial LIKE CONCAT('%', _idpedido, '%'))
-
+         CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _idpedido, '%') OR
+         em.razonsocial LIKE CONCAT('%', _idpedido, '%'))
         AND pd.estado = 'Pendiente'
-        ORDER BY pd.idpedido DESC;
+        AND pd.idpedido = (
+            SELECT MAX(p.idpedido)
+            FROM pedidos p
+            WHERE p.idcliente = cl.idcliente
+            AND p.estado = 'Pendiente'
+        )
+    ORDER BY pd.idpedido DESC;
 
     UPDATE pedidos 
     SET estado = 'Enviado'
@@ -76,6 +81,8 @@ BEGIN
         idpedido = _idpedido
         AND estado = 'Pendiente';
 END;
+
+
 
 -- insertar id antes de insertar los datos
 
@@ -88,3 +95,5 @@ BEGIN
     SET nuevo_id = CONCAT('PED-', LPAD((SELECT COUNT(*) + 1 FROM pedidos), 9, '0'));
     SET NEW.idpedido = nuevo_id;
 END;
+
+-- LISTAR PEDIDOS

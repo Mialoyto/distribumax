@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -325,7 +325,6 @@ BEGIN
         AND DATE(VE.fecha_venta) = CURDATE() 
         AND VE.estado = '1';
 END;
-
 
 DROP PROCEDURE IF EXISTS sp_getventas;
 CREATE PROCEDURE  sp_getventas()

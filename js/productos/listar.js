@@ -1,32 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
-
-    document.getElementById("exportExcel").addEventListener("click", function () {
-        const table = $('#table-productos').DataTable();
-        const data = table.rows({ search: 'applied' }).data().toArray();
-    
-        // Enviar datos al servidor
-        fetch('../../reports-excel/Productos/exportar_excel.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ data: data })
-        })
-        .then(response => response.blob())
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = 'productos.xlsx';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-        })
-        .catch(error => console.error('Error al exportar a Excel:', error));
-      });
-  
-
+document.addEventListener("DOMContentLoaded", function () {
   function $(object = null) { return document.querySelector(object); }
   let dtproductos;
 
@@ -36,8 +8,6 @@ document.addEventListener("DOMContentLoaded", function() {
     try {
       const response = await fetch(`../../controller/producto.controller.php?operation=getAll`);
       const data = await response.json();
-
-      console.log(data);
 
       Tablaproductos.innerHTML = '';
 
@@ -53,25 +23,53 @@ document.addEventListener("DOMContentLoaded", function() {
                           <a href="#" class="btn btn-warning">
                               <i class="bi bi-pencil-fill"></i>
                           </a>
-                          <a href="#" class="btn btn-danger">
+                          <a href="#" class="btn btn-danger eliminar" data-idproducto="${element.idproducto}">
                               <i class="bi bi-trash-fill"></i>
                           </a>
                       </td>
                   </tr>
                   `;
         });
+
+        // Añadir eventos de eliminación a cada botón
+        document.querySelectorAll(".eliminar").forEach(boton => {
+          boton.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const idproducto = boton.getAttribute("data-idproducto");
+
+            if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+              await EliminarProducto(idproducto);
+              CargarDatos(); // Recargar datos después de eliminar
+            }
+          });
+        });
       } else {
-        // Cambia el colspan a 8 porque hay 8 columnas en total
-        Tablaproductos.innerHTML = '<tr><td colspan="8" class="text-center">No hay datos disponibles</td></tr>';
+        Tablaproductos.innerHTML = '<tr><td colspan="5" class="text-center">No hay datos disponibles</td></tr>';
       }
-
-      if (dtproductos) {
-        dtproductos.destroy(); // Destruye la tabla si ya está inicializada
-      }
-      RenderDatatable(); // Inicializa DataTable de nuevo
-
     } catch (error) {
-      console.error("Error al cargar los datos:", error);
+      console.error("Error al cargar productos:", error);
+    }
+  }
+
+  async function EliminarProducto(idproducto) {
+    try {
+      const params = new URLSearchParams();
+      params.append("operation", "delete");
+      params.append("idproducto", idproducto);
+
+      const response = await fetch(`../../controller/producto.controller.php`, {
+        method: "POST",
+        body: params
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        alert("Producto eliminado correctamente.");
+      } else {
+        alert("Error al eliminar el producto.");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud de eliminación:", error);
     }
   }
 

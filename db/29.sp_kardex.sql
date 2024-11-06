@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1730318322772@@127.0.0.1@3306@distribumax
 USE distribuMax;
 -- Procedimiento para obtener el último stock
 DROP PROCEDURE IF EXISTS getultimostock;

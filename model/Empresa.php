@@ -29,7 +29,7 @@ class Empresas extends Conexion
       // Usar fetch en lugar de fetchAll para obtener el primer resultado
       $row = $query->fetch(PDO::FETCH_ASSOC);
       if ($row) {
-        $id = $row['idempresas']; // Asegúrate de usar el nombre correcto de la columna
+        $id = $row['idempresa']; // Asegúrate de usar el nombre correcto de la columna
         return $id;
       }
     } catch (Exception $e) {

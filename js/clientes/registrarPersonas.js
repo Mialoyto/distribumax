@@ -4,29 +4,21 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(object); // Debe retornar el valor
   }
 
+  renderDocumento('.documento');
+
+
   const tipodoc = $("#idtipodocumento");
-  (() => {
-    fetch(`../../controller/documento.controller.php`)
-      .then(response => response.json())
-      .then(data => {
-        data.forEach(element => {
-          const tagOption = document.createElement('option');
-          tagOption.value = element.idtipodocumento;
-          tagOption.innerText = element.documento;
-          tipodoc.appendChild(tagOption);
-        });
-      })
-      .catch(e => {
-        console.error(e);
-      })
-  })();
+
+
 
   async function getApiDni(dni) {
     try {
+      $("#statusdni").classList.remove("d-none");
       const response = await fetch(`../../app/api/api.dni.php?dni=${dni}`, {
         method: 'GET'
       });
       return response.json();  // Parsear la respuesta como JSON
+
     } catch (e) {
       console.error("Error en buscarDni: ", e);
     }
@@ -40,34 +32,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function renderData() {
     const dni = $("#nro-doc-persona").value;
-    const data = await getApiDni(dni);
-    console.log(data);
-    if (data.hasOwnProperty('message')) {
-      showToast("No se encontraron datos", "info", "INFO");
-    } else {
-      tipodoc.value = data['tipoDocumento'];
-      $("#nombres").value = data['nombres'];
-      $("#apellido-paterno").value = data['apellidoPaterno'];
-      $("#apellido-materno").value = data['apellidoMaterno'];
-      addClientePersona(true);
+    const dataDB = await searchCliente(dni);
+    console.log(dataDB);
+    if (dni.length === 8) {
+      if (dataDB.length != 0) {
+        addClientePersona(false);
+        console.log('dentro de db', dataDB);
+        $("#nombres").value = dataDB[0].nombres;
+        $("#apellido-paterno").value = dataDB[0].appaterno;
+        $("#apellido-materno").value = dataDB[0].apmaterno;
+        $("#telefono-persona").value = dataDB[0].telefono;
+        $("#direccion-persona").value = dataDB[0].direccion;
+        $("#iddistrito-persona").value = dataDB[0].distrito;
+      } else {
+        limpiarCampos();
+        const dataAPI = await getApiDni(dni);
+        $("#statusdni").classList.add("d-none");
+        if (dataAPI.hasOwnProperty('message')) {
+          showToast("No se encontraron datos", "info", "INFO");
+          addClientePersona(false)
+        } else {
+          tipodoc.value = dataAPI['tipoDocumento'];
+          $("#nombres").value = dataAPI['nombres'];
+          $("#apellido-paterno").value = dataAPI['apellidoPaterno'];
+          $("#apellido-materno").value = dataAPI['apellidoMaterno'];
+          addClientePersona(true);
+        }
+      }
+
     }
   }
+
 
   $("#btn-cliente-persona").addEventListener("click", async () => {
     await renderData();
   });
 
   function addClientePersona(newData = false) {
-    console.log(newData);
-    console.log(!newData);
     if (newData) {
       $("#iddistrito-persona").removeAttribute("disabled");
       $("#telefono-persona").removeAttribute("disabled");
       $("#direccion-persona").removeAttribute("disabled");
+      $("#registrarPersona").removeAttribute("disabled");
     } else {
       $("#iddistrito-persona").setAttribute("disabled", true);
       $("#telefono-persona").setAttribute("disabled", true);
       $("#direccion-persona").setAttribute("disabled", true);
+      $("#registrarPersona").setAttribute("disabled", true);
     }
   }
 
@@ -75,98 +86,138 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("#registrar-persona").addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (showConfirm("¿Desea Registrar?", "Registrar Cliente")) {
+
+    if (await showConfirm("¿Desea Registrar?", "Registrar Cliente")) {
       const resultado = await registradoPersona();
-      console.log(resultado);
+      const id = resultado.id;
+      if (id > 0) {
+        const data = await addCliente(id);
+        limpiarCampos();
+        if (data.id > 0) {
+          showToast("Cliente registrado", "success", "SUCCESS");
+        } else {
+          showToast("Error al registrar el cliente", "error", "ERROR");
+        }
+      } else if (id < 0) {
+        const data = await searchPersona($("#nro-doc-persona").value);
+        const nrodoc = data[0].idpersonanrodoc;
+        console.log(nrodoc);
+        const response = await addCliente(nrodoc);
+        if (response.id < 0) {
+          showToast("El cliente ya se encuentra registrado", "info", "INFO");
+          addClientePersona(false);
+        } else {
+          showToast("Cliente registrado", "success", "SUCCESS");
+
+        }
+      }
+
     }
   });
 
-
-  /* function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
-  $('#cliente').addEventListener('click', function () {
-    var activeTab = document.querySelector('.nav-link.active')?.getAttribute('href');
-    if (activeTab === '#persona') {
-      desactivarCampos();
-      $("#nro-doc-persona").value = '';
-    } else if (activeTab === '#empresa') {
-      $("#nro-doc-empresa").value = '';
-      desactivarCampos();
-
+  $("#nro-doc-persona").addEventListener("input", () => {
+    const nrodoc = $("#nro-doc-persona").value.length;
+    if (nrodoc === 8) {
+      $("#idtipodocumento").value = 1;
+    } else {
+      limpiarCampos();
     }
-    habilitarCampos();
   });
 
-  function desactivarCampos() {
-    $("#nombres").setAttribute("disabled", true)
-    $("#apellido-paterno").setAttribute("disabled", true)
-    $("#apellido-materno").setAttribute("disabled", true)
-    $("#telefono-persona").setAttribute("disabled", true)
-    $("#direccion-persona").setAttribute("disabled", true)
-    $("#iddistrito-persona").setAttribute("disabled", true)
-  }
-  function habilitarCampos() {
-    $("#nombres").removeAttribute("disabled")
-    $("#apellido-paterno").removeAttribute("disabled")
-    $("#apellido-materno").removeAttribute("disabled")
-    $("#telefono-persona").removeAttribute("disabled")
-    $("#direccion-persona").removeAttribute("disabled")
-    $("#telefono-persona").removeAttribute("disabled")
-    $("#iddistrito-persona").removeAttribute("disabled")
-
-  }
   function limpiarCampos() {
-
     $("#nombres").value = "";
     $("#apellido-paterno").value = "";
     $("#apellido-materno").value = "";
     $("#telefono-persona").value = "";
     $("#direccion-persona").value = "";
     $("#iddistrito-persona").value = "";
+    $("#idtipodocumento").value = '';
   }
 
-  async function buscarDni() {
-    const tipodoc = $("#idtipodocumento");
-    const nrodoc = $("#nro-doc-persona");
-
+  async function searchPersona(dni) {
     const params = new URLSearchParams();
-    params.append('operation', 'search');
+    params.append('operation', 'searchDni');
     params.append('idtipodocumento', tipodoc.value);
-    params.append('idpersonanrodoc', nrodoc.value);
+    params.append('idpersonanrodoc', dni);
+    try {
+      const response = await fetch(`../../controller/persona.controller.php?${params}`);
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
 
-    const response = await fetch(`../../controller/persona.controller.php?${params}`);
-    return response.json();
   }
 
-  function validarDni(response) {
-    if (response.length === 0 || response[0].estado === 'No data') {
-
-      console.log("Puede registrar a la persona")
-    } else if (response[0].estado === 'Registrado') {
-      $("#nombres").value = response[0].nombres;
-      $("#apellido-paterno").value = response[0].appaterno;
-      $("#apellido-materno").value = response[0].appaterno;
-      $("#telefono-persona").value = response[0].telefono ? response[0].telefono : '';
-      $("#direccion-persona").value = response[0].direccion;
-      $("#iddistrito-persona").value = response[0].distrito;
-      $("#idtipodocumento").setAttribute("disabled", true)
-      $("#registrarPersona").setAttribute("disabled", true)
-      desactivarCampos();
-      showToast('La persona ya está registrada como cliente', 'warning', 'WARNING');
+  async function searchCliente(dni) {
+    const params = new URLSearchParams();
+    params.append('operation', 'searchCliente');
+    params.append('_nro_documento', dni);
+    try {
+      const response = await fetch(`../../controller/cliente.controller.php?${params}`);
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      console.error(e);
     }
   }
+
+  async function searchDistrito(distrito) {
+    const searchData = new FormData();
+    searchData.append('operation', 'searchDistrito');
+    searchData.append('distrito', distrito);
+    const option = {
+      method: 'POST',
+      body: searchData
+    }
+    try {
+      const response = await fetch(`../../controller/distrito.controller.php`, option);
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  const dataList = $("#datalistDistritoPersona");
+  let iddistrito;
+  async function renderListaDistrito() {
+    let nomDistrito = $("#iddistrito-persona").value;
+    nomDistrito.innerHTML = '';
+    const response = await searchDistrito(nomDistrito);
+    dataList.innerHTML = '';
+    console.log(response);
+    if (response.length != 0) {
+      dataList.style.display = 'block';
+
+      response.forEach((distrito) => {
+        const li = document.createElement('li');
+        li.classList.add('list-group-item');
+        li.setAttribute('data-id', distrito.iddistrito);
+        li.innerHTML = `${distrito.distrito}, ${distrito.provincia}, ${distrito.departamento}`;
+        li.addEventListener('click', () => {
+          $("#iddistrito-persona").value = li.textContent;
+          iddistrito = li.getAttribute('data-id');
+          console.log(iddistrito);
+          dataList.innerHTML = '';
+        });
+        dataList.appendChild(li);
+      });
+
+    }
+  }
+
+  $("#iddistrito-persona").addEventListener("input", async () => {
+    await renderListaDistrito();
+  });
 
   async function registradoPersona() {
     const params = new FormData();
     params.append('operation', 'addPersona')
     params.append('idtipodocumento', $('#idtipodocumento').value);
     params.append('idpersonanrodoc', $('#nro-doc-persona').value);
-    params.append('iddistrito', $('#iddistrito-persona').value);
+    params.append('iddistrito', iddistrito);
     params.append('nombres', $('#nombres').value);
     params.append('appaterno', $('#apellido-paterno').value);
     params.append('apmaterno', $('#apellido-materno').value);
@@ -176,27 +227,40 @@ document.addEventListener("DOMContentLoaded", () => {
       method: 'POST',
       body: params
     }
-    const id = await fetch(`../../controller/persona.controller.php`, options)
-    return id.json();
-  } */
+    try {
+      const response = await fetch(`../../controller/persona.controller.php`, options);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error al registrar el cliente:", error);
+    }
+  }
 
-  // Evento para buscar DNI cuando el usuario ingrese el número de documento
-  /* $("#nro-doc-persona").addEventListener("input", debounce(async () => {
-    if ($("#nro-doc-persona").value === '') {
-      limpiarCampos();
-      habilitarCampos();
-      $("#idtipodocumento").removeAttribute("disabled");
-      $("#registrarPersona").removeAttribute("disabled");
-    } else {
-      const response = await buscarDni();
-      validarDni(response);
+  async function addCliente(idpersona) {
+    let idempresa = $("#nro-doc-empresa");
+    idempresa = null;
+    const params = new FormData();
+    params.append('operation', 'addcliente');
+    params.append('idpersona', idpersona);
+    params.append('idempresa', idempresa);
+    params.append('tipo_cliente', 'Persona');
+
+    const options = {
+      method: 'POST',
+      body: params
+    };
+
+    try {
+      const response = await fetch(`../../controller/cliente.controller.php`, options);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error al analizar el JSON:", error);
+      return data;
     }
-  }, 100));
-  $("#registrar-persona").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    if (showConfirm("¿Desea Registrar?", "Registrar Cliente")) {
-      const resultado = await registradoPersona();
-      console.log(resultado);
-    }
-  }) */
+
+
+  }
+
+
 });

@@ -32,23 +32,20 @@ class Cliente extends Conexion
     try {
       $query = $this->pdo->prepare("CALL sp_cliente_registrar(?, ?, ?)");
 
-      // Si el tipo de cliente es 'Empresa', establecer idpersona como NULL
-      if ($params['tipo_cliente'] === 'Empresa') {
-        $params['idpersona'] = null;
-      }
+      // Determinar los valores de idpersona y idempresa según el tipo de cliente
+      $idpersona = $params['tipo_cliente'] === 'Empresa' ? null : $params['idpersona'];
+      $idempresa = $params['tipo_cliente'] === 'Persona' ? null : $params['idempresa'];
 
       // Ejecutar el procedimiento almacenado con los parámetros
-      $query->execute([
-        $params['idpersona'],    // Este valor será NULL para 'Empresa'
-        $params['idempresa'],    // Este valor será NULL para 'Persona'
-        $params['tipo_cliente']
-      ]);
+      $query->execute([$idpersona, $idempresa, $params['tipo_cliente']]);
 
       // Obtener el valor devuelto (1 si fue exitoso, -1 si falló)
-      $resultado = $query->fetch(PDO::FETCH_COLUMN);
+      $resultado = $query->fetch(PDO::FETCH_ASSOC);
+      $resultado = $resultado['idcliente'];
       return $resultado;
     } catch (Exception $e) {
       // Manejar el error y devolver -1 en caso de fallo
+      // Puedes agregar un log del error si es necesario
       return $resultado;
     }
   }
@@ -56,13 +53,21 @@ class Cliente extends Conexion
   public function getAll()
   {
     try {
-      $query = $this->pdo->prepare("CALL sp_listar_clientes()");
+      $tsql = "CALL sp_listar_clientes()";
+      $query = $this->pdo->prepare($tsql);
       $query->execute();
-      return $query->fetchAll(PDO::FETCH_ASSOC);
+      $datos = $query->fetchAll(PDO::FETCH_ASSOC);
+
+      return $datos;
     } catch (Exception $e) {
       die($e->getMessage());
     }
   }
+
+
+
+
+
 
   public function activeCliente($params = []): bool
   {
@@ -98,5 +103,4 @@ class Cliente extends Conexion
       die($e->getMessage());
     }
   }
-
 }

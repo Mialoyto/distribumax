@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 //   alert("Usuario o contraseña incorrectos");
               } else {
                 // alert("Bienvenido");
+
                   console.log(data);
                   window.location.href = `./dashboard.php`;
               }

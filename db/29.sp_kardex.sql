@@ -86,18 +86,37 @@ BEGIN
 END;
 
 
--- LISTAR LOS 20 ULTIMO MOVIMIENTOS DE KARDEX DE UN PRODUCTO
 DROP PROCEDURE IF EXISTS spu_listar_producto_kardex;
-CREATE PROCEDURE spu_listar_producto_kardex(
-    IN _idproducto INT
-)
+
+CREATE PROCEDURE spu_listar_producto_kardex()
 BEGIN
-    SELECT p.nombreproducto, k.fecha_vencimiento,
-           k.numlote, k.stockactual, k.tipomovimiento, k.cantidad, k.motivo,k.estado
+    SELECT p.nombreproducto, 
+           k.fecha_vencimiento, 
+           k.numlote, 
+           k.stockactual, 
+           k.tipomovimiento, 
+           k.cantidad, 
+           k.motivo, 
+           k.estado
     FROM kardex k
     JOIN productos p ON k.idproducto = p.idproducto
-    WHERE k.idproducto = _idproducto
-    AND K.estado = 1
-    ORDER BY k.create_at DESC
-    LIMIT 20;
+    WHERE k.estado = 1
+    AND k.idkardex = (
+        SELECT MAX(idkardex)
+        FROM kardex k2
+        WHERE k2.idproducto = k.idproducto
+        AND k2.estado = 1
+    )
+    GROUP BY
+    k.numlote,
+    k.idproducto,
+    p.codigo,
+    p.nombreproducto,
+    k.estado
+ORDER BY
+    k.numlote,
+    p.codigo;
+
 END;
+
+CALL spu_listar_producto_kardex();

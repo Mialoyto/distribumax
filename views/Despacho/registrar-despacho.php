@@ -19,10 +19,22 @@ require_once '../../header.php';
           <div class="row">
 
             <div class="col-md-6 mb-3">
-              <div class="form-floating">
-                <input type="search" class="form-control" id="idvehiculo" list="datalistVehiculo" required>
-                <datalist id="datalistVehiculo" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></datalist>
-                <label for="marca"><i class="fas fa-car me-2"></i> Buscar Vehiculo</label>
+            <div class="form-floating position-relative">
+                <input
+                  type="search"
+                  class="form-control"
+                  id="idvehiculo"
+                  name="idproveedor"
+                  placeholder="Venta"
+                  required>
+                <label for="idvehiculo" class="form-label">Buscar Venta</label>
+
+             
+                <ul
+                  id="list-vehiculo"
+                  class="list-group position-absolute w-100 "
+                  style="z-index: 1000; display: none; top: 100%;">
+                </ul>
               </div>
             </div>
             <div class="col-md-6 mb-3">

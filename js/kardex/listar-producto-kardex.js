@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   id.addEventListener("click", async function () {
     const idproducto = this.getAttribute('producto');
     const data = await getMovimientoProducto(idproducto);
+    console.log(data)
     if (data) {
       RenderDatatable(data);
     }

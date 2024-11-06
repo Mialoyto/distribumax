@@ -1,8 +1,7 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 --  REGISTRAR PEDIDOS
-
 
 CREATE PROCEDURE sp_pedido_registrar(
     IN _idusuario       INT,
@@ -17,7 +16,6 @@ BEGIN
 END;
 
 -- ACTUALIZAR PEDIDOS SOLO LOS DATOS PERO NO EL ESTADO
-
 
 CREATE PROCEDURE sp_actualizar_pedido(
     IN _idpedido        CHAR(15),
@@ -36,7 +34,6 @@ END;
 
 -- ACTUALIZAR EL PEDIDO  ('Pendiente', 'Enviado', 'Cancelado', 'Entregado')
 
-
 CREATE PROCEDURE sp_estado_pedido(
     IN  _estado         BIT,
     IN  _idpedido       CHAR(15) 
@@ -50,6 +47,7 @@ END;
 -- buscador para pedidos por id
 
 DROP PROCEDURE IF EXISTS sp_buscar_pedido;
+
 CREATE PROCEDURE sp_buscar_pedido(
     IN _idpedido CHAR(100)
 )
@@ -64,16 +62,11 @@ BEGIN
     LEFT JOIN empresas em ON em.idempresaruc = cl.idempresa
     WHERE 
         (pd.idpedido LIKE CONCAT('%', _idpedido, '%')  OR
-         CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _idpedido, '%') OR
-         em.razonsocial LIKE CONCAT('%', _idpedido, '%'))
+        CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _idpedido, '%') OR
+        em.razonsocial LIKE CONCAT('%', _idpedido, '%'))
         AND pd.estado = 'Pendiente'
-        AND pd.idpedido = (
-            SELECT MAX(p.idpedido)
-            FROM pedidos p
-            WHERE p.idcliente = cl.idcliente
-            AND p.estado = 'Pendiente'
-        )
-    ORDER BY pd.idpedido DESC;
+        ORDER BY pd.idpedido DESC
+        LIMIT 5;
 
     UPDATE pedidos 
     SET estado = 'Enviado'
@@ -83,9 +76,7 @@ BEGIN
 END;
 
 
-
 -- insertar id antes de insertar los datos
-
 
 CREATE TRIGGER before_insert_pedidos
 BEFORE INSERT ON pedidos
@@ -97,3 +88,5 @@ BEGIN
 END;
 
 -- LISTAR PEDIDOS
+
+SELECT * FROM kardex;

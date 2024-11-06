@@ -104,9 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (stock == 0 && movimiento.value == 'Salida') {
       showToast(`Este producto no cuenta con stock, registre un movimiento tipo 'Ingreso'.`, 'info', 'INFO');
       return;
-    }else if(cantidad.value > stock && movimiento.value == 'Salida'){
+    } else if (cantidad.value > stock && movimiento.value == 'Salida') {
       showToast(`La cantidad no debe ser mayor al stock actual de ${stock}`, "warning", "WARNING");
-    } 
+    }
     else if ((stock < cantidad.value) && (movimiento.value == 'Salida')) {
       showToast(`La cantidad no debe ser mayor al stock actual de ${stock}`, "warning", "WARNING");
       return;
@@ -155,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(e);
     }
   }
-  // FIN DE PRUEBA DE REGISTRO DE KARDEX
 
   // EVENTO DE REGISTRO DE KARDEX
   $("#form-registrar-kardex").addEventListener("submit", async (event) => {

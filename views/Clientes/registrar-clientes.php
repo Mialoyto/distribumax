@@ -35,26 +35,27 @@ require_once '../../header.php';
                     <div class="col-md-6">
                       <div class="input-group">
                         <div class="form-floating">
-                          <input 
-                          type="number" 
-                          class="form-control" 
-                          id="nro-doc-persona" 
-                          placeholder="Número de documento" 
-                          minlength="8"
-                          maxlength="8"
-                          pattern="\d{8}"
-                          inputmode="numeric"
-                          required>
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="nro-doc-persona"
+                            placeholder="Número de documento"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" minlength="8"
+                            maxlength="8"
+                            pattern="[0-9]+"
+                            title="Ingrese 8 dígitos numéricos"
+                            required>
                           <label for="nro-doc-persona"><i class="bi bi-search"></i> Buscar número de documento</label>
                         </div>
                         <button class="btn btn-primary" type="button" id="btn-cliente-persona"><i class="bi bi-search"></i></button>
                       </div>
+                      <span id="statusdni" class="d-none">Buscando por favor espere...</span>
                     </div>
                   </div>
                   <div class="row mb-3">
                     <div class="col-md-3 mb-3">
                       <div class="form-floating">
-                        <select name="" id="idtipodocumento" class="form-control" disabled="true">
+                        <select name="" id="idtipodocumento" class="form-control documento" disabled="true">
                           <option value="">Tipo de documento</option>
                           <!-- Las opciones se llenarán dinámicamente aquí -->
                         </select>
@@ -85,6 +86,8 @@ require_once '../../header.php';
                       <div class="form-floating">
                         <input type="text" class="form-control" placeholder="Distrito" id="iddistrito-persona">
                         <label for="">Distrito</label>
+                        <ul id="datalistDistritoPersona" class="list-group position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
+
                       </div>
                     </div>
                     <div class="col-md-3 mb-3">
@@ -102,7 +105,7 @@ require_once '../../header.php';
                   </div>
                 </div>
                 <div class="card-footer d-flex justify-content-end">
-                  <button type="submit" class="btn btn-success mt-2 mb-2 me-2" id="registrarPersona">Registrar</button>
+                  <button type="submit" class="btn btn-success mt-2 mb-2 me-2" id="registrarPersona" disabled="true">Registrar</button>
                   <button type="reset" class="btn btn-outline-danger mt-2 mb-2" id="btnCancelarPersona">Cancelar</button>
                 </div>
               </div>
@@ -116,13 +119,14 @@ require_once '../../header.php';
                 <div class="card-body">
                   <!-- Campos específicos para Empresa -->
                   <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-3">
                       <div class="input-group">
                         <div class="form-floating">
                           <input type="number"
                             class="form-control"
                             id="nro-doc-empresa"
                             name="nro-doc-empresa"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                             placeholder="Ruc"
                             minlength="11"
                             maxlength="11"
@@ -133,6 +137,16 @@ require_once '../../header.php';
                         <button class="btn btn-primary" type="button" id="btn-cliente-empresa"><i class="bi bi-search"></i></button>
                       </div>
                       <span id="status" class="d-none">Buscando por favor espere...</span>
+                    </div>
+                    <div class="col-md-6 mt-3">
+                      <div class="form-floating">
+                        <select name="tipodoc" id="tipodoc" class="form-select documento"  disabled="true">
+                          <option value="">Tipo de documento</option>
+                          <!-- genera desde el backend -->
+                        </select>
+                        <label for="tipodoc" class="form-label">Tipo Documento</label>
+
+                      </div>
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -196,6 +210,7 @@ require_once '../../header.php';
 <?php require_once '../../footer.php'; ?>
 <script src="../../js/clientes/registrar-clientes.js"></script>
 <script src="../../js/clientes/registrarPersonas.js"></script>
+<script src="../../js/utils/utils.js"></script>
 </body>
 
 </html>

@@ -11,22 +11,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
             console.log(data);
 
+            // Filtrar para obtener solo el último movimiento por producto
+            const ultimoMovimiento = obtenerUltimosMovimientos(data);
+
             Tablakardex.innerHTML = '';
 
-            if (data.length > 0) {
-                data.forEach(element => {
+            if (ultimoMovimiento.length > 0) {
+                ultimoMovimiento.forEach(element => {
                     Tablakardex.innerHTML += `
-                <tr>
-                    <td>${element.nombreproducto}</td>
-                    <td>${element.fecha_vencimiento}</td>
-                    <td>${element.numlote}</td>
-                    <td>${element.stockactual}</td>
-                    <td>${element.tipomovimiento}</td>
-                    <td>${element.cantidad}</td>
-                    <td>${element.motivo}</td>
-                    <td class="badge text-bg-success align-self-center">${element.estado}</td>
-                </tr>
-                `;
+                    <tr>
+                        <td>${element.nombreproducto}</td>
+                        <td>${element.fecha_vencimiento}</td>
+                        <td>${element.numlote}</td>
+                        <td>${element.stockactual}</td>
+                        <td>${element.tipomovimiento}</td>
+                        <td>${element.cantidad}</td>
+                        <td>${element.motivo}</td>
+                        <td class="badge text-bg-success align-self-center">${element.estado}</td>
+                    </tr>
+                    `;
                 });
             } else {
                 Tablakardex.innerHTML = '<tr><td colspan="7" class="text-center">No hay datos disponibles</td></tr>';
@@ -40,6 +43,23 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error("Error al cargar los datos:", error);
         }
+    }
+
+    // Función para obtener el último movimiento de cada producto
+    function obtenerUltimosMovimientos(data) {
+        // Objeto para almacenar el último movimiento de cada producto
+        const productos = {};
+
+        // Iterar sobre los datos y mantener solo el último movimiento por producto
+        data.forEach(element => {
+            const productoId = element.nombreproducto; // O usa un identificador único si lo tienes
+            if (!productos[productoId] || new Date(element.fecha_vencimiento) > new Date(productos[productoId].fecha_vencimiento)) {
+                productos[productoId] = element;
+            }
+        });
+
+        // Convertir el objeto a un array de los últimos movimientos
+        return Object.values(productos);
     }
 
     CargarDatos();

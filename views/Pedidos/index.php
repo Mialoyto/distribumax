@@ -87,6 +87,8 @@
             </div>
           </div>
           <!-- FIN BUSCADOR PETICIONES -->
+
+
           <!-- Tabla de productos del pedido -->
           <div class="table-responsive">
             <table class="table table-striped table-hover table-secondar" id="detalle-productos">
@@ -129,6 +131,8 @@
 </main>
 <?php require_once '../../footer.php'; ?>
 <script type="module" src="http://localhost/distribumax/js/pedidos/pedidos.js"></script>
+
+
 </body>
 
 </html>

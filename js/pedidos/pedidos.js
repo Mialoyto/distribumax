@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     const params = new URLSearchParams();
     params.append("operation", "searchCliente");
-    params.append("nro_documento", $("#nro-doc").value.trim());
+    params.append("_nro_documento", $("#nro-doc").value);
 
     try {
       const response = await fetch(
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (response.length != 0) {
         // desactivarCampos();
         await validarNroDoc(response);
-      }else{
+      } else {
         // desactivarCampos();
         $("#detalle-pedido").innerHTML = "";
         resetCampos();
@@ -169,12 +169,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         const li = document.createElement("li");
         li.classList.add("list-group-item"); // Clase de Bootstrap para los ítems
-        li.innerHTML = `${item.codigo}-${item.nombreproducto} <span class="badge text-bg-success rounded-pill">${item.unidadmedida}: ${item.stockactual}</span>`;
+        li.innerHTML = `${item.nombreproducto} <span class="badge text-bg-success rounded-pill">${item.unidadmedida}: ${item.stockactual}</span>`;
         li.addEventListener("click", () => {
           addProductToTable(
             item.idproducto,
             item.codigo,
-            item.nombreproducto,
+            item.descripcion,
             item.unidadmedida,
             item.precio_venta,
             item.descuento,
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Función para añadir un producto a la tabla seleccionada
-  function addProductToTable(id, codigo, nombre, unidadmedida, precio_venta, descuento, stockactual) {
+  function addProductToTable(id, codigo, descripcion, unidadmedida, precio_venta, descuento, stockactual) {
     const existId = document.querySelector(`#detalle-pedido tr td[id-data="${id}"]`);
     console.log("existe el ID en la tabla ?", existId);
     if (existId) {
@@ -210,12 +210,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const row = document.createElement("tr");
     row.innerHTML = `
       <th scope="row" class"text-nowrap w-auto">${codigo}</th>
-      <td class="text-nowrap w-auto" id-data="${id}">${nombre}</td>
+      <td class="text-nowrap w-auto" id-data="${id}">${descripcion}</td>
       <td class="col-md-1 w-10">
           <input class="form-control form-control-sm cantidad numeros text-center w-100"  type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
       </td>
       <td class="text-nowrap w-auto col-md-1 und-medida">${unidadmedida}</td>
-      <td class="text-nowrap w-auto precio" data="${precio_venta}">S/${precio_venta}</td>
+      <td class="text-nowrap w-auto precio" data="${precio_venta}">
+      
+
+      S/${precio_venta}
+      </td>
       <td class="text-nowrap w-auto subtotal"> S/0.00</td>
       <td class="text-nowrap w-auto">% ${descuento}</td>
       <td class="text-nowrap w-auto descuento">S/0.00</td>
@@ -292,6 +296,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       params.append(`productos[${index}][unidad_medida]`, producto.undMedida);
       params.append(`productos[${index}][precio_unitario]`, producto.precioUnitario);
     });
+    console.log("productos", productos);
+    console.log(idpedido);
 
     const options = {
       method: "POST",
@@ -358,4 +364,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   $("#cancelarPedido").addEventListener("click", () => {
     $("#detalle-pedido").innerHTML = "";
   });
+
 }); /* fin del evento DOMcontenteLoaded */

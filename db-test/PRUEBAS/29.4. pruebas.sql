@@ -14,6 +14,7 @@ SELECT * FROM proveedores;
 SELECT * FROM marcas;
 
 SELECT * FROM subcategorias;
+select * from clientes;
 
 SELECT * FROM unidades_medidas;
 
@@ -34,9 +35,10 @@ SELECT * FROM comprobantes;
 SELECT * FROM tipo_comprobante_pago;
 
 SELECT * FROM vehiculos;
-
+select* from personas;
 SELECT * FROM usuarios;
-
+select * from productos;
+select * from clientes;
 SELECT * FROM departamentos;
 
 SELECT * FROM provincias WHERE provincia = 'Chincha';
@@ -57,6 +59,7 @@ SELECT * FROM clientes;
 call `sp_cliente_registrar` (null,20297868790, 'Empresa');
 
 SELECT * FROM pedidos;
+select * FROM kardex;
 
 SELECT * FROM metodos_pago;
 
@@ -97,6 +100,7 @@ CALL sp_getMarcas (3);
 CALL sp_search_proveedor ('proveedor');
 
 SELECT * FROM MARCAS;
+select *from personas;
 
 SELECT * FROM productos;
 

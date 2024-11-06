@@ -1,31 +1,31 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    document.getElementById("exportExcel").addEventListener("click", function () {
-      const table = $('#table-clientes').DataTable();
-      const data = table.rows({ search: 'applied' }).data().toArray();
-  
-      // Enviar datos al servidor
-      fetch('../../reports-excel/Clientes/exportar_excel.php', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ data: data })
-      })
+  document.getElementById("exportExcel").addEventListener("click", function () {
+    const table = $('#table-clientes').DataTable();
+    const data = table.rows({ search: 'applied' }).data().toArray();
+
+    // Enviar datos al servidor
+    fetch('../../reports-excel/Clientes/exportar_excel.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ data: data })
+    })
       .then(response => response.blob())
       .then(blob => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.style.display = 'none';
-          a.href = url;
-          a.download = 'clientes.xlsx';
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'clientes.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
       })
       .catch(error => console.error('Error al exportar a Excel:', error));
-    });
-  
+  });
+
 
 
   // funcion para deshabilitar un cliente
@@ -67,28 +67,31 @@ document.addEventListener("DOMContentLoaded", function () {
       scrollX: true,
       processing: true,
       serverSide: true,
-      lengthMenu: [10, 15, 20, 100, 200, 500],
-      dom: 'Bfrtip',
-      buttons: [
-        {
-          extend: 'pdfHtml5',
-          text: 'Exportar a PDF',
-          title: 'Listado de Clientes',
-          customize: function (doc) {
-            doc.content[1].table.widths = ['20%', '20%', '20%', '20%', '20%']; // Personalizar ancho de columnas
-          }
-        }
-      ],
+      // lengthMenu: [10, 15, 20, 100, 200, 500],
       ajax: {
         url: `../../controller/cliente.controller.php?operation=getAll`,
-        dataSrc: function (data) {
-          console.log(data);
-          return data;
+        type: "GET",
+        data: function (d) {
+          // d contiene los datos que DataTables está enviando
+          console.log(d);  // Ver qué parámetros están siendo enviados
+
+          // Enviar los parámetros de paginación, búsqueda y orden
+          return {
+            start: d.start,      // Paginación: inicio de los registros
+            length: d.length,    // Paginación: número de registros por página
+            search: d.search.value,   // Término de búsqueda
+            orderColumn: d.order[0].column,  // Índice de la columna por la que ordenar
+            orderDir: d.order[0].dir      // Dirección de la ordenación (ASC o DESC)
+          };
+        },
+        dataSrc: function (json) {
+          console.log(json);
+          return json;
         }
       },
       columns: [
         {
-          data: 'idcliente', width: "10%", className: "text-start",
+          data: 'nro_doc', width: "10%", className: "text-start",
           render: function (data) {
             return `<b>${data}</b>`;
           }
@@ -109,10 +112,10 @@ document.addEventListener("DOMContentLoaded", function () {
           render: function (row) {
             return `
               <div class="mt-1 d-flex justify-content-evenly">
-                <button href="#" class="btn btn-warning" data-idusuario="${row.id_cliente}" data-bs-toggle="modal" data-bs-target="#updatecustome">
+                <button href="#" class="btn btn-warning" data-idusuario="${row.idcliente}" data-bs-toggle="modal" data-bs-target="#updatecustome">
                   <i class="bi bi-pencil-fill"></i>
                 </button>
-                <button href="#" class="btn btn-danger" data-idusuario="${row.id_cliente}" value="0">
+                <button href="#" class="btn btn-danger" data-idusuario="${row.idcliente}" value="0">
                   <i class="bi bi-trash-fill"></i>
                 </button>
               </div>

@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
@@ -426,12 +426,20 @@ CREATE TABLE kardex (
     motivo VARCHAR(255),
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT '1',
+    estado CHAR(15) NOT NULL DEFAULT 'Disponible',
     CONSTRAINT fk_idusuario_kardex FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_idproducto_kardex FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
     CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
     CONSTRAINT ck_cantidad CHECK (cantidad > 0),
-    CONSTRAINT fk_estado_kardex CHECK (estado IN ('0', '1'))
+    CONSTRAINT fk_estado_kardex CHECK (
+        estado IN (
+            'Disponible',
+            'Agotado',
+            'Vencido',
+            'Por vencer',
+            'Por agotarse'
+        )
+    )
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS vehiculos;
@@ -516,14 +524,12 @@ CREATE TABLE detalle_meto_Pago (
 DROP TABLE IF EXISTS comprobantes;
 
 CREATE TABLE comprobantes (
-    idcomprobante 	INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idventa 		INT NOT NULL,
-
-
-	create_at		DATETIME NOT NULL DEFAULT NOW(),
-	update_at		DATETIME NULL,
-	estado          CHAR(1) NOT NULL DEFAULT "1", -- 	1: EMITIDO 	0: CANCELADO
-    CONSTRAINT fk_idventa_comp FOREIGN KEY (idventa) REFERENCES ventas(idventa),
-    CONSTRAINT fk_estado_comp   CHECK(estado IN ("0", "1"))
+    idcomprobante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idventa INT NOT NULL,
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    update_at DATETIME NULL,
+    estado CHAR(1) NOT NULL DEFAULT "1", -- 	1: EMITIDO 	0: CANCELADO
+    CONSTRAINT fk_idventa_comp FOREIGN KEY (idventa) REFERENCES ventas (idventa),
+    CONSTRAINT fk_estado_comp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 -- ------------------------------------------------------------------------------------------------------

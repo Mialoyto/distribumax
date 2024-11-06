@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -113,39 +113,13 @@ WHERE
     )
     AND PRO.estado = '1'
 ORDER BY
-    PRO.idproducto ASC;
+    PRO.idproducto DESC;
 END;
 
+CALL sp_buscar_productos ("Galletas");
 
--- BUSCAR PRODUCTOS
-/* DROP PROCEDURE IF EXISTS sp_buscar_productos;
-CREATE PROCEDURE sp_buscar_productos(
-    IN _item VARCHAR (250)
-) 
-BEGIN
-SELECT
-    PRO.idproducto,
-    PRO.codigo,
-    PRO.nombreproducto,
-    kAR.stockactual,
-    UME.unidadmedida
-FROM
-    productos PRO
-    INNER JOIN unidades_medidas UME ON PRO.idunidadmedida = UME.idunidadmedida
-    INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
-    AND KAR.idkardex = (
-        SELECT MAX(K2.idkardex)
-        FROM kardex K2
-        WHERE K2.idproducto = PRO.idproducto
-    )
-WHERE
-    (
-        codigo LIKE CONCAT ('%', _item, '%')
-        OR nombreproducto LIKE CONCAT ('%', _item, '%')
-    )
-    AND PRO.estado = '1'
-    AND KAR.stockactual > 0;
-END; */
+
+
 
 -- BUSCAR PRODUCTOS
 DROP PROCEDURE IF EXISTS sp_get_codigo_producto;
@@ -193,6 +167,3 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El producto no existe';
   END IF;
 END;
-
-CALL sp_eliminar_producto(12);
-select * from detalle_pedidos;

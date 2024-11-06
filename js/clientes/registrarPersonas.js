@@ -5,7 +5,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   renderDocumento('.documento');
+
+
   const tipodoc = $("#idtipodocumento");
+
+
 
   async function getApiDni(dni) {
     try {
@@ -30,10 +34,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const dni = $("#nro-doc-persona").value;
     const dataDB = await searchCliente(dni);
     console.log(dataDB);
-
     if (dni.length === 8) {
       if (dataDB.length != 0) {
         addClientePersona(false);
+        console.log('dentro de db', dataDB);
         $("#nombres").value = dataDB[0].nombres;
         $("#apellido-paterno").value = dataDB[0].appaterno;
         $("#apellido-materno").value = dataDB[0].apmaterno;
@@ -44,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
         limpiarCampos();
         const dataAPI = await getApiDni(dni);
         $("#statusdni").classList.add("d-none");
-        console.log(dataAPI);
         if (dataAPI.hasOwnProperty('message')) {
           showToast("No se encontraron datos", "info", "INFO");
           addClientePersona(false)
@@ -56,11 +59,10 @@ document.addEventListener("DOMContentLoaded", () => {
           addClientePersona(true);
         }
       }
-    } else {
-      showToast("El número de DNI debe tener 8 dígitos", "info", "INFO");
-      limpiarCampos();
+
     }
   }
+
 
   $("#btn-cliente-persona").addEventListener("click", async () => {
     await renderData();
@@ -84,11 +86,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("#registrar-persona").addEventListener("submit", async (event) => {
     event.preventDefault();
+
     if (await showConfirm("¿Desea Registrar?", "Registrar Cliente")) {
       const resultado = await registradoPersona();
-      $("#registrar-persona").reset();
-      // limpiarCampos();        
-      console.log(resultado);
+      const id = resultado.id;
+      if (id > 0) {
+        const data = await addCliente(id);
+        limpiarCampos();
+        if (data.id > 0) {
+          showToast("Cliente registrado", "success", "SUCCESS");
+        } else {
+          showToast("Error al registrar el cliente", "error", "ERROR");
+        }
+      } else if (id < 0) {
+        const data = await searchPersona($("#nro-doc-persona").value);
+        const nrodoc = data[0].idpersonanrodoc;
+        console.log(nrodoc);
+        const response = await addCliente(nrodoc);
+        if (response.id < 0) {
+          showToast("El cliente ya se encuentra registrado", "info", "INFO");
+          addClientePersona(false);
+        } else {
+          showToast("Cliente registrado", "success", "SUCCESS");
+
+        }
+      }
+
     }
   });
 
@@ -111,17 +134,29 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#idtipodocumento").value = '';
   }
 
+  async function searchPersona(dni) {
+    const params = new URLSearchParams();
+    params.append('operation', 'searchDni');
+    params.append('idtipodocumento', tipodoc.value);
+    params.append('idpersonanrodoc', dni);
+    try {
+      const response = await fetch(`../../controller/persona.controller.php?${params}`);
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+
+  }
+
   async function searchCliente(dni) {
     const params = new URLSearchParams();
     params.append('operation', 'searchCliente');
     params.append('_nro_documento', dni);
     try {
       const response = await fetch(`../../controller/cliente.controller.php?${params}`);
-
       const data = await response.json();
-      console.log(data);
       return data;
-
     } catch (e) {
       console.error(e);
     }
@@ -195,11 +230,37 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(`../../controller/persona.controller.php`, options);
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (error) {
       console.error("Error al registrar el cliente:", error);
     }
   }
+
+  async function addCliente(idpersona) {
+    let idempresa = $("#nro-doc-empresa");
+    idempresa = null;
+    const params = new FormData();
+    params.append('operation', 'addcliente');
+    params.append('idpersona', idpersona);
+    params.append('idempresa', idempresa);
+    params.append('tipo_cliente', 'Persona');
+
+    const options = {
+      method: 'POST',
+      body: params
+    };
+
+    try {
+      const response = await fetch(`../../controller/cliente.controller.php`, options);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error al analizar el JSON:", error);
+      return data;
+    }
+
+
+  }
+
 
 });

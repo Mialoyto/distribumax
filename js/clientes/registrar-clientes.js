@@ -153,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+
   const searchDist = async (distrito) => {
     let searchData = new FormData();
     searchData.append('operation', 'searchDistrito');
@@ -218,6 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(id);
       if (id != 0) {
         const data = await registrarCliente(id);
+        console.log(data);
         $("#registrar-empresa").reset();
         showToast("Cliente registrado con éxito", "success", "SUCCESS");
       } else {

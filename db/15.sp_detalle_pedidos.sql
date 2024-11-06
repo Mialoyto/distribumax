@@ -107,7 +107,7 @@ END;
 -- buscar productos por nombre o codigo y dependiendo del numero de ruc o dni del cliente cambia los precios
 DROP PROCEDURE IF EXISTS ObtenerPrecioProducto;
 
-CREATE PROCEDURE ObtenerPrecioProducto(
+/* CREATE PROCEDURE ObtenerPrecioProducto(
     IN _cliente_id      BIGINT,
     IN _item            VARCHAR(255)
 )
@@ -131,10 +131,47 @@ BEGIN
         -- kardex
         INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
         AND KAR.idkardex = (SELECT MAX(K2.idkardex) FROM kardex K2 WHERE K2.idproducto = PRO.idproducto)
-    WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%'))
+    WHERE (nombreproducto LIKE CONCAT('%', _item, '%'))
     AND PRO.estado = '1' 
     AND KAR.stockactual > 0;
-END ;
+END ; */
+CREATE PROCEDURE ObtenerPrecioProducto(
+    IN _cliente_id      BIGINT,
+    IN _item            VARCHAR(255)
+)
+BEGIN
+    SELECT 
+        PRO.idproducto,
+        PRO.codigo,
+        PRO.nombreproducto,
+        DET.descuento,
+        UNDM.unidadmedida,
+        CONCAT(
+            PRO.nombreproducto, ' ',        -- Nombre del producto
+            UNDM.unidadmedida , ' ',         -- Unidad de medida (ej. "CAJA")
+            PRO.cantidad_presentacion, 'X',                 -- Unidad de medida (ej. "CAJA")
+            PRO.peso_unitario  -- Peso unitario (ej. "KG")
+        ) AS descripcion,                 -- Nuevo campo con formato concatenado
+        CASE 
+            WHEN LENGTH(CLI.idempresa) = 11 THEN PRO.precio_mayorista
+            WHEN LENGTH(CLI.idpersona) = 8 THEN PRO.precio_minorista
+        END AS precio_venta,
+        KAR.stockactual
+    FROM  productos PRO
+        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
+        INNER JOIN unidades_medidas UNDM ON PRO.idunidadmedida = UNDM.idunidadmedida
+        INNER JOIN clientes CLI ON CLI.idempresa = _cliente_id OR CLI.idpersona = _cliente_id
+        -- Kardex
+        INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
+        AND KAR.idkardex = (SELECT MAX(K2.idkardex) FROM kardex K2 WHERE K2.idproducto = PRO.idproducto)
+    WHERE (PRO.nombreproducto LIKE CONCAT('%', _item, '%'))
+    AND PRO.estado = '1' 
+    AND KAR.stockactual > 0;
+END;
+
+
+CALL ObtenerPrecioProducto('73217990', 'Galletas');
+select * from productos;
 
 
 -- Obtener el Id del pedido y completar la tabla en ventas

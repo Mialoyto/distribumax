@@ -77,152 +77,152 @@ BEGIN
 END ;
 
 DROP PROCEDURE IF EXISTS spu_listar_kardex;
+
 CREATE PROCEDURE spu_listar_kardex()
 BEGIN
     SELECT p.nombreproducto, k.fecha_vencimiento,
-           k.numlote, k.stockactual, k.tipomovimiento, k.cantidad, k.motivo,k.estado
+        k.numlote, k.stockactual, k.tipomovimiento, k.cantidad, k.motivo,k.estado
     FROM kardex k
     JOIN productos p ON k.idproducto = p.idproducto;
 END;
 
-
 DROP PROCEDURE IF EXISTS spu_listar_producto_kardex;
 
-CREATE PROCEDURE spu_listar_producto_kardex()
+CREATE PROCEDURE spu_listar_producto_kardex(
+    IN _idproducto INT
+)
 BEGIN
-    SELECT p.nombreproducto, 
-           k.fecha_vencimiento, 
-           k.numlote, 
-           k.stockactual, 
-           k.tipomovimiento, 
-           k.cantidad, 
-           k.motivo, 
-           k.estado
+    SELECT 
+        k.idkardex,
+        p.nombreproducto, 
+        k.fecha_vencimiento, 
+        k.numlote, 
+        k.tipomovimiento AS movimiento,
+        k.tipomovimiento, 
+        k.stockactual, 
+        k.cantidad, 
+        k.motivo, 
+        k.estado
     FROM kardex k
-    JOIN productos p ON k.idproducto = p.idproducto
+    INNER JOIN productos p ON k.idproducto = p.idproducto
     WHERE k.idproducto = _idproducto
-    AND K.estado = 1
-    ORDER BY k.create_at DESC
-    LIMIT 20;
+    ORDER BY k.idkardex DESC
+    LIMIT 10;
 END;
 
+CALL spu_listar_producto_kardex (1);
+
+SELECT * FROM productos;
+
+SELECT * FROM kardex;
+
+seled
 UPDATE kardex
-SET estado = 'Por agotarse'
-WHERE stockactual < 20
-AND estado != 'Por agotarse';  -- Evita cambiar el estado si ya es 'Por agotarse'
-
-
-SELECT 
-    k.numlote,                                      -- Número de lote
-    k.idproducto,                                   -- ID del producto
-    p.nombreproducto,                               -- Nombre del producto
-    p.codigo,                                       -- Código del producto
-    SUM(k.cantidad) AS cantidad_total,              -- Sumar la cantidad por lote
-    k.stockactual AS ultimo_stockactual,            -- El último stock actual de cada lote
-    MAX(k.fecha_vencimiento) AS fecha_vencimiento,  -- Fecha de vencimiento más reciente por lote
-    k.estado                                         -- Estado del producto
-FROM 
+SET
+    estado = 'Por agotarse'
+WHERE
+    stockactual < 20
+    AND estado != 'Por agotarse';
+-- Evita cambiar el estado si ya es 'Por agotarse'
+SELECT
+    k.numlote, -- Número de lote
+    k.idproducto, -- ID del producto
+    p.nombreproducto, -- Nombre del producto
+    p.codigo, -- Código del producto
+    SUM(k.cantidad) AS cantidad_total, -- Sumar la cantidad por lote
+    k.stockactual AS ultimo_stockactual, -- El último stock actual de cada lote
+    MAX(k.fecha_vencimiento) AS fecha_vencimiento, -- Fecha de vencimiento más reciente por lote
+    k.estado -- Estado del producto
+FROM
     kardex k
     INNER JOIN (
-        SELECT 
-            idproducto, 
-            numlote, 
-            MAX(idkardex) AS max_idkardex         -- Obtener el último idkardex para cada lote y producto
-        FROM 
-            kardex
-        GROUP BY 
-            idproducto, 
+        SELECT
+            idproducto,
+            numlote,
+            MAX(idkardex) AS max_idkardex -- Obtener el último idkardex para cada lote y producto
+        FROM kardex
+        GROUP BY
+            idproducto,
             numlote
     ) latest_kardex ON k.idkardex = latest_kardex.max_idkardex
     INNER JOIN productos p ON k.idproducto = p.idproducto
-WHERE 
-    k.stockactual > 0                               -- Filtrar solo por productos con stock disponible
-GROUP BY 
-    p.codigo,                                       -- Agrupar por el código del producto
-    k.numlote,                                      -- Agrupar por número de lote
-    k.idproducto,                                   -- Agrupar por producto (ID)
-    p.nombreproducto,                               -- Agrupar por nombre del producto
-    k.estado                                        -- Agrupar por estado
-ORDER BY 
-    k.numlote,                                      -- Ordenar por número de lote
-    p.codigo;                                       -- Ordenar también por código de producto
+WHERE
+    k.stockactual > 0 -- Filtrar solo por productos con stock disponible
+GROUP BY
+    p.codigo, -- Agrupar por el código del producto
+    k.numlote, -- Agrupar por número de lote
+    k.idproducto, -- Agrupar por producto (ID)
+    p.nombreproducto, -- Agrupar por nombre del producto
+    k.estado -- Agrupar por estado
+ORDER BY k.numlote, -- Ordenar por número de lote
+    p.codigo;
+-- Ordenar también por código de producto
+SELECT * FROM kardex;
 
-
-
-
-select * from kardex;
-
-SELECT 
-    k.numlote,                                      -- Número de lote
-    k.idproducto,                                   -- ID del producto
-    p.nombreproducto,                               -- Nombre del producto
-    p.codigo,                                       -- Código del producto
-    SUM(k.cantidad) AS cantidad_total,              -- Sumar la cantidad por lote
-    k.stockactual AS ultimo_stockactual,            -- El stock actual debe ser por cada lote específico
-    MAX(k.fecha_vencimiento) AS fecha_vencimiento,  -- Fecha de vencimiento más reciente por lote
-    k.estado                                         -- Estado del producto
-FROM 
+SELECT
+    k.numlote, -- Número de lote
+    k.idproducto, -- ID del producto
+    p.nombreproducto, -- Nombre del producto
+    p.codigo, -- Código del producto
+    SUM(k.cantidad) AS cantidad_total, -- Sumar la cantidad por lote
+    k.stockactual AS ultimo_stockactual, -- El stock actual debe ser por cada lote específico
+    MAX(k.fecha_vencimiento) AS fecha_vencimiento, -- Fecha de vencimiento más reciente por lote
+    k.estado -- Estado del producto
+FROM
     kardex k
     INNER JOIN (
-        SELECT 
-            idproducto, 
-            numlote, 
-            MAX(idkardex) AS max_idkardex         -- Obtener el último idkardex para cada lote y producto
-        FROM 
-            kardex
-        GROUP BY 
-            idproducto, 
+        SELECT
+            idproducto,
+            numlote,
+            MAX(idkardex) AS max_idkardex -- Obtener el último idkardex para cada lote y producto
+        FROM kardex
+        GROUP BY
+            idproducto,
             numlote
     ) latest_kardex ON k.idkardex = latest_kardex.max_idkardex
     INNER JOIN productos p ON k.idproducto = p.idproducto
-WHERE 
-    k.stockactual > 0                               -- Filtrar solo por productos con stock disponible
-GROUP BY 
-    k.numlote,                                      -- Agrupar por número de lote
-    k.idproducto,                                   -- Agrupar por producto (ID)
-    p.codigo,                                       -- Agrupar por código del producto
-    p.nombreproducto,                               -- Agrupar por nombre del producto
-    k.estado,                                        -- Agrupar por estado
-    k.stockactual                                   -- No se debe sumar el stock actual, solo se selecciona por lote
-ORDER BY 
-    k.numlote,                                      -- Ordenar por número de lote
-    p.codigo; 
+WHERE
+    k.stockactual > 0 -- Filtrar solo por productos con stock disponible
+GROUP BY
+    k.numlote, -- Agrupar por número de lote
+    k.idproducto, -- Agrupar por producto (ID)
+    p.codigo, -- Agrupar por código del producto
+    p.nombreproducto, -- Agrupar por nombre del producto
+    k.estado, -- Agrupar por estado
+    k.stockactual -- No se debe sumar el stock actual, solo se selecciona por lote
+ORDER BY k.numlote, -- Ordenar por número de lote
+    p.codigo;
 
-SELECT 
-    k.numlote,                                      -- Número de lote
-    k.idproducto,                                   -- ID del producto
-    p.nombreproducto,                               -- Nombre del producto
-    p.codigo,                                       -- Código del producto
-    SUM(k.cantidad) AS cantidad_total,              -- Sumar la cantidad por lote
-    k.stockactual AS ultimo_stockactual,            -- El stock actual debe ser por cada lote (último ingreso)
-    MAX(k.fecha_vencimiento) AS fecha_vencimiento,  -- Fecha de vencimiento más reciente por lote
-    k.estado                                         -- Estado del producto
-FROM 
+SELECT
+    k.numlote, -- Número de lote
+    k.idproducto, -- ID del producto
+    p.nombreproducto, -- Nombre del producto
+    p.codigo, -- Código del producto
+    SUM(k.cantidad) AS cantidad_total, -- Sumar la cantidad por lote
+    k.stockactual AS ultimo_stockactual, -- El stock actual debe ser por cada lote (último ingreso)
+    MAX(k.fecha_vencimiento) AS fecha_vencimiento, -- Fecha de vencimiento más reciente por lote
+    k.estado -- Estado del producto
+FROM
     kardex k
     INNER JOIN (
-        SELECT 
-            idproducto, 
-            numlote, 
-            MAX(idkardex) AS max_idkardex         -- Obtener el último idkardex para cada lote y producto
-        FROM 
-            kardex
-        GROUP BY 
-            idproducto, 
+        SELECT
+            idproducto,
+            numlote,
+            MAX(idkardex) AS max_idkardex -- Obtener el último idkardex para cada lote y producto
+        FROM kardex
+        -- GROUP BY
+            idproducto,
             numlote
     ) latest_kardex ON k.idkardex = latest_kardex.max_idkardex
     INNER JOIN productos p ON k.idproducto = p.idproducto
-WHERE 
-    k.stockactual > 0                               -- Filtrar solo por productos con stock disponible
-GROUP BY 
-    k.numlote,                                      -- Agrupar por número de lote
-    k.idproducto,                                   -- Agrupar por producto (ID)
-    p.codigo,                                       -- Agrupar por código del producto
-    p.nombreproducto,                               -- Agrupar por nombre del producto
-    k.estado,                                        -- Agrupar por estado
-    k.stockactual                                   -- No se debe sumar el stock actual, solo se selecciona por lote
-ORDER BY 
-    k.numlote,                                      -- Ordenar por número de lote
-    p.codigo; 
-
-
-
+WHERE
+    k.stockactual > 0 -- Filtrar solo por productos con stock disponible
+GROUP BY
+    k.numlote, -- Agrupar por número de lote
+    k.idproducto, -- Agrupar por producto (ID)
+    p.codigo, -- Agrupar por código del producto
+    p.nombreproducto, -- Agrupar por nombre del producto
+    k.estado, -- Agrupar por estado
+    k.stockactual -- No se debe sumar el stock actual, solo se selecciona por lote
+ORDER BY k.numlote, -- Ordenar por número de lote
+    p.codigo;

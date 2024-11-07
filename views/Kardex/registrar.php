@@ -2,7 +2,7 @@
 
 <main>
   <div class="container-fluid px-4">
-    <h1 class="mt-4">Empresas</h1>
+    <h1 class="mt-4">Kardex</h1>
     <ol class="breadcrumb mb-4">
       <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
     </ol>

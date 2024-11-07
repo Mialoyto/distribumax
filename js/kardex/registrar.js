@@ -52,9 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
         li.setAttribute("data-id", item.idproducto);
         li.addEventListener("click", async () => {
           idproducto.value = item.nombreproducto;
+
           idproducto.setAttribute("producto", item.idproducto);
           await viewStock(item.stockactual, item.unidadmedida);
           datalist.innerHTML = "";
+          await render();
         });
 
         datalist.appendChild(li);
@@ -62,6 +64,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
   };
+  let id;
+  async function render() {
+    id = idproducto.getAttribute('producto');
+    console.log(id);
+    const data = await getMovimientoProducto(id);
+    console.log(data)
+    if (data) {
+      await RenderDatatable(data);
+    }
+
+  }
   // OK ✔️
   async function viewStock(stockactual, unidaMedida) {
     stock.value = stockactual;
@@ -94,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   async function validarFormulario() {
-    const dato = await mostraResultados();
+    // const dato = await mostraResultados();
     // const data = await searchProducto(producto)
     const stock = $("#stockactual").value;
     console.log("stock", stock);
@@ -106,11 +119,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     } else if (cantidad.value > stock && movimiento.value == 'Salida') {
       showToast(`La cantidad no debe ser mayor al stock actual de ${stock}`, "warning", "WARNING");
-    }
-    else if ((stock < cantidad.value) && (movimiento.value == 'Salida')) {
-      showToast(`La cantidad no debe ser mayor al stock actual de ${stock}`, "warning", "WARNING");
       return;
-    } else if (cantidad.value <= 0) {
+    }
+    else if (cantidad.value <= 0) {
       showToast(`La cantidad debe ser mayor a 0`, "warning", "WARNING");
       return;
     } else if (fecha <= new Date().toISOString().split("T")[0]) {

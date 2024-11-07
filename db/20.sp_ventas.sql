@@ -248,6 +248,7 @@ BEGIN
     LEFT JOIN 
         tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE 
+        
           ve.estado='0'
         
        -- Filtra las ventas del día actual
@@ -341,7 +342,8 @@ BEGIN
         VE.descuento,
         VE.total_venta,
         VE.igv,
-        VE.estado
+        VE.estado,
+        PE.estado
     FROM 
         ventas VE
     LEFT JOIN 
@@ -353,6 +355,6 @@ BEGIN
     WHERE 
        
          DATE(VE.fecha_venta) = CURDATE() 
-        AND VE.estado = '1';
+         AND VE.estado = '1';
 END;
 

@@ -27,7 +27,7 @@ require_once '../../header.php';
                   name="idproveedor"
                   placeholder="Venta"
                   required>
-                <label for="idvehiculo" class="form-label">Buscar Venta</label>
+                <label for="idvehiculo" class="form-label">Buscar vehículo</label>
 
              
                 <ul

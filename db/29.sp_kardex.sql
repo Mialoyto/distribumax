@@ -110,14 +110,9 @@ BEGIN
     LIMIT 10;
 END;
 
-CALL spu_listar_producto_kardex (1);
 
-SELECT * FROM productos;
 
-SELECT * FROM kardex;
-
-seled
-UPDATE kardex
+/* UPDATE kardex
 SET
     estado = 'Por agotarse'
 WHERE
@@ -225,4 +220,4 @@ GROUP BY
     k.estado, -- Agrupar por estado
     k.stockactual -- No se debe sumar el stock actual, solo se selecciona por lote
 ORDER BY k.numlote, -- Ordenar por número de lote
-    p.codigo;
+    p.codigo; */

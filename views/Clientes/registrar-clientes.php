@@ -27,7 +27,7 @@ require_once '../../header.php';
           <!-- Formulario de Persona -->
 
           <div class="tab-pane fade show active" id="persona" role="tabpanel" aria-labelledby="persona-tab" tabindex="0">
-            <form id="registrar-persona">
+            <form id="registrar-persona" autocomplete="off">
               <div class="card">
                 <div class="card-body">
                   <!-- Campos específicos para Persona -->

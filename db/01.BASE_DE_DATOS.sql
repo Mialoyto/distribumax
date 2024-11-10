@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
@@ -93,46 +93,7 @@ CREATE TABLE metodos_pago (
     CONSTRAINT fk_estado_met_pag CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS accesos;
-
-CREATE TABLE accesos (
-    idacceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    modulo VARCHAR(100) NOT NULL,
-    create_at DATETIME NOT NULL DEFAULT NOW(),
-    update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT uk_modulo UNIQUE (modulo),
-    CONSTRAINT fk_estado_acce CHECK (estado IN ("0", "1"))
-) ENGINE = INNODB;
-
-DROP TABLE IF EXISTS roles;
-
-CREATE TABLE roles (
-    idrol INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    rol VARCHAR(100) NOT NULL,
-    create_at DATETIME NOT NULL DEFAULT NOW(),
-    update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT uk_rol UNIQUE (rol),
-    CONSTRAINT fk_estado_rol CHECK (estado IN ("0", "1"))
-) ENGINE = INNODB;
-
-DROP TABLE IF EXISTS entidad_roles;
-
-CREATE TABLE entidades_roles (
-    id_entidad_rol INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idrol INT NOT NULL,
-    idacceso INT NOT NULL,
-    create_at DATETIME NOT NULL DEFAULT NOW(),
-    update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT fk_idrol_ent_rol FOREIGN KEY (idrol) REFERENCES roles (idrol),
-    CONSTRAINT fk_idacceso_ent_rol FOREIGN KEY (idacceso) REFERENCES accesos (idacceso),
-    CONSTRAINT fk_estado_ent_rol CHECK (estado IN ("0", "1"))
-) ENGINE = INNODB;
-
 DROP TABLE IF EXISTS tipo_documento;
-
 CREATE TABLE tipo_documento (
     idtipodocumento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     documento CHAR(6) NOT NULL,
@@ -482,6 +443,8 @@ CREATE TABLE despacho (
     CONSTRAINT fk_estado_desp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
+select * from categorias;
+
 DROP TABLE IF EXISTS ventas;
 
 CREATE TABLE ventas (
@@ -533,3 +496,33 @@ CREATE TABLE comprobantes (
     CONSTRAINT fk_estado_comp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 -- ------------------------------------------------------------------------------------------------------
+
+CREATE TABLE permisos (
+    idpermiso INT PRIMARY KEY AUTO_INCREMENT,
+    permiso_nombre VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE rol_permisos (
+    idrol INT,
+    idpermiso INT,
+    FOREIGN KEY (idrol) REFERENCES roles(idrol),
+    FOREIGN KEY (idpermiso) REFERENCES permisos(idpermiso)
+);
+
+select * from roles;
+INSERT INTO permisos (permiso_nombre) VALUES ('Vista Kardex');
+INSERT INTO permisos (permiso_nombre) VALUES ('Vista Productos');
+INSERT INTO permisos (permiso_nombre) VALUES ('Registro Cliente');
+INSERT INTO permisos (permiso_nombre) VALUES ('Crear Vehículo');
+INSERT INTO permisos (permiso_nombre) VALUES ('Acceso Total');
+-- Permisos para el Supervisor (Acceso total)
+INSERT INTO rol_permisos (idrol, idpermiso) VALUES (1, 5);
+
+-- Permisos para el Vendedor (Kardex, Productos, Registro Cliente)
+INSERT INTO rol_permisos (idrol, idpermiso) VALUES (2, 1);
+INSERT INTO rol_permisos (idrol, idpermiso) VALUES (2, 2);
+INSERT INTO rol_permisos (idrol, idpermiso) VALUES (2, 3);
+
+-- Permisos para el Chofer (Crear Vehículo)
+INSERT INTO rol_permisos (idrol, idpermiso) VALUES (3, 4);
+

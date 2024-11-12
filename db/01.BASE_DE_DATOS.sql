@@ -4,7 +4,7 @@ DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribumax;
 
 USE distribumax;
--- -------------------------------F----------------------------------------------------------------
+-- -----------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS departamentos;
 
 CREATE TABLE departamentos (
@@ -319,6 +319,7 @@ CREATE TABLE productos (
     update_at DATETIME NULL,
     inactive_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
+    
     CONSTRAINT fk_idproveedor_prod FOREIGN KEY (idproveedor) REFERENCES proveedores (idproveedor),
     CONSTRAINT fk_idmarca_prod FOREIGN KEY (idmarca) REFERENCES marcas (idmarca),
     CONSTRAINT fk_sbcategoria_prod FOREIGN KEY (idsubcategoria) REFERENCES subcategorias (idsubcategoria),
@@ -414,7 +415,7 @@ CREATE TABLE detalle_pedidos (
 
 DROP TABLE IF EXISTS kardex;
 
-CREATE TABLE kardex (
+/* CREATE TABLE kardex (
     idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idusuario INT NOT NULL,
     idproducto INT NOT NULL,
@@ -440,7 +441,70 @@ CREATE TABLE kardex (
             'Por agotarse'
         )
     )
+) ENGINE = INNODB; */
+
+-- ------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS lotes;
+
+CREATE TABLE lotes (
+    idlote INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    idproducto INT NOT NULL,
+    numlote VARCHAR(60) NOT NULL,
+    fecha_vencimiento DATE NULL,
+    stockactual     INT NULL DEFAULT 0,
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    update_at DATETIME NULL,
+    inactive_at DATETIME NULL,
+    estado CHAR(100) NOT NULL DEFAULT 'Disponible',
+
+    CONSTRAINT fk_idproducto_lote FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
+    CONSTRAINT idx_unique_lote_producto UNIQUE (idproducto, numlote),
+    CONSTRAINT ck_stockactual_lote CHECK (stockactual >= 0),
+    CONSTRAINT fk_estado_lote CHECK (
+        estado IN (
+            'Disponible',
+            'Agotado',
+            'Vencido',
+            'Por vencer',
+            'Por agotarse'
+        )
+    )
 ) ENGINE = INNODB;
+
+-- ------------------------------------------------------------------------------------------------------
+
+
+DROP TABLE IF EXISTS kardex;
+CREATE TABLE kardex (
+idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+idusuario INT NOT NULL,
+idproducto INT NOT NULL,
+idlote INT NOT NULL,
+stockactual INT NULL DEFAULT 0,
+tipomovimiento ENUM('Ingreso', 'Salida') NOT NULL,
+cantidad INT NOT NULL,
+motivo VARCHAR(255),
+create_at DATETIME NOT NULL DEFAULT NOW(),
+update_at DATETIME NULL,
+estado CHAR(100) NOT NULL DEFAULT 'Disponible',
+CONSTRAINT fk_idusuario_kardex FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
+CONSTRAINT fk_idproducto_kardex FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
+CONSTRAINT fk_idlote_kardex FOREIGN KEY (idlote) REFERENCES lotes (idlote),
+CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
+CONSTRAINT ck_cantidad CHECK (cantidad > 0),
+CONSTRAINT fk_estado_kardex CHECK (
+estado IN (
+'Disponible',
+'Agotado',
+'Vencido',
+'Por vencer',
+'Por agotarse'
+)
+)
+) ENGINE = INNODB;
+--
+-- CALL kardex('Ingreso', 1, 1, 1, 10, 'Ingreso de productos', 'Disponible');
+
 
 DROP TABLE IF EXISTS vehiculos;
 

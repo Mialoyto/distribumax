@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306
 USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
@@ -44,15 +44,18 @@ SELECT * FROM departamentos;
 SELECT * FROM provincias WHERE provincia = 'Chincha';
 
 SELECT * FROM distritos;
+select * from lotes;
+select * from kardex;
+select * from lotes;
 
 SELECT * FROM marcas;
 
 SELECT * FROM usuarios;
-
+mysql -u root -p;
 SELECT * FROM personas 
 ORDER BY idpersonanrodoc DESC
 limit 10;
-
+SELECT host, user FROM mysql.user WHERE user = 'root';
 SELECT * FROM empresas;
 
 SELECT * FROM clientes;
@@ -507,3 +510,7 @@ call sp_buscardistrito('pueblo nuevo');
 select * from ventas;
 UPDATE ventas set estado=1 WHERE idventa=2;
 SELECT * FROM pedidos;
+
+
+
+

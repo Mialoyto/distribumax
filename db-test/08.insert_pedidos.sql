@@ -1,8 +1,9 @@
-USE distribumax;
+/* USE distribumax;
 
 -- Pedido 1
 CALL sp_pedido_registrar(1, 2);
-CALL sp_detalle_pedido ('PED-000000001',1,1,'Caja',8.50);
+CALL sp_detalle_pedido ('PED-000000001',1,7,'Caja',8.50);
+
 
 -- Pedido 2
 CALL sp_pedido_registrar(2, 4);
@@ -118,5 +119,5 @@ CALL sp_detalle_pedido ('PED-000000029', 1, 1, 'Caja', 8.50);
 
 -- Pedido 30
 CALL sp_pedido_registrar(2, 4);
-CALL sp_detalle_pedido ('PED-000000030', 1, 1, 'Caja', 8.50);
+CALL sp_detalle_pedido ('PED-000000030', 1, 1, 'Caja', 8.50); */
 

@@ -47,7 +47,6 @@ VALUES
         SELECT LAST_INSERT_ID() AS idproducto;
 END;
 
-
 -- ACTUALIZA PRODUCTOS
 CREATE PROCEDURE sp_actualziar_producto (
     IN _idmarca INT,
@@ -72,7 +71,6 @@ END;
 
 -- ESTADO producto
 
-
 CREATE PROCEDURE sp_estado_producto (
     IN _estado CHAR (1), 
     IN _idproducto INT) 
@@ -86,43 +84,128 @@ WHERE
 
 END;
 
--- PRUEBA DE BUSQUEDA
+-- PRUEBA DE BUSQUEDA de productos
 DROP PROCEDURE IF EXISTS sp_buscar_productos;
+
 CREATE PROCEDURE sp_buscar_productos(
-    IN _item VARCHAR (250)) 
+    IN _nombreproducto VARCHAR (250)) 
 BEGIN
 SELECT
     PRO.idproducto,
     PRO.nombreproducto,
-    PRO.codigo,
-    UME.unidadmedida,
-    COALESCE(KAR.stockactual, 0) AS stockactual
+    UME.unidadmedida
 FROM
     productos PRO
-    LEFT JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
+INNER JOIN unidades_medidas UME ON UME.idunidadmedida = PRO.idunidadmedida
+WHERE
+    ( nombreproducto LIKE CONCAT ('%', _nombreproducto, '%'))
+    AND PRO.estado = '1'
+GROUP BY
+    PRO.idproducto
+ORDER BY
+    PRO.idproducto DESC
+    LIMIT 10;
+END;
+
+CALL sp_buscar_productos ('cas');
+
+-- buscar productos por codigo
+DROP PROCEDURE IF EXISTS spu_buscar_lote;
+
+CREATE PROCEDURE spu_buscar_lote(
+    IN _idproducto INT)
+BEGIN
+SELECT
+    LOT.idlote,
+    LOT.numlote,
+    PRO.idproducto,
+    KAR.stockactual
+FROM productos PRO
+INNER JOIN lotes LOT ON LOT.idproducto = PRO.idproducto
+LEFT JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
     AND KAR.idkardex = (
         SELECT MAX(K2.idkardex)
         FROM kardex K2
         WHERE K2.idproducto = PRO.idproducto
+        AND K2.idlote = LOT.idlote
     )
-    INNER JOIN unidades_medidas UME ON UME.idunidadmedida = PRO.idunidadmedida
 WHERE
-    (
-        codigo LIKE CONCAT ('%', _item, '%')
-        OR nombreproducto LIKE CONCAT ('%', _item, '%')
-    )
+    PRO.idproducto  = _idproducto
     AND PRO.estado = '1'
 ORDER BY
-    PRO.idproducto DESC;
+    numlote DESC
+LIMIT 10;    
 END;
 
-CALL sp_buscar_productos ("Galletas");
+-- CALL spu_buscar_lote (7);
 
+DROP PROCEDURE IF EXISTS spu_render_lote;
 
+CREATE PROCEDURE spu_render_lote(
+    IN _idlote INT
+)
+BEGIN
+SELECT
+    LOT.fecha_vencimiento,
+    PRO.codigo,
+    UME.unidadmedida,
+    COALESCE(KAR.stockactual, 0) AS stockactual
+FROM productos PRO
+INNER JOIN lotes LOT ON LOT.idproducto = PRO.idproducto
+INNER JOIN unidades_medidas UME ON UME.idunidadmedida = PRO.idunidadmedida
+LEFT JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
+    AND KAR.idkardex = (
+        SELECT MAX(K2.idkardex)
+        FROM kardex K2
+        WHERE K2.idproducto = PRO.idproducto
+        AND K2.idlote = LOT.idlote
+    )
+    WHERE
+    PRO.idlote  = _idlote
+    AND PRO.estado = '1'
+ORDER BY
+    numlote DESC
+LIMIT 10;    
+END;
+-- select * from kardex WHERE idproducto = 7;
+SELECT * FROM kardex;
 
+SELECT * FROM lotes;
+-- CALL spu_render_lote (7);
+-- select * from lotes WHERE idproducto = 7;
+select * from kardex 
+WHERE idproducto = 7
+order by idlote ASC;
+select * from kardex;
+-- DROP PROCEDURE IF EXISTS spu_render_lote;
+DROP PROCEDURE IF EXISTS spu_render_lote;
+CREATE PROCEDURE spu_render_lote(
+    IN _idlote INT
+)
+BEGIN
+SELECT
+    LOT.idlote,
+    LOT.numlote,
+    LOT.fecha_vencimiento,
+    PRO.codigo,
+    UME.unidadmedida,
+    COALESCE(LOT.stockactual, 0) AS stockactual
+FROM lotes LOT
+INNER JOIN productos PRO ON PRO.idproducto = LOT.idproducto
+INNER JOIN unidades_medidas UME ON UME.idunidadmedida = PRO.idunidadmedida
+WHERE LOT.idproducto = _idlote
+ORDER BY
+    LOT.numlote DESC
+LIMIT 10;    
+END;
 
+SELECT * FROM kardex WHERE idproducto = 7;
+select * from lotes WHERE idproducto = 7;
+
+SELECT * FROM productos;
 -- BUSCAR PRODUCTOS
 DROP PROCEDURE IF EXISTS sp_get_codigo_producto;
+
 CREATE PROCEDURE sp_get_codigo_producto(
     IN _codigo CHAR(30)
 )
@@ -138,6 +221,7 @@ BEGIN
         AND PRO.estado = '1';
 END;
 
+-- LISTAR PRODUCTOS
 
 CREATE PROCEDURE sp_listar_productos()
 BEGIN
@@ -155,7 +239,6 @@ BEGIN
     WHERE 
         p.estado = '1'; -- Solo productos activos
 END;
-
 
 CREATE PROCEDURE sp_eliminar_producto(IN _idproducto INT)
 BEGIN

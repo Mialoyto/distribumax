@@ -2,15 +2,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function $(object = null) {
     return document.querySelector(object);
   }
-  const idproducto = $("#searchProducto");
-  let stock = $("#stockactual");
-  let datalist = $("#listProductKardex");
-  let medida = $("#medida");
-  let cantidad = $("#cantidad");
+  const inputProducto = $("#searchProducto");
+  const stock = $("#stockactual");
+  const datalist = $("#listProductKardex");
+  const medida = $("#medida");
+  const cantidad = $("#cantidad");
+  const loteProducto = $("#loteP");
+  const fechaVencimiento = $("#fechaVP");
+  let idproducto;
 
   let producto = "";
   // OK ✔️
-  idproducto.addEventListener("input", async (event) => {
+  inputProducto.addEventListener("input", async (event) => {
     producto = event.target.value;
     if (!producto.length == 0) {
       await mostraResultados();
@@ -18,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       datalist.innerHTML = "";
       stock.value = "";
       medida.textContent = "Unidad Medida";
-      idproducto.removeAttribute("producto");
+      inputProducto.removeAttribute("producto");
     }
   });
   // OK ✔️
@@ -47,39 +50,81 @@ document.addEventListener("DOMContentLoaded", () => {
       response.data.forEach((item) => {
         const li = document.createElement("li");
         li.classList.add("list-group-item");
-        li.innerHTML = `<b>${item.codigo}</b>-${item.nombreproducto}
-				<h6 class="btn btn-secondary btn-sm h-25 d-inline-block">${item.unidadmedida}</h6> `;
+        li.innerHTML = `${item.nombreproducto}
+				<span class="badge rounded-pill text-bg-primary">${item.unidadmedida}</span> `;
         li.setAttribute("data-id", item.idproducto);
         li.addEventListener("click", async () => {
-          idproducto.value = item.nombreproducto;
-
-          idproducto.setAttribute("producto", item.idproducto);
-          await viewStock(item.stockactual, item.unidadmedida);
+          inputProducto.value = item.nombreproducto;
+          inputProducto.setAttribute("producto", item.idproducto);
+          idproducto = item.idproducto;
+          await renderLote(idproducto);
+          // await viewStock(item.stockactual, item.unidadmedida);
           datalist.innerHTML = "";
-          await render();
-        });
+          // await render();
 
+        });
         datalist.appendChild(li);
       });
 
     }
   };
-  let id;
-  async function render() {
-    id = idproducto.getAttribute('producto');
-    console.log(id);
-    const data = await getMovimientoProducto(id);
-    console.log(data)
-    if (data) {
-      await RenderDatatable(data);
-    }
 
+  async function renderLote(idproducto) {
+
+    try {
+      const params = new URLSearchParams();
+      params.append('operation', 'searchLote');
+      params.append('_idproducto', idproducto);
+      const response = await fetch(`../../controller/lotes.controller.php?${params}`);
+      const lotes = await response.json();
+      console.log(lotes);
+      if (!lotes) {
+        showToast('No se encontraron lotes para este producto', 'info', 'INFO');
+        return;
+      } else {
+        lotes.forEach(lote => {
+          const option = document.createElement('option');
+          option.value = lote.idlote;
+          option.innerText = lote.numlote;
+          loteProducto.appendChild(option);
+        });
+      }
+
+      return lotes;
+    } catch (e) {
+      console.error(e);
+    }
   }
+
+  loteProducto.addEventListener('change', async () => {
+    const response = await renderLote(idproducto);
+    console.log(response);
+ 
+  });
+
+
+
+
+
+
+
+
+  /*  let id;
+   async function render() {
+     id = idproducto.getAttribute('producto');
+     console.log(id);
+     const data = await getMovimientoProducto(id);
+     console.log(data)
+     if (data) {
+       await RenderDatatable(data);
+     }
+ 
+   } */
   // OK ✔️
-  async function viewStock(stockactual, unidaMedida) {
-    stock.value = stockactual;
-    medida.textContent = unidaMedida;
-  }
+  /*   async function viewStock(stockactual, unidaMedida) {
+      stock.value = stockactual;
+      medida.textContent = unidaMedida;
+    } */
 
   // PROBANDO EL REGISTRO DE KARDEX
   let fecha;

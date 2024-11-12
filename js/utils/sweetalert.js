@@ -10,6 +10,7 @@ function showToast(mensaje = ``, icono = 'success', type = `INFO`, duration = 25
     position: 'top-end',
     showConfirmButton: false,
     timer: duration,
+    color: '#fff',
     timerProgressBar: true,
     background: bgColor[type],
     didOpen: (toast) => {

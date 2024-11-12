@@ -1,6 +1,6 @@
 USE distribumax;
 
-
+DROP PROCEDURE IF EXISTS sp_buscardistrito;
 CREATE PROCEDURE sp_buscardistrito(
 IN _distrito VARCHAR(100)
 )
@@ -18,7 +18,10 @@ JOIN
 JOIN
     departamentos dep ON p.iddepartamento = dep.iddepartamento
 WHERE
-    d.distrito LIKE  CONCAT('%', TRIM(_distrito),'%');
+    d.distrito LIKE  CONCAT('%', TRIM(_distrito),'%') AND
+    d.estado = '1'
+    LIMIT 4;
+
 END IF;
 END;
 

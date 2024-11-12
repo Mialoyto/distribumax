@@ -36,7 +36,7 @@ class Productos extends Conexion
       return $id;
     }
   }
-
+ 
   public function getAll()
   {
     try {

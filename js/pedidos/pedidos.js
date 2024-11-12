@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // EVENTOS
-  $("#nro-doc").addEventListener("input", debounce(async () => {
+  $("#nro-doc").addEventListener("input", async () => {
 
     if ($("#nro-doc").value === "") {
       desactivarCampos();
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       })
 
     }
-  }, 500));
+  });
 
   // buscar producto
   const buscarProducto = async () => {
@@ -246,12 +246,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const totalCell = row.querySelector(".total");
 
     cantidadInput.addEventListener("input", () => {
-      let cantidad = cantidadInput.value;
+      let cantidad = parseInt(cantidadInput.value);
+      let stock = parseInt(stockactual);
+      console.log("cantidad", cantidad);
+      console.log("stockactual", stock);
+      console.log( cantidad > stock);
 
-      if (cantidad > stockactual) {
-        showToast(`La cantidad no puede ser mayor que el stock disponible (${stockactual})`, 'info', 'INFO');
-        cantidadInput.value = stockactual; // Ajustar al stock máximo disponible
-        cantidad = stockactual; // Actualizamos la cantidad
+      if (cantidad > stock) {
+        showToast(`La cantidad no puede ser mayor que el stock disponible (${stock})`, 'info', 'INFO');
+        cantidadInput.value = stock; // Ajustar al stock máximo disponible
+        cantidad = stock; // Actualizamos la cantidad
+        console.log("cantidad", parseInt(cantidad));
       }
       if (cantidad <= 0 || cantidad == "") {
         showToast('La cantidad no puede ser menor a 1', 'info', 'INFO');
@@ -292,7 +297,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     params.append("idpedido", idpedido);
     productos.forEach((producto, index) => {
       params.append(`productos[${index}][idproducto]`, producto.idproducto);
-      params.append(`productos[${index}][cantidad_producto]`, producto.cantidad);
+      params.append(`productos[${index}][cantidad_producto]`, parseInt(producto.cantidad));
       params.append(`productos[${index}][unidad_medida]`, producto.undMedida);
       params.append(`productos[${index}][precio_unitario]`, producto.precioUnitario);
     });
@@ -309,7 +314,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         `../../controller/detallepedido.controller.php`,
         options
       );
-      return response.json();
+      const data = await response.json();
+      console.log(data);
+      return data;
     } catch (e) {
       console.error(e);
     }

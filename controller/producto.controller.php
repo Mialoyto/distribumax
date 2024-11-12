@@ -40,9 +40,19 @@ if (isset($_POST['operation'])) {
       ];
       $datosRecibidos = $producto->addProducto($datosEnviar);
       echo json_encode(["id" => $datosRecibidos]);
+      break;
+
+    case 'delete':
+      if (isset($_POST['idproducto'])) {
+        $idproducto = $_POST['idproducto'];
+        $resultado = $producto->deleteProducto($idproducto);
+        echo json_encode(["success" => $resultado]);
+      } else {
+        echo json_encode(["success" => false, "error" => "ID del producto no especificado."]);
+      }
+      break;
   }
 }
-
 
 if (isset($_GET['operation'])) {
   switch ($_GET['operation']) {
@@ -65,12 +75,13 @@ if (isset($_GET['operation'])) {
       ];
       echo json_encode($producto->ObtenerPrecioProducto($datos));
       break;
-      case 'getCodeProducto':
-        $datosEnviar = [
-          'codigo' => $_GET['codigo']
-        ];
-        $datosRecibidos = $producto->getCodigoProducto($datosEnviar);
-        echo json_encode($datosRecibidos);
-        break;
+
+    case 'getCodeProducto':
+      $datosEnviar = [
+        'codigo' => $_GET['codigo']
+      ];
+      $datosRecibidos = $producto->getCodigoProducto($datosEnviar);
+      echo json_encode($datosRecibidos);
+      break;
   }
 }

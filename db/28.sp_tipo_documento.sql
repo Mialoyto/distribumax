@@ -1,6 +1,6 @@
 USE distribumax;
 
-DROP PROCEDURE IF EXISTS sp_registrar_tipo_documento;
+
 CREATE PROCEDURE sp_registrar_tipo_documento(
     IN _documento		VARCHAR(150)
 )

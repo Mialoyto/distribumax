@@ -1,38 +1,40 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TABLAS NECESARIAS PARA REGISTRAR PERSONAS
 -- TIPO DE DOCUMENTOS
 CALL sp_registrar_tipo_documento ('DNI');
 CALL sp_registrar_tipo_documento ('RUC');
-CALL sp_registrar_tipo_documento ('PASAPORTE');
-CALL sp_registrar_tipo_documento ('CARNET DE EXTRANJERÍA');
+
 
 /* REGISTRAR EMPRESAS */
 CALL sp_empresa_registrar (
+    2,
     20100085063,
     1,
     'Ajinomoto del Perú S.A.C',
     'Av. José Larco 812, Miraflores',
     'contacto@ajinomoto.com.pe',
-    '01 619 9999'
+    '016199999'
 );
 
 CALL sp_empresa_registrar (
+    2,
     20100055237,
     1,
     'Alicorp S.A.A',
     'Av. José Larco 812, Miraflores',
     'contacto@alicorp.com.pe',
-    '01 630 8888'
+    '016388888'
 );
 
 CALL sp_empresa_registrar (
+    2,
     20266352337,
     1,
     'Softys Perú S.A.C',
     'Av. José Larco 812, Miraflores',
     'contacto@softys.com.pe',
-    '01 730 8888'
+    '017308888'
 );
 
 /* REGISTRAR PROVEEDORES */
@@ -40,7 +42,7 @@ CALL sp_proovedor_registrar (
     20100085063,
     'Proveedor Ajinomoto',
     'Carlos López',
-    '01 619 9999',
+    '0161999999',
     'Av. José Larco 812, Miraflores',
     'proveedor@ajinomoto.com.pe'
 );
@@ -63,25 +65,7 @@ CALL sp_proovedor_registrar (
     'proveedor@softys.com.pe'
 );
 
-/* REGISTRAR MARCAS */
--- Registrar las marcas
-CALL sp_registrar_marca (1, 'Ajinomoto');
 
-CALL sp_registrar_marca (1, 'Ajino-men');
-
-CALL sp_registrar_marca (1, 'Ajino-mix');
-
-CALL sp_registrar_marca (2, 'Primor');
-
-CALL sp_registrar_marca (2, 'Casino');
-
-CALL sp_registrar_marca (2, 'Glacitas');
-
-CALL sp_registrar_marca (3, 'Elite');
-
-CALL sp_registrar_marca (3, 'Babysec');
-
-CALL sp_registrar_marca (3, 'Ladysoft');
 
 /* REGISTRAR CATEGORIAS  */
 
@@ -99,6 +83,9 @@ CALL sp_registrar_categoria ('Conservas');
 -- softys
 CALL sp_registrar_categoria ('Higiene Personal');
 
+CALL sp_registrar_categoria ('Pastas');
+CALL sp_registrar_categoria ('Harina');
+CALL sp_registrar_categoria ('Salsas');
 /*  REGISTRAR SUBCATERIAS */
 -- ajinomoto
 
@@ -122,6 +109,28 @@ CALL sp_registrar_subcategoria (6, 'Papel higiénico');
 CALL sp_registrar_subcategoria (6, 'Toallas higiénicas');
 
 CALL sp_registrar_subcategoria (6, 'Pañales');
+
+
+
+/* REGISTRAR MARCAS */
+-- Registrar las marcas
+CALL sp_registrar_marca (1, 'Ajinomoto',1);
+
+CALL sp_registrar_marca (1, 'Ajino-men',2);
+
+CALL sp_registrar_marca (1, 'Ajino-mix',2);
+
+CALL sp_registrar_marca (2, 'Primor',3);
+
+CALL sp_registrar_marca (2, 'Casino',4);
+
+CALL sp_registrar_marca (2, 'Glacitas',4);
+
+CALL sp_registrar_marca (3, 'Elite',6);
+
+CALL sp_registrar_marca (3, 'Babysec',6);
+
+CALL sp_registrar_marca (3, 'Ladysoft',6);
 
 -- INSERT ROLES
 CALL sp_registrar_roles ('Administrador');

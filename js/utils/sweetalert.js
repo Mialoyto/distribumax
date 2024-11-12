@@ -1,7 +1,7 @@
 function showToast(mensaje = ``, icono = 'success', type = `INFO`, duration = 2500, url = null) {
   const bgColor = {
     'INFO': '#22a6b3',
-    'WARNING': '#f9ca24',
+    'WARNING': '#FFc900',
     'SUCCESS': '#6ab04c',
     'ERROR': '#eb4d4b'
   };
@@ -10,6 +10,7 @@ function showToast(mensaje = ``, icono = 'success', type = `INFO`, duration = 25
     position: 'top-end',
     showConfirmButton: false,
     timer: duration,
+    color: '#fff',
     timerProgressBar: true,
     background: bgColor[type],
     didOpen: (toast) => {
@@ -31,7 +32,6 @@ async function showConfirm(pregunta = ``, modulo = ``) {
   const respuesta = await Swal.fire({
     title: pregunta,
     text: modulo,
-    icon: 'question',
     showDenyButton: true,
     confirmButtonText: 'Guardar',
     denyButtonText: 'Cancelar',

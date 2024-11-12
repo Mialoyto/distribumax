@@ -40,13 +40,13 @@ BEGIN
 END;
 
 
-
-DROP PROCEDURE IF EXISTS getSubcategorias;
 CREATE PROCEDURE getSubcategorias (
     IN _idcategoria INT
     ) 
 BEGIN
-SELECT SUB.idsubcategoria, SUB.subcategoria
+SELECT 
+    SUB.idsubcategoria, 
+    SUB.subcategoria
 FROM
     categorias CAT
     RIGHT JOIN subcategorias SUB ON CAT.idcategoria = SUB.idcategoria
@@ -58,6 +58,24 @@ ORDER BY SUB.idsubcategoria ASC;
 END;
 
 
+--  GET SUBCATEGORIAS
+
+/* CREATE PROCEDURE getSubcategorias(
+    IN _idsubcategoria INT
+)
+BEGIN
+SELECT 
+    SUB.idsubcategoria,
+    SUB.subcategoria
+    FROM 
+        categorias CAT
+        RIGHT JOIN subcategorias SUB ON CAT.idcategoria = SUB.idcategoria
+    WHERE 
+        CAT.idcategoria = _idsubcategoria
+        AND CAT.estado = 1 AND SUB.estado = 1
+        ORDER BY SUB.idsubcategoria ASC;
+END;
+ */
 -- LISTAR SUBCATEGORIAS
 CREATE VIEW vw_listar_subcategorias AS
     SELECT idsubcategoria,subcategoria FROM subcategoriaS

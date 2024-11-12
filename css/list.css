@@ -1,5 +1,5 @@
 .ListarDatos {
-  max-height: 80px;
+  max-height: 200px;
   /* Limitar la altura si hay muchos resultados */
   overflow-y: auto;
   /* Habilitar scroll si hay muchos resultados */

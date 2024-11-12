@@ -23,7 +23,15 @@ switch ($verbo) {
                     // Llama a la función getAll() y devuelve el resultado
                     $result = $persona->getAll();
                     echo json_encode($result);
-                    break;
+                break;
+                case 'search':
+                    $datosEnviar = [
+                        'idtipodocumento' => $_GET['idtipodocumento'],
+                        'idpersonanrodoc' => $_GET['idpersonanrodoc']
+                    ];
+                    $send = $persona->search($datosEnviar);
+                    echo json_encode($send);
+                break;
             }
         }
         break;

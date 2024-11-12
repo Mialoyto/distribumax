@@ -1,5 +1,6 @@
-<?php
-require_once '../../header.php';
+<?php 
+require_once '../../header.php'; 
+// require_once '../../app/config.php';
 ?>
 
 <main>
@@ -56,7 +57,7 @@ require_once '../../header.php';
                 <th>Cliente</th>
                 <th>Documento</th>
                 <th>Fecha Venta</th>
-                <th>Acciones</th>
+               
               </tr>
             </thead>
             <tbody>

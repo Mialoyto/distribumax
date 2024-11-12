@@ -19,25 +19,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     const params = new URLSearchParams();
     params.append("operation", "searchCliente");
-    params.append("nro_documento", $("#nro-doc").value.trim());
+    params.append("_nro_documento", $("#nro-doc").value);
 
     try {
       const response = await fetch(
         `../../controller/cliente.controller.php?${params}`
       );
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (e) {
       console.error(e);
     }
   }
+
   function desactivarCampos() {
     $("#nombres").setAttribute("disabled", true);
     $("#appaterno").setAttribute("disabled", true);
     $("#apmaterno").setAttribute("disabled", true);
     $("#razon-social").setAttribute("disabled", true);
     $("#direccion-cliente").setAttribute("disabled", true);
+    $("#addProducto").removeAttribute("disabled");
+    // $("#addProducto").focus();
   }
 
   let idCliente;
@@ -53,9 +55,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         $("#appaterno").value = response[0].appaterno;
         $("#apmaterno").value = response[0].apmaterno;
         desactivarCampos();
+        $("#addProducto").focus();
       } else {
         $("#razon-social").value = response[0].razonsocial;
         desactivarCampos();
+        $("#addProducto").focus();
       }
 
       $("#direccion-cliente").value = response[0].direccion_cliente;
@@ -78,6 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     $("#apmaterno").value = "";
     $("#razon-social").value = "";
     $("#direccion-cliente").value = "";
+    $("#addProducto").value = "";
   }
 
   async function getIdPedido() {
@@ -102,15 +107,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // EVENTOS
-  $("#nro-doc").addEventListener("input", debounce(async () => {
+  $("#nro-doc").addEventListener("input", async () => {
 
     if ($("#nro-doc").value === "") {
       desactivarCampos();
+      $("#addProducto").setAttribute("disabled", true);
       $("#detalle-pedido").innerHTML = "";
       resetCampos();
     } else {
       const response = await dataCliente();
-      await validarNroDoc(response);
+      console.log(response);
+      if (response.length != 0) {
+        // desactivarCampos();
+        await validarNroDoc(response);
+      } else {
+        // desactivarCampos();
+        $("#detalle-pedido").innerHTML = "";
+        resetCampos();
+        $("#addProducto").value = "";
+        $("#addProducto").setAttribute("disabled", true);
+      }
       $("#nro-doc").addEventListener('keydown', (event) => {
         if (event.keyCode == 13) {
           event.preventDefault();
@@ -119,9 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       })
 
     }
-  }, 500));
-
-
+  });
 
   // buscar producto
   const buscarProducto = async () => {
@@ -142,7 +156,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   // mostrar resultados ✔️
-
   const mostraResultados = async () => {
     const response = await buscarProducto();
     $("#datalistProducto").innerHTML = "";
@@ -156,12 +169,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         const li = document.createElement("li");
         li.classList.add("list-group-item"); // Clase de Bootstrap para los ítems
-        li.innerHTML = `${item.codigo}-${item.nombreproducto} <h6 class="btn btn-secondary btn-sm h-25 d-inline-block">${item.unidadmedida}: ${item.stockactual}</h6>`;
+        li.innerHTML = `${item.nombreproducto} <span class="badge text-bg-success rounded-pill">${item.unidadmedida}: ${item.stockactual}</span>`;
         li.addEventListener("click", () => {
           addProductToTable(
             item.idproducto,
             item.codigo,
-            item.nombreproducto,
+            item.descripcion,
             item.unidadmedida,
             item.precio_venta,
             item.descuento,
@@ -187,7 +200,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Función para añadir un producto a la tabla seleccionada
-  function addProductToTable(id, codigo, nombre, unidadmedida, precio_venta, descuento, stockactual) {
+  function addProductToTable(id, codigo, descripcion, unidadmedida, precio_venta, descuento, stockactual) {
     const existId = document.querySelector(`#detalle-pedido tr td[id-data="${id}"]`);
     console.log("existe el ID en la tabla ?", existId);
     if (existId) {
@@ -197,12 +210,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const row = document.createElement("tr");
     row.innerHTML = `
       <th scope="row" class"text-nowrap w-auto">${codigo}</th>
-      <td class="text-nowrap w-auto" id-data="${id}">${nombre}</td>
+      <td class="text-nowrap w-auto" id-data="${id}">${descripcion}</td>
       <td class="col-md-1 w-10">
           <input class="form-control form-control-sm cantidad numeros text-center w-100"  type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
       </td>
       <td class="text-nowrap w-auto col-md-1 und-medida">${unidadmedida}</td>
-      <td class="text-nowrap w-auto precio" data="${precio_venta}">S/${precio_venta}</td>
+      <td class="text-nowrap w-auto precio" data="${precio_venta}">
+      
+
+      S/${precio_venta}
+      </td>
       <td class="text-nowrap w-auto subtotal"> S/0.00</td>
       <td class="text-nowrap w-auto">% ${descuento}</td>
       <td class="text-nowrap w-auto descuento">S/0.00</td>
@@ -229,12 +246,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const totalCell = row.querySelector(".total");
 
     cantidadInput.addEventListener("input", () => {
-      let cantidad = cantidadInput.value;
+      let cantidad = parseInt(cantidadInput.value);
+      let stock = parseInt(stockactual);
+      console.log("cantidad", cantidad);
+      console.log("stockactual", stock);
+      console.log( cantidad > stock);
 
-      if (cantidad > stockactual) {
-        showToast(`La cantidad no puede ser mayor que el stock disponible (${stockactual})`, 'info', 'INFO');
-        cantidadInput.value = stockactual; // Ajustar al stock máximo disponible
-        cantidad = stockactual; // Actualizamos la cantidad
+      if (cantidad > stock) {
+        showToast(`La cantidad no puede ser mayor que el stock disponible (${stock})`, 'info', 'INFO');
+        cantidadInput.value = stock; // Ajustar al stock máximo disponible
+        cantidad = stock; // Actualizamos la cantidad
+        console.log("cantidad", parseInt(cantidad));
       }
       if (cantidad <= 0 || cantidad == "") {
         showToast('La cantidad no puede ser menor a 1', 'info', 'INFO');
@@ -250,7 +272,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function addDetallePedidos(idpedido) {
-    
+
     const rows = document.querySelectorAll("#detalle-pedido tr");
     const productos = [];
     let idproducto;
@@ -275,10 +297,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     params.append("idpedido", idpedido);
     productos.forEach((producto, index) => {
       params.append(`productos[${index}][idproducto]`, producto.idproducto);
-      params.append(`productos[${index}][cantidad_producto]`, producto.cantidad);
+      params.append(`productos[${index}][cantidad_producto]`, parseInt(producto.cantidad));
       params.append(`productos[${index}][unidad_medida]`, producto.undMedida);
       params.append(`productos[${index}][precio_unitario]`, producto.precioUnitario);
     });
+    console.log("productos", productos);
+    console.log(idpedido);
 
     const options = {
       method: "POST",
@@ -290,7 +314,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         `../../controller/detallepedido.controller.php`,
         options
       );
-      return response.json();
+      const data = await response.json();
+      console.log(data);
+      return data;
     } catch (e) {
       console.error(e);
     }
@@ -335,6 +361,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
           showToast(`Pedido registrado con éxito\n ID: ${idpedido}`, 'success', 'SUCCESS');
           $("#registrar-pedido").reset();
+          $("#addProducto").setAttribute("disabled", true);
           $("#detalle-pedido").innerHTML = "";
         }
       }
@@ -344,4 +371,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   $("#cancelarPedido").addEventListener("click", () => {
     $("#detalle-pedido").innerHTML = "";
   });
+
 }); /* fin del evento DOMcontenteLoaded */

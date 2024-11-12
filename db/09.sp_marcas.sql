@@ -2,14 +2,15 @@ USE distribumax;
 
 -- REGISTRAR MARCAS
 
-
+DROP PROCEDURE IF EXISTS sp_registrar_marca;
 CREATE PROCEDURE sp_registrar_marca(
     IN _idproveedor INT,
-    IN _marca VARCHAR(150)
+    IN _marca       VARCHAR(150),
+    IN _idcategoria INT
 )
 BEGIN
-    INSERT INTO marcas (idproveedor,marca) 
-    VALUES (_idproveedor,_marca);
+    INSERT INTO marcas (idproveedor,marca,idcategoria) 
+    VALUES (_idproveedor,_marca,_idcategoria);
 END;
 
 -- ACTUALIZAR MARCAS
@@ -59,9 +60,27 @@ END;
 
 
 -- LISTAR MARCAS
-CREATE VIEW vw_listar_marcas AS
-SELECT idmarca, marca
-FROM marcas
-WHERE
-    estado = '1'
-ORDER BY marca ASC;
+-- CREATE VIEW vw_listar_marcas AS
+-- SELECT idmarca, marca
+-- FROM marcas
+-- WHERE
+--     estado = '1'
+-- ORDER BY marca ASC;
+
+CREATE PROCEDURE sp_listar_marca()
+BEGIN
+    SELECT 
+        p.proveedor AS nombre_proveedor,
+        p.contacto_principal,
+        m.marca,
+        CASE m.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS 'Estado'
+    FROM 
+        marcas m
+    INNER JOIN 
+        proveedores p ON m.idproveedor = p.idproveedor;
+END;
+
+CALL sp_listar_marca();

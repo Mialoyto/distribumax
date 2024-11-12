@@ -1,5 +1,7 @@
 {
     "require": {
+        "datatables/datatables": "*",
+        "phpoffice/phpspreadsheet": "^3.3",
         "dompdf/dompdf": "^3.0"
     }
 }

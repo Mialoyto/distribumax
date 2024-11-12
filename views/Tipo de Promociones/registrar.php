@@ -18,15 +18,6 @@
             <input type="text" class="form-control" id="descripcion" name="descripcion_tipo" required>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="estado" class="form-label">Estado</label>
-            <select class="form-select" id="estado" name="estado" required>
-              <option value="A">Activo</option>
-              <option value="I">Inactivo</option>
-            </select>
-          </div>
-        </div>
         <!-- Botones -->
          <div class="d-flex justify-content-end">
           <button type="submit" class="btn btn-primary me-2">Registrar Tipo</button>

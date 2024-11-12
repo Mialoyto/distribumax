@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -103,7 +103,7 @@ BEGIN
             END IF;
 
             -- Llama al procedimiento para registrar el movimiento
-            CALL sp_registrarmovimiento_detallepedido(1, _idproducto, 0, 'Ingreso', _cantidad, 'Venta Cancelada');
+            CALL sp_registrarmovimiento_kardex(1, _idproducto, 0,'', 'Ingreso', _cantidad, 'Venta Cancelada');
         END LOOP;
 
         CLOSE cur;
@@ -248,7 +248,8 @@ BEGIN
     LEFT JOIN 
         tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE 
-        p.estado = 'Enviado' AND ve.estado='1'
+        
+          ve.estado='0'
         
        -- Filtra las ventas del día actual
     GROUP BY 
@@ -290,8 +291,70 @@ LEFT JOIN
     productos pr ON pr.idproducto = dp.idproducto
 
 -- Relaciona con la columna idproducto en detalle_pedidos
-WHERE ve.idventa=_idventa;
+WHERE ve.idventa = _idventa;
+END;
 
-END ;
 
+-- buscar un pedido o seleccionar todos
+DROP PROCEDURE IF EXISTS sp_buscar_venta;
+CREATE PROCEDURE sp_buscar_venta(IN _item INT)
+BEGIN
+    SELECT 
+        VE.idventa,
+        VE.idpedido,
+        VE.fecha_venta,
+        VE.subtotal,
+        PO.nombreproducto,
+        DP.cantidad_producto,
+        DP.unidad_medida,
+        DP.precio_unitario,
+        VE.descuento,
+        VE.total_venta,
+        VE.igv,
+        VE.estado
+    FROM 
+        ventas VE
+    LEFT JOIN 
+        pedidos PE ON PE.idpedido = VE.idventa
+    LEFT JOIN 
+        detalle_pedidos DP ON DP.idpedido = VE.idpedido
+    LEFT JOIN 
+        productos PO ON PO.idproducto = DP.idproducto
+    WHERE 
+        (VE.idpedido LIKE CONCAT('%', _item, '%') OR 
+         PE.idpedido LIKE CONCAT('%', _item, '%'))
+        AND DATE(VE.fecha_venta) = CURDATE() 
+        AND VE.estado = '1';
+END;
+
+DROP PROCEDURE IF EXISTS sp_getventas;
+CREATE PROCEDURE  sp_getventas()
+BEGIN
+     SELECT 
+        VE.idventa,
+        VE.idpedido,
+        VE.fecha_venta,
+        VE.subtotal,
+        PO.nombreproducto,
+        DP.cantidad_producto,
+        DP.unidad_medida,
+        DP.precio_unitario,
+        VE.descuento,
+        VE.total_venta,
+        VE.igv,
+        VE.estado,
+        PE.estado
+    FROM 
+        ventas VE
+    LEFT JOIN 
+        pedidos PE ON PE.idpedido = VE.idventa
+    LEFT JOIN 
+        detalle_pedidos DP ON DP.idpedido = VE.idpedido
+    LEFT JOIN 
+        productos PO ON PO.idproducto = DP.idproducto
+    WHERE 
+       
+         DATE(VE.fecha_venta) = CURDATE() 
+         AND VE.estado = '1';
+END;
 

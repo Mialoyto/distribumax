@@ -2,15 +2,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function $(object = null) {
     return document.querySelector(object);
   }
-  const idproducto = $("#searchProducto");
-  let stock = $("#stockactual");
-  let datalist = $("#listProductKardex");
-  let medida = $("#medida");
-  let cantidad = $("#cantidad");
+  const inputProducto = $("#searchProducto");
+  const stock = $("#stockactual");
+  const datalist = $("#listProductKardex");
+  const medida = $("#medida");
+  const cantidad = $("#cantidad");
+  const loteProducto = $("#loteP");
+  const fechaVencimiento = $("#fechaVP");
+  let idproducto;
 
   let producto = "";
   // OK ✔️
-  idproducto.addEventListener("input", async (event) => {
+  inputProducto.addEventListener("input", async (event) => {
     producto = event.target.value;
     if (!producto.length == 0) {
       await mostraResultados();
@@ -18,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       datalist.innerHTML = "";
       stock.value = "";
       medida.textContent = "Unidad Medida";
-      idproducto.removeAttribute("producto");
+      inputProducto.removeAttribute("producto");
     }
   });
   // OK ✔️
@@ -47,24 +50,81 @@ document.addEventListener("DOMContentLoaded", () => {
       response.data.forEach((item) => {
         const li = document.createElement("li");
         li.classList.add("list-group-item");
-        li.innerHTML = `<b>${item.codigo}</b>-${item.nombreproducto}
-				<h6 class="btn btn-secondary btn-sm h-25 d-inline-block">${item.unidadmedida}</h6> `;
+        li.innerHTML = `${item.nombreproducto}
+				<span class="badge rounded-pill text-bg-primary">${item.unidadmedida}</span> `;
         li.setAttribute("data-id", item.idproducto);
         li.addEventListener("click", async () => {
-          idproducto.value = item.nombreproducto;
-          idproducto.setAttribute("producto", item.idproducto);
-          await viewStock(item.stockactual, item.unidadmedida);
+          inputProducto.value = item.nombreproducto;
+          inputProducto.setAttribute("producto", item.idproducto);
+          idproducto = item.idproducto;
+          await renderLote(idproducto);
+          // await viewStock(item.stockactual, item.unidadmedida);
           datalist.innerHTML = "";
+          // await render();
+
         });
         datalist.appendChild(li);
       });
+
     }
   };
-  // OK ✔️
-  async function viewStock(stockactual, unidaMedida) {
-    stock.value = stockactual;
-    medida.textContent = unidaMedida;
+
+  async function renderLote(idproducto) {
+
+    try {
+      const params = new URLSearchParams();
+      params.append('operation', 'searchLote');
+      params.append('_idproducto', idproducto);
+      const response = await fetch(`../../controller/lotes.controller.php?${params}`);
+      const lotes = await response.json();
+      console.log(lotes);
+      if (!lotes) {
+        showToast('No se encontraron lotes para este producto', 'info', 'INFO');
+        return;
+      } else {
+        lotes.forEach(lote => {
+          const option = document.createElement('option');
+          option.value = lote.idlote;
+          option.innerText = lote.numlote;
+          loteProducto.appendChild(option);
+        });
+      }
+
+      return lotes;
+    } catch (e) {
+      console.error(e);
+    }
   }
+
+  loteProducto.addEventListener('change', async () => {
+    const response = await renderLote(idproducto);
+    console.log(response);
+ 
+  });
+
+
+
+
+
+
+
+
+  /*  let id;
+   async function render() {
+     id = idproducto.getAttribute('producto');
+     console.log(id);
+     const data = await getMovimientoProducto(id);
+     console.log(data)
+     if (data) {
+       await RenderDatatable(data);
+     }
+ 
+   } */
+  // OK ✔️
+  /*   async function viewStock(stockactual, unidaMedida) {
+      stock.value = stockactual;
+      medida.textContent = unidaMedida;
+    } */
 
   // PROBANDO EL REGISTRO DE KARDEX
   let fecha;
@@ -91,25 +151,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /*   $("#cantidad").addEventListener("input", async () => {
-      const data = await searchProducto(producto);
-      console.log(data.data[0].stockactual);
-  
-    }) */
-
   async function validarFormulario() {
-    const data = await searchProducto(producto)
-    const stock = data.data[0].stockactual;
+    // const dato = await mostraResultados();
+    // const data = await searchProducto(producto)
+    const stock = $("#stockactual").value;
+    console.log("stock", stock);
+
     const movimiento = $("#tipomovimiento");
 
     if (stock == 0 && movimiento.value == 'Salida') {
       showToast(`Este producto no cuenta con stock, registre un movimiento tipo 'Ingreso'.`, 'info', 'INFO');
       return;
-    }
-    else if ((stock < cantidad.value) && (movimiento.value == 'Salida')) {
+    } else if (cantidad.value > stock && movimiento.value == 'Salida') {
       showToast(`La cantidad no debe ser mayor al stock actual de ${stock}`, "warning", "WARNING");
       return;
-    } else if (cantidad.value <= 0) {
+    }
+    else if (cantidad.value <= 0) {
       showToast(`La cantidad debe ser mayor a 0`, "warning", "WARNING");
       return;
     } else if (fecha <= new Date().toISOString().split("T")[0]) {
@@ -124,8 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast("El campo lote es obligatorio", "warning", "WARNING", 2500);
       return;
     }
-
-
   }
 
   // funcion para registrar en le kardex 
@@ -156,7 +211,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(e);
     }
   }
-  // FIN DE PRUEBA DE REGISTRO DE KARDEX
 
   // EVENTO DE REGISTRO DE KARDEX
   $("#form-registrar-kardex").addEventListener("submit", async (event) => {

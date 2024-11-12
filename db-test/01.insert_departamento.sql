@@ -1,18 +1,19 @@
-use distribumax;
+
+USE distribumax;
 
 INSERT INTO departamentos (departamento) VALUES 
 ('Amazonas'),
-('Áncash'),
-('Apurímac'),
+('Ancash'),
+('Apurimac'),
 ('Arequipa'),
 ('Ayacucho'),
 ('Cajamarca'),
 ('Callao'),
-('Cusco'),
+('Cuzco'),
 ('Huancavelica'),
-('Huánuco'),
+('Huanuco'),
 ('Ica'),
-('Junín'),
+('Junin'),
 ('La Libertad'),
 ('Lambayeque'),
 ('Lima'),
@@ -22,7 +23,7 @@ INSERT INTO departamentos (departamento) VALUES
 ('Pasco'),
 ('Piura'),
 ('Puno'),
-('San Martín'),
+('San Martin'),
 ('Tacna'),
 ('Tumbes'),
 ('Ucayali');

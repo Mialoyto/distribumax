@@ -18,10 +18,10 @@ class Persona extends Conexion
         }
     }
     // registrar persona
-    public function addPersona($params = []): string
+    public function addPersona($params = []): int
     {
         try {
-            $id = '';
+            $id = -1;
             $tsql = "CALL spu_registrar_personas (?, ?, ?, ?, ?, ?, ?, ?)";
             $query = $this->pdo->prepare($tsql);
             $query->execute(
@@ -37,11 +37,12 @@ class Persona extends Conexion
                 )
             );
             $row = $query->fetch(PDO::FETCH_ASSOC);
-            $id = $row["id"];
+            $id = $row['idpersona'];
+            return $id;
         } catch (Exception $e) {
             error_log("Error al registrar a la persona" . $e->getMessage());
+            return $id;
         }
-        return $id;
     }
     // ACTUALIZAR PERSONA
     public function updatePersona($params = []): bool
@@ -105,13 +106,30 @@ class Persona extends Conexion
             $e->getCode();
         }
     }
+    public function search($params = [])
+    {
+        try {
+            $tsql = "CALL sp_buscar_persona_cliente (?, ?)";
+            $query = $this->pdo->prepare($tsql);
+            $query->execute(array(
+                $params['idtipodocumento'],
+                $params['idpersonanrodoc']
+            ));
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            $e->getCode();
+        }
+    }
 
-    public function getAll(){
-        try{
-            $query=$this->pdo->prepare("CALL sp_listar_personas");
+
+
+    public function getAll()
+    {
+        try {
+            $query = $this->pdo->prepare("CALL sp_listar_personas");
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             die($e->getMessage());
         }
     }

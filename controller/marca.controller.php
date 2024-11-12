@@ -8,7 +8,9 @@ if (isset($_POST['operation'])) {
     switch ($_POST['operation']) {
         case 'addMarca':
             $datos = [
-                'marca' => $_POST['marca']
+                'idproveedor'    => $_POST['idproveedor'],
+                'marca'          => $_POST['marca'],
+                'idcategoria'    => $_POST['idcategoria']
             ];
             echo json_encode($marca->addMarca($datos));
             break;

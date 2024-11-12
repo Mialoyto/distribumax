@@ -5,19 +5,31 @@ require_once '../model/Empresa.php';
 $empresa = new Empresas();
 
 
-if(isset($_GET['operation'])){
-  switch($_GET['operation']){
+if (isset($_GET['operation'])) {
+  switch ($_GET['operation']) {
     case 'getAll':
       echo json_encode($empresa->getAll());
+      break;
+
+    case 'search':
+      // Preparar el RUC que viene en la solicitud
+      $dato = [
+        'ruc' => $_GET['ruc']
+      ];
+      $entidades = $empresa->search($dato);
+
+      echo json_encode($entidades);
       break;
   }
 }
 
 
-if(isset($_POST['operation'])){
-  switch($_POST['operation']){
+
+if (isset($_POST['operation'])) {
+  switch ($_POST['operation']) {
     case 'add':
-      $datos=[
+      $datos = [
+        'idtipodocumento' => $_POST['idtipodocumento'],
         'idempresaruc' => $_POST['idempresaruc'],
         'iddistrito'   => $_POST['iddistrito'],
         'razonsocial'  => $_POST['razonsocial'],
@@ -25,22 +37,23 @@ if(isset($_POST['operation'])){
         'email'        => $_POST['email'],
         'telefono'     => $_POST['telefono']
       ];
-      
- 
-        echo json_encode($empresa->add($datos));
-  
-    break;
+
+
+      $id = $empresa->add($datos);
+      $resultado = ['idempresa' => $id];
+      echo json_encode($resultado);
+      break;
     case 'upEstado':
-      $datos=[
-        'estado' =>$_POST['estado'],
-        'idempresaruc' =>$_POST['idempresaruc']
+      $datos = [
+        'estado' => $_POST['estado'],
+        'idempresaruc' => $_POST['idempresaruc']
       ];
       echo json_encode($empresa->upEstado($datos));
-    break;
+      break;
 
     case 'upEmpresa':
-      $datos=[
-        
+      $datos = [
+
         'iddistrito'   => $_POST['iddistrito'],
         'razonsocial'  => $_POST['razonsocial'],
         'direccion'    => $_POST['direccion'],
@@ -48,18 +61,12 @@ if(isset($_POST['operation'])){
         'telefono'     => $_POST['telefono'],
         'idempresaruc' => $_POST['idempresaruc']
       ];
-      
- 
-        echo json_encode($empresa->UpEmpresa($datos));
-    break;
+
+
+      echo json_encode($empresa->UpEmpresa($datos));
+      break;
     case 'getByID':
-      echo json_encode($empresa->getByID(['idempresaruc'=>$_POST['idempresaruc']]));
-    break;
-
-    
-
-   
+      echo json_encode($empresa->getByID(['idempresaruc' => $_POST['idempresaruc']]));
+      break;
   }
 }
-
-

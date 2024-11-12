@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROOVEDORES
@@ -78,8 +78,31 @@ BEGIN
     SELECT 
         PROV.idproveedor,
         PROV.idempresa,
-        PROV.proveedor
+        PROV.proveedor,
+        PROV.contacto_principal,
+        PROV.telefono_contacto,
+        PROV.direccion,
+        PROV.email
     FROM proveedores PROV
     WHERE (PROV.proveedor LIKE CONCAT('%',_searchProveedor,'%') OR PROV.idempresa LIKE CONCAT('%',_searchProveedor,'%'))
     AND PROV.estado = '1';
 END;
+
+DROP PROCEDURE IF EXISTS sp_listar_proveedor;
+
+CREATE PROCEDURE sp_listar_proveedor()
+BEGIN
+    SELECT 
+        empresas.idempresaruc,
+        empresas.razonsocial,
+        proveedores.idproveedor,
+        proveedores.proveedor,
+        proveedores.contacto_principal,
+        proveedores.telefono_contacto,
+        proveedores.direccion,
+        proveedores.email
+    FROM proveedores
+    INNER JOIN empresas ON empresas.idempresaruc = proveedores.idempresa;
+END;
+
+CALL sp_listar_proveedor;

@@ -59,6 +59,7 @@ BEGIN
         ORDER BY idvehiculo DESC;
 END;
 
+CALL sp_listar_vehiculo;
 
 -- buscador de usuarios, para el rol conductor
 DROP PROCEDURE IF EXISTS `sp_buscar_conductor`;

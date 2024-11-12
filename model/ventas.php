@@ -56,6 +56,7 @@ class Ventas extends Conexion
 			die($e->getMessage());
 		}
 	}
+
 	public function historial()
 	{
 		try {
@@ -90,6 +91,26 @@ class Ventas extends Conexion
 			));
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function buscarventa($params=[]){
+		try{
+			$query=$this->pdo->prepare("call sp_buscar_venta(?)");
+			$query->execute(array($params['item']));
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		}catch(Exception $e){
+			die($e->getMessage());
+		}
+	}
+	
+	public function getventas(){
+		try{
+			$query=$this->pdo->prepare("call sp_getventas");
+			$query->execute();
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		}catch(Exception $e){
 			die($e->getMessage());
 		}
 	}

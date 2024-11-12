@@ -1,5 +1,5 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
-USE distribuMax;
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
+USE distribumax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
@@ -240,6 +240,7 @@ CALL sp_registrar_usuario ( 26558001, 2, 'usuario', 'admin' );
 CALL sp_registrar_usuario ( 26558002, 3, 'conductor', 'admin' );
 
 CALL sp_registrar_usuario ( 26558003, 4, 'vendedor', 'admin' );
+CALL sp_registrar_usuario(26558015,3,'almacen','admin');
 
 CALL sp_actualizar_usuario (
     'administrador',
@@ -341,10 +342,6 @@ CALL sp_detalle_promociones_registrar (2, 4, 5);
 CALL sp_detalle_promociones_registrar (2, 12, 5);
 
 CALL sp_detalle_promociones_registrar (2, 10, 5);
-/* CALL sp_detalle_promociones_registrar (2,18, 5);
-CALL sp_detalle_promociones_registrar (2,19, 5);
-CALL sp_detalle_promociones_registrar (2,20, 5);  */
-
 CALL sp_registrar_vehiculo (
     1, -- ID del usuario (reemplaza con el ID correcto)
     'Toyota', -- Marca del vehículo

@@ -69,7 +69,7 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_listar_usuarios` ()   BEGIN
     SELECT 
         p.idpersonanrodoc,
-        r.rol AS nombre_rol,
+        pf.perfil AS perfil,
         u.nombre_usuario,
         u.estado
     FROM 
@@ -77,7 +77,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_listar_usuarios` ()   BEGIN
     JOIN 
         personas p ON u.idpersona = p.idpersonanrodoc
     JOIN 
-        roles r ON u.idrol = r.idrol;
+        perfiles pf ON pf.idperfil = pf.idperfil;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_producto_reporte` (IN `_idproducto` INT)   BEGIN
@@ -411,7 +411,7 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_conductor` (IN `_item` VARCHAR(80))   BEGIN
     SELECT 
         us.idusuario,
-        rl.idrol,
+        rl. idperfil,
         rl.rol,
         pe.nombres,
         CONCAT(pe.appaterno, ' ', pe.apmaterno) AS apellidos,  -- Concatenación de apellidos
@@ -420,7 +420,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_conductor` (IN `_item` VA
     FROM 
         usuarios us
     INNER JOIN 
-        roles rl ON us.idrol = rl.idrol
+        perfil rl ON us. idperfil = rl. idperfil
     INNER JOIN 
         personas pe ON pe.idpersonanrodoc = us.idpersona
     WHERE 
@@ -1030,10 +1030,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrar_subcategoria` (IN `_id
     VALUES (_idcategoria, _subcategoria);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrar_usuario` (IN `_idpersona` VARCHAR(11), IN `_idrol` INT, IN `_nombre_usuario` VARCHAR(100), IN `_password_usuario` VARCHAR(150))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrar_usuario` (IN `_idpersona` VARCHAR(11), IN `_ idperfil` INT, IN `_nombre_usuario` VARCHAR(100), IN `_password_usuario` VARCHAR(150))   BEGIN
 	INSERT INTO usuarios 
-    (idpersona, idrol, nombre_usuario, password_usuario) 
-    VALUES (_idpersona, _idrol, _nombre_usuario, _password_usuario);
+    (idpersona,  idperfil, nombre_usuario, password_usuario) 
+    VALUES (_idpersona, _ idperfil, _nombre_usuario, _password_usuario);
     SELECT LAST_INSERT_ID() AS idusuario;
 END$$
 
@@ -1073,7 +1073,7 @@ SELECT
     USU.password_usuario
     FROM usuarios USU
 	INNER JOIN personas PER ON USU.idpersona = PER.idpersonanrodoc
-    INNER JOIN roles ROL	ON USU.idrol = ROL.idrol
+    INNER JOIN perfil ROL	ON USU. idperfil = ROL. idperfil
     WHERE USU.nombre_usuario = _nombre_usuario AND USU.estado=1;
 END$$
 
@@ -3249,12 +3249,12 @@ INSERT INTO `empresas` (`idempresaruc`, `iddistrito`, `razonsocial`, `direccion`
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `entidades_roles`
+-- Estructura de tabla para la tabla `entidades_perfil`
 --
 
-CREATE TABLE `entidades_roles` (
+CREATE TABLE `entidades_perfil` (
   `id_entidad_rol` int(11) NOT NULL,
-  `idrol` int(11) NOT NULL,
+  ` idperfil` int(11) NOT NULL,
   `idacceso` int(11) NOT NULL,
   `create_at` datetime NOT NULL DEFAULT current_timestamp(),
   `update_at` datetime DEFAULT NULL,
@@ -3741,11 +3741,11 @@ INSERT INTO `provincias` (`idprovincia`, `iddepartamento`, `provincia`, `create_
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `roles`
+-- Estructura de tabla para la tabla `perfil`
 --
 
-CREATE TABLE `roles` (
-  `idrol` int(11) NOT NULL,
+CREATE TABLE `perfil` (
+  ` idperfil` int(11) NOT NULL,
   `rol` varchar(100) NOT NULL,
   `create_at` datetime NOT NULL DEFAULT current_timestamp(),
   `update_at` datetime DEFAULT NULL,
@@ -3753,10 +3753,10 @@ CREATE TABLE `roles` (
 ) ;
 
 --
--- Volcado de datos para la tabla `roles`
+-- Volcado de datos para la tabla `perfil`
 --
 
-INSERT INTO `roles` (`idrol`, `rol`, `create_at`, `update_at`, `estado`) VALUES
+INSERT INTO `perfil` (` idperfil`, `rol`, `create_at`, `update_at`, `estado`) VALUES
 (1, 'Administrador', '2024-10-11 16:04:10', NULL, '1'),
 (2, 'Usuario', '2024-10-11 16:04:10', NULL, '1'),
 (3, 'Moderador', '2024-10-11 16:04:10', NULL, '1'),
@@ -3906,7 +3906,7 @@ INSERT INTO `unidades_medidas` (`idunidadmedida`, `unidadmedida`, `create_at`, `
 CREATE TABLE `usuarios` (
   `idusuario` int(11) NOT NULL,
   `idpersona` char(11) NOT NULL,
-  `idrol` int(11) NOT NULL,
+  ` idperfil` int(11) NOT NULL,
   `nombre_usuario` varchar(100) NOT NULL,
   `password_usuario` varchar(150) NOT NULL,
   `create_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -3918,7 +3918,7 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`idusuario`, `idpersona`, `idrol`, `nombre_usuario`, `password_usuario`, `create_at`, `update_at`, `estado`) VALUES
+INSERT INTO `usuarios` (`idusuario`, `idpersona`, ` idperfil`, `nombre_usuario`, `password_usuario`, `create_at`, `update_at`, `estado`) VALUES
 (1, '26558000', 2, 'admin', '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm', '2024-10-11 16:04:21', '2024-10-11 16:04:21', '1');
 
 -- --------------------------------------------------------
@@ -4097,11 +4097,11 @@ CREATE TABLE `vw_listar_productos` (
 -- --------------------------------------------------------
 
 --
--- Estructura Stand-in para la vista `vw_listar_roles`
+-- Estructura Stand-in para la vista `vw_listar_perfil`
 -- (Véase abajo para la vista actual)
 --
-CREATE TABLE `vw_listar_roles` (
-`idrol` int(11)
+CREATE TABLE `vw_listar_perfil` (
+` idperfil` int(11)
 ,`rol` varchar(100)
 );
 
@@ -4173,11 +4173,11 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Estructura para la vista `vw_listar_roles`
+-- Estructura para la vista `vw_listar_perfil`
 --
-DROP TABLE IF EXISTS `vw_listar_roles`;
+DROP TABLE IF EXISTS `vw_listar_perfil`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_listar_roles`  AS SELECT `roles`.`idrol` AS `idrol`, `roles`.`rol` AS `rol` FROM `roles` WHERE `roles`.`estado` = '1' ORDER BY `roles`.`rol` ASC ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_listar_perfil`  AS SELECT `perfil`.` idperfil` AS ` idperfil`, `perfil`.`rol` AS `rol` FROM `perfil` WHERE `perfil`.`estado` = '1' ORDER BY `perfil`.`rol` ASC ;
 
 -- --------------------------------------------------------
 
@@ -4284,11 +4284,11 @@ ALTER TABLE `empresas`
   ADD KEY `fk_distrito_emp` (`iddistrito`);
 
 --
--- Indices de la tabla `entidades_roles`
+-- Indices de la tabla `entidades_perfil`
 --
-ALTER TABLE `entidades_roles`
+ALTER TABLE `entidades_perfil`
   ADD PRIMARY KEY (`id_entidad_rol`),
-  ADD KEY `fk_idrol_ent_rol` (`idrol`),
+  ADD KEY `fk_ idperfil_ent_rol` (` idperfil`),
   ADD KEY `fk_idacceso_ent_rol` (`idacceso`);
 
 --
@@ -4370,10 +4370,10 @@ ALTER TABLE `provincias`
   ADD KEY `fk_iddepartamento_prov` (`iddepartamento`);
 
 --
--- Indices de la tabla `roles`
+-- Indices de la tabla `perfil`
 --
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`idrol`),
+ALTER TABLE `perfil`
+  ADD PRIMARY KEY (` idperfil`),
   ADD UNIQUE KEY `uk_rol` (`rol`);
 
 --
@@ -4508,9 +4508,9 @@ ALTER TABLE `distritos`
   MODIFY `iddistrito` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `entidades_roles`
+-- AUTO_INCREMENT de la tabla `entidades_perfil`
 --
-ALTER TABLE `entidades_roles`
+ALTER TABLE `entidades_perfil`
   MODIFY `id_entidad_rol` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -4562,10 +4562,10 @@ ALTER TABLE `provincias`
   MODIFY `idprovincia` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `roles`
+-- AUTO_INCREMENT de la tabla `perfil`
 --
-ALTER TABLE `roles`
-  MODIFY `idrol` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `perfil`
+  MODIFY ` idperfil` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `subcategorias`
@@ -4680,11 +4680,11 @@ ALTER TABLE `empresas`
   ADD CONSTRAINT `fk_distrito_emp` FOREIGN KEY (`iddistrito`) REFERENCES `distritos` (`iddistrito`);
 
 --
--- Filtros para la tabla `entidades_roles`
+-- Filtros para la tabla `entidades_perfil`
 --
-ALTER TABLE `entidades_roles`
+ALTER TABLE `entidades_perfil`
   ADD CONSTRAINT `fk_idacceso_ent_rol` FOREIGN KEY (`idacceso`) REFERENCES `accesos` (`idacceso`),
-  ADD CONSTRAINT `fk_idrol_ent_rol` FOREIGN KEY (`idrol`) REFERENCES `roles` (`idrol`);
+  ADD CONSTRAINT `fk_ idperfil_ent_rol` FOREIGN KEY (` idperfil`) REFERENCES `perfil` (` idperfil`);
 
 --
 -- Filtros para la tabla `kardex`

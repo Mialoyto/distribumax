@@ -43,7 +43,7 @@ switch ($verbo) {
                 case 'addUsuario':
                     $datosEnviar = [
                         "idpersona" => $_POST["idpersona"],
-                        "idrol" => $_POST["idrol"],
+                        " idperfil" => $_POST[" idperfil"],
                         "nombre_usuario" => $_POST["nombre_usuario"],
                         "password_usuario" => $_POST["password_usuario"]
                     ];
@@ -53,14 +53,15 @@ switch ($verbo) {
 
                 case 'login':
                     $login = [
-                        'acceso' => false,
+                        'estado' => false,
                         'idusuario' => "",
                         'dni'       => "",
                         "appaterno" => "",
                         "apmaterno" => "",
                         "nombres"   => "",
-                        "rol"       => "",
-                        "status"    => ""
+                        "perfil"       => "",
+                        "status"    => "",
+                        "accesos"   => []
                     ];
                     $dato = ['nombre_usuario' => $_POST['nombre_usuario']];
                     $row = $usuario->login($dato);
@@ -71,13 +72,17 @@ switch ($verbo) {
                         $claveEncripta = $row[0]['password_usuario'];
                         $claveAcceso = $_POST['password_usuario'];
                         if (password_verify($claveAcceso, $claveEncripta)) {
-                            $login['acceso'] = true;
+                            $login['estado'] = true;
                             $login['idusuario'] = $row[0]['idusuario'];
                             $login['dni']       = $row[0]['dni'];
                             $login['appaterno'] = $row[0]['appaterno'];
                             $login['apmaterno'] = $row[0]['apmaterno'];
                             $login['nombres']   = $row[0]['nombres'];
-                            $login['rol']       = $row[0]['rol'];
+                            $login['perfil']    = $row[0]['perfil'];
+
+                        // Los accesos se obtienen desde una consulta
+                        $accesos = $usuario->obtenerPermisos(["idperfil" => $row[0]['idperfil']]);
+                        $login["accesos"] = $accesos;
                         } else {
                             $login['status'] = 'Contraseña incorrecta';
                         }

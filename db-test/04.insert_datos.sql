@@ -132,14 +132,6 @@ CALL sp_registrar_marca (3, 'Babysec',6);
 
 CALL sp_registrar_marca (3, 'Ladysoft',6);
 
--- INSERT ROLES
-CALL sp_registrar_roles ('Administrador');
-
-CALL sp_registrar_roles ('Usuario');
-
-CALL sp_registrar_roles ('Conductor');
-
-CALL sp_registrar_roles ('Vendedor');
 
 -- INSERT TIPO DE COMPROBANTES DE PAGO
 CALL sp_tipo_comprobantes_registrar ('Factura');

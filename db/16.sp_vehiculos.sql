@@ -70,7 +70,7 @@ CREATE PROCEDURE `sp_buscar_conductor`(
 BEGIN
     SELECT 
         us.idusuario,
-        rl.idrol,
+        rl. idperfil,
         rl.rol,
         pe.nombres,
         CONCAT(pe.appaterno, ' ', pe.apmaterno) AS apellidos,  -- Concatenación de apellidos
@@ -79,7 +79,7 @@ BEGIN
     FROM 
         usuarios us
     INNER JOIN 
-        roles rl ON us.idrol = rl.idrol
+        perfil rl ON us. idperfil = rl. idperfil
     INNER JOIN 
         personas pe ON pe.idpersonanrodoc = us.idpersona
     WHERE 

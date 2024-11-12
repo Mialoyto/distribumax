@@ -76,7 +76,7 @@ SELECT * FROM detalle_pedidos;
 
 SELECT * FROM personas WHERE idpersonanrodoc = '26558009';
 
-SELECT * FROM roles;
+SELECT * FROM perfil;
 
 DELETE FROM usuarios WHERE idpersona = '26558000';
 
@@ -182,7 +182,7 @@ SHOW COLUMNS FROM tipos_promociones;
 
 DELETE FROM usuarios WHERE idpersona = '26558000';
 
-SELECT * FROM vw_listar_roles;
+SELECT * FROM vw_listar_perfil;
 -- CONSULTAS
 SELECT * FROM provincias WHERE provincia = 'Chincha';
 

@@ -36,7 +36,7 @@ class Usuario extends Conexion
             $query->execute(
                 array(
                     $params["idpersona"],
-                    $params["idrol"],
+                    $params[" idperfil"],
                     $params["nombre_usuario"],
                     password_hash($params["password_usuario"], PASSWORD_BCRYPT)
                 )
@@ -89,4 +89,18 @@ class Usuario extends Conexion
             die($e->getMessage());
         }
     }
+
+    public function obtenerPermisos($params = []): array
+  {
+    try {
+      $cmd = $this->pdo->prepare("CALL spu_obtener_acceso_usuario(?)");
+      $cmd->execute(
+        array($params['idperfil'])
+      );
+      return $cmd->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      error_log("Error: " . $e->getMessage());
+      return [];
+    }
+  }
 }

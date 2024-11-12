@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(isset($_SESSION['login']) && $_SESSION['login']['acceso'] == true){
+if(isset($_SESSION['login']) && $_SESSION['login']['estado'] == true){
     header("Location: dashboard.php");
 }
 ?>

@@ -3,17 +3,20 @@ USE distribumax;
 -- Registrar 
 
 CREATE PROCEDURE sp_registrar_usuario(
-   IN   _idpersona			VARCHAR(11),
-   IN 	_idrol				INT,
-   IN   _nombre_usuario		VARCHAR(100),
-   IN   _password_usuario	VARCHAR(150)	
+   IN   _idpersona          VARCHAR(11),
+   IN   _idperfil           INT,
+   IN   _nombre_usuario     VARCHAR(100),
+   IN   _password_usuario   VARCHAR(150)  
 )
 BEGIN
 	INSERT INTO usuarios 
-    (idpersona, idrol, nombre_usuario, password_usuario) 
-    VALUES (_idpersona, _idrol, _nombre_usuario, _password_usuario);
+    (idpersona, idperfil, nombre_usuario, password_usuario) 
+    VALUES (_idpersona, _idperfil, _nombre_usuario, _password_usuario);
+    
     SELECT LAST_INSERT_ID() AS idusuario;
 END;
+
+select * FROM usuarios;
 
 -- Login 
 
@@ -25,12 +28,13 @@ SELECT
     PER.appaterno,
     PER.apmaterno,
     PER.nombres,
-    ROL.rol,
     USU.nombre_usuario,
-    USU.password_usuario
+    USU.password_usuario,
+    USU.perfil,
+    USU.idperfil
     FROM usuarios USU
 	INNER JOIN personas PER ON USU.idpersona = PER.idpersonanrodoc
-    INNER JOIN roles ROL	ON USU.idrol = ROL.idrol
+    INNER JOIN perfiles PERF	ON USU. idperfil = PERF. idperfil
     WHERE USU.nombre_usuario = _nombre_usuario AND USU.estado=1;
 END;
 
@@ -85,7 +89,7 @@ CREATE PROCEDURE spu_listar_usuarios()
 BEGIN
     SELECT 
         p.idpersonanrodoc,
-        r.rol,
+        pf.perfil,
         u.nombre_usuario,
         CASE u.estado
             WHEN '1' THEN 'Activo'
@@ -96,7 +100,7 @@ BEGIN
     INNER JOIN 
         personas p ON u.idpersona = p.idpersonanrodoc
     INNER JOIN 
-        roles r ON u.idrol = r.idrol;
+        perfiles pf ON u. idperfil = pf. idperfil;
 END;
 
 CALL spu_listar_usuarios();

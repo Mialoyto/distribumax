@@ -189,7 +189,8 @@ SELECT
     LOT.fecha_vencimiento,
     PRO.codigo,
     UME.unidadmedida,
-    COALESCE(LOT.stockactual, 0) AS stockactual
+    COALESCE(LOT.stockactual, 0) AS stockactual,
+    LOT.estado
 FROM lotes LOT
 INNER JOIN productos PRO ON PRO.idproducto = LOT.idproducto
 INNER JOIN unidades_medidas UME ON UME.idunidadmedida = PRO.idunidadmedida
@@ -198,7 +199,7 @@ ORDER BY
     LOT.numlote DESC
 LIMIT 10;    
 END;
-
+CALL spu_render_lote (7);
 SELECT * FROM kardex WHERE idproducto = 7;
 select * from lotes WHERE idproducto = 7;
 

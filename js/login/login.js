@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //   alert("revisar json");
               if (!data.acceso) {
                   console.log(data);
-                  // alert(data.status);
+                  alert(data.status);
                 //   alert("Usuario o contraseña incorrectos");
               } else {
                 // alert("Bienvenido");

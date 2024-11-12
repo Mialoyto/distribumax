@@ -15,8 +15,8 @@ BEGIN
     LIMIT 1;
 END ;
 
-CALL getultimostock(7, @stock_actual);
-SELECT @stock_actual;
+-- CALL getultimostock(7, @stock_actual);
+-- SELECT @stock_actual;
 
 -- modificado
 DROP PROCEDURE IF EXISTS sp_registrarmovimiento_kardex;
@@ -32,19 +32,31 @@ CREATE PROCEDURE sp_registrarmovimiento_kardex (
 BEGIN
     DECLARE v_stock_total INT DEFAULT 0;
     DECLARE v_nuevo_stock INT;
+    DECLARE v_idlote INT;
 
-        -- Obtener stock total del producto
+    IF _idlote = '' THEN
+        SET _idlote = NULL;
+    END IF;
+
+    -- si no se pasa el idlote y es un movimiento de ingreso, obtener el lote con la fecha de vencimiento más próxima
+    IF _idlote IS NULL AND _tipomovimiento = 'Ingreso' THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El idlote es obligatorio para movimientos de ingreso';
+    ELSEIF _idlote IS NULL AND _tipomovimiento = 'Salida' THEN
+        SELECT idlote INTO v_idlote
+        FROM lotes
+        WHERE idproducto = _idproducto
+        AND estado != 'Vencido'
+        ORDER BY fecha_vencimiento ASC
+        LIMIT 1;
+    ELSE
+        SET v_idlote = _idlote;
+    END IF;
+
+    -- Obtener stock total del producto
     SELECT IFNULL(SUM(stockactual), 0) INTO v_stock_total
     FROM lotes
     WHERE idproducto = _idproducto
     AND estado != 'Vencido';
-
-    -- Obtener el stock actual específico del lote
-/*     SELECT stockactual INTO v_stock_actual
-    FROM kardex
-    WHERE idproducto = _idproducto AND idlote = _idlote
-    ORDER BY idkardex DESC
-    LIMIT 1; */
 
     -- Si es un movimiento de ingreso
     IF _tipomovimiento = 'Ingreso' THEN
@@ -61,11 +73,11 @@ BEGIN
 
     -- Insertar el registro de movimiento en el kardex
     INSERT INTO kardex (idusuario, idproducto, idlote, stockactual, tipomovimiento, cantidad, motivo)
-    VALUES (_idusuario, _idproducto, _idlote, v_nuevo_stock, _tipomovimiento, _cantidad, _motivo);
+    VALUES (_idusuario, _idproducto, v_idlote, v_nuevo_stock, _tipomovimiento, _cantidad, _motivo);
 END;
 
 
--- CALL sp_registrarmovimiento_kardex(1, 7, 15, 'Ingreso', 100, 'Ingreso de productos');
+-- CALL sp_registrarmovimiento_kardex(1, 7, '', 'Salida', 9, 'Ingreso de productos');
 select * from lotes;
 
 -- -----------------------------------------------------------------------
@@ -163,13 +175,7 @@ END;
 -- CALL sp_registrar_salida_pedido(1, 7, 100, 'Venta por pedido');
 -- CALL spu_render_lote (7);
 
-
-
-
-
-
 -- ---------------------------------------------------------------------
-
 
 -- DROP PROCEDURE IF EXISTS spu_producto_reporte;
 
@@ -252,7 +258,7 @@ stockactual < 20
 AND estado != 'Por agotarse'; */
 
 -- Evita cambiar el estado si ya es 'Por agotarse'
-SELECT
+/* SELECT
     k.idlote, -- Número de lote
     k.idproducto, -- ID del producto
     p.nombreproducto, -- Nombre del producto
@@ -284,6 +290,6 @@ GROUP BY
     p.nombreproducto, -- Agrupar por nombre del producto
     k.estado -- Agrupar por estado
 ORDER BY k.idlote, -- Ordenar por número de lote
-    p.codigo;
+    p.codigo; */
 -- Ordenar también por código de producto
 

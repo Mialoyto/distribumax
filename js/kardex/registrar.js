@@ -82,6 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
         showToast('No se encontraron lotes para este producto', 'info', 'INFO');
         return;
       } else {
+        loteProducto.innerHTML = '';
+        loteProducto.innerHTML = '<option value="">Seleccione un lote</option>';
         lotes.forEach(lote => {
           const option = document.createElement('option');
           option.value = lote.idlote;

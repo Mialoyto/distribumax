@@ -1,3 +1,4 @@
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 CALL sp_registrar_lote(1, 'LOT001', '2025-10-05');
 CALL sp_registrar_lote(1, 'LOT002', '2024-11-15');
@@ -13,6 +14,7 @@ CALL sp_registrar_lote(9, 'LOT009', '2024-11-15');
 CALL sp_registrar_lote(10, 'LOT010','2025-10-14');
 CALL sp_registrar_lote(11, 'LOT011','2025-10-15');
 CALL sp_registrar_lote(12, 'LOT012','2025-10-16');
+CALL sp_registrar_lote(7, 'LOT012','2024-11-16');
 
 
 CALL sp_registrarmovimiento_kardex(1, 1,1,'Ingreso', 100, 'Ingreso de productos adicionales');
@@ -30,6 +32,7 @@ CALL sp_registrarmovimiento_kardex(1, 10,12,'Ingreso',400, 'Ingreso de productos
 CALL sp_registrarmovimiento_kardex(1, 11,13,'Ingreso',425, 'Ingreso de productos adicionales');
 CALL sp_registrarmovimiento_kardex(1, 12,14,'Ingreso',100, 'Ingreso de productos adicionales');
 CALL sp_registrarmovimiento_kardex(1, 7,15,'Ingreso',150, 'Ingreso de productos adicionales');
+CALL sp_registrarmovimiento_kardex(1, 7,9,'Salida',1, 'pedido');
 
 
 SELECT 
@@ -41,10 +44,9 @@ SELECT
     cantidad,
     stockactual,
     motivo
-FROM kardex WHERE idproducto = 7 ORDER BY id DESC LIMIT 10;
+FROM kardex WHERE idproducto = 7 ORDER BY idkardex DESC LIMIT 10;
 
 -- SELECT * FROM lotes WHERE idproducto = 7;
-SELECT * FROM LOTES;
-CALL spu_render_lote (7);
-
--- INSERT INTO lotes (idproducto, numlote, fecha_vencimiento) VALUES (1, 'L-001', '2024-12-31');
+-- SELECT * FROM LOTES;
+-- SE HIZO UN PEDIDO DE 150 UNIDADES DEL PRODUCTO 7 Y EL STOCK ACTUAL DEBE DE SER 299
+CALL spu_render_lote(7);

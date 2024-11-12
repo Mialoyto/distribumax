@@ -479,7 +479,7 @@ CREATE TABLE kardex (
 idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 idusuario INT NOT NULL,
 idproducto INT NOT NULL,
-idlote INT NOT NULL,
+idlote      INT  NULL,
 stockactual INT NULL DEFAULT 0,
 tipomovimiento ENUM('Ingreso', 'Salida') NOT NULL,
 cantidad INT NOT NULL,

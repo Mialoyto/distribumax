@@ -111,8 +111,8 @@ require_once '../../app/config/App.php'
     </div>
 </main>
 
-<script src="http://localhost/distribumax/views/ventas/registrar.php"></script>
 
-<?php
-require_once '../footer.php';
-?>
+<?php require_once '../footer.php';?>
+<script src="http://localhost/distribumax/views/ventas/registrar.php"></script>
+</body>
+</html>

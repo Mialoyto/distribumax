@@ -68,5 +68,12 @@ if (isset($_POST['operation'])) {
     case 'getByID':
       echo json_encode($empresa->getByID(['idempresaruc' => $_POST['idempresaruc']]));
       break;
+    case 'delete':
+        $datos = [
+          'idempresaruc' => $_POST['idempresaruc']
+        ];
+        echo json_encode($empresa->delete($datos));
+        break;
+      
   }
 }

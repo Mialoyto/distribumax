@@ -1,5 +1,5 @@
 <?php
-require_once '../../header.php';
+require_once '../header.php';
 ?>
 <div class="container mt-5">
     <!-- Formulario Completo -->
@@ -51,5 +51,5 @@ require_once '../../header.php';
         </div>
     </div>
 </div>
-<script src="../../js/promociones.js"> </script>
-<?php require_once '../../footer.php';?>
+<script src="http://localhost/distribumax/js/promociones.js"> </script>
+<?php require_once '../footer.php';?>

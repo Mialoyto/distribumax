@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(isset($_SESSION['login']) && $_SESSION['login']['estado'] == true){
-    header("Location: dashboard.php");
+    header("Location: http://localhost/distribumax/views/");
 }
 ?>
 

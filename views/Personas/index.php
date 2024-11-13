@@ -1,4 +1,4 @@
-<?php require_once '../../header.php'; ?>
+<?php require_once '../header.php'; ?>
 <?php require_once '../../app/config/App.php'; ?>
 <main>
     <div class="card mb-4">
@@ -41,8 +41,8 @@
             </div>
         </div>
 </main>
-<script src="../../js/personas/listar.js"></script>
-<?php require_once '../../footer.php'; ?>
+<script src="http://localhost/distribumax/js/personas/listar.js"></script>
+<?php require_once '../footer.php'; ?>
 </body>
 
 </html>

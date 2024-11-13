@@ -1,4 +1,4 @@
-<?php require_once '../../header.php'; ?>
+<?php require_once '../header.php'; ?>
 
 <main>
   <div class="card mb-4">
@@ -33,6 +33,6 @@
   </div>
 </main>
 <script src="../../js/kardex/listar.js"></script>
-<?php require_once '../../footer.php'; ?>
+<?php require_once '../footer.php'; ?>
 </body>
 </html>

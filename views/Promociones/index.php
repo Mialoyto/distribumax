@@ -1,4 +1,4 @@
-<?php require_once '../../header.php'; ?>
+<?php require_once '../header.php'; ?>
 <main>
     <div class="card mb-4">
         <div class="card-header">
@@ -29,7 +29,7 @@
         </div>
     </div>
 </main>
-<script src="../../js/promociones/listar.js"></script>
-<?php require_once '../../footer.php'; ?>
+<script src="http://localhost/distribumax/js/promociones/listar.js"></script>
+<?php require_once '../footer.php'; ?>
 </body>
 </html>

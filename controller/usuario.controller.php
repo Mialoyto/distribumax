@@ -27,7 +27,7 @@ switch ($verbo) {
                 case 'logout':
                     session_unset(); // libera las variables de sesión pero no destruye la sesion
                     session_destroy(); // destruye la sesion actual y sus variables
-                    header("Location:http://localhost/distribumax/dashboard.php");
+                    header("Location:http://localhost/distribumax/index.php");
                     break;
                     case 'getAll':
                         // Llama a la función getAll() y devuelve el resultado

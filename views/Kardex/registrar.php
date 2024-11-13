@@ -1,4 +1,4 @@
-<?php require_once '../../header.php'; ?>
+<?php require_once '../header.php'; ?>
 
 <main>
   <div class="container-fluid px-4">
@@ -78,7 +78,7 @@
 
         <form method="POST" action="#" id="form-registrar-kardex" autocomplete="off">
           <span class="badge text-bg-light text-uppercase text-end " id="iduser" data-id="<?= $_SESSION['login']['idusuario'] ?>">
-            <?= $_SESSION['login']['rol']  ?> :
+            <?= $_SESSION['login']['perfil']  ?> :
             <?= $_SESSION['login']['nombres']  ?>
             <?= $_SESSION['login']['appaterno']  ?>
             <?= $_SESSION['login']['apmaterno']  ?>
@@ -178,10 +178,10 @@
   </div>
 </main>
 
-<?php require_once '../../footer.php'; ?>
-<script src="../../js/kardex/registrar.js"></script>
-<script src="../../js/kardex/listar-producto-kardex.js"></script>
-<script src="../../js/kardex/registrar-lote.js"></script>
+<?php require_once '../footer.php'; ?>
+<script src="http://localhost/distribumax/js/kardex/registrar.js"></script>
+<script src="http://localhost/distribumaxjs/kardex/listar-producto-kardex.js"></script>
+<script src="http://localhost/distribumaxjs/kardex/registrar-lote.js"></script>
 </body>
 
 </html>

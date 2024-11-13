@@ -1,4 +1,4 @@
-<?php require_once '../../header.php'; ?>
+<?php require_once '../header.php'; ?>
 <main>
   <div class="container mt-4">
     <!-- Formulario en un solo card -->
@@ -11,7 +11,7 @@
         <form method="POST" action="#" id="registrar-pedido" autocomplete="off">
           <!-- Sección de Registro de Pedido -->
           <span class="badge text-bg-light text-uppercase text-end " id="idvendedor" data-id="<?= $_SESSION['login']['idusuario'] ?>">
-            <?= $_SESSION['login']['rol']  ?> :
+            <?= $_SESSION['login']['perfil']  ?> :
             <?= $_SESSION['login']['nombres']  ?>
             <?= $_SESSION['login']['appaterno']  ?>
             <?= $_SESSION['login']['apmaterno']  ?>
@@ -129,7 +129,7 @@
     </div>
   </div>
 </main>
-<?php require_once '../../footer.php'; ?>
+<?php require_once '../footer.php'; ?>
 <script type="module" src="http://localhost/distribumax/js/pedidos/pedidos.js"></script>
 
 

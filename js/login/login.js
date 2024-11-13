@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Bienvenido");
 
                   console.log(data);
-                  window.location.href = `./dashboard.php`;
+                  window.location.href = `http://localhost/distribumax/views`;
               }
           });
   });

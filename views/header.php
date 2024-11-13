@@ -1,7 +1,44 @@
 <?php
 session_start();
-if (!isset($_SESSION['login']) || (isset($_SESSION['usuario']) && $_SESSION['usuario']['acceso'])) {
-  header("Location:http://localhost/distribumax/index.php");
+if (!isset($_SESSION['login']) || (isset($_SESSION['usuario']) && $_SESSION['usuario']['estado'] == false)) {
+  header("Location:http://localhost/distribumax");
+} else {
+  // Validación de ruta
+  /*   $url = $_SERVER['REQUEST_URI'];
+  $rutaCompleta = explode("/", $url);
+  $rutaCompleta = array_filter($rutaCompleta);
+  $totalElementos = count($rutaCompleta);
+  var_dump($rutaCompleta);
+  echo "<br> ----------------------------------- <br>";
+
+  // Buscaremos la vistaActual n la listaAcceso
+  $vistaActual = $rutaCompleta[$totalElementos];
+  $listaAccesos = $_SESSION['login']['accesos'];
+
+
+  var_dump($vistaActual);
+  echo "<br> ----------------------------------- <br>";
+  var_dump($listaAccesos);
+  echo "<br> ----------------------------------- <br>";
+  var_dump($totalElementos);
+  echo "<br> ----------------------------------- <br>";
+
+
+  // Validar que existan accesos antes de procesar
+
+  $encontrado = false;
+  $i = 0;
+  while ($i < count($listaAccesos) && !$encontrado) {
+    if ($listaAccesos[$i]['ruta'] == $vistaActual) {
+      $encontrado = true;
+    }
+    $i++;
+  }
+
+  if (!$encontrado) {
+    header("Location:http://localhost/distribumax/Views/");
+    exit();
+  } */
 }
 $host = "http://localhost/distribumax";
 ?>
@@ -17,7 +54,7 @@ $host = "http://localhost/distribumax";
 <title>Distribumax</title>
 
 <link href="<?= $host ?>/css/styles.css" rel="stylesheet" />
-<link href="http://localhost/distribumax/css/list.css" rel="stylesheet"/>
+<link href="http://localhost/distribumax/css/list.css" rel="stylesheet" />
 
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -46,7 +83,7 @@ $host = "http://localhost/distribumax";
 
   <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href=" <?= $host ?>/dashboard.php">Distribumax</a>
+    <a class="navbar-brand ps-3" href=" <?= $host ?>/views">Distribumax</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
       <i class="fas fa-bars"></i>
@@ -85,6 +122,20 @@ $host = "http://localhost/distribumax";
         <div class="sb-sidenav-menu">
           <div class="nav">
             <div class="sb-sidenav-menu-heading">Modulos</div>
+            <?php
+            // foreach ($listaAccesos as $acceso) {
+            // var_dump($acceso);
+            // if ($acceso['sidebaroption '] === 'S') {
+            // echo "<a class='nav-link' href='$host/views/{$acceso['modulo']}/{$acceso['ruta']}'>
+            // <div class='sb-nav-link-icon'><i class='{$acceso['icono']}'></i></div>
+            // {$acceso['texto']}
+            // </a>";
+            // }
+            // }
+
+            ?>
+
+
             <a class="nav-link" href="<?= $host ?>/views/Pedidos/">
               <div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-list fa-lg"></i></div>
               Pedidos
@@ -152,11 +203,8 @@ $host = "http://localhost/distribumax";
               <div class="sb-nav-link-icon"><i class="fa-solid fa-truck-ramp-box fa-lg"></i></div>
               Despacho
             </a>
-
-
           </div>
         </div>
-
-      </nav>
-    </div>
-    <div id="layoutSidenav_content">
+  </nav>
+  </div>
+  <div id="layoutSidenav_content">

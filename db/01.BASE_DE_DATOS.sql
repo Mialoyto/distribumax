@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
@@ -628,6 +628,9 @@ INSERT INTO modulos (modulo) VALUES
 
 -- INSERTAR DATPS A LA TABLA VISTAS
 -- PEDIDOS 
+INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
+    (NULL, 'Home','S','Inicio','fa-solid fa-wallet');
+
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
     (1, 'listar-pedido','S','Pedidos','fa-solid fa-wallet');
 

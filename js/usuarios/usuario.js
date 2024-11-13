@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 
   (() => {
-    fetch(`../../controller/roles.controller.php`)
+    fetch(`../../controller/`)
       .then(response => response.json())
       .then(data => {
         data.forEach(element => {
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         method: 'POST',
         body: formData
       }
-      const response = await fetch(`../../controller/usuario.controller.php`, options);
+      const response = await fetch(`../controller/usuario.controller.php`, options);
       return response.text();
       // console.log(text)
     }

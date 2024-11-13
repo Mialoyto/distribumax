@@ -1,4 +1,4 @@
-<?php require_once '../../header.php';
+<?php require_once '../header.php';
 require_once '../../app/config/App.php'
 ?>
 <main>
@@ -111,8 +111,8 @@ require_once '../../app/config/App.php'
     </div>
 </main>
 
-<script src="../../js/ventas/listar.js"></script>
+<script src="http://localhost/distribumax/views/ventas/registrar.php"></script>
 
 <?php
-require_once '../../footer.php';
+require_once '../footer.php';
 ?>

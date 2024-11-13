@@ -11,7 +11,7 @@
         <form method="POST" action="#" id="registrar-pedido" autocomplete="off">
           <!-- Sección de Registro de Pedido -->
           <span class="badge text-bg-light text-uppercase text-end " id="idvendedor" data-id="<?= $_SESSION['login']['idusuario'] ?>">
-            <?= $_SESSION['login']['rol']  ?> :
+            <?= $_SESSION['login']['perfil']  ?> :
             <?= $_SESSION['login']['nombres']  ?>
             <?= $_SESSION['login']['appaterno']  ?>
             <?= $_SESSION['login']['apmaterno']  ?>

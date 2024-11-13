@@ -78,7 +78,7 @@
 
         <form method="POST" action="#" id="form-registrar-kardex" autocomplete="off">
           <span class="badge text-bg-light text-uppercase text-end " id="iduser" data-id="<?= $_SESSION['login']['idusuario'] ?>">
-            <?= $_SESSION['login']['rol']  ?> :
+            <?= $_SESSION['login']['perfil']  ?> :
             <?= $_SESSION['login']['nombres']  ?>
             <?= $_SESSION['login']['appaterno']  ?>
             <?= $_SESSION['login']['apmaterno']  ?>

@@ -233,14 +233,14 @@ CALL spu_registrar_personas (
 );
 
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/
-CALL sp_registrar_usuario ( 26558000, 1, 'administrador', 'admin' );
+CALL sp_registrar_usuario ( 26558000, 1,'ADM', 'administrador', 'admin' );
 
-CALL sp_registrar_usuario ( 26558001, 2, 'usuario', 'admin' );
+CALL sp_registrar_usuario ( 26558001, 2,'ADM', 'usuario', 'admin' );
 
-CALL sp_registrar_usuario ( 26558002, 3, 'conductor', 'admin' );
+CALL sp_registrar_usuario ( 26558002, 3,'CHF', 'conductor', 'admin' );
 
-CALL sp_registrar_usuario ( 26558003, 4, 'vendedor', 'admin' );
-CALL sp_registrar_usuario(26558015,3,'almacen','admin');
+CALL sp_registrar_usuario ( 26558003, 4, 'VND','vendedor', 'admin' );
+CALL sp_registrar_usuario(26558015,3,'ALM','almacen','admin');
 
 CALL sp_actualizar_usuario (
     'administrador',

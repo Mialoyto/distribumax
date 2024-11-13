@@ -1,11 +1,10 @@
 -- Active: 1728094991284@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribumax;
-SELECT * from empresas;
+
 USE distribumax;
 -- -----------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS departamentos;
-
 CREATE TABLE departamentos (
     iddepartamento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     departamento VARCHAR(250) NOT NULL,
@@ -17,7 +16,6 @@ CREATE TABLE departamentos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS provincias;
-
 CREATE TABLE provincias (
     idprovincia INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     iddepartamento INT NOT NULL,
@@ -30,7 +28,6 @@ CREATE TABLE provincias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS distritos;
-
 CREATE TABLE distritos (
     iddistrito INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idprovincia INT NOT NULL,
@@ -43,7 +40,6 @@ CREATE TABLE distritos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS categorias;
-
 CREATE TABLE categorias (
     idcategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     categoria VARCHAR(150) NOT NULL,
@@ -55,7 +51,6 @@ CREATE TABLE categorias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS subcategorias;
-
 CREATE TABLE subcategorias (
     idsubcategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idcategoria INT NOT NULL,
@@ -69,7 +64,6 @@ CREATE TABLE subcategorias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS tipo_comprobante_pago;
-
 CREATE TABLE tipo_comprobante_pago (
     idtipocomprobante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     comprobantepago VARCHAR(150) NOT NULL,
@@ -81,7 +75,6 @@ CREATE TABLE tipo_comprobante_pago (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS metodos_pago;
-
 CREATE TABLE metodos_pago (
     idmetodopago INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     metodopago VARCHAR(150) NOT NULL,
@@ -93,7 +86,6 @@ CREATE TABLE metodos_pago (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS accesos;
-
 CREATE TABLE accesos (
     idacceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     modulo VARCHAR(100) NOT NULL,
@@ -106,7 +98,6 @@ CREATE TABLE accesos (
 
 
 DROP TABLE IF EXISTS tipo_documento;
-
 CREATE TABLE tipo_documento (
     idtipodocumento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     documento CHAR(6) NOT NULL,
@@ -119,7 +110,6 @@ CREATE TABLE tipo_documento (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS personas;
-
 CREATE TABLE personas (
     idtipodocumento INT NOT NULL,
     idpersonanrodoc CHAR(11) NOT NULL PRIMARY KEY,
@@ -141,7 +131,6 @@ CREATE TABLE personas (
 
 /* modificaciones en la base tabla tipo doc por defecto la empresas se registraran con ruc */
 DROP TABLES IF EXISTS empresas;
-
 CREATE TABLE empresas (
     idtipodocumento INT NOT NULL,
     idempresaruc BIGINT NOT NULL PRIMARY KEY,
@@ -187,6 +176,7 @@ CREATE TABLE usuarios (
     CONSTRAINT fk_idperfil_usu FOREIGN KEY(idperfil) REFERENCES perfiles(idperfil)
 ) ENGINE = INNODB;
 
+select * from usuarios;
 DROP TABLES IF EXISTS clientes;
 CREATE TABLE clientes (
     idcliente INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -628,67 +618,67 @@ INSERT INTO modulos (modulo) VALUES
 -- INSERTAR DATPS A LA TABLA VISTAS
 -- PEDIDOS 
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (1, 'listar-pedido','S','Pedidos','fa-solid fa-wallet');
+    (1, '../views/Pedidos/index.php','S','Pedidos','fa-solid fa-wallet');
 
 -- VENTAS 
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (2, 'listar-venta','S','Ventas', 'fa-solid fa-wallet');
+    (2, '../views/Ventas/index.php','S','Ventas', 'fa-solid fa-wallet');
 
 -- CLIENTES
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (3, 'listar-cliente','S','Clientes', 'fa-solid fa-wallet');
+    (3, '../views/Clientes/index.php','S','Clientes', 'fa-solid fa-wallet');
 
 -- EMPRESAS
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (4, 'listar-empresa','S','Empresas', 'fa-solid fa-wallet');
+    (4, '../views/Empresas/index.php','S','Empresas', 'fa-solid fa-wallet');
 
 -- PRODUCTOS
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (5, 'listar-producto','S','Productos', 'fa-solid fa-wallet');
+    (5, '../views/Productos/index.php','S','Productos', 'fa-solid fa-wallet');
 
 -- KARDEX
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (6, 'listar-kardex','S','Kardex', 'fa-solid fa-wallet');
+    (6, '../views/Kardex/index.php','S','Kardex', 'fa-solid fa-wallet');
 
 -- PROVEEDORES
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (7, 'listar-proveedor','S','Proveedores', 'fa-solid fa-wallet');
+    (7, '../views/Proveedores/index.php','S','Proveedores', 'fa-solid fa-wallet');
 
 -- PERSONAS
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (8, 'listar-persona','S','Personas', 'fa-solid fa-wallet');
+    (8, '../views/Personas/index.php','S','Personas', 'fa-solid fa-wallet');
 
 -- USUARIOS
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (9, 'listar-usuario','S','Usuarios', 'fa-solid fa-wallet');
+    (9, '../views/Usuarios/index.php','S','Usuarios', 'fa-solid fa-wallet');
 
 -- PROMOCIONES
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (10, 'listar-promocion','S','Promociones', 'fa-solid fa-wallet');
+    (10, '../views/Promociones/index.php','S','Promociones', 'fa-solid fa-wallet');
 
 -- TIPO DE PROMOCIONES
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (11, 'listar-tipopromocion','S','Tipo de Promociones', 'fa-solid fa-wallet');
+    (11, '../views/Tipo de Promociones/index.php','S','Tipo de Promociones', 'fa-solid fa-wallet');
 
 -- CATEGORIA
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (12, 'listar-categoria','S','Categorias', 'fa-solid fa-wallet');
+    (12, '../views/Categorias/index.php','S','Categorias', 'fa-solid fa-wallet');
 
 -- SUBCATEGORIAS
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (13, 'listar-subcategoria','S','Subcategorias', 'fa-solid fa-wallet');
+    (13, '../views/Subcategoria/index.php','S','Subcategorias', 'fa-solid fa-wallet');
 
 -- MARCAS
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (14, 'listar-marca','S','Marcas', 'fa-solid fa-wallet');
+    (14, '../views/Marcas/index.php','S','Marcas', 'fa-solid fa-wallet');
 
 -- VEHICULOS
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (15, 'listar-vehiculo','S','Vehiculos', 'fa-solid fa-wallet');
+    (15, '../views/Vehiculos/index.php','S','Vehiculos', 'fa-solid fa-wallet');
 
 -- DESPACHOS
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (16, 'listar-despacho','S','Despachos', 'fa-solid fa-wallet');
+    (16, '../views/Despacho/index.php','S','Despachos', 'fa-solid fa-wallet');
 
 -- AGREGAR DATOS A LA TABLA PERMISOS
 -- ADMINISTRADOR

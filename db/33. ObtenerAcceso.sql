@@ -1,3 +1,4 @@
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 DROP PROCEDURE IF EXISTS `spu_obtener_acceso_usuario`;
@@ -17,5 +18,19 @@ BEGIN
     WHERE PE.idperfil = _idperfil;
 END;
 
+CREATE PROCEDURE spu_listar_perfiles()
+BEGIN
+    SELECT 
+        idperfil,
+        perfil,
+        nombrecorto
+    FROM perfiles;
+END;
+
+CALL spu_listar_perfiles();
+
+
 -- Ejecuta el procedimiento
 CALL spu_obtener_acceso_usuario(1);
+select * from usuarios;
+select * from perfiles;

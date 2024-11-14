@@ -1,5 +1,5 @@
 <?php
-require_once '../../header.php';
+require_once '../header.php';
 ?>
 
 <main>
@@ -207,10 +207,10 @@ require_once '../../header.php';
     </div>
   </div>
 </main>
-<?php require_once '../../footer.php'; ?>
-<script src="../../js/clientes/registrar-clientes.js"></script>
-<script src="../../js/clientes/registrarPersonas.js"></script>
-<script src="../../js/utils/utils.js"></script>
+<?php require_once '../footer.php'; ?>
+<script src="http://localhost/distribumax/js/clientes/registrarPersonas.js"></script>
+<script src="http://localhost/distribumax/js/clientes/registrar-clientes.js"></script>
+<script src="http://localhost/distribumax/js/utils/utils.js"></script>
 </body>
 
 </html>

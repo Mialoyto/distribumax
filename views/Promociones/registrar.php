@@ -1,4 +1,6 @@
-<?php require_once '../../header.php'; ?>
+<?php
+require_once '../../header.php';
+?>
 <div class="container mt-5">
     <!-- Formulario Completo -->
     <div class="card shadow-lg border-0 rounded-lg">
@@ -83,7 +85,5 @@
         </div>
     </div>
 </div>
-
-<script src="../../js/tipopromociones/registrar.js"> </script>
 <script src="../../js/promociones.js"> </script>
-<?php require_once '../../footer.php'; ?>
+<?php require_once '../../footer.php';?>

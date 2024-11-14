@@ -1,4 +1,4 @@
-<?php require_once '../../header.php'; ?>
+<?php require_once '../header.php'; ?>
 <main>
   <div class="container mt-4">
     <!-- Formulario en un solo card -->
@@ -129,7 +129,7 @@
     </div>
   </div>
 </main>
-<?php require_once '../../footer.php'; ?>
+<?php require_once '../footer.php'; ?>
 <script type="module" src="http://localhost/distribumax/js/pedidos/pedidos.js"></script>
 
 

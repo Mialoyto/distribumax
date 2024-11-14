@@ -1,4 +1,4 @@
-<?php require_once '../../header.php'; ?>
+<?php require_once '../header.php'; ?>
 <?php require_once '../../app/config/App.php'; ?>
 <main>
   <div class="container-fluid px-4">
@@ -77,7 +77,6 @@
     </div>
   </div>
 </main>
-
 <script src="../../js/empresas/listar.js"></script>
 <?php require_once '../../footer.php'; ?>
 </body>

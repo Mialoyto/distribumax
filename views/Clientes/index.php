@@ -1,4 +1,4 @@
-<?php require_once '../../header.php'; ?>
+<?php require_once '../header.php'; ?>
 <?php require_once '../../app/config/App.php'; ?>
 <main>
   <div class="container-fluid px-4">
@@ -76,10 +76,10 @@
     </div>
 </main>
 
-<?php require_once '../../footer.php'; ?>
 
 <!-- Archivo JavaScript que controla la funcionalidad de listado y exportación de clientes -->
-<script src="../../js/clientes/listar-clientes.js"></script>
+<script src="http://localhost/distribumax/js/clientes/listar-clientes.js"></script>
+<?php require_once '../footer.php'; ?>
 
 </body>
 </html>

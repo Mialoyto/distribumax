@@ -1,5 +1,5 @@
 <?php
-require_once '../../header.php';
+require_once '../header.php';
 ?>
 <main>
     <div class="container">
@@ -28,7 +28,7 @@ require_once '../../header.php';
         </div>
     </div><!-- Fin del container -->
 </main>
-<script src="../../js/categorias/listar.js"></script>
-<?php require_once '../../footer.php';?>
+<script src="http://localhost/distribumax/js/categorias/listar.js"></script>
+<?php require_once '../footer.php';?>
 </body>
 </html>

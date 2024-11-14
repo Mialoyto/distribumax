@@ -1,4 +1,4 @@
-<?php require_once '../../header.php'; ?>
+<?php require_once '../header.php'; ?>
 <main>
     <div class="container-fluid mt-5 d-flex justify-content-center">
         <form action="" autocomplete="off" id="form-user">
@@ -77,7 +77,7 @@
         </form>
     </div> <!-- fin fluid -->
 </main>
-<?php require_once '../../footer.php'; ?>
+<?php require_once '../footer.php'; ?>
 <script src="http://localhost/distribumax/js/usuarios/usuario.js"></script>
 </body>
 

@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306
+-- Active: 1728094991284@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribumax;
 
@@ -377,7 +377,7 @@ CREATE TABLE detalle_pedidos (
     CONSTRAINT fk_estado_det_ped CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS kardex;
+-- DROP TABLE IF EXISTS kardex;
 
 /* CREATE TABLE kardex (
     idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -434,13 +434,12 @@ CREATE TABLE lotes (
 ) ENGINE = INNODB;
 
 -- ------------------------------------------------------------------------------------------------------
-
 DROP TABLE IF EXISTS kardex;
 CREATE TABLE kardex (
 idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 idusuario INT NOT NULL,
 idproducto INT NOT NULL,
-idlote INT NOT NULL,
+idlote      INT  NULL,
 stockactual INT NULL DEFAULT 0,
 tipomovimiento ENUM('Ingreso', 'Salida') NOT NULL,
 cantidad INT NOT NULL,
@@ -617,6 +616,9 @@ INSERT INTO modulos (modulo) VALUES
 
 -- INSERTAR DATPS A LA TABLA VISTAS
 -- PEDIDOS 
+INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
+    (NULL, 'Home','S','Inicio','fa-solid fa-wallet');
+
 INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
     (1, '../views/Pedidos/index.php','S','Pedidos','fa-solid fa-wallet');
 

@@ -185,7 +185,7 @@ require_once '../header.php';
   </div>
 </main>
 
-<?php require_once '../../footer.php'; ?>
+<?php require_once '../footer.php'; ?>
 <script src="../../js/ventas/registrar.js"></script>
 
 </body>

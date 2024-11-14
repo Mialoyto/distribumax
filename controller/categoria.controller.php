@@ -10,7 +10,8 @@ if (isset($_POST['operation'])) {
             $datos = [
                 'categoria' => $_POST['categoria']
             ];
-            echo json_encode($categoria->addCategoria($datos));
+            $response = $categoria->addCategoria($datos);
+            echo json_encode($response);
             break;
     }
 }

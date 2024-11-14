@@ -1,13 +1,37 @@
 USE distribumax;
 
 -- REGISTRAR
-
+DROP PROCEDURE IF EXISTS sp_registrar_categoria;
 CREATE PROCEDURE sp_registrar_categoria
 ( IN _categoria  VARCHAR(150)) 
 BEGIN
-    INSERT INTO categorias (categoria)
-        VALUES (_categoria);
+    DECLARE v_categoria VARCHAR(150);
+    DECLARE v_idcategoria INT;
+    DECLARE v_mensaje VARCHAR(100);
+
+    SELECT categoria INTO v_categoria
+    FROM categorias
+    WHERE UPPER(categoria) = UPPER(_categoria);
+
+    IF v_categoria IS NOT NULL THEN
+        SET v_idcategoria = -1;
+        SET v_mensaje = 'La categoria ya existe';
+
+    ELSE
+        INSERT INTO categorias (categoria)
+        VALUES (UPPER(_categoria));
+
+        SET v_idcategoria = LAST_INSERT_ID();
+        SET v_mensaje = 'Categoria registrada correctamente';
+    END IF;
+
+    SELECT v_idcategoria AS idcategoria, v_mensaje AS mensaje;
 END;
+
+CALL sp_registrar_categoria('Carnes');
+SELECT * FROM categorias;
+
+
 
 -- ACTUALIZAR
 CREATE PROCEDURE sp_actualizar_categoria

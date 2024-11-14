@@ -22,18 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(e);
     }
   }
+  // getCategorias();
 
-  getCategorias();
 
+  // BUSCADOR DE PROVEEDORES
   async function getProveedor(proveedor) {
     const params = new URLSearchParams();
     params.append("operation", "getProveedor");
     params.append("proveedor", proveedor);
     try {
-      const response = await fetch(
-        `../../controller/proveedor.controller.php?${params}`
-      );
-      return response.json();
+      const response = await fetch(`../../controller/proveedor.controller.php?${params}`);
+      const data = await response.json();
+      console.log(data);
+      return data;
     } catch (e) {
       console.error(e);
     }
@@ -57,16 +58,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function renderData() {
-    $("#list-proveedor").innerHTML = "";
     const response = await getProveedor(proveedores);
-
+    $("#list-proveedor").innerHTML = "";
     if (response && response.data.length > 0) {
       $("#list-proveedor").style.display = "block";
 
       response.data.forEach((item) => {
         const li = document.createElement("li");
         li.classList.add("list-group-item");
-        li.innerHTML = `${item.proveedor} <h6 class="btn btn-secondary btn-sm h-25 d-inline-block">${item.idempresa}</h6>`;
+        li.innerHTML = `${item.proveedor} <span class="badge text-bg-secondary">${item.idempresa}</span>`;
         li.addEventListener("click", () => {
           $("#list-proveedor").innerHTML = "";
           $("#idproveedor").setAttribute("data-id", item.idproveedor);
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("#form-registrar-marca").addEventListener("submit", async (event) => {
     event.preventDefault();
-  
+
     if (showConfirm("Desea registrar", "Marcas")) {
       await registrarmarca();
       $("#form-registrar-marca").reset();

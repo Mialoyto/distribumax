@@ -388,7 +388,7 @@ CREATE TABLE detalle_pedidos (
     CONSTRAINT fk_estado_det_ped CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS kardex;
+-- DROP TABLE IF EXISTS kardex;
 
 /* CREATE TABLE kardex (
     idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -445,7 +445,6 @@ CREATE TABLE lotes (
 ) ENGINE = INNODB;
 
 -- ------------------------------------------------------------------------------------------------------
-
 DROP TABLE IF EXISTS kardex;
 CREATE TABLE kardex (
 idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,

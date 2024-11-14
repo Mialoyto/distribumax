@@ -32,7 +32,7 @@ CALL sp_registrarmovimiento_kardex(1, 10,12,'Ingreso',400, 'Ingreso de productos
 CALL sp_registrarmovimiento_kardex(1, 11,13,'Ingreso',425, 'Ingreso de productos adicionales');
 CALL sp_registrarmovimiento_kardex(1, 12,14,'Ingreso',100, 'Ingreso de productos adicionales');
 CALL sp_registrarmovimiento_kardex(1, 7,15,'Ingreso',150, 'Ingreso de productos adicionales');
-CALL sp_registrarmovimiento_kardex(1, 7,9,'Salida',1, 'pedido');
+-- CALL sp_registrarmovimiento_kardex(1, 7,9,'Salida',1, 'pedido');
 
 
 SELECT 
@@ -46,7 +46,10 @@ SELECT
     motivo
 FROM kardex WHERE idproducto = 7 ORDER BY idkardex DESC LIMIT 10;
 
--- SELECT * FROM lotes WHERE idproducto = 7;
--- SELECT * FROM LOTES;
+SELECT * FROM lotes WHERE idproducto = 7;
+select * from kardex;
+SELECT * FROM LOTES;
 -- SE HIZO UN PEDIDO DE 150 UNIDADES DEL PRODUCTO 7 Y EL STOCK ACTUAL DEBE DE SER 299
-CALL spu_render_lote(7);
+CALL spu_buscar_lote(7);
+-- select * from lotes where idproducto = 7;
+CALL sp_registrar_salida_pedido(1, 7, 1, 'Venta por pedido');

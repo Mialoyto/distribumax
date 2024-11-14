@@ -4,8 +4,8 @@ require_once '../model/kardex.php';
 
 $kardex = new Kardex();
 header("Content-Type: application/json");
-$verbo = $_SERVER["REQUEST_METHOD"];
-$input = file_get_contents('php://input');
+// $verbo = $_SERVER["REQUEST_METHOD"];
+// $input = file_get_contents('php://input');
 
 if (isset($_POST['operation'])) {
   switch ($_POST['operation']) {
@@ -21,8 +21,7 @@ if (isset($_POST['operation'])) {
       $datosEnviar = [
         'idusuario'         => $_POST['idusuario'],
         'idproducto'        => $_POST['idproducto'],
-        'fecha_vencimiento' => $_POST['fecha_vencimiento'],
-        'numlote'           => $_POST['numlote'],
+        'idlote'           => $_POST['idlote'],
         'tipomovimiento'    => $_POST['tipomovimiento'],
         'cantidad'          => $_POST['cantidad'],
         'motivo'            => $_POST['motivo']

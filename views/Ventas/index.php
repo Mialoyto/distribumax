@@ -113,6 +113,6 @@ require_once '../../app/config/App.php'
 
 
 <?php require_once '../footer.php';?>
-<script src="http://localhost/distribumax/js/ventas/registrar.js"></script>
+<script src="http://localhost/distribumax/js/ventas/listar.js"></script>
 </body>
 </html>

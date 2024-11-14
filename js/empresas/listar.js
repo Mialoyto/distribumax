@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
             RenderDatatableEmpresas();
         } catch (error) {
             console.error('Error al cargar los datos de las empresas:', error);
-            alert('Ocurrió un error al cargar los datos de las empresas.'); // Mensaje de error al usuario
+            // alert('Ocurrió un error al cargar los datos de las empresas.'); // Mensaje de error al usuario
         }
     }
 

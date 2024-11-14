@@ -54,7 +54,7 @@ $host = "http://localhost/distribumax";
 <title>Distribumax</title>
 
 <link href="<?= $host ?>/css/styles.css" rel="stylesheet" />
-<link href="http://localhost/distribumax/css/list.css" rel="stylesheet" />
+<link href="<?= $host ?>/css/list.css" rel="stylesheet" />
 
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"

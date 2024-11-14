@@ -10,7 +10,7 @@
             <h5 class="mb-4">Registro de Promoción</h5>
             <form method="POST" action="#">
                 <div class="row">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6git a mb-3">
                         <label for="idtipopromocion" class="form-label">Tipo de Promoción</label>
                         <select class="form-control" id="idtipopromocion" name="idtipopromocion" required>
                             <option value="">Seleccione un tipo de promoción</option>

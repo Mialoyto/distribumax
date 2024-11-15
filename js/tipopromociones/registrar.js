@@ -60,3 +60,7 @@ formPromocion.addEventListener("submit", async function (e) {
 
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    cargarTiposPromociones();
+});

@@ -25,3 +25,10 @@ if (isset($_GET['operation'])) {
             break;
     }
 }
+
+if (isset($_GET['operation'])){
+    switch($_GET['operation']){
+        case '':
+            
+    }
+}

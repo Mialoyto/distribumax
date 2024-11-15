@@ -47,4 +47,15 @@ class Categoria extends Conexion
             die($e->getMessage());
         }
     }
+
+    public function DeleteCategoria()
+    {
+        try{
+            $sql = "CALL sp_desactivar_categoria()";
+            $query = $this->pdo->prepare($sql);
+            $query->execute();
+        } catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }

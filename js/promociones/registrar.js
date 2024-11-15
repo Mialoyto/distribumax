@@ -1,58 +1,73 @@
-/* document.addEventListener("DOMContentLoaded", function () {
-  async function cargarTiposPromociones() {
-    try {
-      const response = await fetch(
-        "../../controller/tipopromociones.controller.php?operation=getAll"
-      );
-      const tipos = await response.json();
+document.addEventListener("DOMContentLoaded", () => {
+    async function validarDatos() {
+        const idTipoPromocion = idtipopromocion.value.trim(); 
+        const inputDescripcion = descripcion.value.trim(); 
+        const inputFechaInicio = fechaInicio.value.trim(); 
+        const inputFechaFin = fechaFin.value.trim(); 
+        const inputValorDescuento = valorDescuento.value.trim();
 
-      const selectElement = document.getElementById("idtipopromocion");
-
-      // Limpiar el select antes de agregar opciones
-      selectElement.innerHTML =
-        '<option value="">Seleccione un tipo de promoción</option>';
-
-      tipos.forEach((tipo) => {
-        const option = document.createElement("option");
-        option.value = tipo.idtipopromocion; // Asegúrate que coincida con el nombre de la columna de ID
-        option.textContent = tipo.tipopromocion; // Asegúrate que coincida con el nombre de la columna de descripción
-        selectElement.appendChild(option);
-      });
-    } catch (error) {
-      console.error("Error al cargar los tipos de promociones:", error);
-    }
-  }
-  cargarTiposPromociones();
-
-  const formPromocion = document.querySelector("#form-promocion");
-  async function registrarPromocion() {
-    formData.append("operation", "addPromocion");
-
-    try {
-      const response = await fetch(
-        "../../controller/promocion.controller.php",
-        {
-          method: "POST",
-          body: formData,
+        if (!idTipoPromocion || !inputDescripcion || !inputFechaInicio || !inputFechaFin || !inputValorDescuento) {
+            showToast("Todos los campos son obligatorios.", "error", "ERROR");
+            return false;
         }
-      );
-      const result = await response.json();
 
-      if (result.status === "success") {
-        alert("Promoción registrada exitosamente.");
-        $("#modalTipoPromocion").modal("hide");
-        cargarDatos(); // Recargar la lista de promociones
-      } else {
-        alert(result.message || "Error al registrar la promoción.");
-      }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
+        if (new Date(inputFechaInicio) > new Date(inputFechaFin)) {
+            showToast("La fecha de inicio no puede ser posterior a la fecha de fin.", "error", "ERROR");
+            return false;
+        }
+        return true;
     }
-  }
 
-  formPromocion.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    registrarPromocion();
-  });
+    async function registrarPromocion() {
+        const idTipoPromocion = idtipopromocion.value.trim(); 
+        const inputDescripcion = descripcion.value.trim(); 
+        const inputFechaInicio = fechaInicio.value.trim(); 
+        const inputFechaFin = fechaFin.value.trim(); 
+        const inputValorDescuento = valorDescuento.value.trim();
+
+        // Crea los parámetros para el FormData
+        const params = new FormData();
+        params.append("operation", "addPromocion");
+        params.append("idtipopromocion", idTipoPromocion.getAttribute("data-id")); 
+        params.append("descripcion", inputDescripcion);
+        params.append("fechainicio", inputFechaInicio);
+        params.append("fechafin", inputFechaFin);
+        params.append("valor_descuento", inputValorDescuento);
+
+        const options = {
+            method: "POST",
+            body: params,
+        };
+
+        try {
+            const response = await fetch(`../../controller/promocion.controller.php`, options);
+            const data = await response.json(); 
+            console.log(data);
+            return data;
+        } catch (e) {
+            console.error("Error al registrar la promoción:", e);
+        }
+    }
+
+    formPromocion.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        
+        const data = await validarDatos(); 
+
+        if (!data) {
+            return; 
+        } else {
+            if (await showConfirm("Desea registrar la promoción?", "Promociones")) {
+                const data = await registrarPromocion();
+                console.log(data[0]?.idpromocion);
+
+                if (data && data[0]?.idpromocion > 0) {
+                    showToast(`${data[0].mensaje}`, "success", "SUCCESS");
+                    formPromocion.reset(); 
+                } else {
+                    showToast(`${data[0]?.mensaje || "Error al registrar"}`, "error", "ERROR");
+                }
+            }
+        }
+    });
 });
- */

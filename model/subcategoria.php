@@ -29,7 +29,7 @@ class Subcategoria extends Conexion
   public function getAll()
   {
     try {
-      $sql = "SELECT * FROM vw_listar_subcategorias";
+      $sql = "CALL sp_listar_subcategorias()";
       $query = $this->pdo->prepare($sql);
       $query->execute();
       return $query->fetchAll(PDO::FETCH_ASSOC);

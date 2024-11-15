@@ -1,5 +1,5 @@
 <?php
-require_once '../../header.php';
+require_once '../header.php';
 ?>
 <main>
   <div class="container-fluid px-4">
@@ -138,5 +138,5 @@ require_once '../../header.php';
 <script src="../../js/despacho/registrar.js"></script>
 <script src="../../js/Despacho/buscar-pedidos.js"></script>
 <?php
-require_once '../../footer.php';
+require_once '../footer.php';
 ?>

@@ -19,11 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
             //   alert(data.status);
             //   alert("revisar json");
               if (!data.estado) {
-                  console.log(data);
+                  // console.log(data);
                   alert(data.status);
-                //   alert("Usuario o contraseña incorrectos");
+                  alert("Usuario o contraseña incorrectos");
               } else {
-                alert("Bienvenido");
+                // alert("Bienvenido");
 
                   console.log(data);
                   window.location.href = `http://localhost/distribumax/views`;

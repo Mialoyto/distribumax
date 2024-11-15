@@ -75,6 +75,7 @@ END;
 
 
 -- LISTAR CATEGORIAS
+DROP VIEW IF EXISTS vw_listar_categorias;
 CREATE VIEW `vw_listar_categorias` AS
     SELECT
         CAT.categoria,
@@ -84,4 +85,5 @@ CREATE VIEW `vw_listar_categorias` AS
             WHEN '0' THEN 'Inactivo'
         END AS 'Estado'
     FROM categorias CAT
-    WHERE CAT.estado = 1;
+    WHERE CAT.estado = 1
+    ORDER BY CAT.categoria ASC;

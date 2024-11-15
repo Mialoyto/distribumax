@@ -192,7 +192,7 @@ $host = "http://localhost/distribumax";
               Subcategorias
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Marcas/">
-              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-tags-fill"></i></div>
               Marcas
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Vehiculos/">
@@ -205,6 +205,6 @@ $host = "http://localhost/distribumax";
             </a>
           </div>
         </div>
-  </nav>
-  </div>
-  <div id="layoutSidenav_content">
+      </nav>
+    </div>
+    <div id="layoutSidenav_content">

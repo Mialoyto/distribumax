@@ -145,7 +145,7 @@ require_once '../header.php';
           </div>
           <!-- FILA N°02 -->
           <div class="row mt-3">
-            <div class="col-4 mb-3">
+            <div class="col-6 mb-3">
               <div class="form-floating">
                 <input
                   type="text"
@@ -158,25 +158,25 @@ require_once '../header.php';
                 <label for="marca">Marca</label>
               </div>
             </div>
-            <div class="col-4 mb-3">
+            <div class="col-6 mb-3">
               <div class="form-floating">
-                <select name="" id="idcategoria" class="form-select">
-                  <option value=""></option>
+                <select name="" id="idcategoria" class="form-select" required>
+                  <option value="">Seleccione una Categoría</option>
                   <!-- Aquí puedes agregar más opciones de categorías -->
                 </select>
                 <label for="idcategoria">Buscar categoría</label>
               </div>
             </div>
             <!-- select de subcategoria -->
-            <div class="col-4 mb-3">
+           <!--  <div class="col-4 mb-3">
               <div class="form-floating">
                 <select name="" id="idsubcategoria" class="form-select">
                   <option value=""></option>
-                  <!-- Aquí puedes agregar más opciones de categorías -->
+                  
                 </select>
                 <label for="idsubcategoria">Buscar categoría</label>
               </div>
-            </div>
+            </div> -->
 
           </div>
 
@@ -205,5 +205,5 @@ require_once '../header.php';
 </main>
 
 <?php require_once '../footer.php'; ?>
-<script src="http://localhost/distribumax/js/marca/registrar.js"></script>
 <script src="http://localhost/distribumax/js/categorias/registrar-categoria.js"></script>
+<script src="http://localhost/distribumax/js/marca/registrar.js"></script>

@@ -235,8 +235,8 @@ CREATE TABLE marcas (
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_categorias_marca FOREIGN KEY (idcategoria) REFERENCES categorias (idcategoria),
-    CONSTRAINT uk_marca UNIQUE (marca),
-    CONSTRAINT fk_estado_mar CHECK (estado IN ("0", "1"))
+    CONSTRAINT uk_marca UNIQUE (marca,idcategoria),
+    CONSTRAINT fk_estado_mar CHECK (estado IN ('0', '1'))
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS tipos_promociones;

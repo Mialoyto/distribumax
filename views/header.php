@@ -176,7 +176,7 @@ $host = "http://localhost/distribumax";
             </a>
             <div class="sb-sidenav-menu-heading">Módulos reportes</div>
             <a class="nav-link" href="<?= $host ?>/views/Promociones/">
-              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-percent"></i></div>
               Promociones
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Categorias/">

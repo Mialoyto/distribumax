@@ -1,5 +1,5 @@
 <?php
-require_once '../../header.php';
+require_once '../header.php';
 ?>
 <!-- Botón para abrir el modal -->
 <div class="container mt-5">
@@ -62,5 +62,5 @@ require_once '../../header.php';
 </div>
 
 <?php
-require_once '../../footer.php';
+require_once '../footer.php';
 ?>

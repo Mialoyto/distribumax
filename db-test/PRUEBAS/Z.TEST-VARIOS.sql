@@ -5,6 +5,7 @@ select * from subcategorias;
 select * from productos;
 select * from proveedores;
 select * FROM MARCAS;
+select * from tipos_promociones;
 
 
 

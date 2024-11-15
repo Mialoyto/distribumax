@@ -20,27 +20,43 @@ async function cargarTiposPromociones() {
     }
 }
 
-document.querySelector("#form-promocion").addEventListener("submit", async function(e) {
-  e.preventDefault();
+async function addTipoPromocion() {
+    const tipopromocion = document.querySelector("#tipopromocion")
+    const descripcion = document.querySelector("#descripcion")
+    const inputPromocion = tipopromocion.value.trim();
+    const inputDescripcion = descripcion.value.trim();
 
-  const formData = new FormData(this);
+    const params = new FormData();
+    params.append("operation", "addTipoPromocion");
+    params.append("tipopromocion", inputPromocion);
+    params.append("descripcion", inputDescripcion);
+    const options = {
+        method: "POST",
+        body: params,
+    };
+    try{
+        const response = await fetch(`../../controller/tipopromociones.controller.php`, options);
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }catch(e){
+        console.error('Error al registrar la promoción:', e);
+    } 
+}
 
-  try {
-      const response = await fetch('../../controller/tipopromociones.controller.php?operation=addTipoPromocion', {
-          method: 'POST',
-          body: formData
-      });
-      const result = await response.json();
+const formPromocion = document.querySelector("#form-promocion");
+formPromocion.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-      if (result.status === 'success') {
-          alert("Tipo de Promoción registrado exitosamente.");
-          $('#modalTipoPromocion').modal('hide'); // Cierra el modal
-          CargarDatos(); // Recarga la tabla de promociones
-      } else {
-          console.error(result.message);
-          alert("Error al registrar el tipo de promoción.");
-      }
-  } catch (error) {
-      console.error("Error en la solicitud:", error);
-  }
+   if(await showConfirm("Desea registrar", "Tipo de promoción")){
+    const data = await addTipoPromocion();
+    if(data.status === 'success'){
+        alert("Tipo de promoción registrado exitosamente.");
+        $('#modalTipoPromocion').modal('hide');
+        cargarTiposPromociones();
+    }else{
+        alert(data.message || "Error al registrar el tipo de promoción.");
+    }
+
+   }
 });

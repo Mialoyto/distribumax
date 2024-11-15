@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", function() {
     function RenderDatatable() {
         dtpersonas = new DataTable("#table-personas", {
             columnDefs: [
-                { width: "10%", targets: 0 },  // Tipo de documento
-                { width: "10%", targets: 1 },  // Número de documento
-                { width: "10%", targets: 2 },  // Nombres
+                { width: "5%", targets: 0 },  // Tipo de documento
+                { width: "5%", targets: 1 },  // Número de documento
+                { width: "20%", targets: 2 },  // Nombres
                 { width: "15%", targets: 3 },  // Apellido paterno
                 { width: "15%", targets: 4 },  // Apellido materno
                 { width: "20%", targets: 5 },  // Distrito

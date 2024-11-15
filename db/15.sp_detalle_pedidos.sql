@@ -17,57 +17,67 @@ BEGIN
     DECLARE v_descuento             DECIMAL(10, 2) DEFAULT 0.00;
     DECLARE v_subtotal              DECIMAL(10, 2) DEFAULT 0.00;
 
-
     SELECT IFNULL(descuento, 0) INTO v_descuento_unitario
     FROM detalle_promociones
     WHERE idproducto = _idproducto
     LIMIT 1;
-    SET v_descuento = (_cantidad_producto * _precio_unitario) * (v_descuento_unitario / 100);
-    SET _subtotal = (_cantidad_producto * _precio_unitario) - v_descuento;
-    INSERT INTO detalle_pedidos 
-    (idpedido, idproducto, cantidad_producto, unidad_medida, precio_unitario, precio_descuento, subtotal) 
-    VALUES
-    (_idpedido, _idproducto, _cantidad_producto, _unidad_medida, _precio_unitario, v_descuento, _subtotal);
-    SELECT LAST_INSERT_ID() AS iddetallepedido;
+    SET v_descuento = (_cantidad_producto * _precio_unitario) * (v_descuento_unitario /100);
+
+SET
+    _subtotal = (
+        _cantidad_producto * _precio_unitario
+    ) - v_descuento;
+
+INSERT INTO
+    detalle_pedidos (
+        idpedido,
+        idproducto,
+        cantidad_producto,
+        unidad_medida,
+        precio_unitario,
+        precio_descuento,
+        subtotal
+    )
+VALUES (
+        _idpedido,
+        _idproducto,
+        _cantidad_producto,
+        _unidad_medida,
+        _precio_unitario,
+        v_descuento,
+        _subtotal
+    );
+
+SELECT LAST_INSERT_ID() AS iddetallepedido;
+
 END;
 
-
 -- ACTUALIZAR EL STOCK
-DROP TRIGGER IF EXISTS trg_actualizar_stock;
-CREATE TRIGGER trg_actualizar_stock
+
+
+
+DROP TRIGGER IF EXISTS trg_registrar_salida_pedido;
+
+CREATE TRIGGER trg_registrar_salida_pedido
 AFTER INSERT ON detalle_pedidos
 FOR EACH ROW
 BEGIN
-    DECLARE v_stock_actual          INT;
-    DECLARE v_idusuario             INT;
-    DECLARE v_fecha_vencimiento     DATE;
-    DECLARE v_numlote               VARCHAR(60);
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE v_idusuario INT;
+    
+    -- Obtener el idusuario desde la tabla pedidos
+    SELECT p.idusuario INTO v_idusuario
+    FROM pedidos p
+    WHERE p.idpedido = NEW.idpedido;
 
-    SELECT stockactual INTO v_stock_actual
-    FROM kardex
-    WHERE idproducto = NEW.idproducto
-    LIMIT 1;
-
-    SELECT idusuario INTO v_idusuario
-    FROM pedidos
-    WHERE idpedido = NEW.idpedido
-    LIMIT 1;
-
-    SELECT fecha_vencimiento, numlote INTO v_fecha_vencimiento, v_numlote
-    FROM kardex
-    WHERE idproducto = NEW.idproducto
-    AND  stockactual > 0
-    ORDER BY fecha_vencimiento ASC
-    LIMIT 1;
-
-    IF v_stock_actual >= NEW.cantidad_producto THEN
-        CALL sp_registrarmovimiento_kardex
-        (v_idusuario, NEW.idproducto,v_fecha_vencimiento,v_numlote, 'Salida', NEW.cantidad_producto, 'Venta de producto');
-    ELSE
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para esta operación';
-    END IF;
+    -- Llamar al SP con el idusuario obtenido de pedidos
+    CALL sp_registrar_salida_pedido(
+        v_idusuario, 
+        NEW.idproducto, 
+        NEW.cantidad_producto, 
+        'Venta por pedido'
+    );
 END;
-
 
 
 -- ACTUALIZAR DETALLE PEDIDOS
@@ -102,8 +112,6 @@ BEGIN
         WHERE iddetallepedido = _iddetallepedido;
 END;
 
-
-
 -- buscar productos por nombre o codigo y dependiendo del numero de ruc o dni del cliente cambia los precios
 DROP PROCEDURE IF EXISTS ObtenerPrecioProducto;
 
@@ -116,26 +124,39 @@ BEGIN
         PRO.idproducto,
         PRO.codigo,
         PRO.nombreproducto,
-        DET.descuento,
+        CONVERT(DET.descuento, DECIMAL(10, 2)) AS descuento,
         UNDM.unidadmedida,
+        CONCAT(
+            PRO.nombreproducto, ' ',        
+            UNDM.unidadmedida, ' ',         
+            PRO.cantidad_presentacion, 'X', 
+            PRO.peso_unitario               
+        ) AS descripcion,                   
         CASE 
-            WHEN LENGTH(CLI.idempresa) = 11 THEN PRO.precio_mayorista
-            WHEN LENGTH(CLI.idpersona) = 8 THEN PRO.precio_minorista
-        END 
-        AS precio_venta,
-        kAR.stockactual
-    FROM  productos PRO
-        LEFT JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
+            WHEN LENGTH(CLI.idempresa) = 11 THEN CONVERT(PRO.precio_mayorista , DECIMAL(10, 2))
+            WHEN LENGTH(CLI.idpersona) = 8 THEN CONVERT(PRO.precio_minorista ,DECIMAL(10, 2))
+        END AS precio_venta,
+        
+        -- Sumar el stock actual del último movimiento de cada lote
+        SUM(CONVERT(LOTES.stockactual , UNSIGNED INT)) AS stockactual
+    FROM productos PRO
+        INNER JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
         INNER JOIN unidades_medidas UNDM ON PRO.idunidadmedida = UNDM.idunidadmedida
         INNER JOIN clientes CLI ON CLI.idempresa = _cliente_id OR CLI.idpersona = _cliente_id
-        -- kardex
-        INNER JOIN kardex KAR ON KAR.idproducto = PRO.idproducto
-        AND KAR.idkardex = (SELECT MAX(K2.idkardex) FROM kardex K2 WHERE K2.idproducto = PRO.idproducto)
-    WHERE (codigo LIKE CONCAT ('%',_item, '%') OR nombreproducto LIKE CONCAT('%', _item, '%'))
-    AND PRO.estado = '1' 
-    AND KAR.stockactual > 0;
-END ;
+        INNER JOIN lotes LOTES ON LOTES.idproducto = PRO.idproducto
+    WHERE 
+        PRO.nombreproducto LIKE CONCAT('%', _item, '%')
+        AND PRO.estado = '1' 
+        AND LOTES.estado != 'Vencido'
+    GROUP BY 
+        PRO.idproducto, PRO.codigo, PRO.nombreproducto, DET.descuento, UNDM.unidadmedida
+    HAVING 
+        stockactual > 0;  -- Solo mostrar productos con stock actual positivo
+END;
 
+CALL ObtenerPrecioProducto ('26558000', 'casino');
+select * from lotes;
+SELECT * FROM productos;
 
 -- Obtener el Id del pedido y completar la tabla en ventas
 /* ESTO MODIFICO LOYOLA */

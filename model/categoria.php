@@ -11,12 +11,14 @@ class Categoria extends Conexion
         $this->pdo = parent::getConexion();
     }
 
-    public function addCategoria($params = [])
+    public function addCategoria($params = []): array
     {
         try {
-            $query = $this->pdo->prepare("CALL sp_registrar_categoria(?)");
+            $tsql = "CALL sp_registrar_categoria(?)";
+            $query = $this->pdo->prepare($tsql);
             $query->execute(array($params['categoria']));
-            return $query;
+            $resultados = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $resultados;
         } catch (Exception $e) {
             die($e->getMessage());
         }

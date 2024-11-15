@@ -27,3 +27,4 @@
 
 <!-- Utils SweetAlert2 -->
 <script src="http://localhost/distribumax/js/utils/sweetalert.js"></script>
+

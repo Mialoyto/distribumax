@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306
 USE distribumax;
 
 -- --------------------------------------------------------------------------------------------------------------------------------
@@ -14,6 +14,7 @@ SELECT * FROM proveedores;
 SELECT * FROM marcas;
 
 SELECT * FROM subcategorias;
+select * from clientes;
 
 SELECT * FROM unidades_medidas;
 
@@ -34,29 +35,34 @@ SELECT * FROM comprobantes;
 SELECT * FROM tipo_comprobante_pago;
 
 SELECT * FROM vehiculos;
-
+select* from personas;
 SELECT * FROM usuarios;
-
+select * from productos;
+select * from clientes;
 SELECT * FROM departamentos;
 
 SELECT * FROM provincias WHERE provincia = 'Chincha';
 
 SELECT * FROM distritos;
+select * from lotes;
+select * from kardex;
+select * from lotes;
 
 SELECT * FROM marcas;
 
 SELECT * FROM usuarios;
-
+mysql -u root -p;
 SELECT * FROM personas 
 ORDER BY idpersonanrodoc DESC
 limit 10;
-
+SELECT host, user FROM mysql.user WHERE user = 'root';
 SELECT * FROM empresas;
 
 SELECT * FROM clientes;
 call `sp_cliente_registrar` (null,20297868790, 'Empresa');
 
 SELECT * FROM pedidos;
+select * FROM kardex;
 
 SELECT * FROM metodos_pago;
 
@@ -70,7 +76,7 @@ SELECT * FROM detalle_pedidos;
 
 SELECT * FROM personas WHERE idpersonanrodoc = '26558009';
 
-SELECT * FROM roles;
+SELECT * FROM perfil;
 
 DELETE FROM usuarios WHERE idpersona = '26558000';
 
@@ -97,6 +103,7 @@ CALL sp_getMarcas (3);
 CALL sp_search_proveedor ('proveedor');
 
 SELECT * FROM MARCAS;
+select *from personas;
 
 SELECT * FROM productos;
 
@@ -175,7 +182,7 @@ SHOW COLUMNS FROM tipos_promociones;
 
 DELETE FROM usuarios WHERE idpersona = '26558000';
 
-SELECT * FROM vw_listar_roles;
+SELECT * FROM vw_listar_perfil;
 -- CONSULTAS
 SELECT * FROM provincias WHERE provincia = 'Chincha';
 
@@ -499,3 +506,11 @@ SELECT * FROM proveedores;
 
 SELECT * from provincias;
 call sp_buscardistrito('pueblo nuevo');
+
+select * from ventas;
+UPDATE ventas set estado=1 WHERE idventa=2;
+SELECT * FROM pedidos;
+
+
+
+

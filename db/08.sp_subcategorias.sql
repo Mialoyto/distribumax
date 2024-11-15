@@ -58,7 +58,6 @@ ORDER BY SUB.idsubcategoria ASC;
 END;
 
 
-
 --  GET SUBCATEGORIAS
 
 /* CREATE PROCEDURE getSubcategorias(

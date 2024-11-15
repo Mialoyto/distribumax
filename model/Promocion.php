@@ -11,20 +11,23 @@ class Promocion extends Conexion{
     $this->pdo=parent::getConexion(); 
   }
 
-  public function addPromocion($params=[]){
-    try{
-      $sql="CALL sp_tipo_promocion_registrar (?,?)";
-      $query=$this->pdo->prepare($sql);
-      $query->execute(array(
-         $params['tipopromocion'],
-         $params['descripcion']
-      ));
-      return $query->fetchAll(PDO::FETCH_ASSOC);
-    }catch(Exception $e){
-      die($e->getMessage());
-
+  public function addPromocion($params = []) {
+    try {
+        $sql = "CALL sp_promocion_registrar (?, ?, ?, ?, ?)";
+        $query = $this->pdo->prepare($sql);
+        $query->execute([
+            $params['idtipopromocion'],
+            $params['descripcion'],
+            $params['fechainicio'],
+            $params['fechafin'],
+            $params['valor_descuento']
+        ]);
+        return ['status' => 'success'];
+    } catch (Exception $e) {
+        return ['status' => 'error', 'message' => $e->getMessage()];
     }
-  }
+}
+
 
   public function getAll(){
     try{

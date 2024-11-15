@@ -10,13 +10,14 @@ class Empresas extends Conexion
   {
     $this->pdo = parent::getConexion();
   }
-  public function add($params = []):int
+  public function add($params = []): int
   {
     $id = -1;
     try {
-      $sql = "CALL sp_empresa_registrar(?, ?, ?, ?, ?, ?)";
+      $sql = "CALL sp_empresa_registrar(?,?, ?, ?, ?, ?, ?)";
       $query = $this->pdo->prepare($sql);
       $query->execute([
+        $params['idtipodocumento'],
         $params['idempresaruc'],
         $params['iddistrito'],
         $params['razonsocial'],
@@ -28,7 +29,7 @@ class Empresas extends Conexion
       // Usar fetch en lugar de fetchAll para obtener el primer resultado
       $row = $query->fetch(PDO::FETCH_ASSOC);
       if ($row) {
-        $id = $row['idempresas']; // Asegúrate de usar el nombre correcto de la columna
+        $id = $row['idempresa']; // Asegúrate de usar el nombre correcto de la columna
         return $id;
       }
     } catch (Exception $e) {
@@ -115,4 +116,18 @@ class Empresas extends Conexion
       die($e->getMessage());
     }
   }
+
+  public function delete($params = [])
+{
+    try {
+        $sql = "DELETE FROM empresas WHERE idempresaruc = ?";
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$params['idempresaruc']]);
+        return ['success' => true];
+    } catch (Exception $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
+  
 }

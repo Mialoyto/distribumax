@@ -14,17 +14,19 @@ document.addEventListener("DOMContentLoaded", () => {
           .then(response => response.json())
           .then(data => {
               
-            //   console.log(data);
+            console.log(data);
+            console.log(data.accesos);
             //   alert(data.status);
             //   alert("revisar json");
-              if (!data.acceso) {
-                  console.log(data);
-                  // alert(data.status);
-                //   alert("Usuario o contraseña incorrectos");
+              if (!data.estado) {
+                  // console.log(data);
+                  alert(data.status);
+                  alert("Usuario o contraseña incorrectos");
               } else {
                 // alert("Bienvenido");
+
                   console.log(data);
-                  window.location.href = `./dashboard.php`;
+                  window.location.href = `http://localhost/distribumax/views`;
               }
           });
   });

@@ -8,30 +8,33 @@ CALL sp_registrar_tipo_documento ('RUC');
 
 /* REGISTRAR EMPRESAS */
 CALL sp_empresa_registrar (
+    2,
     20100085063,
     1,
     'Ajinomoto del Perú S.A.C',
     'Av. José Larco 812, Miraflores',
     'contacto@ajinomoto.com.pe',
-    '01 619 9999'
+    '016199999'
 );
 
 CALL sp_empresa_registrar (
+    2,
     20100055237,
     1,
     'Alicorp S.A.A',
     'Av. José Larco 812, Miraflores',
     'contacto@alicorp.com.pe',
-    '01 630 8888'
+    '016388888'
 );
 
 CALL sp_empresa_registrar (
+    2,
     20266352337,
     1,
     'Softys Perú S.A.C',
     'Av. José Larco 812, Miraflores',
     'contacto@softys.com.pe',
-    '01 730 8888'
+    '017308888'
 );
 
 /* REGISTRAR PROVEEDORES */
@@ -39,7 +42,7 @@ CALL sp_proovedor_registrar (
     20100085063,
     'Proveedor Ajinomoto',
     'Carlos López',
-    '01 619 9999',
+    '0161999999',
     'Av. José Larco 812, Miraflores',
     'proveedor@ajinomoto.com.pe'
 );
@@ -129,14 +132,6 @@ CALL sp_registrar_marca (3, 'Babysec',6);
 
 CALL sp_registrar_marca (3, 'Ladysoft',6);
 
--- INSERT ROLES
-CALL sp_registrar_roles ('Administrador');
-
-CALL sp_registrar_roles ('Usuario');
-
-CALL sp_registrar_roles ('Conductor');
-
-CALL sp_registrar_roles ('Vendedor');
 
 -- INSERT TIPO DE COMPROBANTES DE PAGO
 CALL sp_tipo_comprobantes_registrar ('Factura');

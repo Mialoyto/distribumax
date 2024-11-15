@@ -36,6 +36,7 @@ class Productos extends Conexion
       return $id;
     }
   }
+ 
   public function getAll()
   {
     try {
@@ -62,7 +63,6 @@ class Productos extends Conexion
     }
   }
 
-  // nueva function 
   public function ObtenerPrecioProducto($params = [])
   {
     try {
@@ -89,6 +89,19 @@ class Productos extends Conexion
       return $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
       die($e->getMessage());
+    }
+  }
+
+  // Método para eliminar producto
+  public function deleteProducto($idproducto): bool
+  {
+    try {
+      $sql = "CALL sp_eliminar_producto(?)";
+      $query = $this->pdo->prepare($sql);
+      $query->execute(array($idproducto));
+      return $query->rowCount() > 0;
+    } catch (Exception $e) {
+      return false;
     }
   }
 }

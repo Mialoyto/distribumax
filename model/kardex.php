@@ -13,18 +13,16 @@ class Kardex  extends Conexion
   {
     $succes = false;
     try {
-      $sql = "CALL sp_registrarmovimiento_kardex(?,?,?,?,?,?,?)";
+      $sql = "CALL sp_registrarmovimiento_kardex(?,?,?,?,?,?)";
       $query = $this->pdo->prepare($sql);
       $succes = $query->execute(array(
         $params['idusuario'],
         $params['idproducto'],
-        $params['fecha_vencimiento'],
-        $params['numlote'],
+        $params['idlote'],
         $params['tipomovimiento'],
         $params['cantidad'],
         $params['motivo']
       ));
-
       return $succes;
     } catch (Exception $e) {
       return $succes;

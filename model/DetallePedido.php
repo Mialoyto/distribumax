@@ -26,8 +26,9 @@ class DetallePedido extends Conexion
       $id = $query->fetch(PDO::FETCH_ASSOC);
       return $id['iddetallepedido'];
     } catch (Exception $e) {
-      return $id;
+      die($e->getMessage());
     }
+    // return $id;
   }
 }
 

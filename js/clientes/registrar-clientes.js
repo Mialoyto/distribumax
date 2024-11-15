@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function $(object = null) {
     return document.querySelector(object);
   }
+  renderDocumento('.documento');
+
 
   // fucntion para buscar ruc por api
   async function getApiRuc(ruc) {
@@ -13,16 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
         method: 'GET'
       });
       const data = await response.json();  // Parsear la respuesta como JSON
-
+      console.log(data);
       $("#status").classList.add("d-none");
       if (data.hasOwnProperty('message')) {
         showToast("No se encontraron datos", "info", "INFO");
         $("#iddistrito").value = '';
         $("#razon-social").value = '';
         $("#direccion").value = '';
+        document.querySelector('.documento').value = '';
       } else {
         $("#razon-social").value = data['razonSocial'];
         $("#direccion").value = data['direccion'];
+        $("#tipodoc").value = 2;
       }
       return data;
     } catch (e) {
@@ -33,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function validarDatos() {
     const ruc = $("#nro-doc-empresa").value;
     const response = await searchClienteEmpresa(ruc);
-    console.log(response);  
+    console.log(response);
     if (response.length == 0) {
       if (ruc.length === 0) {
         showToast("Ingrese un número de RUC", "info", "INFO");
@@ -51,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showToast("El número de RUC debe tener 11 dígitos", "info", "INFO");
         addCliente(false);
       }
-    }else{
+    } else {
       showToast("El cliente ya se encuentra registrado", "info", "INFO");
       addCliente(false);
     }
@@ -87,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();  // Parsear la respuesta como JSON
       // console.log(data);
       if (data.length > 0) {
+        $("#tipodoc").value = data[0].idtipodocumento;
         $("#iddistrito").value = data[0].distrito;
         $("#email").value = data[0].email;
         $("#telefono-empresa").value = data[0].telefono;
@@ -103,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function registrarEmpresa() {
     const params = new FormData();
     params.append('operation', 'add');
+    params.append('idtipodocumento', $("#tipodoc").value);
     params.append('idempresaruc', $("#nro-doc-empresa").value);
     params.append('iddistrito', iddistrito);
     params.append('razonsocial', $("#razon-social").value);
@@ -116,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     const response = await fetch(`../../controller/empresa.controller.php`, options);
     const data = await response.json();
+    console.log(data);
     return data;
   }
 
@@ -125,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
     idpersona = null;
     const params = new FormData();
     params.append('operation', 'addcliente');
-    params.append('idpersona',idpersona ); // Asegúrate de que este campo tenga el valor correcto
+    params.append('idpersona', idpersona); // Asegúrate de que este campo tenga el valor correcto
     params.append('idempresa', idempresa); // Usa el ID de la empresa que acabas de registrar
     params.append('tipo_cliente', 'Empresa');
 
@@ -145,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error al registrar el cliente:", error);
     }
   }
+
 
   const searchDist = async (distrito) => {
     let searchData = new FormData();
@@ -186,8 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
           dataList.innerHTML = '';
         });
         dataList.appendChild(li);
-      }
-      )
+      });
     }
   }
 
@@ -210,11 +217,12 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(empresaResponse)
       const id = empresaResponse.idempresa;
       console.log(id);
-      if (id != 0 ) {
+      if (id != 0) {
         const data = await registrarCliente(id);
-        $("#registrar-empresa").reset();
         console.log(data);
-      }else{
+        $("#registrar-empresa").reset();
+        showToast("Cliente registrado con éxito", "success", "SUCCESS");
+      } else {
         showToast("No se pudo registrar la empresa", "error", "ERROR");
       }
     } else {

@@ -60,7 +60,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -130,7 +131,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -200,7 +202,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -270,7 +273,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -340,7 +344,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -410,7 +415,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -480,7 +486,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -550,7 +557,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -620,7 +628,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -690,7 +699,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -760,7 +770,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -831,7 +842,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -902,7 +914,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -959,7 +972,7 @@ CREATE PROCEDURE sp_registrar_vehiculo(
     IN _idusuario INT,...' at line 2
 Error en 17.sp_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_metodo_pago_registrar(
-    IN _metodopago	...' at line 2
+    IN _metodopperfil..' at line 2perfil
 Error en 18.sp_tipo_combrobante.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_tipo_comprobantes_registrar(
     IN _compr...' at line 2
@@ -975,7 +988,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -1032,7 +1046,7 @@ Error en 16.sp_vehiculos.sql: SQLSTATE[42000]: Syntax error or access violation:
 CREATE PROCEDURE sp_registrar_vehiculo(
     IN _idusuario INT,...' at line 2
 Error en 17.sp_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
-CREATE PROCEDURE sp_metodo_pago_registrar(
+CREATE PROCEDURperfilmetodo_pago_registrar(perfil
     IN _metodopago	...' at line 2
 Error en 18.sp_tipo_combrobante.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_tipo_comprobantes_registrar(
@@ -1049,7 +1063,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -1102,7 +1117,7 @@ CREATE PROCEDURE sp_detalle_pedido(
 Error en 16.sp_vehiculos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_registrar_vehiculo(
     IN _idusuario INT,...' at line 2
-Error en 17.sp_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
+Error en 17.sp_perfilos_pagos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You havperfilerror in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_metodo_pago_registrar(
     IN _metodopago	...' at line 2
 Error en 18.sp_tipo_combrobante.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
@@ -1120,7 +1135,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -1175,7 +1191,7 @@ CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido          ...' at line 1
 Error en 16.sp_vehiculos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_registrar_vehiculo(
-    IN _idusuario INT,...' at line 2
+    IN _idusuarperfilT,...' at line 2perfil
 Error en 17.sp_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_metodo_pago_registrar(
     IN _metodopago	...' at line 2
@@ -1194,7 +1210,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -1227,7 +1244,7 @@ CREATE PROCEDURE sp_registrar_categoria
 Error en 08.sp_subcategorias.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_registrar_subcategoria(
     IN _idcategori...' at line 2
-Error en 09.sp_marcas.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
+Error en 09.sp_marcas.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQLperfilax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 
 CREATE PROCEDURE sp_registrar_marca(
     IN _marca VARCHAR(1...' at line 2
@@ -1269,7 +1286,7 @@ CREATE PROCEDURE sp_proovedor_registrar(
     IN _idempresa 			...' at line 2
 Error en 19.sp_despacho.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_despacho_registrar(
-    IN _idvehiculo 		I...' at line 2
+    IN _idvehicperfil	I...' at line 2perfil
 Error en 07.sp_ategorias.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_registrar_categoria
 ( IN _categoria  VARCH...' at line 2
@@ -1296,7 +1313,8 @@ CREATE PROCEDURE sp_pedido_registrar(
     IN _idusuario     ...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 12.sp_promociones.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_promocion_registrar(
 	IN _idpromocion     ...' at line 2
@@ -1314,7 +1332,7 @@ Error en 30.sp_detalle_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or acces
 CREATE PROCEDURE `sp_registrar_detalleMetodo`
 (
 	IN _idventa ...' at line 1
-Error en 16.sp_vehiculos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
+Error en 16.sp_perfilulos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have anperfilr in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_registrar_vehiculo(
     IN _idusuario INT,...' at line 2
 Error en 17.sp_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
@@ -1326,7 +1344,7 @@ CREATE PROCEDURE sp_tipo_comprobantes_registrar(
 Error en 19.sp_despacho.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_despacho_registrar(
     IN _idvehiculo 		I...' at line 2
-Error en 20.sp_ventas.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
+Error en 20.sp_ventas.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQLperfilax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE `sp_registrar_venta`(
     IN _idpedido       ...' at line 1
 Error en 21.sp_comprobantes.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
@@ -1335,7 +1353,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -1408,7 +1427,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -1459,7 +1479,7 @@ Error en 13.sp_tipo_promocion.sql: SQLSTATE[42000]: Syntax error or access viola
 CREATE PROCEDURE sp_tipo_promocion_registrar(
     IN _tipoprom...' at line 2
 Error en 15.sp_detalle_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
-CREATE PROCEDURE sp_detalle_pedido(
+CREATE PROCEDURperfildetalle_pedido(perfil
     IN _idpedido          ...' at line 1
 Error en 16.sp_vehiculos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_registrar_vehiculo(
@@ -1482,7 +1502,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -1532,7 +1553,7 @@ CREATE PROCEDURE sp_promocion_registrar(
 Error en 13.sp_tipo_promocion.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_tipo_promocion_registrar(
     IN _tipoprom...' at line 2
-Error en 15.sp_detalle_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
+Error en 15.sp_perfille_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You hperfiln error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido          ...' at line 1
 Error en 16.sp_vehiculos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
@@ -1556,7 +1577,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -1629,7 +1651,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -1672,7 +1695,7 @@ Error en 12.sp_promociones.sql: SQLSTATE[42000]: Syntax error or access violatio
 CREATE PROCEDURE sp_promocion_registrar(
 	IN _idpromocion     ...' at line 2
 Error en 13.sp_tipo_promocion.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
-CREATE PROCEDURE sp_tipo_promocion_registrar(
+CREATE PROCEDURperfiltipo_promocion_registrar(perfil
     IN _tipoprom...' at line 2
 Error en 15.sp_detalle_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_detalle_pedido(
@@ -1698,7 +1721,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'vw_listar_roles' already exists
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'view_tipos_documentos' already exists
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -1766,7 +1790,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -1836,7 +1861,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -1906,7 +1932,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -1976,7 +2003,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2048,7 +2076,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2120,7 +2149,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2192,7 +2222,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2264,7 +2295,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2336,7 +2368,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2408,7 +2441,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2480,7 +2514,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2552,7 +2587,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2624,7 +2660,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2695,7 +2732,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2766,7 +2804,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2836,7 +2875,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2906,7 +2946,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -2976,7 +3017,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3046,7 +3088,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3116,7 +3159,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3186,7 +3230,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3256,7 +3301,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3326,7 +3372,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3393,7 +3440,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3463,7 +3511,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3533,7 +3582,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3603,7 +3653,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3670,7 +3721,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3734,7 +3786,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3798,7 +3851,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3862,7 +3916,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3926,7 +3981,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -3993,7 +4049,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4060,7 +4117,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4124,7 +4182,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4185,7 +4244,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4245,7 +4305,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4299,7 +4360,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4344,7 +4406,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4389,7 +4452,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4434,7 +4498,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4478,7 +4543,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4520,7 +4586,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4562,7 +4629,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4604,7 +4672,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4646,7 +4715,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4688,7 +4758,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4730,7 +4801,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4744,7 +4816,7 @@ Error en 11.sp_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1
 CREATE PROCEDURE sp_pedido_registrar(
     IN _idusuario     ...' at line 2
 Error en 12.sp_promociones.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
-CREATE PROCEDURE sp_promocion_registrar(
+CREATE PROCEDURperfilpromocion_registrar(perfil
 	IN _idpromocion     ...' at line 2
 Error en 13.sp_tipo_promocion.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_tipo_promocion_registrar(
@@ -4756,7 +4828,7 @@ Error en 16.sp_vehiculos.sql: SQLSTATE[42000]: Syntax error or access violation:
 CREATE PROCEDURE sp_registrar_vehiculo(
     IN _idusuario INT,...' at line 2
 Error en 17.sp_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
-CREATE PROCEDURE sp_metodo_pago_registrar(
+CREATE PROCEDURE sp_metodo_pago_registrar(perfil
     IN _metodopago	...' at line 2
 Error en 18.sp_tipo_combrobante.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_tipo_comprobantes_registrar(
@@ -4772,7 +4844,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -4809,7 +4882,7 @@ CREATE PROCEDURE sp_tipo_comprobantes_registrar(
     IN _compr...' at line 2
 Error en 19.sp_despacho.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_despacho_registrar(
-    IN _idvehiculo 		I...' at line 2
+    IN _idvehicperfil	I...' at line 2perfil
 Error en 20.sp_ventas.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE `sp_registrar_venta`(
     IN _idpedido       ...' at line 1
@@ -4819,7 +4892,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -4844,7 +4918,7 @@ Error en 09.sp_marcas.sql: SQLSTATE[42000]: Syntax error or access violation: 13
 Error en 09.sp_marcas.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.marcas' doesn't exist
 Error en 10.sp_productos.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_registrar_producto already exists
 Error en 11.sp_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
-
+perfilperfil
 CREATE PROCEDURE sp_pedido_registrar(
     IN _idusuario     ...' at line 2
 Error en 12.sp_promociones.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
@@ -4863,7 +4937,7 @@ Error en 17.sp_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or access violat
 CREATE PROCEDURE sp_metodo_pago_registrar(
     IN _metodopago	...' at line 2
 Error en 18.sp_tipo_combrobante.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
-CREATE PROCEDURE sp_tipo_comprobantes_registrar(
+CREATE PROCEDURE sp_tipo_comprobantes_registrar(perfil
     IN _compr...' at line 2
 Error en 19.sp_despacho.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_despacho_registrar(
@@ -4888,7 +4962,8 @@ CREATE PROCEDURE sp_tipo_promocion_registrar(
     IN _tipoprom...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 15.sp_detalle_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido          ...' at line 1
@@ -4899,7 +4974,7 @@ Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found
 Error en 17.sp_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_metodo_pago_registrar(
     IN _metodopago	...' at line 2
-Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
+Error en 29.sp_perfilx.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an erperfiln your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
 Error en 18.sp_tipo_combrobante.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
@@ -4921,7 +4996,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -4973,11 +5049,12 @@ CREATE PROCEDURE `sp_registrar_venta`(
 Error en 21.sp_comprobantes.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
-Error en 04.sp_usuarios.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_registrar_usuario already exists
+Error en 04.sp_perfilios.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE spperfilstrar_usuario already exists
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -4986,7 +5063,7 @@ Error en 30.sp_detalle_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or acces
 CREATE PROCEDURE `sp_registrar_detalleMetodo`
 (
 	IN _idventa ...' at line 1
-Error en 05.sp_clientes.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_cliente_registrar already exists
+Error en 05.sp_perfiltes.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE spperfilnte_registrar already exists
 Error en 06.sp_proveedores.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_proovedor_registrar already exists
 Error en 07.sp_categorias.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_registrar_categoria already exists
 Error en 07.sp_categorias.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.categorias' doesn't exist
@@ -5005,7 +5082,7 @@ CREATE PROCEDURE sp_promocion_registrar(
 Error en 13.sp_tipo_promocion.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_tipo_promocion_registrar(
     IN _tipoprom...' at line 2
-Error en 15.sp_detalle_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
+Error en 15.sp_detalle_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error inperfil SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido          ...' at line 1
 Error en 10.sp_productos.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_buscar_productos already exists
@@ -5042,7 +5119,7 @@ CREATE PROCEDURE sp_registrar_vehiculo(
     IN _idusuario INT,...' at line 2
 Error en 21.sp_comprobantes.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_comprobantes_registrar(
-    IN _idventa 		...' at line 2
+    IN _idventaperfil.' at line 2perfil
 Error en 17.sp_metodos_pagos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_metodo_pago_registrar(
     IN _metodopago	...' at line 2
@@ -5058,7 +5135,8 @@ CREATE PROCEDURE `sp_registrar_venta`(
     IN _idpedido       ...' at line 1
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 21.sp_comprobantes.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
@@ -5073,7 +5151,8 @@ CREATE PROCEDURE `sp_registrar_detalleMetodo`
 	IN _idventa ...' at line 1
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -5088,7 +5167,7 @@ Error en 07.sp_categorias.sql: SQLSTATE[42S02]: Base table or view not found: 11
 Error en 08.sp_subcategorias.sql: SQLSTATE[42000]: Syntax error or access violation: 1049 Unknown database 'distribumax'
 Error en 09.sp_marcas.sql: SQLSTATE[42000]: Syntax error or access violation: 1049 Unknown database 'distribumax'
 Error en 10.sp_productos.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_buscar_productos already exists
-Error en 11.sp_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
+Error en 11.sp_perfilos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an eperfilin your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 
 CREATE PROCEDURE sp_pedido_registrar(
     IN _idusuario     ...' at line 2
@@ -5123,7 +5202,8 @@ Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Ta
 Error en 01.BASE_DE_DATOS.sql: SQLSTATE[HY000]: General error: 1005 Can't create table `distribumax`.`subcategorias` (errno: 150 "Foreign key constraint is incorrectly formed")
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -5157,7 +5237,7 @@ CREATE PROCEDURE sp_metodo_pago_registrar(
     IN _metodopago	...' at line 2
 Error en 18.sp_tipo_combrobante.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_tipo_comprobantes_registrar(
-    IN _compr...' at line 2
+    IN _compr..perfil line 2perfil
 Error en 19.sp_despacho.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_despacho_registrar(
     IN _idvehiculo 		I...' at line 2
@@ -5170,7 +5250,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -5189,7 +5270,7 @@ Error en 04.sp_usuarios.sql: SQLSTATE[42000]: Syntax error or access violation: 
 Error en 05.sp_clientes.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_cliente_registrar already exists
 Error en 06.sp_proveedores.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_proovedor_registrar already exists
 Error en 07.sp_categorias.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_registrar_categoria already exists
-Error en 07.sp_categorias.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.categorias' doesn't exist
+Error en 07.sp_perfilorias.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribperfilcategorias' doesn't exist
 Error en 08.sp_subcategorias.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_registrar_subcategoria already exists
 Error en 08.sp_subcategorias.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.subcategorias' doesn't exist
 Error en 09.sp_marcas.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_registrar_marca already exists
@@ -5243,7 +5324,8 @@ CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido          ...' at line 1
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 16.sp_vehiculos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_registrar_vehiculo(
     IN _idusuario INT,...' at line 2
@@ -5254,7 +5336,7 @@ CREATE PROCEDURE sp_metodo_pago_registrar(
 Error en 18.sp_tipo_combrobante.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_tipo_comprobantes_registrar(
     IN _compr...' at line 2
-Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
+Error en 29.sp_perfilx.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an erperfiln your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
 Error en 19.sp_despacho.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
@@ -5273,7 +5355,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -5289,7 +5372,7 @@ Error en 01.BASE_DE_DATOS.sql: SQLSTATE[HY000]: General error: 1005 Can't create
 Error en 03.sp_empresas.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_empresa_registrar already exists
 Error en 04.sp_usuarios.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_registrar_usuario already exists
 Error en 05.sp_clientes.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_cliente_registrar already exists
-Error en 06.sp_proveedores.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_proovedor_registrar already exists
+Error en 06.sp_perfiledores.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDUREperfilroovedor_registrar already exists
 Error en 07.sp_categorias.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_registrar_categoria already exists
 Error en 07.sp_categorias.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.categorias' doesn't exist
 Error en 08.sp_subcategorias.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_registrar_subcategoria already exists
@@ -5338,11 +5421,12 @@ CREATE PROCEDURE sp_promocion_registrar(
 	IN _idpromocion     ...' at line 2
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 13.sp_tipo_promocion.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
-CREATE PROCEDURE sp_tipo_promocion_registrar(
+CREATE PROCEDURperfiltipo_promocion_registrar(perfil
     IN _tipoprom...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 15.sp_detalle_pedidos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_detalle_pedido(
     IN _idpedido          ...' at line 1
@@ -5375,7 +5459,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -5385,7 +5470,7 @@ CREATE PROCEDURE `sp_registrar_detalleMetodo`
 (
 	IN _idventa ...' at line 1
 Error en 01.BASE_DE_DATOS.sql: SQLSTATE[42000]: Syntax error or access violation: 1049 Unknown database 'distribumax'
-Error en 02.sp_personas.sql: SQLSTATE[42000]: Syntax error or access violation: 1049 Unknown database 'distribumax'
+Error en 02.sp_perfilnas.sql: SQLSTATE[42000]: Syntax error or access violation: 1049 Unknown dataperfil'distribumax'
 Error en 03.sp_empresas.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.empresas' doesn't exist
 Error en 07.sp_categorias.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.categorias' doesn't exist
 Error en 08.sp_subcategorias.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.subcategorias' doesn't exist
@@ -5424,7 +5509,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -5473,7 +5559,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
 Error en 23.sp_roles.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.roles' doesn't exist
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 28.sp_tipo_documento.sql: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'distribumax.tipo_documento' doesn't exist
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
@@ -5523,7 +5610,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5565,7 +5653,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5607,7 +5696,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5649,7 +5739,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5691,7 +5782,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5733,7 +5825,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5771,7 +5864,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5806,7 +5900,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5838,7 +5933,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5868,7 +5964,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5897,7 +5994,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5924,7 +6022,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5950,7 +6049,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5964,7 +6064,8 @@ CREATE PROCEDURE sp_comprobantes_registrar(
     IN _idventa 		...' at line 2
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1
@@ -5975,7 +6076,8 @@ CREATE PROCEDURE `sp_registrar_detalleMetodo`
 Error en 10.sp_productos.sql: SQLSTATE[42000]: Syntax error or access violation: 1304 PROCEDURE sp_buscar_productos already exists
 Error en 27. sp_dstritos.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE sp_buscardistrito(
-IN _distrito VARCHAR(100)...' at line 1
+IN _distrito VARCHAR(100)
+...' at line 1
 Error en 29.sp_kardex.sql: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER $$
 CREATE PROCEDURE getultimostock (
     IN _idproducto      INT,...' at line 1

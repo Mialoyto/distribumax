@@ -29,6 +29,7 @@ if (isset($_POST['operation'])) {
   switch ($_POST['operation']) {
     case 'add':
       $datos = [
+        'idtipodocumento' => $_POST['idtipodocumento'],
         'idempresaruc' => $_POST['idempresaruc'],
         'iddistrito'   => $_POST['iddistrito'],
         'razonsocial'  => $_POST['razonsocial'],
@@ -67,5 +68,12 @@ if (isset($_POST['operation'])) {
     case 'getByID':
       echo json_encode($empresa->getByID(['idempresaruc' => $_POST['idempresaruc']]));
       break;
+    case 'delete':
+        $datos = [
+          'idempresaruc' => $_POST['idempresaruc']
+        ];
+        echo json_encode($empresa->delete($datos));
+        break;
+      
   }
 }

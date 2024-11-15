@@ -22,12 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 
   (() => {
-    fetch(`../../controller/roles.controller.php`)
+    fetch(`../../controller/`)
       .then(response => response.json())
       .then(data => {
         data.forEach(element => {
           const tagOption = document.createElement('option');
-          tagOption.value = element.idrol;
+          tagOption.value = element. idperfil;
           tagOption.innerText = element.rol;
           $("#rol").appendChild(tagOption);
         });
@@ -50,12 +50,12 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.append('idpersona', idpersona);
       formData.append('nombre_usuario', $("#usuario").value.trim());
       formData.append('password_usuario', $("#password").value);
-      formData.append('idrol', $("#rol").value);
+      formData.append(' idperfil', $("#rol").value);
       const options = {
         method: 'POST',
         body: formData
       }
-      const response = await fetch(`../../controller/usuario.controller.php`, options);
+      const response = await fetch(`../controller/usuario.controller.php`, options);
       return response.text();
       // console.log(text)
     }

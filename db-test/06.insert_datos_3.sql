@@ -1,5 +1,5 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
-USE distribuMax;
+-- Active: 1731562917822@@127.0.0.1@3306@distribumax
+USE distribumax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
     1, -- Tipo de documento (dni)
@@ -233,13 +233,14 @@ CALL spu_registrar_personas (
 );
 
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/
-CALL sp_registrar_usuario ( 26558000, 1, 'administrador', 'admin' );
+CALL sp_registrar_usuario ( 26558000, 1,'ADM', 'administrador', 'admin' );
 
-CALL sp_registrar_usuario ( 26558001, 2, 'usuario', 'admin' );
+CALL sp_registrar_usuario ( 26558001, 2,'ADM', 'usuario', 'admin' );
 
-CALL sp_registrar_usuario ( 26558002, 3, 'conductor', 'admin' );
+CALL sp_registrar_usuario ( 26558002, 3,'CHF', 'conductor', 'admin' );
 
-CALL sp_registrar_usuario ( 26558003, 4, 'vendedor', 'admin' );
+CALL sp_registrar_usuario ( 26558003, 4, 'VND','vendedor', 'admin' );
+CALL sp_registrar_usuario(26558015,3,'ALM','almacen','admin');
 
 CALL sp_actualizar_usuario (
     'administrador',
@@ -316,19 +317,49 @@ CALL sp_tipo_promocion_registrar (
     'Se aplicará un porcentaje de descuento al producto'
 );
 
+CALL sp_tipo_promocion_registrar (
+    'Combo de Productos',
+    'Promoción en la que se venden varios productos juntos a un precio reducido'
+);
+
+CALL sp_tipo_promocion_registrar (
+    '2x1',
+    'Por la compra de un producto, el cliente recibe otro gratis'
+);
+
+CALL sp_tipo_promocion_registrar (
+    'Descuento por Volumen',
+    'Descuento aplicable al comprar una gran cantidad de productos'
+);
+
+CALL sp_tipo_promocion_registrar (
+    'Producto de Regalo',
+    'Por la compra de ciertos productos, se ofrece otro producto de regalo'
+);
+
+CALL sp_tipo_promocion_registrar (
+    'Descuento Estacional',
+    'Promoción aplicable en temporadas específicas, como Navidad o Año Nuevo'
+);
+
+CALL sp_tipo_promocion_registrar (
+    'Premio por Fidelidad',
+    'Descuento especial para clientes habituales o suscriptores de la distribuidora'
+);
+
 CALL sp_promocion_registrar (
     1,
     "Descuento en productos seleccionados",
-    '2024-10-29',
-    '2024-11-30',
+    '2024-11-20',
+    '2024-12-31',
     5
 );
 
 CALL sp_promocion_registrar (
     1,
     "Descuento en productos en galletas Casino",
-    '2024-10-29',
-    '2024-11-30',
+    '2024-11-20',
+    '2024-12-31',
     5
 );
 
@@ -341,10 +372,6 @@ CALL sp_detalle_promociones_registrar (2, 4, 5);
 CALL sp_detalle_promociones_registrar (2, 12, 5);
 
 CALL sp_detalle_promociones_registrar (2, 10, 5);
-/* CALL sp_detalle_promociones_registrar (2,18, 5);
-CALL sp_detalle_promociones_registrar (2,19, 5);
-CALL sp_detalle_promociones_registrar (2,20, 5);  */
-
 CALL sp_registrar_vehiculo (
     1, -- ID del usuario (reemplaza con el ID correcto)
     'Toyota', -- Marca del vehículo

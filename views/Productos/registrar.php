@@ -1,4 +1,4 @@
-<?php require_once '../../header.php'; ?>
+<?php require_once '../header.php'; ?>
 
 <main>
   <div class="container-fluid px-4">
@@ -144,8 +144,8 @@
     </div>
   </div>
 </main>
-<?php require_once '../../footer.php'; ?>
-<script src="../../js/productos/registrar-productos.js"> </script>
+<script src="http://localhost/distribumax/js/productos/registrar-productos.js"> </script>
+<?php require_once '../footer.php'; ?>
 </body>
 
 </html>

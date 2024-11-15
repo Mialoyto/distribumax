@@ -24,7 +24,7 @@ BEGIN
         IF(_telefono = '' OR _telefono IS NULL, NULL, _telefono),
         _direccion
         );
-        SELECT _idpersonanrodoc AS id;
+        SELECT _idpersonanrodoc AS idpersona;
 END ;
 
 -- ACTUALIZAR  ✔️ 
@@ -147,6 +147,9 @@ BEGIN
         AND PER.estado = '1';
     END IF;
 END;
+
+-- LISTAR PERSONAS ✔️
+DROP PROCEDURE IF EXISTS sp_listar_personas;
 CREATE PROCEDURE sp_listar_personas()
 BEGIN
     SELECT 
@@ -156,8 +159,13 @@ BEGIN
         p.appaterno,
         p.apmaterno,
         d.distrito,
+        P.create_at,
         p.estado
     FROM personas p
     INNER JOIN tipo_documento td ON p.idtipodocumento = td.idtipodocumento
-    INNER JOIN distritos d ON p.iddistrito = d.iddistrito;
+    INNER JOIN distritos d ON p.iddistrito = d.iddistrito
+    WHERE p.estado = '1' 
+    ORDER BY p.create_at DESC;
 END;
+
+call sp_listar_personas();

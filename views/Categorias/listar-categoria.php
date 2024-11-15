@@ -21,7 +21,7 @@ require_once '../header.php';
                 </div>
                 <!-- Botón ubicado dentro del DataTable en la parte inferior derecha -->
                 <div class="d-flex justify-content-end mt-3">
-                    <a href="registrar.php" class="btn btn-primary">Registrar nueva categoría</a>
+                    <a href="http://localhost/distribumax/views/marcas/registrar.php" class="btn btn-primary">Volver</a>
                 </div>
             </div>
         </div>

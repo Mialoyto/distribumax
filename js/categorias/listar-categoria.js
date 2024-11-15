@@ -21,21 +21,21 @@ document.addEventListener("DOMContentLoaded", function () {
       let tableContent = "";
       data.forEach((element) => {
         const estadoClass =
-          element.Estado === "Activo" ? "text-success" : "text-danger";
+          element.estado === "Activo" ? "text-success" : "text-danger";
         tableContent += `
                 <tr>
                     <td>${element.categoria}</td> 
                     <td>
                     <strong class="${estadoClass}">
-                    ${element.Estado}
+                    ${element.estado}
                     </strong>
                     </td>
                     <td>
                     <div class="d-flex justify-content-center">
-                        <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit-categoria ">
+                        <a  id-data="${element.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit-categoria" >
                             <i class="bi bi-pencil-fill"></i>
                         </a>     
-                        <a href="#" class="btn btn-danger ms-2">
+                        <a  id-data="${element.id}" class="btn btn-danger ms-2">
                             <i class="bi bi-trash-fill"></i>
                         </a>
 

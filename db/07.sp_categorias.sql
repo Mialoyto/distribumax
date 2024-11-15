@@ -1,3 +1,4 @@
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR
@@ -78,12 +79,13 @@ END;
 DROP VIEW IF EXISTS vw_listar_categorias;
 CREATE VIEW `vw_listar_categorias` AS
     SELECT
+        CAT.idcategoria AS id,
         CAT.categoria,
-        CAT.create_at,
         CASE CAT.estado
             WHEN '1' THEN 'Activo'
             WHEN '0' THEN 'Inactivo'
-        END AS 'Estado'
+        END AS 'estado'
     FROM categorias CAT
-    WHERE CAT.estado = 1
     ORDER BY CAT.categoria ASC;
+
+SELECT * FROM vw_listar_categorias;

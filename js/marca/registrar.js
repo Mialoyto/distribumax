@@ -67,10 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return false;
     }
     return true;
-
-
   }
 
+  
   async function registrarMarca() {
     const inputMarca = marca.value.trim();
     const params = new FormData();

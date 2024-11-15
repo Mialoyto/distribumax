@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR MARCAS
@@ -92,20 +92,22 @@ END;
 --     estado = '1'
 -- ORDER BY marca ASC;
 
+DROP PROCEDURE IF EXISTS sp_listar_marca;
 CREATE PROCEDURE sp_listar_marca()
 BEGIN
     SELECT 
-        p.proveedor AS nombre_proveedor,
-        p.contacto_principal,
-        m.marca,
-        CASE m.estado
+        PRO.proveedor,
+        MAR.marca,
+        CAT.categoria,
+        CASE MAR.estado
             WHEN '1' THEN 'Activo'
             WHEN '0' THEN 'Inactivo'
-        END AS 'Estado'
+        END AS 'estado'
     FROM 
-        marcas m
-    INNER JOIN 
-        proveedores p ON m.idproveedor = p.idproveedor;
+        marcas MAR
+    INNER JOIN proveedores PRO ON MAR.idproveedor = PRO.idproveedor
+    INNER JOIN categorias CAT ON MAR.idcategoria = CAT.idcategoria;
 END;
 
+SELECT * from marcas;
 CALL sp_listar_marca ();

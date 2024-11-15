@@ -40,7 +40,7 @@
         </div>
     </div>
 </main>
-<script src="http://localhost/distribumax/js/marca/listar.js"></script>
 <?php require_once '../footer.php'; ?>
+<script src="http://localhost/distribumax/js/marca/listar.js"></script>
 </body>
 </html>

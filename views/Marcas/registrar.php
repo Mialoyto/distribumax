@@ -21,15 +21,15 @@ require_once '../header.php';
               <i class="bi bi-plus-circle"></i>
               Categoría
             </button>
-            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#list-categorias">
+            <a type="button" class="btn btn-outline-primary btn-sm" href="http://localhost/distribumax/views/Categorias/listar-categoria.php">
               <i class="bi bi-list-check"></i>
               Listar Categorías
-            </button>
-            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#cat-sub">
+            </a>
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#subcategoriaAdd">
               <i class="bi bi-plus-circle"></i>
               Subcategoría
             </button>
-            <button type="button" class="btn btn-outline-primary btn-sm">
+            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#list-categorias">
               <i class="bi bi-list-check"></i>
               Listar Subcategorías
             </button>
@@ -68,9 +68,8 @@ require_once '../header.php';
           </div>
           <!-- FIN MODAL CATEGORIA -->
           <!-- MODAL PARA LISTAR CATEGORIA -->
-          <!-- Modal -->
-          <div class="modal fade" id="list-categorias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+       <!--    <div class="modal fade" id="list-categorias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
                   <i class="fas fa-table me-1"></i>
@@ -86,29 +85,27 @@ require_once '../header.php';
                   <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <div class="card mb-4">
+                  <div class="card mt-4">
                     <div class="card-body">
                       <div class="table-responsive">
-                        <table id="table-marcas" class="table table-striped" style="width: 100%;">
+                        <table class="table" id="table-categorias" style="width: 100%;">
                           <thead>
-                            <tr class="text-center">
-                              <th>Nombre Proveedor</th>
-                              <th>Marca</th>
+                            <tr>
+                              <th>Categoría</th>
                               <th>Estado</th>
                               <th>Acciones</th>
                             </tr>
                           </thead>
+                          <tbody>
+                          </tbody>
                         </table>
                       </div>
                     </div>
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
-                  </div>
+            
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- FIN DE LISTAR CATEGORIA -->
 
@@ -158,6 +155,87 @@ require_once '../header.php';
 
 
           </div>
+
+          <!--MODAL PARA REGISTRAR SUBCATEGORIA -->
+          <div class="modal fade" id="subcategoriaAdd"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">REGISTRAR SUBCATEGORIA</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="" action="#" id="form-categoria" autocomplete="off">
+                  <div class="modal-body">
+                    <div class="form-floating mb-3">
+                      <input type="search" id="searchcategoria" name="searchcategoria" class="form-control" placeholder="Ej. Alimentos" autocomplete="off" required>
+                      <label for="searchcategoria" class="form-label">
+                        <i class="bi bi-tag"></i>
+                        Categoría
+                      </label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <input type="text" id="subcategoria" name="subcategoria" class="form-control" placeholder="Ej. Alimentos" autocomplete="off" required>
+                      <label for="subcategoria" class="form-label">
+                        <i class="bi bi-tag"></i>
+                        Subcategoría
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="submit" id="btn-add-lote" class="btn btn-success">Registrar</button>
+                    <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- FIN MODAL DE SUBCATEGORIA -->
+
+          <!-- MODAL PARA LISTAR SUBCATEGORIA -->
+          <div class="modal fade" id="list-categorias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <i class="fas fa-table me-1"></i>
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Listado de subcategorias</h1>
+                  <div class="text-end align-items-center">
+                  </div>
+                  <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="card mt-4">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table" id="table-categorias" style="width: 100%;">
+                          <thead>
+                            <tr>
+                              <th>Categoría</th>
+                              <th>Subcategoría</th>
+                              <th>Estado</th>
+                              <th>Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <!--Las filas se llenarán aqui-->
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- FIN MODAL DE SUBCATEGORIA -->
         </div>
 
         <div class="card-body">
@@ -251,4 +329,5 @@ require_once '../header.php';
 <?php require_once '../footer.php'; ?>
 <script src="http://localhost/distribumax/js/categorias/registrar-categoria.js"></script>
 <script src="http://localhost/distribumax/js/marca/registrar.js"></script>
+<!-- <script src="http://localhost/distribumax/js/categorias/listar-categoria.js"></script> -->
 <script src="http://localhost/distribumax/js/marca/listar.js"></script>

@@ -4,16 +4,20 @@ require_once '../model/Promocion.php';
 
 $promocion = new Promocion();
 
-if(isset($_POST['operation'])){
-  switch(isset($_POST['operation'])){
-    case 'addPromocion':
-      $datos=[
-          'tipopromocion' =>$_POST ['tipopromocion'],
-          'descripcion'   =>$_POST['descripcion']
-      ];
+if (isset($_POST['operation'])) {
+  switch ($_POST['operation']) {
+      case 'addPromocion':
+          $datos = [
+              'idtipopromocion' => $_POST['idtipopromocion'],
+              'descripcion'     => $_POST['descripcion_promocion'],
+              'fechainicio'     => $_POST['fechainicio'],
+              'fechafin'        => $_POST['fechafin'],
+              'valor_descuento' => $_POST['valor_descuento']
+          ];
 
-    echo json_encode($promocion->addPromocion($datos));  
-    break;
+          $response = $promocion->addPromocion($datos);
+          echo json_encode($response);
+          break;
   }
 }
 

@@ -78,6 +78,6 @@
   </div>
 </main>
 <script src="../../js/empresas/listar.js"></script>
-<?php require_once '../../footer.php'; ?>
+<?php require_once '../footer.php'; ?>
 </body>
 </html>

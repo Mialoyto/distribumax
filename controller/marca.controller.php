@@ -3,6 +3,7 @@
 
 require_once '../model/Marcas.php';
 $marca = new Marca();
+header("Content-type: application/json; charset=utf-8");
 
 if (isset($_POST['operation'])) {
     switch ($_POST['operation']) {
@@ -29,9 +30,6 @@ if (isset($_POST['operation'])) {
 }
 if (isset($_GET['operation'])) {
     switch ($_GET['operation']) {
-        case 'getAll':
-            echo json_encode($marca->getAll());
-            break;
         case 'getMarcas':
             $dataEnviar = [
                 'id' => $_GET['id']
@@ -39,5 +37,12 @@ if (isset($_GET['operation'])) {
             $datosRecibidos = $marca->getMarca($dataEnviar);
             echo json_encode(['marcas' => $datosRecibidos]);
             break;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if ($_GET['operation'] == 'getAll') {
+        $dataMarca = $marca->getAll();
+        echo json_encode($dataMarca);
     }
 }

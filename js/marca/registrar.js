@@ -62,10 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast("Seleccione un proveedor", "info");
       return false;
     }
-   if(!categoriaValue){
+    if (!categoriaValue) {
       showToast("Seleccione una categoria", "info");
       return false;
-   }
+    }
     return true;
 
 
@@ -106,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (data[0].idmarca > 0) {
           showToast(`${data[0].mensaje}`, "success", "SUCCESS");
+          formMarca.reset();
         } else {
           showToast(`${data[0].mensaje}`, "error", "ERROR");
         }

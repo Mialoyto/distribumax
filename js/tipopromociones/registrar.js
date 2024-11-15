@@ -34,29 +34,29 @@ async function addTipoPromocion() {
         method: "POST",
         body: params,
     };
-    try{
+    try {
         const response = await fetch(`../../controller/tipopromociones.controller.php`, options);
         const data = await response.json();
         console.log(data);
         return data;
-    }catch(e){
+    } catch (e) {
         console.error('Error al registrar la promoción:', e);
-    } 
+    }
 }
 
 const formPromocion = document.querySelector("#form-promocion");
 formPromocion.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-   if(await showConfirm("Desea registrar", "Tipo de promoción")){
-    const data = await addTipoPromocion();
-    if(data.status === 'success'){
-        alert("Tipo de promoción registrado exitosamente.");
-        $('#modalTipoPromocion').modal('hide');
-        cargarTiposPromociones();
-    }else{
-        alert(data.message || "Error al registrar el tipo de promoción.");
-    }
+    if (await showConfirm("Desea registrar", "Tipo de promoción")) {
+        const data = await addTipoPromocion();
+        if (data.status === 'success') {
+            alert("Tipo de promoción registrado exitosamente.");
+            $('#modalTipoPromocion').modal('hide');
+            cargarTiposPromociones();
+        } else {
+            alert(data.message || "Error al registrar el tipo de promoción.");
+        }
 
-   }
+    }
 });

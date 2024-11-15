@@ -1,5 +1,5 @@
 // Función para registrar una promoción a través del formulario
-async function registrarPromocion(e) {
+async function registrarPromocion() {
     e.preventDefault();
 
     const formData = new FormData(document.querySelector("#form-promocion"));

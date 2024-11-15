@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1731562917822@@127.0.0.1@3306
 USE distribumax;
 CALL sp_registrar_lote(1, 'LOT001', '2025-10-05');
 CALL sp_registrar_lote(1, 'LOT002', '2024-11-15');
@@ -34,7 +34,7 @@ CALL sp_registrarmovimiento_kardex(1, 12,14,'Ingreso',100, 'Ingreso de productos
 CALL sp_registrarmovimiento_kardex(1, 7,15,'Ingreso',150, 'Ingreso de productos adicionales');
 -- CALL sp_registrarmovimiento_kardex(1, 7,9,'Salida',1, 'pedido');
 
-
+SELECT * FROM kardex;
 SELECT 
     idkardex,
     idusuario,

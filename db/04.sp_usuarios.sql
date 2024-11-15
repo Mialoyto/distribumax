@@ -5,13 +5,14 @@ USE distribumax;
 CREATE PROCEDURE sp_registrar_usuario(
    IN   _idpersona          VARCHAR(11),
    IN   _idperfil           INT,
+   IN   _perfil             CHAR(3),
    IN   _nombre_usuario     VARCHAR(100),
    IN   _password_usuario   VARCHAR(150)  
 )
 BEGIN
 	INSERT INTO usuarios 
-    (idpersona, idperfil, nombre_usuario, password_usuario) 
-    VALUES (_idpersona, _idperfil, _nombre_usuario, _password_usuario);
+    (idpersona, idperfil, perfil, nombre_usuario, password_usuario) 
+    VALUES (_idpersona, _idperfil,_perfil, _nombre_usuario, _password_usuario);
     
     SELECT LAST_INSERT_ID() AS idusuario;
 END;

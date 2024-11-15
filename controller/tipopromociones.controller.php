@@ -4,6 +4,9 @@ require_once '../model/TipoPromocion.php';
 
 $tipopromocion = new TipoPromocion();
 
+// Establece el tipo de contenido de la respuesta como JSON
+header('Content-Type: application/json');
+
 if (isset($_POST['operation'])) {
     switch ($_POST['operation']) {
         case 'addTipoPromocion':

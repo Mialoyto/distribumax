@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    function $(object = null) { return document.querySelector(object); }
+    function $(selector) { return document.querySelector(selector); }
     let dtempresas;
 
     async function CargarDatosEmpresas() {
@@ -27,10 +27,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     <td>${element.email || 'N/A'}</td>
                     <td>${element.telefono || 'N/A'}</td>
                     <td>
-                        <a href="#" class="btn btn-warning" onclick="editEmpresa(${element.id})" aria-label="Editar empresa">
+                        <a href="#" class="btn btn-warning" onclick="editEmpresa(${element.idempresaruc})" aria-label="Editar empresa">
                             <i class="bi bi-pencil-fill"></i>
                         </a>
-                        <a href="#" class="btn btn-danger" onclick="deleteEmpresa(${element.id})" aria-label="Eliminar empresa">
+                        <a href="#" class="btn btn-danger" onclick="deleteEmpresa(${element.idempresaruc})" aria-label="Eliminar empresa">
                             <i class="bi bi-trash-fill"></i>
                         </a>
                     </td>
@@ -38,14 +38,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 TablaEmpresas.appendChild(row);
             });
 
-            // Destruir el DataTable existente si existe
             if (dtempresas) {
                 dtempresas.destroy();
             }
             RenderDatatableEmpresas();
         } catch (error) {
             console.error('Error al cargar los datos de las empresas:', error);
-            // alert('Ocurrió un error al cargar los datos de las empresas.'); // Mensaje de error al usuario
+            alert('Ocurrió un error al cargar los datos de las empresas.'); // Mensaje de error al usuario
         }
     }
 
@@ -81,16 +80,69 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // Función para abrir el modal y cargar los datos de la empresa para edición
+    window.editEmpresa = function(idempresaruc) {
+        fetch(`../../controller/empresa.controller.php?operation=getByID`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ idempresaruc })
+        })
+            .then(response => response.json())
+            .then(data => {
+                $("#editEmpresaId").value = data.idempresaruc;
+                $("#editEmpresaRazonSocial").value = data.razonsocial;
+                $("#editEmpresaDireccion").value = data.direccion;
+                $("#editEmpresaEmail").value = data.email;
+                $("#editEmpresaTelefono").value = data.telefono;
+
+                // Abrir el modal de edición
+                new bootstrap.Modal(document.getElementById('editEmpresaModal')).show();
+            })
+            .catch(error => console.error("Error al cargar la empresa:", error));
+    };
+
+    // Manejar la actualización de la empresa
+    $("#editEmpresaForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(this);
+        formData.append("operation", "upEmpresa");
+
+        fetch('../../controller/empresa.controller.php', {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Empresa actualizada correctamente");
+                CargarDatosEmpresas();
+                bootstrap.Modal.getInstance(document.getElementById('editEmpresaModal')).hide();
+            } else {
+                alert("Error al actualizar la empresa");
+            }
+        })
+        .catch(error => console.error("Error al actualizar la empresa:", error));
+    });
+
+    // Función para eliminar la empresa
+    window.deleteEmpresa = function(idempresaruc) {
+        if (confirm("¿Estás seguro de eliminar esta empresa?")) {
+            fetch(`../../controller/empresa.controller.php?operation=delete&idempresaruc=${idempresaruc}`, {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Empresa eliminada correctamente");
+                    CargarDatosEmpresas();
+                } else {
+                    alert("Error al eliminar la empresa");
+                }
+            })
+            .catch(error => console.error("Error al eliminar la empresa:", error));
+        }
+    };
+
     CargarDatosEmpresas();
 });
-
-// Funciones para editar y eliminar (puedes implementar la lógica según tus necesidades)
-function editEmpresa(id) {
-    // Lógica para editar la empresa con el id proporcionado
-    console.log('Editando empresa con ID:', id);
-}
-
-function deleteEmpresa(id) {
-    // Lógica para eliminar la empresa con el id proporcionado
-    console.log('Eliminando empresa con ID:', id);
-}

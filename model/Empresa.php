@@ -116,4 +116,18 @@ class Empresas extends Conexion
       die($e->getMessage());
     }
   }
+
+  public function delete($params = [])
+{
+    try {
+        $sql = "DELETE FROM empresas WHERE idempresaruc = ?";
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$params['idempresaruc']]);
+        return ['success' => true];
+    } catch (Exception $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
+  
 }

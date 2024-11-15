@@ -109,5 +109,4 @@ BEGIN
     INNER JOIN categorias CAT ON MAR.idcategoria = CAT.idcategoria;
 END;
 
-SELECT * from marcas;
 CALL sp_listar_marca ();

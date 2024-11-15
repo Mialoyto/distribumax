@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <form method="" action="#" id="form-editcategoria" autocomplete="off">
                                 <div class="modal-body">
                                     <div class="form-floating mb-3">
-                                    <input type="text" name="edit-categoria" class="form-control edit-categoria" placeholder="Ej. Alimentos" autocomplete="off" required>
+                                    <input type="text" name="edit-categoria" value="${element.categoria}" class="form-control edit-categoria" placeholder="Ej. Alimentos" autocomplete="off" required>
                                     <label for="categoria" class="form-label">
                                         <i class="bi bi-tag"></i>
                                         Categoría
@@ -94,9 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function RenderDatatable() {
     dtcategoria = new DataTable("#table-categorias", {
       columnDefs: [
-        { width: "33.33%", targets: 0 }, // Nombre de la categoría
-        { width: "33.33%", targets: 1 }, // Fecha de creación
-        { width: "33.33%", targets: 2 }, // Estado  // Acciones
+        { width: "33.33%", targets: 0 },
+        { width: "33.33%", targets: 1 },
+        { width: "33.33%", targets: 2 }, 
       ],
       language: {
         sEmptyTable: "No hay datos disponibles en la tabla",

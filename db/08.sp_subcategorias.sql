@@ -1,3 +1,4 @@
+-- Active: 1730318322772@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR SUBCATEGORIAS
@@ -76,8 +77,20 @@ SELECT
         ORDER BY SUB.idsubcategoria ASC;
 END;
  */
--- LISTAR SUBCATEGORIAS
-CREATE VIEW vw_listar_subcategorias AS
-    SELECT idsubcategoria,subcategoria FROM subcategoriaS
-    WHERE estado = '1'
-    ORDER BY subcategoria ASC;
+-- LISTAR SUBCATEGORIASDROP PROCEDURE IF EXISTS sp_listar_subcategorias;
+DROP PROCEDURE IF EXISTS sp_listar_subcategorias;
+
+CREATE PROCEDURE sp_listar_subcategorias()
+BEGIN
+    SELECT 
+        CA.categoria,
+        SUB.subcategoria,
+        CASE SUB.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS estado
+    FROM categorias AS CA
+    JOIN subcategorias AS SUB ON CA.idcategoria = SUB.idcategoria;
+END;
+
+CALL sp_listar_subcategorias();

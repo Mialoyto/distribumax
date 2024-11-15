@@ -1,8 +1,6 @@
 -- Active: 1728094991284@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
-SELECT * from productos;
-CREATE DATABASE distribuMax;
-USE distribuMax;
+CREATE DATABASE distribumax;
 
 USE distribumax;
 -- -----------------------------------------------------------------------------------------------

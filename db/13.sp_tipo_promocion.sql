@@ -1,20 +1,35 @@
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR TIPO DE PROMOCIONES
 
 DROP PROCEDURE IF EXISTS sp_tipo_promocion_registrar;
+
 CREATE PROCEDURE sp_tipo_promocion_registrar(
     IN _tipopromocion       VARCHAR(150),
     IN _descripcion         VARCHAR(250)
 )
 BEGIN
-    INSERT INTO tipos_promociones (tipopromocion, descripcion) 
-    VALUES (_tipopromocion, _descripcion);
+    DECLARE v_tipoProm VARCHAR(150);
+    DECLARE v_mensaje VARCHAR(150);
+    DECLARE v_id   INT;
 
-    SELECT LAST_INSERT_ID() as "id";
+    SELECT tipopromocion INTO v_tipoProm
+    FROM tipos_promociones
+    WHERE tipopromocion = _tipopromocion;
+
+    IF v_tipoProm= _tipopromocion THEN
+        SET v_id = -1;
+        SET v_mensaje = CONCAT("El tipo de promoción ",UPPER(_tipopromocion)," ya se encuentra registrada");
+    ELSE
+        INSERT INTO tipos_promociones (tipopromocion, descripcion) 
+        VALUES (_tipopromocion, _descripcion);
+        SET v_id = LAST_INSERT_ID();
+        SET v_mensaje = CONCAT("Registro exitoso");
+    END IF;
+
+    SELECT v_id AS id, v_mensaje AS mensaje;
 END;
-
-
 
 CREATE PROCEDURE sp_actualizar_tipo_promocion(
 	IN _idtipopromocion INT,
@@ -44,7 +59,6 @@ BEGIN
       WHERE idtipopromocion =_idtipopromocion;
 END;
 
-
 CREATE PROCEDURE sp_listar_tipo_promociones()
 BEGIN
     SELECT 
@@ -61,5 +75,3 @@ BEGIN
     ORDER BY 
         create_at DESC;
 END ;
-
-

@@ -175,10 +175,10 @@ $host = "http://localhost/distribumax";
               Registrar usuario
             </a>
             <div class="sb-sidenav-menu-heading">Módulos reportes</div>
-            <a class="nav-link" href="<?= $host ?>/views/Promociones/">
+           <!--  <a class="nav-link" href="<?= $host ?>/views/Promociones/">
               <div class="sb-nav-link-icon"><i class="bi bi-percent"></i></div>
               Promociones
-            </a>
+            </a> -->
         <!--     <a class="nav-link" href="<?= $host ?>/views/Categorias/">
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Categorias

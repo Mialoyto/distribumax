@@ -53,3 +53,5 @@ SELECT * FROM LOTES;
 CALL spu_buscar_lote(7);
 -- select * from lotes where idproducto = 7;
 CALL sp_registrar_salida_pedido(1, 7, 1, 'Venta por pedido');
+
+SELECT * from categorias;

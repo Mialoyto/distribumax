@@ -41,6 +41,7 @@ formcategoria.addEventListener("submit", async (e) => {
         categoria.classList.add("is-invalid");
         return;
     }
+    
     if (showConfirm("¿Desea registrar la categoria?", "CATEGORIA")) {
         const data = await registrarCategoria(inputCategoria);
         console.log(data[0].mensaje);

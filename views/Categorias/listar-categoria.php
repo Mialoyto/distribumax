@@ -10,7 +10,6 @@ require_once '../header.php';
                         <thead>
                             <tr>
                                 <th>Nombre de Categoría</th>
-                                <th>Fecha Creación</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
@@ -28,7 +27,7 @@ require_once '../header.php';
         </div>
     </div><!-- Fin del container -->
 </main>
-<script src="http://localhost/distribumax/js/categorias/listar.js"></script>
+<script src="http://localhost/distribumax/js/categorias/listar-categoria.js"></script>
 <?php require_once '../footer.php';?>
 </body>
 </html>

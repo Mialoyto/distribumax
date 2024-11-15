@@ -13,11 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 type: "POST",
             },
         });
-
-        // Manejador de eventos...
-        document.querySelector('#table-marcas tbody').addEventListener('click', function (e) {
-            // ... código anterior de eventos ...
-        });
     }
 
     initializeMarcasTable();

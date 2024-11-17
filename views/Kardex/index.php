@@ -134,15 +134,11 @@
                 <label for="tipomovimiento" class="form-label">Tipo de Movimiento</label>
               </div>
             </div>
-            <div class="col-md-4 mt-3">
-              <div class="form-floating">
-                <input type="number" step="1" min="1" class="form-control numeros" id="cantidad" name="cantidad" placeholder="">
-                <label for="cantidad" class="form-label">Cantidad</label>
-              </div>
-            </div>
+            
+
           </div> <!-- FIN FILA 02 -->
           <!-- INICIO FILA 03 -->
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-12 mt-3">
               <div class="form-floating">
                 <textarea class="form-control" placeholder="Motivo del movimiento" id="motivo" style="height: 100px" required></textarea>
@@ -150,7 +146,29 @@
               </div>
             </div>
 
-          </div> <!-- FIN FILA 03 -->
+          </div> FIN FILA 03 -->
+
+          <!-- Motivo de Salida -->
+            <div class="col-md-3 mt-3" id="motivoSalidaDiv">
+              <div class="form-floating">
+                <select class="form-select" id="motivoSalida" name="motivoSalida">
+                  <option value="">Seleccione el motivo</option>
+                  <option value="Mal Estado">Mal Estado</option>
+                  <option value="Merma">Merma</option>
+                  <option value="Producto Vencido">Producto Vencido</option>
+                  <option value="Otro">Otro</option>
+                </select>
+                <label for="motivoSalida" class="form-label">Motivo de Salida</label>
+              </div>
+            </div>
+
+            <div class="col-md-4 mt-3">
+              <div class="form-floating">
+                <input type="number" step="1" min="1" class="form-control numeros" id="cantidad" name="cantidad" placeholder="">
+                <label for="cantidad" class="form-label">Cantidad</label>
+              </div>
+            </div>
+          </div>
 
           <!-- Botones -->
           <div class="d-flex justify-content-between mt-3">

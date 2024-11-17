@@ -1,4 +1,4 @@
--- Active: 1730318322772@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- REGISTRAR
 DROP PROCEDURE IF EXISTS sp_registrar_categoria;
@@ -60,9 +60,10 @@ BEGIN
         estado = _estado
     WHERE idcategoria = _idcategoria;
 END;
-select* from categorias;
-CALL sp_desactivar_categoria(1,10);
+SELECT * FROM categorias;
+CALL sp_desactivar_categoria(1,1);
 
+DROP PROCEDURE IF EXISTS sp_listar_categorias;
 CREATE PROCEDURE sp_listar_categorias
 ()
 BEGIN

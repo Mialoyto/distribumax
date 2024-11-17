@@ -61,3 +61,25 @@ async function renderDocumento(clase) {
   }
 }
 
+async function getCategorias(clase) {
+  const selectCategorias = document.querySelectorAll(clase);
+  const params = new URLSearchParams();
+  params.append('operation', 'getCategorias');
+  try {
+    const response = await fetch(`../../controller/categoria.controller.php?${params}`);
+    const categorias = await response.json();
+    selectCategorias.forEach(select => {
+      select.innerHTML = "";
+      select.innerHTML = `<option value="">Seleccione categoria</option>`;
+      categorias.forEach(element => {
+        const tagOption = document.createElement('option');
+        tagOption.value = element.idcategoria;
+        tagOption.innerText = element.categoria;
+        select.appendChild(tagOption);
+      });
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+

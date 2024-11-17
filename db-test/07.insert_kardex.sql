@@ -14,7 +14,7 @@ CALL sp_registrar_lote(9, 'LOT009', '2024-11-18');
 CALL sp_registrar_lote(10, 'LOT010','2025-10-14');
 CALL sp_registrar_lote(11, 'LOT011','2025-10-15');
 CALL sp_registrar_lote(12, 'LOT012','2025-10-16');
-CALL sp_registrar_lote(7, 'LOT012','2024-11-16');
+CALL sp_registrar_lote(7, 'LOT012','2024-11-19');
 
 
 CALL sp_registrarmovimiento_kardex(1, 1,1,'Ingreso', 100, 'Ingreso de productos adicionales');

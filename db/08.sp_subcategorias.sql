@@ -1,19 +1,18 @@
--- Active: 1730318322772@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR SUBCATEGORIAS
-
+DROP PROCEDURE IF EXISTS sp_registrar_subcategoria;
 CREATE PROCEDURE sp_registrar_subcategoria(
     IN _idcategoria 	INT,
     IN _subcategoria 	VARCHAR(150)
 )
 BEGIN
     INSERT INTO subcategorias (idcategoria, subcategoria)
-    VALUES (_idcategoria, _subcategoria);
+    VALUES (_idcategoria, UPPER(_subcategoria));
 END;
-
+CALL sp_registrar_subcategoria(1, 'Subcategoria 10');
 -- ACTUALIZAR SUBCATEGORIAS
-
 CREATE PROCEDURE sp_actualizar_subcategoria(
     IN _idsubcategoria 	INT,
     IN _idcategoria 	INT,
@@ -28,7 +27,6 @@ BEGIN
 END;
 
 -- ELIMINAR SUBCATEGORIAS
-
 CREATE PROCEDURE sp_eliminar_subcategoria(
     IN _idsubcategoria 	INT,
     IN _estado          CHAR(1)
@@ -39,24 +37,26 @@ BEGIN
             estado = _estado
         WHERE idsubcategoria = _idsubcategoria;
 END;
+CALL sp_eliminar_subcategoria(1, '0');
 
-
+DROP PROCEDURE IF EXISTS getSubcategorias;
 CREATE PROCEDURE getSubcategorias (
-    IN _idcategoria INT
+    IN _idsubcategoria INT
     ) 
 BEGIN
 SELECT 
     SUB.idsubcategoria, 
+    CAT.categoria,
     SUB.subcategoria
 FROM
-    categorias CAT
-    RIGHT JOIN subcategorias SUB ON CAT.idcategoria = SUB.idcategoria
+    subcategorias SUB
+    INNER JOIN categorias CAT ON CAT.idcategoria = SUB.idcategoria
 WHERE
-    CAT.idcategoria = _idcategoria
+    SUB.idsubcategoria = _idsubcategoria
     AND CAT.estado = 1
-    AND SUB.estado = 1
 ORDER BY SUB.idsubcategoria ASC;
 END;
+call getSubcategorias(2);
 
 
 --  GET SUBCATEGORIAS
@@ -83,14 +83,17 @@ DROP PROCEDURE IF EXISTS sp_listar_subcategorias;
 CREATE PROCEDURE sp_listar_subcategorias()
 BEGIN
     SELECT 
-        CA.categoria,
+        SUB.idsubcategoria AS id,
+        CAT.categoria,
         SUB.subcategoria,
         CASE SUB.estado
             WHEN '1' THEN 'Activo'
             WHEN '0' THEN 'Inactivo'
         END AS estado
-    FROM categorias AS CA
-    JOIN subcategorias AS SUB ON CA.idcategoria = SUB.idcategoria;
+    FROM categorias AS CAT
+    JOIN subcategorias AS SUB ON CAT.idcategoria = SUB.idcategoria
+    WHERE CAT.estado = 1
+    ORDER BY CAT.categoria ASC;
 END;
 
 CALL sp_listar_subcategorias();

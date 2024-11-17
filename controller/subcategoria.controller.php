@@ -19,13 +19,14 @@ if (isset($_POST['operation'])) {
 if (isset($_GET['operation'])) {
   switch ($_GET['operation']) {
     case 'getAll':
-      echo json_encode($subcategoria->getAll());
+      $response = $subcategoria->getAll();
+      echo json_encode($response);
       break;
-    case 'getSubcategorias':
+    case 'getSubcategoria':
       $datosEnviar = [
-        'idcategoria' => $_GET['idcategoria']
+        'idsubcategoria' => $_GET['idsubcategoria']
       ];
       $datosRecibidos = $subcategoria->getSubcategorias($datosEnviar);
-      echo json_encode(['datos' => $datosRecibidos]);
+      echo json_encode($datosRecibidos);
   }
 }

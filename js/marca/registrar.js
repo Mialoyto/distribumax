@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let proveedores;
 
 
-  getCategorias();
+  // getCategorias();
 
   // BUSCADOR DE PROVEEDORES
   async function getProveedor(proveedor) {
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  
+
   async function registrarMarca() {
     const inputMarca = marca.value.trim();
     const params = new FormData();
@@ -129,4 +129,44 @@ document.addEventListener("DOMContentLoaded", () => {
       renderData();
     }
   });
+
+  // const addSubcategoria = document.querySelector("#subcategoria");
+  let contadorSubcategorias = 0;
+
+  // Función para actualizar el contador en la vista
+  function actualizarContador() {
+    const contadorElement = document.querySelector("#contador-subcategorias");
+    contadorElement.textContent = contadorSubcategorias;
+  }
+
+  function addSubcategoria() {
+    const contenedor = document.querySelector("#addsubcategoria")
+    const div = document.createElement("div");
+    div.classList.add("input-group", "mb-3");
+
+    div.innerHTML = `
+    <div class="form-floating">
+        <input type="text" id="subcategoria" name="subcategoria" class="form-control addsubcategoria" placeholder="Ej. Alimentos" required>
+        <label for="subcategoria" class="form-label">
+          <i class="bi bi-tag"></i>
+          Subcategoría
+        </label>
+    </div>
+      <button type="button" class="btn btn-danger  eliminar-subcategoria">
+        <i class="bi bi-trash"></i>
+      </button>
+        `;
+    contenedor.appendChild(div);
+    contadorSubcategorias++;
+    actualizarContador();
+    div.querySelector(".eliminar-subcategoria").addEventListener("click", () => {
+      div.remove();
+      contadorSubcategorias--;
+      actualizarContador();
+    });
+  }
+
+  const btn_addsubcategoria = document.querySelector("#btn-subcategoria");
+  btn_addsubcategoria.addEventListener("click", addSubcategoria);
+
 });

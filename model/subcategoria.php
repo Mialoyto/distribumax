@@ -45,10 +45,11 @@ class Subcategoria extends Conexion
       $query = $this->pdo->prepare($sql);
       $query->execute(
         array(
-          $params['idcategoria']
+          $params['idsubcategoria']
         )
       );
-      return $query->fetchAll(PDO::FETCH_ASSOC);
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
     } catch (Exception $e) {
       die($e->getMessage());
     }

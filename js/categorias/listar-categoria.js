@@ -51,10 +51,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <h1 class="modal-title fs-5" id="staticBackdropLabel">EDITAR CATEGORIA</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form method="" action="#" id="form-editcategoria" autocomplete="off">
+                                <form class="edit-categoria" autocomplete="off">
                                 <div class="modal-body">
                                     <div class="form-floating mb-3">
-                                    <input type="text" name="edit-categoria" value="${element.categoria}" class="form-control edit-categoria" placeholder="Ej. Alimentos" autocomplete="off" required>
+                                    <input type="text" name="edit-categoria" class="form-control edit-categoria" placeholder="Ej. Alimentos" autocomplete="off" required>
                                     <label for="categoria" class="form-label">
                                         <i class="bi bi-tag"></i>
                                         Categoría
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button type="submit" id="btn-add-lote" class="btn btn-success">Registrar</button>
+                                    <button type="submit" class="btn btn-success">Registrar</button>
                                     <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>
                                 </div>
                                 </form>

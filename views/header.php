@@ -179,10 +179,10 @@ $host = "http://localhost/distribumax";
               <div class="sb-nav-link-icon"><i class="bi bi-percent"></i></div>
               Promociones
             </a> -->
-                <a class="nav-link" href="<?= $host ?>/views/Subcategoria/">
+             <!--    <a class="nav-link" href="<?= $host ?>/views/Subcategoria/">
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Categorias
-            </a>
+            </a> -->
             <a class="nav-link" href="<?= $host ?>/views/Marcas/registrar-marca.php">
               <div class="sb-nav-link-icon"><i class="bi bi-tags-fill"></i></div>
               Marcas

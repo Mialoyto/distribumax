@@ -29,7 +29,7 @@ require_once '../header.php';
 			</div>
 			<div class="card-footer">
 				<!-- Botón ubicado dentro del DataTable en la parte inferior derecha -->
-				<div class="d-flex justify-content-end mt-3">
+				<div class="mt-3">
 					<a href="http://localhost/distribumax/views/marcas/registrar-marca.php" class="btn btn-primary"><i class="bi bi-arrow-left-circle"></i></a>
 				</div>
 			</div>

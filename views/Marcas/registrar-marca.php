@@ -248,4 +248,3 @@ require_once '../header.php';
 <script src="http://localhost/distribumax/js/marca/registrar.js"></script>
 <script src="http://localhost/distribumax/js/utils/utils.js"></script>
 <script src="http://localhost/distribumax/js/marca/listar.js"></script>
-<script src="http://localhost/distribumax/js/subcategorias/listar-subcategoria.js"></script>

@@ -12,6 +12,7 @@ class Subcategoria extends Conexion
     $this->pdo = parent::getConexion();
   }
 
+  // solo fatlta el agregar subcategorias
   public function addSubcategoria($params = [])
   {
     try {
@@ -50,6 +51,36 @@ class Subcategoria extends Conexion
       );
       $response = $query->fetchAll(PDO::FETCH_ASSOC);
       return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+  public function updateSubcategoria($params = [])
+  {
+    try {
+      $query = $this->pdo->prepare("CALL sp_actualizar_subcategoria (?,?)");
+      $query->execute(array(
+        $params['idsubcategoria'],
+        $params['subcategoria']
+      ));
+      $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $resultado;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+
+  public function UpdateEstado($params = [])
+  {
+    try {
+      $tsql = "CALL sp_update_estado_subcategoria(?, ?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(array(
+        $params['idsubcategoria'],
+        $params['estado']
+      ));
+      $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $resultado;
     } catch (Exception $e) {
       die($e->getMessage());
     }

@@ -37,7 +37,7 @@ class Proveedor extends Conexion
             die($e->getMessage());
         }
     }
-    public function upProveedor($params = [])
+    public function updateProveedor($params = [])
     {
         try {
             $query = $this->pdo->prepare("CALL sp_actualizar_proovedor (?,?,?,?,?,?,?)");
@@ -57,16 +57,16 @@ class Proveedor extends Conexion
         }
     }
 
-    public function upEstado($params = [])
+    public function updateEstado($params = [])
     {
         try {
-            $query = $this->pdo->prepare("CALL sp_estado_proovedor (?,?)");
+            $query = $this->pdo->prepare("CALL sp_estado_proveedor (?,?)");
             $query->execute(array(
                 $params['estado'],
                 $params['idproveedor']
             ));
-
-            return $query;
+            $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
         } catch (Exception $e) {
             die($e->getMessage());
         }

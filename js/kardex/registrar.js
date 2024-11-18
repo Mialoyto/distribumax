@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Muestra los divs correspondientes al tipo de movimiento seleccionado
-  movimiento.addEventListener("change", function () {
+ /*  movimiento.addEventListener("change", function () {
     const tipoMovimiento = this.value;
     if (tipoMovimiento === 'Ingreso') {
       motivoIngresoDiv.style.display = 'block';
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       motivoIngresoDiv.style.display = 'none';
       motivoSalidaDiv.style.display = 'none';
     }
-  });
+  }); */
 
   // Función para buscar productos
   const searchProducto = async (producto) => {
@@ -143,9 +143,12 @@ document.addEventListener("DOMContentLoaded", () => {
     params.append("idusuario", $("#iduser").getAttribute("data-id"));
     params.append("idproducto", idproducto);
     params.append("idlote", $("#loteP").value);
-    params.append("tipomovimiento", $("#tipomovimiento").value);
+    params.append("tipomovimiento", $("#motivoSalida").value);
     params.append("cantidad", cantidad.value);
     // params.append("motivo", $("#motivo").value);
+    for (let [key, value] of params.entries()) {
+      console.log(`${key}: ${value}`);
+    }
 
     const options = {
       method: "POST",
@@ -153,7 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     try {
       const response = await fetch(`../../controller/kardex.controller.php`, options);
-      const data = await response.json();
+      const data = await response.text();
+      console.log(data);
       return data;
     } catch (e) {
       console.error(e);

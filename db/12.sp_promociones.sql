@@ -1,4 +1,4 @@
--- Active: 1728671418404@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISDTRAR PROMOCIONES
@@ -6,6 +6,7 @@ DROP PROCEDURE IF EXISTS sp_promocion_registrar;
 
 CREATE PROCEDURE sp_promocion_registrar(
     IN _idtipopromocion       INT,
+    IN _idcategoria           INT,
     IN _descripcion       	  VARCHAR(250),
     IN _fechainicio    		  DATE,
     IN _fechafin			  DATE,
@@ -32,7 +33,8 @@ BEGIN
 
     INSERT INTO promociones
     (
-    idtipopromocion, 
+    idtipopromocion,
+    idcategoria,
     descripcion, 
     fechainicio, 
     fechafin, 
@@ -40,6 +42,7 @@ BEGIN
     VALUES 
     (
     _idtipopromocion,
+    _idcategoria,
     _descripcion,
     _fechainicio,
     _fechafin,
@@ -102,3 +105,16 @@ BEGIN
 END ;
 
 CALL sp_listar_promociones;
+
+SET GLOBAL event_scheduler = ON;
+
+SHOW VARIABLES LIKE 'event_scheduler';
+
+CREATE EVENT desactivar_promociones_vencidas
+ON SCHEDULE EVERY 1 DAY
+DO
+    UPDATE promociones
+    SET estado = '0'
+    WHERE fechafin < CURDATE() AND estado = '1';
+
+

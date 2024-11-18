@@ -1,3 +1,4 @@
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 -- Active: 1730318322772@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribumax;
@@ -244,6 +245,7 @@ DROP TABLE IF EXISTS promociones;
 CREATE TABLE promociones (
     idpromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idtipopromocion INT NOT NULL,
+    idcategoria     INT NULL,
     descripcion VARCHAR(250) NOT NULL,
     fechainicio DATE NOT NULL,
     fechafin DATE NOT NULL,
@@ -252,6 +254,7 @@ CREATE TABLE promociones (
     update_at DATE NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idtipopromociones FOREIGN KEY (idtipopromocion) REFERENCES tipos_promociones (idtipopromocion),
+    CONSTRAINT fk_idcategorias FOREIGN KEY (idcategoria)REFERENCES categorias(idcategoria),
     CONSTRAINT ck_valor_descuento CHECK (valor_descuento > 0),
     CONSTRAINT fk_estado_prom CHECK (estado IN ("0", "1")),
     CONSTRAINT ck_fecha_fin_mayor_inicio CHECK (fechafin > fechainicio)
@@ -503,6 +506,8 @@ CREATE TABLE despacho (
     CONSTRAINT fk_idusuario_desp FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_estado_desp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
+
+select * from categorias;
 
 DROP TABLE IF EXISTS ventas;
 CREATE TABLE ventas (

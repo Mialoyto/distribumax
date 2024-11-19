@@ -1,4 +1,4 @@
--- Active: 1731562917822@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROOVEDORES
@@ -33,42 +33,25 @@ BEGIN
 END;
 
 -- ACTUALIZAR PROVEEDORES
-DROP PROCEDURE IF EXISTS sp_actualizar_proveedor;
-CREATE PROCEDURE sp_actualizar_proveedor(
-    IN _idproveedor           INT,
-    IN _proveedor             VARCHAR(50)
+DROP PROCEDURE IF EXISTS sp_getProveedor;
+CREATE PROCEDURE sp_getProveedor(
+    IN _idproveedor           INT
 )
 BEGIN
-    DECLARE v_mensaje VARCHAR(100);
-    DECLARE v_proveedor_existente VARCHAR(50);
-    DECLARE v_idproveedor INT;
-
-    -- Verificar si ya existe un proveedor con el mismo nombre
-    SELECT proveedor INTO v_proveedor_existente
+    SELECT
+        idproveedor,
+        idempresa,
+        proveedor,
+        contacto_principal,
+        telefono_contacto,
+        direccion,
+        email
     FROM proveedores
-    WHERE proveedor = _proveedor AND idproveedor != _idproveedor;
-
-    IF v_proveedor_existente = _proveedor THEN
-        SET v_mensaje = 'Este proveedor ya existe';
-        SET v_idproveedor = -1;
-    ELSE
-        -- Actualizar los datos del proveedor
-        UPDATE proveedores
-        SET 
-            proveedor = UPPER(_proveedor),
-            update_at = NOW()
-        WHERE idproveedor = _idproveedor;
-
-        SET v_idproveedor = _idproveedor;
-        SET v_mensaje = 'Datos actualizados correctamente';
-    END IF;
-
-    -- Retornar el mensaje y el ID del proveedor
-    SELECT v_mensaje AS mensaje, v_idproveedor AS idproveedor;
+    WHERE idproveedor = _idproveedor;
 END;
 
 SELECT * FROM proveedores;
-CALL sp_actualizar_proveedor(1,'hola');
+CALL sp_getProveedor(1);
 
 -- DESACTIVAR PROOVEDOR
 DROP PROCEDURE IF EXISTS sp_estado_proveedor;
@@ -103,7 +86,7 @@ BEGIN
     SELECT v_mensaje AS mensaje, v_estado AS estado;
 END;
 
-CALL sp_estado_proveedor(3,'1');
+CALL sp_estado_proveedor(3,'0');
 
 
 -- BUSCAR PROVEEDOR
@@ -129,33 +112,34 @@ IF LENGTH(TRIM(_searchProveedor)) > 0 THEN
     END IF;
 END;
 
-CALL sp_search_proveedor ('');
+CALL sp_search_proveedor (1);
+
+
 
 DROP PROCEDURE IF EXISTS sp_listar_proveedor;
-
 CREATE PROCEDURE sp_listar_proveedor()
 BEGIN
     SELECT
-        proveedores.idproveedor,
-        empresas.idempresaruc,
-        empresas.razonsocial,
-        proveedores.proveedor,
-        proveedores.contacto_principal,
-        proveedores.telefono_contacto,
-        proveedores.direccion,
-        proveedores.email,
-        CASE proveedor.estado
+        PRO.idproveedor,
+        EMP.idempresaruc,
+        EMP.razonsocial,
+        PRO.proveedor,
+        PRO.contacto_principal,
+        PRO.telefono_contacto,
+        PRO.direccion,
+        PRO.email,
+        CASE PRO.estado
             WHEN '1' THEN 'Activo'
             WHEN '0' THEN 'Inactivo'
         END AS estado,
-        CASE proveedor.estado
+        CASE PRO.estado
             WHEN '1' THEN '0'
             WHEN '0' THEN '1'
             END AS `status`
-    FROM proveedores
-    INNER JOIN empresas ON empresas.idempresaruc = proveedores.idempresa
-    WHERE proveedores.estado = 1
-    ORDER BY proveedores.proveedor ASC;
+    FROM proveedores PRO
+    INNER JOIN empresas EMP ON EMP.idempresaruc = PRO.idempresa
+    ORDER BY PRO.proveedor ASC;
 END;
 
-CALL sp_listar_proveedor;
+CALL sp_listar_proveedor();
+SELECT * FROM proveedores;

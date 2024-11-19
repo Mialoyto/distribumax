@@ -24,19 +24,30 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para cargar datos en el modal de edición
     async function cargarDatosModal(id) {
         try {
-            const modal = $(".edit-proveedor");
-            const inputProveedor = modal.querySelector("input[name='proveedor']");
+            const modal = $("#edit-proveedor");
+            const inputRuc = modal.querySelector("#ruc");
+            const inputProveedor = modal.querySelector("#proveedor");
+            const inputDireccion = modal.querySelector("#direccion");
+            const inputEmail = modal.querySelector("#email");
+            const inputTelefono = modal.querySelector("#telefono");
+            const inputContacto = modal.querySelector("#contacto");
+
             const btnGuardar = modal.querySelector(".btn-success");
 
+            modal.reset();
             // Bloqueamos los inputs mientras se cargan los datos
             btnGuardar.setAttribute("disabled", "true");
-            inputProveedor.value = "Cargando...";
 
             const data = await obtenerProveedorId(id);
             console.log("Datos para el modal: ", data);
 
             if (data && data.length > 0) {
+                inputRuc.value = data[0].idempresa;
                 inputProveedor.value = data[0].proveedor;
+                inputDireccion.value = data[0].direccion;
+                inputEmail.value = data[0].email;
+                inputTelefono.value = data[0].telefono_contacto;
+                inputContacto.value = data[0].contacto_principal;
                 btnGuardar.removeAttribute("disabled");
             } else {
                 console.log("No hay datos disponibles para este proveedor.");
@@ -114,12 +125,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (data.length > 0) {
                 data.forEach((element) => {
+                    console.log("Elemento:", element);
                     const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
                     const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
                     const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
 
                     tableContent += `
-                      <tr>
+                    <tr>
                         <td>${element.idempresaruc}</td>
                         <td>${element.proveedor}</td>
                         <td>${element.contacto_principal}</td>
@@ -128,27 +140,28 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${element.direccion}</td>
                         <td><strong class="${estadoClass}">${element.estado}</strong></td>
                         <td>
-                          <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-center">
                             <a id-data="${element.idproveedor}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target=".edit-proveedor">
-                              <i class="bi bi-pencil-square fs-5"></i>
+                                <i class="bi bi-pencil-square fs-5"></i>
                             </a>
-                            <a id-data="${element.idproveedor}" class="btn ${bgbtn} ms-2 estado" estado-prov="${element.estado}">
-                              <i class="${icons}"></i>
+                            <a id-data="${element.idproveedor}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">
+                                <i class="${icons}"></i>
                             </a>
-                          </div>
+                        </div>
                         </td>
-                      </tr>`;
+                    </tr>`;
                 });
 
                 Tablaproveedores.innerHTML = tableContent;
 
                 const editButtons = document.querySelectorAll(".btn-warning");
-                const statusButtons = document.querySelectorAll(".estado");
-                const idInput = $("#id-proveedor");
+                const btnDisabled = document.querySelectorAll(".estado");
+                const idInput = $("#proveedor");
+                let id;
 
                 editButtons.forEach((btnGuardar) => {
                     btnGuardar.addEventListener("click", async (e) => {
-                        const id = e.currentTarget.getAttribute("id-data");
+                        id = e.currentTarget.getAttribute("id-data");
                         idInput.setAttribute("id-prov", id);
                         if (id) {
                             await cargarDatosModal(id);
@@ -158,12 +171,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 });
 
-                statusButtons.forEach((btnGuardar) => {
-                    btnGuardar.addEventListener("click", async (e) => {
+                btnDisabled.forEach((btn) => {
+                    btn.addEventListener("click", async (e) => {
+                        console.log("status: ", btnDisabled);
                         try {
                             e.preventDefault();
-                            const id = e.currentTarget.getAttribute("id-data");
-                            const status = e.currentTarget.getAttribute("estado-prov");
+                            id = parseInt(e.currentTarget.getAttribute("id-data"));
+                            const status = e.currentTarget.getAttribute("status");
                             console.log("ID:", id, "Status:", status);
 
                             if (await showConfirm("¿Estas seguro de cambiar el estado del proveedor?")) {

@@ -9,9 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para obtener un proveedor por ID
     async function obtenerProveedorId(id) {
         const params = new URLSearchParams();
-        params.append("operation", "getProveedor");
+        params.append("operation", "getProveedores");
         params.append("idproveedor", id);
-
         try {
             const response = await fetch(`../../controller/proveedor.controller.php?${params}`);
             const data = await response.json();

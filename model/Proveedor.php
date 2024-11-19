@@ -92,4 +92,21 @@ class Proveedor extends Conexion
             die($e->getMessage());
         }
     }
+
+    public function getProveedores($params = [])
+    {
+        try{
+            $sql = "CALL sp_actualizar_proveedor(?)";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(
+                array(
+                    $params['idproveedor']
+                )
+            );
+            $response = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $response;
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }

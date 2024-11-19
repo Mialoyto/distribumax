@@ -36,12 +36,7 @@ END;
 DROP PROCEDURE IF EXISTS sp_actualizar_proveedor;
 CREATE PROCEDURE sp_actualizar_proveedor(
     IN _idproveedor           INT,
-    IN _idempresa             BIGINT,
-    IN _proveedor             VARCHAR(50),
-    IN _contacto_principal    VARCHAR(50),
-    IN _telefono_contacto     CHAR(9),
-    IN _direccion             VARCHAR(100),
-    IN _email                 VARCHAR(100)
+    IN _proveedor             VARCHAR(50)
 )
 BEGIN
     DECLARE v_mensaje VARCHAR(100);
@@ -60,12 +55,7 @@ BEGIN
         -- Actualizar los datos del proveedor
         UPDATE proveedores
         SET 
-            idempresa = _idempresa,
             proveedor = UPPER(_proveedor),
-            contacto_principal = _contacto_principal,
-            telefono_contacto = _telefono_contacto,
-            direccion = _direccion,
-            email = _email,
             update_at = NOW()
         WHERE idproveedor = _idproveedor;
 
@@ -76,6 +66,9 @@ BEGIN
     -- Retornar el mensaje y el ID del proveedor
     SELECT v_mensaje AS mensaje, v_idproveedor AS idproveedor;
 END;
+
+SELECT * FROM proveedores;
+CALL sp_actualizar_proveedor(1,'hola');
 
 -- DESACTIVAR PROOVEDOR
 DROP PROCEDURE IF EXISTS sp_estado_proveedor;
@@ -142,17 +135,27 @@ DROP PROCEDURE IF EXISTS sp_listar_proveedor;
 
 CREATE PROCEDURE sp_listar_proveedor()
 BEGIN
-    SELECT 
+    SELECT
+        proveedores.idproveedor,
         empresas.idempresaruc,
         empresas.razonsocial,
-        proveedores.idproveedor,
         proveedores.proveedor,
         proveedores.contacto_principal,
         proveedores.telefono_contacto,
         proveedores.direccion,
-        proveedores.email
+        proveedores.email,
+        CASE proveedor.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS estado,
+        CASE proveedor.estado
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+            END AS `status`
     FROM proveedores
-    INNER JOIN empresas ON empresas.idempresaruc = proveedores.idempresa;
+    INNER JOIN empresas ON empresas.idempresaruc = proveedores.idempresa
+    WHERE proveedores.estado = 1
+    ORDER BY proveedores.proveedor ASC;
 END;
 
 CALL sp_listar_proveedor;

@@ -82,6 +82,6 @@
 </main>
 <?php require_once '../footer.php'; ?>
 <script src="http://localhost/distribumax/js/proveedor/listar-proveedor.js"></script>
-<script src="http://localhost/distribumax/js/proveedor/editar.proveedor.js"></script>
+<script src="http://localhost/distribumax/js/proveedor/editar-proveedor.js"></script>
 </body>
 </html>

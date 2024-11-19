@@ -55,13 +55,14 @@ class Kardex  extends Conexion
     }
   }
 
-  public function getMovimientoProducto($params = [])
+  public function getMovimientoProducto($params = []): array
   {
     try {
-      $tsql = "CALL spu_listar_producto_kardex(?)";
+      $tsql = "CALL spu_list_idproducto(?)";
       $query = $this->pdo->prepare($tsql);
       $query->execute(array($params['idproducto']));
-      return $query->fetchAll(PDO::FETCH_ASSOC);
+      $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $resultado;
     } catch (Exception $e) {
       die($e->getMessage());
     }

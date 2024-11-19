@@ -1,6 +1,4 @@
-let id = document.querySelector("#searchProducto");
-
-
+// Objetivo: Listar los productos en el kardex usando JavaScript puro
 async function getMovimientoProducto(idproducto) {
   const params = new URLSearchParams();
   params.append("operation", "getMovimientoProducto");
@@ -9,59 +7,54 @@ async function getMovimientoProducto(idproducto) {
   try {
     const response = await fetch(`../../controller/kardex.controller.php?${params}`);
     const data = await response.json();
-    console.log(data.data);
-    return data.data; // Retorna solo el array de datos
+    console.log(data);
+    return data;
   } catch (error) {
     console.error("Error al obtener los movimientos del producto", error);
   }
 }
 
-/* id.addEventListener("click", async function () {
-  const idproducto = this.getAttribute('producto');
-  const data = await getMovimientoProducto(idproducto);
-  console.log(data)
-  if (data) {
-    RenderDatatable(data);
-  }
-}); */
-
 async function RenderDatatable(data) {
-  // Verificar si ya existe una instancia de DataTable y destruirla si es necesario
-  if ($.fn.DataTable.isDataTable("#table-productos")) {
-    $('#table-productos').DataTable().clear().destroy();
+  const table = document.querySelector("#table-productos");
+  
+  // Verificar si ya existe una instancia de DataTable y destruirla
+  if (DataTable.isDataTable(table)) {
+    DataTable.getInstance(table).destroy();
   }
 
-  $('#table-productos').DataTable({
+  // Crear nueva instancia de DataTable
+  new DataTable(table, {
     scrollX: true,
-    processing: true,
-    serverSide: false,
-    searching: false, // Desactiva el cuadro de búsqueda
-    ordering: false,// Desactiva el ordenamiento de columnas
-    paging:false,
-    data: data, // Pasar los datos obtenidos directamente
+    searching: false,
+    ordering: false,
+    paging: false,
+    data: data,
     columns: [
-      { data: 'nombreproducto', width: "30%", className: "text-start", title: "Producto" },
-      { data: 'fecha_vencimiento', width: "10%", className: "text-start", title: "Fecha Vencimiento" },
-      { data: 'numlote', width: "10%", title: "Lote", className: "text-start", className: "text-start" },
-      { data: 'cantidad', width: "5%", title: "Cantidad", className: "text-start" },
-      { data: 'tipomovimiento', width: "10%", title: "Tipo Movimiento", className: "text-start" },
-      { data: 'motivo', width: "25%", title: "Motivo", className: "text-start" },
-      { data: 'stockactual', width: "10%", title: "Stock Actual", className: "text-start" }
+      { data: 'lote', width: "15%", className: "text-start", title: "Producto" },
+      { data: 'producto', width: "15%", className: "text-start", title: "Fecha Vencimiento" },
+      { data: 'tipomovimiento', width: "20%", className: "text-start", title: "Lote" },
+      { data: 'motivo', width: "30%", className: "text-start", title: "Cantidad" },
+      { data: 'cantidad', width: "10%", className: "text-start", title: "Tipo Movimiento" },
+      { data: 'stockactual', width: "10%", className: "text-start", title: "Motivo" },
     ],
     language: {
-      "sEmptyTable": "No hay datos disponibles en la tabla",
-      "info": "",
-      "sInfoFiltered": "(filtrado de _MAX_ entradas en total)",
-      "sLengthMenu": "Filtrar: _MENU_",
-      "sLoadingRecords": "Cargando...",
-      "sProcessing": "Procesando...",
-      "sSearch": "Buscar:",
-      "sZeroRecords": "No se encontraron resultados",
-      "oAria": {
-        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      emptyTable: "No hay datos disponibles en la tabla",
+      info: "",
+      infoFiltered: "(filtrado de _MAX_ entradas en total)",
+      lengthMenu: "Filtrar: _MENU_",
+      loadingRecords: "Cargando...",
+      processing: "Procesando...",
+      search: "Buscar:",
+      zeroRecords: "No se encontraron resultados",
+      aria: {
+        sortAscending: ": Activar para ordenar la columna de manera ascendente",
+        sortDescending: ": Activar para ordenar la columna de manera descendente"
       }
     }
   });
 }
 
+// Ejemplo de uso:
+// const idproducto = 1;
+// getMovimientoProducto(idproducto)
+//   .then(data => RenderDatatable(data));

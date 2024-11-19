@@ -15,6 +15,7 @@ if (isset($_POST['operation'])) {
         empty($_POST['idusuario']) || empty($_POST['cantidad']) ||
         ($_POST['tipomovimiento'] != 'Ingreso' && $_POST['tipomovimiento'] != 'Salida')
       ) {
+        echo "Faltan datos";
         echo json_encode(['estado' => false]);
         return;
       }
@@ -33,7 +34,6 @@ if (isset($_POST['operation'])) {
     case 'getById':
       echo json_encode($kardex->getById(['idproducto' => $_POST['idproducto']]));
       break;
-
   }
 }
 
@@ -42,12 +42,12 @@ if (isset($_GET['operation'])) {
     case 'getAll':
       echo json_encode($kardex->getAll());
       break;
-      case 'getMovimientoProducto':
-        $datosEnviar = [
-          'idproducto' => $_GET['idproducto']
-        ];
-        $datosRecibidos = $kardex->getMovimientoProducto($datosEnviar);
-        echo json_encode(['data' => $datosRecibidos]);
-        break;
+    case 'getMovimientoProducto':
+      $datosEnviar = [
+        'idproducto' => $_GET['idproducto']
+      ];
+      $datosRecibidos = $kardex->getMovimientoProducto($datosEnviar);
+      echo json_encode($datosRecibidos);
+      break;
   }
 }

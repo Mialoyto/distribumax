@@ -169,27 +169,22 @@ END;
 
 -- CALL spu_listar_kardex ();
 
-DROP PROCEDURE IF EXISTS spu_listar_producto_kardex;
+DROP PROCEDURE IF EXISTS spu_list_idproducto;
 
-CREATE PROCEDURE spu_listar_producto_kardex(
+CREATE PROCEDURE spu_list_idproducto(
     IN _idproducto INT
 )
 BEGIN
-    SELECT 
-        k.idkardex,
-        p.nombreproducto, 
-        l.fecha_vencimiento, 
-        l.numlote, 
-        k.tipomovimiento AS movimiento,
-        k.tipomovimiento, 
-        k.stockactual, 
-        k.cantidad, 
-        k.motivo, 
-        k.estado
-    FROM kardex k
-    INNER JOIN productos p ON k.idproducto = p.idproducto
-    INNER JOIN lotes l ON k.idlote = l.idlote
-    WHERE k.idproducto = _idproducto
-    ORDER BY k.idkardex DESC
-    LIMIT 10;
+ SELECT 
+    LOT.numlote AS lote,
+    PRO.nombreproducto AS producto,
+    KAR.tipomovimiento,
+    KAR.motivo,
+    KAR.cantidad,
+    KAR.stockactual
+FROM kardex KAR
+    INNER JOIN lotes LOT ON KAR.idlote = LOT.idlote
+    INNER JOIN productos PRO ON LOT.idproducto = PRO.idproducto
+WHERE KAR.idproducto = _idproducto ORDER BY KAR.idkardex DESC LIMIT 10;
 END;
+-- CALL spu_list_idproducto(8);

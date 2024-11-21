@@ -49,21 +49,31 @@
         }
     }
 
-    public function getById_usuarioVe($params=[]){
-        try{
-            $query=$this->pdo->prepare("CALL sp_getById_usuarioVe (?)");
-            $query->execute(array($params['idusuarioVe']));
-            return $query->fetch(PDO::FETCH_ASSOC);
-        }catch(Exception $e){
-            die($e->getMessage());
-        }
-    }
     public function searchVehiculo($params=[]){
         try{
             $query=$this->pdo->prepare("CALL sp_buscar_vehiculos (?)");
             $query->execute(array($params['item']));
             return $query->fetchAll(PDO::FETCH_ASSOC);
         }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function updateVehiculo($params = [])
+    {
+        try{
+            $query = $this->pdo->prepare("CALL sp_actualizar_vehiculo(?,?,?,?,?,?");
+            $query->execute(array(
+                $params['idusuario'],
+                $params['marca_vehiculo'],
+                $params['modelo'],
+                $params['placa'],
+                $params['capacidad'],
+                $params['condicion']
+            ));
+            $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
+        }catch (Exception $e){
             die($e->getMessage());
         }
     }

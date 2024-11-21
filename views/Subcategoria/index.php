@@ -1,6 +1,5 @@
 <?php
-require_once '../header.php';
-?>
+require_once '../header.php';?>
 <!-- Botón para abrir el modal -->
 <div class="container mt-5">
     <div class="d-flex justify-content-end">

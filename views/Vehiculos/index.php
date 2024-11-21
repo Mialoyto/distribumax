@@ -42,14 +42,65 @@
                             <!-- Las filas se llenarán aquí -->
                         </tbody>
                     </table>
-
-                </div>
-                <div class="card-footer">
-                    <a href="registrar.php" class="btn btn-primary">Registrar nuevo Vehiculo</a>
-                </div>
+<!-- Modal de edición -->
+<div class="modal fade edit-vehiculo"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="staticBackdropLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Vehículo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form id="form-edit" autocomplete="off" required method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editConductor" class="form-label">Conductor</label>
+                        <input type="text" class="form-control" id="editConductor" name="conductor" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editMarca" class="form-label">Marca</label>
+                        <input type="text" class="form-control" id="editMarca" name="marca_vehiculo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editModelo" class="form-label">Modelo</label>
+                        <input type="text" class="form-control" id="editModelo" name="modelo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPlaca" class="form-label">Placa</label>
+                        <input type="text" class="form-control" id="editPlaca" name="placa" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCapacidad" class="form-label">Capacidad</label>
+                        <input type="number" class="form-control" id="editCapacidad" name="capacidad" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCondicion" class="form-label">Condición</label>
+                        <select class="form-select" id="editCondicion" name="condicion" required>
+                            <option value="operativo">Operativo</option>
+                            <option value="taller">Taller</option>
+                            <option value="averiado">Averiado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
+</div>
+<div class="card-footer">
+    <a href="registrar.php" class="btn btn-primary">Registrar nuevo Vehiculo</a>
+</div>
+</div>
+</div>
+</div>
 </main>
 <script src="http://localhost/distribumax/js/vehiculos/listar.js"> </script>
 <?php

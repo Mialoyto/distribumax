@@ -1,5 +1,5 @@
+-- Active: 1731562917822@@127.0.0.1@3306@distribumax
 USE distribumax;
-
 -- REGISTRAR VEHICULOS
 
 CREATE PROCEDURE sp_registrar_vehiculo(
@@ -18,7 +18,6 @@ END;
 -- ACTUALIZAR VEHICULOS
 
 CREATE PROCEDURE sp_actualizar_vehiculo(
-    IN _idvehiculo INT,
     IN _idusuario INT,
     IN _marca_vehiculo VARCHAR(100),
     IN _modelo VARCHAR(100),
@@ -27,16 +26,47 @@ CREATE PROCEDURE sp_actualizar_vehiculo(
     IN _condicion ENUM('operativo', 'taller', 'averiado')
 )
 BEGIN
-    UPDATE vehiculos
-    SET idusuario = _idusuario,
-        marca_vehiculo = _marca_vehiculo,
-        modelo = _modelo,
-        placa = _placa,
-        capacidad = _capacidad,
-        condicion = _condicion,
-        update_at = NOW()
-    WHERE idvehiculo = _idvehiculo;
+    DECLARE v_mensaje VARCHAR(100);
+    DECLARE v_vehiculo_existe INT;
+    DECLARE v_idvehiculo INT;
+    -- Verificar si el vehículo con la misma placa ya existe
+    SELECT COUNT(*) INTO v_vehiculo_existe
+    FROM vehiculos
+    WHERE placa = _placa AND idusuario != _idusuario;
+    IF v_vehiculo_existe > 0 THEN
+        -- Si la placa ya existe, enviamos un mensaje de error
+        SET v_mensaje = 'La placa ya está registrada para otro vehículo';
+        SET v_idvehiculo = -1;
+    ELSE
+        -- Si no existe, actualizamos los datos del vehículo
+        UPDATE vehiculos
+        SET 
+            marca_vehiculo = UPPER(_marca_vehiculo),
+            modelo = _modelo,
+            placa = _placa,
+            capacidad = _capacidad,
+            condicion = _condicion,
+            update_at = NOW()
+        WHERE idusuario = _idusuario;
+
+        SET v_idvehiculo = _idusuario;
+        SET v_mensaje = 'Datos del vehículo actualizados correctamente';
+    END IF;
+    -- Devolver el mensaje y el ID del vehículo actualizado
+    SELECT v_mensaje AS mensaje, v_idvehiculo AS idvehiculo;
 END;
+
+select * from usuarios;
+CALL sp_actualizar_vehiculo(
+    1, 
+    'JAZAKA', 
+    'SKS', 
+    'OWP-122', 
+    1, 
+    'taller'
+);
+
+
 
 
 

@@ -1,60 +1,179 @@
-document.addEventListener("DOMContentLoaded",()=>{
-    function $( object= null){ return document.querySelector(object)}
-
+document.addEventListener("DOMContentLoaded", () => {
+    function $(object = null) { return document.querySelector(object); }
     let dtvehiculo;
 
-    async function CargarDatos() {
-        const dtvehiculos=$("#table-vehiculos tbody");
-        const reponse = await fetch(`../../controller/vehiculo.controller.php?operation=getAll`)
-        const data = await  reponse.json();
-        console.log(data)
-        dtvehiculos.innerHTML='';
-        if(data.length>0){
-            data.forEach(element => {
-                dtvehiculos.innerHTML+=
-                `
-                <tr>
-              
-                <td>${element.datos}</td>
-                <td>${element.marca_vehiculo}</td>
-                <td>${element.modelo}</td>
-                <td>${element.placa}</td>
-                <td>${element.capacidad}</td>
-                <td>${element.condicion}</td>
-                <td>
-                <a hrf='#' class='btn btn-warning'>Editar</a>
-                <a hrf='#' class='btn btn-danger'>Delete</a>
-                </td>
-                </tr>
-                `
-            });
+    async function obtenerVehiculos(id) {
+        const params = new URLSearchParams();
+        params.append("operation", 'getVehiculo');
+        params.append("idusuario", id);
+        try {
+            const response = await fetch(`../../controller/vehiculo.controller.php?${params}`);
+            const data = await response.json();
+            console.log("Datos obtenidos:", data);
+            return data;
+        } catch (error) {
+            console.error("Error al obtener los vehiculos por ID:", error);
         }
-        if(dtvehiculo){
+    }
+
+
+    async function cargarDatosModal(id) {
+        try {
+            const modal = $(".edit-vehiculo");
+            const inputConductor = modal.querySelector("input[name='conductor']");
+            const inputMarca = modal.querySelector("input[name='marca_vehiculo']");
+            const inputModelo = modal.querySelector("input[name='modelo']");
+            const inputPlaca = modal.querySelector("input[name='placa']");
+            const inputCapacidad = modal.querySelector("input[name='capacidad']");
+            const inputCondicion = modal.querySelector("input[name='condicion']");
+            const btn = modal.querySelector(".btn-success");
+            
+            btn.setAttribute("disabled", "true"); 
+            inputConductor.value = "Cargando....";
+            inputMarca.value = "Cargando....";
+            inputModelo.value = "Cargando....";
+            inputPlaca.value = "Cargando....";
+            inputCapacidad.value = "Cargando....";
+            inputCondicion.value = "Cargando....";
+
+            const data = await obtenerVehiculos(id);
+            console.log("Datos para el modal:", data);
+
+            if (data && data.length > 0) {
+                inputConductor.value = data[0].conductor;
+                inputMarca.value = data[0].marca_vehiculo;
+                inputModelo.value = data[0].modelo;
+                inputPlaca.value = data[0].placa;
+                inputCapacidad.value = data[0].capacidad;
+                inputCondicion.value = data[0].condicion;
+                btn.removeAttribute("disabled"); 
+            } else {
+                console.log("No hay datos disponibles para este vehiculo");
+            }
+        } catch (error) {
+            console.error("Error al cargar los datos en el modal:", error);
+        }
+    }
+
+
+    function RenderDatatableVehiculos() {
+        if (dtvehiculo) {
             dtvehiculo.destroy();
         }
-        RenderTable();
-    }
-  
 
-    async function RenderTable() {
-        dtvehiculo= new DataTable("#table-vehiculos",{
+        dtvehiculo = new DataTable("#table-vehiculos", {
+            columnDefs: [
+                { width: "20%", targets: 0 },
+                { width: "20%", targets: 1 },
+                { width: "20%", targets: 2 },
+                { width: "20%", targets: 3 },
+                { width: "20%", targets: 4 },
+                { width: "10%", targets: 5 },
+                { width: "10%", targets: 6 }
+            ],
             language: {
-                lengthMenu: "Mostrar _MENU_ registros por página",
-                zeroRecords: "No se encontraron registros",
-                info: false,
-                infoEmpty: false,
-                //infoFiltered: "(filtrado de _MAX_ registros totales)",
-                search: "Buscar:",
-                
-            },
-            info:false,
-            ordering:  false
-        })
+                "sEmptyTable": "No hay datos disponibles en la tabla",
+                "info": "",
+                "sInfoFiltered": "(filtrado de _MAX_ entradas en total)",
+                "sLengthMenu": "Filtrar: _MENU_",
+                "sLoadingRecords": "Cargando...",
+                "sProcessing": "Procesando...",
+                "sSearch": "Buscar:",
+                "sZeroRecords": "No se encontraron resultados",
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+    }
+    async function CargarVehiculos() {
+        if (dtvehiculo) {
+            dtvehiculo.destroy();
+            dtvehiculo = null;
+        }
+
+        try {
+            const response = await fetch(`../../controller/vehiculo.controller.php?operation=getAll`);
+            const data = await response.json();
+            console.log("Datos de todos los vehiculos:", data);
+
+            const TablaVehiculos = $("#table-vehiculos tbody");
+            let tableContent = "";
+
+            if (data.length > 0) {
+                data.forEach(element => {
+                    const estadoClass = element.status === "Activo" ? "text-success" : "text-danger";
+                    const icons = element.status === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+                    const bgbtn = element.status === "Activo" ? "btn-success" : "btn-danger";
+
+                    tableContent += `
+                        <tr>
+                            <td>${element.conductor}</td>
+                            <td>${element.marca_vehiculo}</td>
+                            <td>${element.modelo}</td>
+                            <td>${element.placa}</td>
+                            <td>${element.capacidad}</td>
+                            <td>${element.condicion}</td>
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <a id-data="${element.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target=".edit-vehiculo">
+                                        <i class="bi bi-pencil-square fs-5"></i>
+                                    </a>
+                                    <a id-data="${element.id}" class="btn ${bgbtn} ms-2 estado" estado-cat="${element.status}">
+                                        <i class="${icons}"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                TablaVehiculos.innerHTML = tableContent;
+
+                const editButtons = document.querySelectorAll(".btn-warning");
+                editButtons.forEach((btn) => {
+                    btn.addEventListener("click", async (e) => {
+                        const id = e.currentTarget.getAttribute("id-data");
+                        if (id) {
+                            await cargarDatosModal(id);
+                        } else {
+                            console.error("El atributo id-data es null o undefined.");
+                        }
+                    });
+                });
+
+                const statusButtons = document.querySelectorAll(".estado");
+                statusButtons.forEach((btn) => {
+                    btn.addEventListener("click", async (e) => {
+                        try {
+                            const id = e.currentTarget.getAttribute("id-data");
+                            const status = e.currentTarget.getAttribute("estado-cat");
+                            if (await showConfirm("¿Estás seguro de cambiar el estado del vehículo?")) {
+                                const data = await updateEstado(id, status);
+                                if (data[0].estado > 0) {
+                                    showToast(`${data[0].mensaje}`, "success", "SUCCESS");
+                                    await CargarVehiculos();
+                                } else {
+                                    showToast(`${data[0].mensaje}`, "error", "ERROR");
+                                }
+                            }
+                        } catch (error) {
+                            console.error("Error al cambiar el estado del vehiculo:", error);
+                        }
+                    });
+                });
+
+            } else {
+                TablaVehiculos.innerHTML = '<tr><td colspan="7" class="text-center">No hay datos disponibles</td></tr>';
+            }
+
+            RenderDatatableVehiculos();
+
+        } catch (error) {
+            console.error("Error al cargar los vehiculos:", error);
+        }
     }
 
-    async function UpdateVehiculo(idvehiculo) {
-        
-    }
-
-    CargarDatos();
-})
+    CargarVehiculos();
+});

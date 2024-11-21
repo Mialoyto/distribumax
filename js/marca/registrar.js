@@ -142,11 +142,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function addSubcategoria() {
     const contenedor = document.querySelector("#addsubcategoria")
     const div = document.createElement("div");
-    div.classList.add("input-group", "mb-3");
+    div.classList.add("input-group", "mb-3", "subcategoria");
 
     div.innerHTML = `
     <div class="form-floating">
-        <input type="text" id="subcategoria" name="subcategoria" class="form-control addsubcategoria" placeholder="Ej. Alimentos" required>
+        <input type="text" class="form-control inputSubcategoria" placeholder="Ej. Alimentos" required>
         <label for="subcategoria" class="form-label">
           <i class="bi bi-tag"></i>
           Subcategoría

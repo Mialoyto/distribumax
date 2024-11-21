@@ -7,12 +7,29 @@ $subcategoria = new Subcategoria();
 if (isset($_POST['operation'])) {
   switch ($_POST['operation']) {
     case 'addSubcategoria':
-      $datos = [
-        'idcategoria' => $_POST['idcategoria'],
-        'subcategoria' => $_POST['subcategoria']
-      ];
-      echo json_encode($subcategoria->addSubcategoria($datos));
+      if (!isset($_POST['idcategoria']) || !isset($_POST['subcategorias'])) {
+        echo json_encode(['error' => 'Faltan datos']);
+        return;
+      } else {
+        $idcategoria = $_POST['idcategoria'];
+        $subcategorias = $_POST['subcategorias'];
+
+        $datos = [];
+
+        if (is_array($subcategorias) && count($subcategorias) > 0) {
+          foreach ($subcategorias as $item) {
+            $datosEnviar = [
+              'idcategoria' => $idcategoria,
+              'subcategoria' => $item['subcategoria']
+            ];
+            $dato = $subcategoria->addSubcategoria($datosEnviar);
+            $datos[] = $dato;
+          }
+          echo json_encode($datos);
+        }
+      }
       break;
+
     case 'updateSubcategoria':
       $datos = [
         'idsubcategoria' => $_POST['idsubcategoria'],

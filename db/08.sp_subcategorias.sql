@@ -9,8 +9,24 @@ CREATE PROCEDURE sp_registrar_subcategoria(
     IN _subcategoria 	VARCHAR(150)
 )
 BEGIN
-    INSERT INTO subcategorias (idcategoria, subcategoria)
-    VALUES (_idcategoria, UPPER(_subcategoria));
+    DECLARE v_mensaje VARCHAR(100);
+    DECLARE v_subcategoria VARCHAR(150);
+    DECLARE v_idsubcategoria INT;
+
+    SELECT subcategoria INTO v_subcategoria
+    FROM subcategorias
+    WHERE subcategoria = _subcategoria;
+
+    IF v_subcategoria = _subcategoria THEN
+        SET v_mensaje = 'Esta subcategoria ya existe';
+        SET v_idsubcategoria = -1;
+    ELSE   
+        INSERT INTO subcategorias (idcategoria, subcategoria)
+        VALUES (_idcategoria, UPPER(_subcategoria));
+        SET v_idsubcategoria = LAST_INSERT_ID();
+        SET v_mensaje = CONCAT('Subcategoria ', UPPER(_subcategoria) ,' registrada correctamente');
+    END IF;
+    SELECT v_mensaje AS mensaje, v_idsubcategoria AS idsubcategoria;
 END;
 
 CALL sp_registrar_subcategoria (1, 'Subcategoria 10');
@@ -147,4 +163,5 @@ BEGIN
 END;
 
 SELECT * FROM subcategorias;
+
 CALL sp_listar_subcategorias ();

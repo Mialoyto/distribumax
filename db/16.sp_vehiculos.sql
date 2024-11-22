@@ -15,10 +15,11 @@ BEGIN
     VALUES (_idusuario, _marca_vehiculo, _modelo, _placa, _capacidad, _condicion);
 END;
 
+-- CALL sp_actualizar_vehiculo(5,'Kia','Susuki','ABR-124',200,'taller');
 -- ACTUALIZAR VEHICULOS
-
+DROP PROCEDURE IF EXISTS sp_actualizar_vehiculo;
 CREATE PROCEDURE sp_actualizar_vehiculo(
-    IN _idusuario INT,
+    IN _idvehiculo INT,
     IN _marca_vehiculo VARCHAR(100),
     IN _modelo VARCHAR(100),
     IN _placa VARCHAR(20),
@@ -32,7 +33,7 @@ BEGIN
     -- Verificar si el vehículo con la misma placa ya existe
     SELECT COUNT(*) INTO v_vehiculo_existe
     FROM vehiculos
-    WHERE placa = _placa AND idusuario != _idusuario;
+    WHERE placa = _placa AND idvehiculo != v_idvehiculo;
     IF v_vehiculo_existe > 0 THEN
         -- Si la placa ya existe, enviamos un mensaje de error
         SET v_mensaje = 'La placa ya está registrada para otro vehículo';
@@ -47,9 +48,9 @@ BEGIN
             capacidad = _capacidad,
             condicion = _condicion,
             update_at = NOW()
-        WHERE idusuario = _idusuario;
+        WHERE idvehiculo = _idvehiculo;
 
-        SET v_idvehiculo = _idusuario;
+        SET v_idvehiculo = _idvehiculo;
         SET v_mensaje = 'Datos del vehículo actualizados correctamente';
     END IF;
     -- Devolver el mensaje y el ID del vehículo actualizado

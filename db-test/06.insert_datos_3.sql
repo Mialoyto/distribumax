@@ -391,11 +391,5 @@ CALL sp_registrar_vehiculo (
     'operativo' -- Condición del vehículo ('operativo', 'taller', 'averiado')
 );
 
-CALL sp_registrar_vehiculo (
-    3, -- ID del usuario (reemplaza con el ID correcto)
-    'Emely', -- Marca del vehículo
-    'SEXO', -- Modelo del vehículo
-    'AD3-123', -- Placa del vehículo
-    1080, -- Capacidad en Kg
-    'taller' -- Condición del vehículo ('operativo', 'taller', 'averiado')
-);
+-- PARA ELIMINAR UN VEHICULO
+-- DELETE FROM vehiculos WHERE idvehiculo = 3;

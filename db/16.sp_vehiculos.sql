@@ -15,7 +15,7 @@ BEGIN
     VALUES (_idusuario, _marca_vehiculo, _modelo, _placa, _capacidad, _condicion);
 END;
 
-CALL sp_actualizar_vehiculo(5,'Kia','Susuki','ABR-124',200,'taller');
+-- CALL sp_actualizar_vehiculo(5,'Kia','Susuki','ABR-124',200,'taller');
 -- ACTUALIZAR VEHICULOS
 DROP PROCEDURE IF EXISTS sp_actualizar_vehiculo;
 CREATE PROCEDURE sp_actualizar_vehiculo(

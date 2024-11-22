@@ -64,7 +64,7 @@
         try{
             $query = $this->pdo->prepare("CALL sp_actualizar_vehiculo(?,?,?,?,?,?");
             $query->execute(array(
-                $params['idusuario'],
+                $params['idvehiculo'],
                 $params['marca_vehiculo'],
                 $params['modelo'],
                 $params['placa'],

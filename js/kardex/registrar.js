@@ -32,19 +32,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Muestra los divs correspondientes al tipo de movimiento seleccionado
-  movimiento.addEventListener("change", function () {
-    const tipoMovimiento = this.value;
-    if (tipoMovimiento === 'Ingreso') {
-      motivoIngresoDiv.style.display = 'block';
-      motivoSalidaDiv.style.display = 'none';
-    } else if (tipoMovimiento === 'Salida') {
-      motivoSalidaDiv.style.display = 'block';
-      motivoIngresoDiv.style.display = 'none';
-    } else {
-      motivoIngresoDiv.style.display = 'none';
-      motivoSalidaDiv.style.display = 'none';
-    }
-  });
+  /*  movimiento.addEventListener("change", function () {
+     const tipoMovimiento = this.value;
+     if (tipoMovimiento === 'Ingreso') {
+       motivoIngresoDiv.style.display = 'block';
+       motivoSalidaDiv.style.display = 'none';
+     } else if (tipoMovimiento === 'Salida') {
+       motivoSalidaDiv.style.display = 'block';
+       motivoIngresoDiv.style.display = 'none';
+     } else {
+       motivoIngresoDiv.style.display = 'none';
+       motivoSalidaDiv.style.display = 'none';
+     }
+   }); */
 
   // Función para buscar productos
   const searchProducto = async (producto) => {
@@ -71,13 +71,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const li = document.createElement("li");
         li.classList.add("list-group-item");
         li.innerHTML = `${item.nombreproducto} 
-                        <span class="badge rounded-pill text-bg-primary">${item.unidadmedida}</span>`;
+        <span class="badge rounded-pill text-bg-primary">${item.unidadmedida}</span>`;
         li.setAttribute("data-id", item.idproducto);
         li.addEventListener("click", async () => {
           inputProducto.value = item.nombreproducto;
           inputProducto.setAttribute("producto", item.idproducto);
           idproducto = item.idproducto;
           dataLote = await renderLote(idproducto);
+          console.log(idproducto);
+          getMovimientoProducto(idproducto)
+            .then(data => RenderDatatable(data));
           datalist.innerHTML = "";
         });
         datalist.appendChild(li);
@@ -145,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     params.append("idlote", $("#loteP").value);
     params.append("tipomovimiento", $("#tipomovimiento").value);
     params.append("cantidad", cantidad.value);
-    // params.append("motivo", $("#motivo").value);
+    params.append("motivo", $("#motivoSalida").value);
 
     const options = {
       method: "POST",

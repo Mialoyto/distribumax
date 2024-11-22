@@ -13,20 +13,22 @@ class Subcategoria extends Conexion
   }
 
   // solo fatlta el agregar subcategorias
-  public function addSubcategoria($params = [])
+  public function addSubcategoria($params = []): array
   {
     try {
-      $status = false;
-      $query = $this->pdo->prepare("CALL sp_registrar_subcategoria (?,?)");
-      $status = $query->execute(array(
+      $tsql = "CALL sp_registrar_subcategoria(?, ?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(array(
         $params['idcategoria'],
         $params['subcategoria']
       ));
-      return $status;
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
     } catch (Exception $e) {
       die($e->getMessage());
     }
   }
+
   public function getAll()
   {
     try {
@@ -46,6 +48,23 @@ class Subcategoria extends Conexion
       $query = $this->pdo->prepare($sql);
       $query->execute(
         array(
+          $params['idcategoria']
+        )
+      );
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+
+  public function getSubcategoria($params = [])
+  {
+    try {
+      $sql = "CALL sp_getSubcategoria(?)";
+      $query = $this->pdo->prepare($sql);
+      $query->execute(
+        array(
           $params['idsubcategoria']
         )
       );
@@ -55,6 +74,8 @@ class Subcategoria extends Conexion
       die($e->getMessage());
     }
   }
+
+
   public function updateSubcategoria($params = [])
   {
     try {

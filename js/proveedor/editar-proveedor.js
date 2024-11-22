@@ -26,6 +26,10 @@ async function updateEstadoProveedor(idproveedor, estado) {
   params.append("idproveedor", idproveedor);
   params.append("estado", estado);
 
+  for (let [key, value] of params) {
+    console.log(`${key}: ${value}`);
+  }
+
   const options = {
     method: "POST",
     body: params,
@@ -40,3 +44,4 @@ async function updateEstadoProveedor(idproveedor, estado) {
     console.error("Error al actualizar el estado del proveedor:", error);
   }
 }
+// updateEstadoProveedor(3,1);

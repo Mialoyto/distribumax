@@ -24,12 +24,6 @@ if(isset($_POST['operation'])){
             echo json_encode($vehiculo->searchConductor($dato));
        break;
 
-       case 'getById_usuarioVe':
-           $dato=[
-               'idusuarioVe'=>$_POST['idusuarioVe']
-           ];
-           echo json_encode($vehiculo->getById_usuarioVe($dato));
-       break;
        case 'searchVehiculo':
         $dato=[
             'item'=>$_POST['item']
@@ -44,5 +38,11 @@ if(isset($_GET['operation'])){
             echo json_encode($vehiculo->getAll());
         break;
         
+        case 'getVehiculo':
+            $datosEnviar = [
+                'idvehiculo' => $_GET['idvehiculo']
+            ];
+            $datosRecibidos = $vehiculo->getVehiculo($datosEnviar);
+            echo json_encode($datosRecibidos);
     }
 }

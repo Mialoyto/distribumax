@@ -48,13 +48,55 @@ class Categoria extends Conexion
         }
     }
 
-    public function DeleteCategoria()
+    public function getCategoriaById($params = []): array
     {
-        try{
-            $sql = "CALL sp_desactivar_categoria()";
+        try {
+            $sql = "CALL sp_getCategoria(?)";
             $query = $this->pdo->prepare($sql);
-            $query->execute();
-        } catch(Exception $e){
+            $query->execute(
+                array(
+                    $params['idcategoria']
+                )
+            );
+            $resultado =  $query->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    function updateCategoria($params = []): array
+    {
+        try {
+            $tsql = "CALL sp_actualizar_categoria(?,?)";
+            $query = $this->pdo->prepare($tsql);
+            $query->execute(
+                array(
+                    $params['idcategoria'],
+                    $params['categoria']
+                )
+            );
+            $response = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $response;
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function updateEstado($params = [])
+    {
+        try {
+            $sql = "CALL sp_update_estado_categoria(?, ?)";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(
+                array(
+                    $params['idcategoria'],
+                    $params['estado']
+                )
+            );
+            $response = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $response;
+        } catch (Exception $e) {
             die($e->getMessage());
         }
     }

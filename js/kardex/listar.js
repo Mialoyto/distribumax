@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+/* document.addEventListener("DOMContentLoaded", function () {
     function $(object = null) { return document.querySelector(object); }
     let dtkardex;
 
@@ -100,3 +100,4 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+ */

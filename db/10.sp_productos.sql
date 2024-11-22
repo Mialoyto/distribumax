@@ -46,6 +46,7 @@ VALUES
         );
         SELECT LAST_INSERT_ID() AS idproducto;
 END;
+-- call sp_registrar_producto(1, 1, 1, 'Producto 1', 1, 1, '1', 1, 1, 2, 3);
 
 -- ACTUALIZA PRODUCTOS
 CREATE PROCEDURE sp_actualziar_producto (
@@ -149,6 +150,7 @@ BEGIN
         AND PRO.estado = '1';
 END;
 
+CALL sp_get_codigo_producto('AJI-SZ-001');
 -- LISTAR PRODUCTOS
 
 CREATE PROCEDURE sp_listar_productos()

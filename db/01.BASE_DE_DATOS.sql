@@ -228,7 +228,7 @@ CREATE TABLE marcas (
     CONSTRAINT uk_marca UNIQUE (marca,idcategoria),
     CONSTRAINT fk_estado_mar CHECK (estado IN ('0', '1'))
 ) ENGINE = INNODB;
-
+-- BORRAR
 DROP TABLE IF EXISTS tipos_promociones;
 CREATE TABLE tipos_promociones (
     idtipopromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -241,6 +241,7 @@ CREATE TABLE tipos_promociones (
     CONSTRAINT fk_estado_tip_prom CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
+-- BORRAR
 DROP TABLE IF EXISTS promociones;
 CREATE TABLE promociones (
     idpromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -308,6 +309,8 @@ CREATE TABLE productos (
     )
 ) ENGINE = INNODB;
 
+
+-- BORRAR
 DROP TABLE IF EXISTS detalle_promociones;
 CREATE TABLE detalle_promociones (
     iddetallepromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,

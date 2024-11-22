@@ -36,19 +36,21 @@ CALL sp_registrarmovimiento_kardex(1, 7,15,'Ingreso',150, 'Ingreso de productos 
 
 SELECT * FROM kardex;
 SELECT 
-    idkardex,
-    idusuario,
-    idproducto,
-    idlote,
-    tipomovimiento,
-    cantidad,
-    stockactual,
-    motivo
-FROM kardex WHERE idproducto = 7 ORDER BY idkardex DESC LIMIT 10;
+    LOT.numlote AS lote,
+    PRO.nombreproducto AS producto,
+    KAR.tipomovimiento,
+    KAR.motivo,
+    KAR.cantidad,
+    KAR.stockactual
+FROM kardex KAR
+    INNER JOIN lotes LOT ON KAR.idlote = LOT.idlote
+    INNER JOIN productos PRO ON LOT.idproducto = PRO.idproducto
+WHERE KAR.idproducto = 7 ORDER BY KAR.idkardex DESC LIMIT 10;
 
 SELECT * FROM lotes WHERE idproducto = 7;
 select * from kardex;
 SELECT * FROM LOTES;
+SELECT * FROM PRODUCTOS;
 -- SE HIZO UN PEDIDO DE 150 UNIDADES DEL PRODUCTO 7 Y EL STOCK ACTUAL DEBE DE SER 299
 CALL spu_buscar_lote(7);
 -- select * from lotes where idproducto = 7;

@@ -4,25 +4,33 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   let dtcategoria;
 
+  const formUpdateCategoria = document.querySelector("#edit-categoria");
+
   async function CargarDatos() {
-    const Tablacategorias = $("#table-categorias tbody");
+
+    if (dtcategoria) {
+      dtcategoria.destroy();
+      dtcategoria = null;
+    }
 
     try {
-      const response = await fetch(
-        `../../controller/categoria.controller.php?operation=getAll`
-      );
-
-      if (!response.ok) throw new Error("Error en la respuesta del servidor");
-
+      const response = await fetch(`../../controller/categoria.controller.php?operation=getAll`);
       const data = await response.json();
-      console.log(data);
+      const Tablacategorias = $("#table-categorias tbody");
 
       // Construir el contenido de la tabla
       let tableContent = "";
-      data.forEach((element) => {
-        const estadoClass =
+      if (data.length === 0) {
+        tableContent = `<tr><td colspan="3" class="text-center">No hay datos disponibles</td></tr>`;
+      } else {
+        data.forEach((element) => {
+          // console.log(element);
+          const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
+          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+          const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
+
           element.estado === "Activo" ? "text-success" : "text-danger";
-        tableContent += `
+          tableContent += `
                 <tr>
                     <td>${element.categoria}</td> 
                     <td>
@@ -33,56 +41,25 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>
                     <div class="d-flex justify-content-center">
                         <a  id-data="${element.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit-categoria" >
-                            <i class="bi bi-pencil-fill"></i>
+                            <i class="bi bi-pencil-square fs-5"></i>
                         </a>     
-                        <a  id-data="${element.id}" class="btn btn-danger ms-2">
-                            <i class="bi bi-trash-fill"></i>
+                        <a  id-data="${element.id}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">
+                            <i class="${icons}"></i>
                         </a>
-
-                          <div class="modal fade" id="edit-categoria"
-                            data-bs-backdrop="static"
-                            data-bs-keyboard="false"
-                            tabindex="-1"
-                            aria-labelledby="staticBackdropLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">EDITAR CATEGORIA</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form class="edit-categoria" autocomplete="off">
-                                <div class="modal-body">
-                                    <div class="form-floating mb-3">
-                                    <input type="text" name="edit-categoria" class="form-control edit-categoria" placeholder="Ej. Alimentos" autocomplete="off" required>
-                                    <label for="categoria" class="form-label">
-                                        <i class="bi bi-tag"></i>
-                                        Categoría
-                                    </label>
-                                    </div>
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success">Registrar</button>
-                                    <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>
-                                </div>
-                                </form>
-                            </div>
-                            </div>
-                            </div>
-                        </div>
                     </div>
                     </td>
                 </tr>
                 `;
-      });
+        });
+        Tablacategorias.innerHTML = tableContent;
+        asignarEventos();
 
-      Tablacategorias.innerHTML = tableContent;
-
-      if (dtcategoria) {
-        dtcategoria.destroy();
+        if (dtcategoria) {
+          dtcategoria.destroy();
+        }
+        RenderDatatable();
       }
-      RenderDatatable();
+
     } catch (error) {
       console.error("Hubo un error al cargar los datos:", error);
       Tablacategorias.innerHTML = `<tr><td colspan="4" class="text-center">Error al cargar los datos</td></tr>`;
@@ -91,12 +68,86 @@ document.addEventListener("DOMContentLoaded", function () {
 
   CargarDatos();
 
+  function asignarEventos() {
+    // para almacenar el id de la categoria
+    let id;
+    const btnEdit = document.querySelectorAll(".btn-warning");
+    const idcategoria = document.querySelector("#id-categoria");
+    const btnDisabled = document.querySelectorAll(".estado");
+
+    // evento para cargar los datos en el modal
+    btnEdit.forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        id = e.currentTarget.getAttribute("id-data");
+        idcategoria.setAttribute("id-cat", id);
+        await cargarDatosModal(id);
+      });
+    });
+
+    // evento para editar el nombre de la categoria
+    formUpdateCategoria.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        const id = idcategoria.getAttribute("id-cat");
+        const categoria = idcategoria.value;
+        const inputCategoria = categoria.trim();
+        idcategoria.classList.remove("is-invalid");
+        const spanError = document.querySelector(".text-danger");
+        if (spanError) {
+          spanError.remove();
+        }
+        if (await showConfirm("¿Estás seguro de actualizar la categoria?")) {
+          const data = await updateCategoria(id, inputCategoria);
+          const estado = data[0].estado;
+          if (estado) {
+            // console.log(" retorna true")
+            showToast(`${data[0].mensaje}`, "success", "SUCCESS");
+            await CargarDatos();
+          } else {
+            idcategoria.classList.add("is-invalid");
+            const span = document.createElement("span");
+            span.classList.add("text-danger");
+            span.innerHTML = `${data[0].mensaje}`;
+            idcategoria.insertAdjacentElement("afterend", span);
+          }
+        }
+      } catch (error) {
+        console.error("Error al actualizar la categoria:", error);
+      }
+    });
+
+    // evento para cambiar el estado de la categoria
+    btnDisabled.forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        id = e.currentTarget.getAttribute("id-data");
+        const status = e.currentTarget.getAttribute("status");
+        console.log("ID:", id, "Status:", status);
+        if (await showConfirm("¿Estás seguro de cambiar el estado de la categoria?")) {
+          const data = await updateEstado(id, status);
+          const estado = data[0].estado;
+          if (estado) {
+            showToast(`${data[0].mensaje}`, "success", "SUCCESS");
+            await CargarDatos();
+          } else {
+            showToast(`${data[0].mensaje}`, "error", "ERROR");
+          }
+        }
+      });
+    });
+  }
+
   function RenderDatatable() {
+
+    if (dtcategoria) {
+      dtcategoria.destroy();
+      dtcategoria = null;
+    }
+
     dtcategoria = new DataTable("#table-categorias", {
       columnDefs: [
         { width: "33.33%", targets: 0 },
         { width: "33.33%", targets: 1 },
-        { width: "33.33%", targets: 2 }, 
+        { width: "33.33%", targets: 2 },
       ],
       language: {
         sEmptyTable: "No hay datos disponibles en la tabla",

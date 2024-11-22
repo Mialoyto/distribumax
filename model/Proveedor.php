@@ -62,8 +62,8 @@ class Proveedor extends Conexion
         try {
             $query = $this->pdo->prepare("CALL sp_estado_proveedor (?,?)");
             $query->execute(array(
-                $params['estado'],
-                $params['idproveedor']
+                $params['idproveedor'],
+                $params['estado']
             ));
             $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
@@ -88,6 +88,40 @@ class Proveedor extends Conexion
             } else {
                 return [];
             }
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function getProveedores($params = [])
+    {
+        try {
+            $sql = "CALL sp_getProveedor(?)";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(
+                array(
+                    $params['idproveedor']
+                )
+            );
+            $response = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $response;
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function getProductosProveedor($params = [])
+    {
+        try {
+            $sql = "CALL sp_get_proveedor(?)";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(
+                array(
+                    $params['proveedor']
+                )
+            );
+            $response = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $response;
         } catch (Exception $e) {
             die($e->getMessage());
         }

@@ -60,7 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
     params.append('idcategoria', id);
     try {
       const response = await fetch(`../../controller/subcategoria.controller.php?${params}`);
-      return response.json();
+      const data = await response.json();
+      console.log(data);
+      return data;
     } catch (e) {
       console.error(e);
     }
@@ -83,10 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#list-proveedor").innerHTML = "";
     const response = await getProveedor(proveedores);
     console.log(response);
-    if (response.data.length > 0) {
+    if (response.length > 0) {
       $("#list-proveedor").style.display = "block";
 
-      response.data.forEach(item => {
+      response.forEach(item => {
         const li = document.createElement("li");
         li.classList.add("list-group-item");
         li.innerHTML = `${item.proveedor} <h6 class="btn btn-secondary btn-sm h-25 d-inline-block">${item.idempresa}</h6>`;
@@ -168,11 +170,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // evento input para seleccionar categoria y cargar subcategorias
   $("#idcategoria").addEventListener("change", async () => {
     const id = $("#idcategoria").value;
+    console.log("id categoria", id);
     console.log(id);
     const data = await getSubcategorias(id);
     console.log("subcategorias", data);
     optionsub.innerHTML = '<option value="">Seleccione una subcategoria</option>';
-    data.datos.forEach(item => {
+    data.forEach(item => {
       const option = document.createElement('option');
       option.value = item.idsubcategoria;
       option.innerText = item.subcategoria;
@@ -222,10 +225,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } if (precioMayorista <= preciocompra) {
       showToast("El precio mayorista no puede ser menor o igual al precio de compra", "info", "INFO");
       return false;
-    }if(preciocompra >= precioMayorista){
+    } if (preciocompra >= precioMayorista) {
       showToast("El precio de compra no puede ser menor o igual al precio mayorista", "info", "INFO");
       return false;
-    }if(preciocompra >= preciominorista){
+    } if (preciocompra >= preciominorista) {
       showToast("El precio de compra no puede ser menor o igual al precio minorista", "info", "INFO");
       return false;
     }
@@ -252,17 +255,23 @@ document.addEventListener("DOMContentLoaded", () => {
     params.append('precio_mayorista', $("#precio-mayorista").value);
     params.append('precio_minorista', $("#precio-minorista").value);
 
-    /*  for (let [key, value] of params.entries()) {
-       console.log(key, value);
-     } */
+    for (let [key, value] of params.entries()) {
+      console.log(key, value);
+    }
 
-    const options = {
-      method: 'POST',
-      body: params
-    };
+    try {
 
-    const response = await fetch(`../../controller/producto.controller.php`, options);
-    return response.json()
+
+      const options = {
+        method: 'POST',
+        body: params
+      };
+
+      const response = await fetch(`../../controller/producto.controller.php`, options);
+      return response.json();
+    } catch (e) {
+      console.error(e);
+    }
   }
 
 
@@ -285,6 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       console.log(data);
       const resultado = await registrarproducto();
+      console.log(resultado);
       console.log(resultado.id);
       if (resultado.id != null && resultado.id > 0) {
         showToast("Producto registrado correctamente", "success", "SUCCESS");

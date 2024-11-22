@@ -161,6 +161,10 @@ $host = "http://localhost/distribumax";
               <div class="sb-nav-link-icon"><i class="fa-solid fa-boxes-packing fa-lg"></i></div>
               Kardex
             </a>
+            <a class="nav-link" href="<?= $host ?>/views/compras/registrar-compra.php">
+              <div class="sb-nav-link-icon"><i class="bi bi-basket-fill fa-lg"></i></div>
+              Compras
+            </a>
             <a class="nav-link" href="<?= $host ?>/views/Proveedores/">
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Proveedores
@@ -183,6 +187,7 @@ $host = "http://localhost/distribumax";
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Categorias
             </a> -->
+            
             <a class="nav-link" href="<?= $host ?>/views/Marcas/registrar-marca.php">
               <div class="sb-nav-link-icon"><i class="bi bi-tags-fill"></i></div>
               Marcas

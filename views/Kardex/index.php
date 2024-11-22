@@ -74,9 +74,9 @@
           <!-- FIN DEL MODAL -->
         </div>
       </div>
-      <div class="card-body">
+      <form method="POST" action="#" id="form-registrar-kardex" autocomplete="off">
+        <div class="card-body">
 
-        <form method="POST" action="#" id="form-registrar-kardex" autocomplete="off">
           <span class="badge text-bg-light text-uppercase text-end " id="iduser" data-id="<?= $_SESSION['login']['idusuario'] ?>">
             <?= $_SESSION['login']['perfil']  ?> :
             <?= $_SESSION['login']['nombres']  ?>
@@ -111,7 +111,8 @@
             <div>
               <input type="hidden" value="<?= $_SESSION['login']['idusuario'] ?>" id="idusuario">
             </div>
-          </div> <!-- FIN FILA 01 -->
+          </div>
+          <!-- FIN FILA 01 -->
           <!-- INICIO FILA 02 -->
           <div class="row">
             <!-- <span class="badge text-bg-light text-uppercase text-end " id="user" data-id="<?= $_SESSION['login']['idusuario'] ?>"></span> -->
@@ -134,21 +135,7 @@
                 <label for="tipomovimiento" class="form-label">Tipo de Movimiento</label>
               </div>
             </div>
-            
-
-          </div> <!-- FIN FILA 02 -->
-          <!-- INICIO FILA 03 -->
-          <!-- <div class="row">
-            <div class="col-md-12 mt-3">
-              <div class="form-floating">
-                <textarea class="form-control" placeholder="Motivo del movimiento" id="motivo" style="height: 100px" required></textarea>
-                <label for="motivo">Motivo del movimiento</label>
-              </div>
-            </div>
-
-          </div> FIN FILA 03 -->
-
-          <!-- Motivo de Salida -->
+            <!-- Motivo de Salida -->
             <div class="col-md-3 mt-3" id="motivoSalidaDiv">
               <div class="form-floating">
                 <select class="form-select" id="motivoSalida" name="motivoSalida">
@@ -162,14 +149,16 @@
               </div>
             </div>
 
-            <div class="col-md-4 mt-3">
+            <div class="col-md-3 mt-3">
               <div class="form-floating">
                 <input type="number" step="1" min="1" class="form-control numeros" id="cantidad" name="cantidad" placeholder="">
                 <label for="cantidad" class="form-label">Cantidad</label>
               </div>
             </div>
           </div>
-
+          <!-- FIN FILA 02 -->
+        </div>
+        <div class="card-footer mt-3">
           <!-- Botones -->
           <div class="d-flex justify-content-between mt-3">
             <a href="index.php" class="btn btn-primary mt-3 text-end">Listar Kardex</a>
@@ -178,20 +167,27 @@
               <button type="reset" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
             </div>
           </div>
-        </form>
-        <div class="card-footer mt-3">
-          <table id="table-productos" class="table table-striped" style="width: 100%;">
-            <thead>
-              <tr>
-              </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table>
-
         </div>
-      </div>
+      </form>
+    </div>
+    <div class="container-sm">
+      <!-- tabla para mostrar los ultimos Movimientos -->
+      <table id="table-productos" class="table table-striped" style="width: 100%;">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Lote</th>
+            <th>Fecha Vencimiento</th>
+            <th>Stock Actual</th>
+            <th>Tipo Movimiento</th>
+            <th>Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
     </div>
   </div>
 </main>

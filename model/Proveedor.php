@@ -95,7 +95,7 @@ class Proveedor extends Conexion
 
     public function getProveedores($params = [])
     {
-        try{
+        try {
             $sql = "CALL sp_getProveedor(?)";
             $query = $this->pdo->prepare($sql);
             $query->execute(
@@ -105,7 +105,24 @@ class Proveedor extends Conexion
             );
             $response = $query->fetchAll(PDO::FETCH_ASSOC);
             return $response;
-        }catch(Exception $e){
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function getProductosProveedor($params = [])
+    {
+        try {
+            $sql = "CALL sp_get_proveedor(?)";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(
+                array(
+                    $params['proveedor']
+                )
+            );
+            $response = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $response;
+        } catch (Exception $e) {
             die($e->getMessage());
         }
     }

@@ -54,8 +54,6 @@ END;
 
 -- ACTUALIZAR EL STOCK
 
-
-
 DROP TRIGGER IF EXISTS trg_registrar_salida_pedido;
 
 CREATE TRIGGER trg_registrar_salida_pedido
@@ -78,7 +76,6 @@ BEGIN
         'Venta por pedido'
     );
 END;
-
 
 -- ACTUALIZAR DETALLE PEDIDOS
 /** Se puede actualizar algun campo del proceso de actualizar PROBAR SI SE PUEDE ACTUALIZAR EL PRECIO UNITARIO**/
@@ -155,8 +152,37 @@ BEGIN
 END;
 
 CALL ObtenerPrecioProducto ('26558000', 'casino');
-select * from lotes;
+
+SELECT * FROM lotes;
+
 SELECT * FROM productos;
+
+DROP PROCEDURE IF EXISTS sp_producto_proveedor;
+CREATE PROCEDURE sp_producto_proveedor(
+    IN _idproveedor INT,
+    IN _producto VARCHAR(255)
+)
+BEGIN
+    SELECT
+        PRO.idproducto,
+        PRO.nombreproducto as producto,
+        UNM.unidadmedida,
+        CONCAT(
+            PRO.nombreproducto, ' ', 
+            UNM.unidadmedida, ' ', 
+            PRO.cantidad_presentacion, 'X', 
+            PRO.peso_unitario
+            ) AS descripcion
+    FROM productos PRO
+    INNER JOIN proveedores PROV ON PROV.idproveedor = PRO.idproveedor
+    INNER JOIN unidades_medidas UNM ON UNM.idunidadmedida = PRO.idunidadmedida
+    WHERE
+        PRO.nombreproducto LIKE CONCAT('%', _producto, '%')
+        AND PROV.idproveedor = _idproveedor;
+END;
+call sp_producto_proveedor(2, 'a');
+
+-- select * from productos where idproveedor = 2;
 
 -- Obtener el Id del pedido y completar la tabla en ventas
 /* ESTO MODIFICO LOYOLA */

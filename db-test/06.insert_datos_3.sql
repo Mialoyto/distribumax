@@ -350,7 +350,7 @@ CALL sp_tipo_promocion_registrar (
 CALL sp_promocion_registrar (
     1,
     "Descuento en productos seleccionados",
-    '2024-11-20',
+    '2024-12-20',
     '2024-12-31',
     5
 );
@@ -358,7 +358,7 @@ CALL sp_promocion_registrar (
 CALL sp_promocion_registrar (
     1,
     "Descuento en productos en galletas Casino",
-    '2024-11-20',
+    '2024-12-20',
     '2024-12-31',
     5
 );

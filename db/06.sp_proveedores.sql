@@ -34,6 +34,7 @@ END;
 
 -- ACTUALIZAR PROVEEDORES
 DROP PROCEDURE IF EXISTS sp_getProveedor;
+
 CREATE PROCEDURE sp_getProveedor(
     IN _idproveedor           INT
 )
@@ -51,10 +52,12 @@ BEGIN
 END;
 
 SELECT * FROM proveedores;
-CALL sp_getProveedor(1);
+
+CALL sp_getProveedor (1);
 
 -- DESACTIVAR PROOVEDOR
 DROP PROCEDURE IF EXISTS sp_estado_proveedor;
+
 CREATE PROCEDURE sp_estado_proveedor(
     IN _idproveedor    INT,
     IN _estado         CHAR(1)
@@ -86,8 +89,7 @@ BEGIN
     SELECT v_mensaje AS mensaje, v_estado AS estado;
 END;
 
-CALL sp_estado_proveedor(3,'0');
-
+CALL sp_estado_proveedor (3, '0');
 
 -- BUSCAR PROVEEDOR
 DROP PROCEDURE IF EXISTS sp_search_proveedor;
@@ -114,9 +116,8 @@ END;
 
 CALL sp_search_proveedor (1);
 
-
-
 DROP PROCEDURE IF EXISTS sp_listar_proveedor;
+
 CREATE PROCEDURE sp_listar_proveedor()
 BEGIN
     SELECT
@@ -141,5 +142,25 @@ BEGIN
     ORDER BY PRO.proveedor ASC;
 END;
 
-CALL sp_listar_proveedor();
+CALL sp_listar_proveedor ();
+
 SELECT * FROM proveedores;
+
+-- OBTENER UN PROVEEDOR
+DROP PROCEDURE IF EXISTS sp_get_proveedor;
+
+CREATE PROCEDURE sp_get_proveedor(
+    IN _proveedor VARCHAR(100)
+)
+BEGIN
+    SELECT
+        PRO.idproveedor,
+        PRO.proveedor
+    FROM proveedores PRO
+    WHERE PRO.proveedor LIKE CONCAT('%',_proveedor,'%')
+    AND PRO.estado = '1'
+    AND _proveedor <> ''
+    ORDER BY PRO.proveedor ASC;
+END;
+SELECT * FROM proveedores;
+CALL sp_get_proveedor ('P');

@@ -65,5 +65,13 @@ if (isset($_GET['operation'])) {
       ];
       $datosRecibidos = $proveedor->getProveedor($datosEnviar);
       echo json_encode($datosRecibidos);
+      break;
+    case 'getProductosProveedor':
+      $datosEnviar = [
+        'proveedor' => $_GET['proveedor']
+      ];
+      $datosRecibidos = $proveedor->getProductosProveedor($datosEnviar);
+      echo json_encode($datosRecibidos);
+      break;
   }
 }

@@ -150,6 +150,7 @@ BEGIN
         AND PRO.estado = '1';
 END;
 
+CALL sp_get_codigo_producto('AJI-SZ-001');
 -- LISTAR PRODUCTOS
 
 CREATE PROCEDURE sp_listar_productos()

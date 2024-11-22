@@ -382,7 +382,10 @@ BEGIN
         productos PO ON PO.idproducto = DP.idproducto
     WHERE 
        
-         DATE(VE.fecha_venta) = CURDATE() 
-         AND VE.estado = '1';
+        --  DATE(VE.fecha_venta) = CURDATE() 
+          VE.estado = '1'
+          AND VE.condicion='pendiente';
+
 END;
 
+select * from empresas;

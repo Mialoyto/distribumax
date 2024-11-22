@@ -15,11 +15,23 @@ require_once '../header.php';
           <div class="row">
             <!-- Campo de búsqueda de proveedor -->
             <div class="col-md-6 mb-3">
-              <div class="form-floating">
-                <input type="search" class="form-control" id="idproveedor" name="idproveedor" placeholder="Buscar Proveedor" required>
-                <label for="idproveedor"><i class="bi bi-search"></i> Buscar proveedor</label>
-                <ul id="list-proveedor" class="list-group position-absolute w-100 listarDatos" style="z-index: 1000; display: none;"></ul>
-              </div>
+            <div class="form-floating">
+                  <input
+                    type="search"
+                    class="form-control"
+                    id="idproveedor"
+                    name="idproveedor"
+                    placeholder="Proveedor"
+                    required>
+                  <label for="idproveedor" class="form-label">
+                    <i class="bi bi-search"></i> Buscar proveedor
+                  </label>
+                  <ul
+                    id="list-proveedor"
+                    class="list-group position-absolute w-100 listarDatos"
+                    style="z-index: 1000; display: none;">
+                  </ul>
+                </div>
             </div>
 
             <!-- Nombre del proveedor -->

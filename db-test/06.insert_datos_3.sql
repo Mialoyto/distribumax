@@ -1,4 +1,4 @@
--- Active: 1731562917822@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
@@ -242,6 +242,7 @@ CALL sp_registrar_usuario ( 26558002, 3,'CHF', 'conductor', 'admin' );
 CALL sp_registrar_usuario ( 26558003, 4, 'VND','vendedor', 'admin' );
 CALL sp_registrar_usuario(26558015,3,'ALM','almacen','admin');
 
+
 CALL sp_actualizar_usuario (
     'administrador',
     '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
@@ -350,7 +351,7 @@ CALL sp_tipo_promocion_registrar (
 CALL sp_promocion_registrar (
     1,
     "Descuento en productos seleccionados",
-    '2024-11-20',
+    '2024-11-22',
     '2024-12-31',
     5
 );
@@ -358,7 +359,7 @@ CALL sp_promocion_registrar (
 CALL sp_promocion_registrar (
     1,
     "Descuento en productos en galletas Casino",
-    '2024-11-20',
+    '2024-11-22',
     '2024-12-31',
     5
 );

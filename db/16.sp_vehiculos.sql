@@ -1,3 +1,4 @@
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VEHICULOS
@@ -71,7 +72,7 @@ BEGIN
     SELECT 
         us.idusuario,
         rl. idperfil,
-        rl.rol,
+        
         pe.nombres,
         CONCAT(pe.appaterno, ' ', pe.apmaterno) AS apellidos,  -- Concatenación de apellidos
         us.estado AS estado_usuario,
@@ -79,18 +80,24 @@ BEGIN
     FROM 
         usuarios us
     INNER JOIN 
-        perfil rl ON us. idperfil = rl. idperfil
+        perfiles rl ON us.idperfil = rl.idperfil
     INNER JOIN 
         personas pe ON pe.idpersonanrodoc = us.idpersona
     WHERE 
         us.estado = '1' 
         AND rl.estado = '1' 
-        AND rl.rol = 'Conductor'
+        AND rl.perfil = 'Chofer'
         AND (pe.nombres LIKE CONCAT('%', _item, '%') OR 
              CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%'));  -- Filtrar por nombres o apellidos concatenados
 END;
 
 DROP PROCEDURE IF EXISTS `sp_buscar_vehiculos`;
+
+select * from vehiculos;
+select * from usuarios;
+select * from personas;
+select * from usuarios;
+select * from perfiles;
 
 CREATE PROCEDURE `sp_buscar_vehiculos`
 (	

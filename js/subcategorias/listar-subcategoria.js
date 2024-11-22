@@ -104,7 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
                   <td class="text-start">${element.subcategoria}</td>
                   <td> <strong class="${estadoClass}">
                     ${element.estado}
-                    </strong></td>
+                    </strong>
+                  </td>
                   <td>
                     <div class="d-flex justify-content-center">
                       <a  id-data="${element.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target=".edit-categoria">

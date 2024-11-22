@@ -79,7 +79,7 @@ class Proveedor extends Conexion
             $query = $this->pdo->prepare($tsql);
             $query->execute(
                 array(
-                    $params['proveedor']
+                    $params['idproveedor']
                 )
             );
             $resultado = $query->fetchAll(PDO::FETCH_ASSOC);

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function getProveedor(proveedor) {
     const params = new URLSearchParams();
     params.append('operation', 'getProveedor');
-    params.append('proveedor', proveedor);
+    params.append('idproveedor', proveedor);
     try {
       const response = await fetch(`../../controller/proveedor.controller.php?${params}`);
       return response.json();

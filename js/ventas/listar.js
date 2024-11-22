@@ -25,9 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <td >${documento}</td>
         <td>${element.fecha_venta}</td>
         <td>
-            <button class="btn btn-primary info reporte" 
+            <button class="btn btn-outline-danger info reporte" 
                 data-idventa="${element.idventa}">
-                Reporte
+                <i class="fas fa-file-alt me-2"></i>
             </button>
             <button class="btn btn-warning estado" 
                 data-bs-toggle="modal"

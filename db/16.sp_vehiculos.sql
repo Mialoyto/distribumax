@@ -1,4 +1,4 @@
--- Active: 1731562917822@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- REGISTRAR VEHICULOS
 
@@ -65,6 +65,26 @@ CALL sp_actualizar_vehiculo(
     1, 
     'taller'
 );
+select * from vehiculos;
+
+DROP PROCEDURE IF EXISTS sp_getVehiculo;
+CREATE PROCEDURE sp_getVehiculo(
+    IN _idvehiculo INT
+)
+BEGIN
+    SELECT
+        US.nombre_usuario AS usuario, -- deberia de editarse
+        VEH.marca_vehiculo AS marca,
+        VEH.modelo,
+        VEH.placa,
+        VEH.condicion
+    FROM vehiculos  VEH
+        INNER JOIN usuarios US ON VEH.idusuario = US.idusuario
+    WHERE VEH.idvehiculo = _idvehiculo;
+END;
+call sp_getVehiculo(1);
+
+
 
 
 
@@ -117,7 +137,7 @@ BEGIN
         AND rl.estado = '1' 
         AND rl.rol = 'Conductor'
         AND (pe.nombres LIKE CONCAT('%', _item, '%') OR 
-             CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%'));  -- Filtrar por nombres o apellidos concatenados
+            CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%'));  -- Filtrar por nombres o apellidos concatenados
 END;
 
 DROP PROCEDURE IF EXISTS `sp_buscar_vehiculos`;

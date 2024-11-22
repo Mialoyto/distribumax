@@ -96,7 +96,7 @@ BEGIN
 
 END;
 -- SELECT * FROM categorias;
-CALL sp_desactivar_categoria (0, 1);
+-- CALL sp_desactivar_categoria (0, 1);
 
 DROP PROCEDURE IF EXISTS sp_listar_categorias;
 

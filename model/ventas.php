@@ -105,10 +105,13 @@ class Ventas extends Conexion
 		}
 	}
 	
-	public function getventas(){
+	public function getventas($params=[]){
 		try{
-			$query=$this->pdo->prepare("call sp_getventas");
-			$query->execute();
+			$query=$this->pdo->prepare("call sp_getventas(?)");
+			$query->execute(array(
+				$params['provincia']
+			));
+
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		}catch(Exception $e){
 			die($e->getMessage());

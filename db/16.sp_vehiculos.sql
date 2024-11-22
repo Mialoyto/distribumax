@@ -77,6 +77,7 @@ CREATE PROCEDURE sp_getVehiculo(
 )
 BEGIN
     SELECT
+        VEH.idvehiculo,
         US.idusuario,
         US.nombre_usuario AS usuario, -- deberia de editarse
         VEH.marca_vehiculo AS marca,

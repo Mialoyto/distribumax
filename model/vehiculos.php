@@ -62,7 +62,7 @@
     public function updateVehiculo($params = [])
     {
         try{
-            $query = $this->pdo->prepare("CALL sp_actualizar_vehiculo(?,?,?,?,?,?");
+            $query = $this->pdo->prepare("CALL sp_actualizar_vehiculo(?,?,?,?,?,?)");
             $query->execute(array(
                 $params['idvehiculo'],
                 $params['marca_vehiculo'],

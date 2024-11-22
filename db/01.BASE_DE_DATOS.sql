@@ -1,7 +1,8 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1731562917822@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribumax;
 
+select * from vehiculos;
 USE distribumax;
 -- -----------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS departamentos;

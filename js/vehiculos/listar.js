@@ -34,15 +34,16 @@ document.addEventListener("DOMContentLoaded", () => {
              inputPlaca.value = "Cargando....";
              inputCapacidad.value = "Cargando....";
              inputCondicion.value = "Cargando....";
-            console.log(modal);
+            // console.log(modal);
 
             const data = await getVehiculo(id);
             console.log("Datos para el modal:", data);
 
             // if (data && data.length > 0) {
-                inputConductor.setAttribute("id-usuario", data[0].idusuario);
+                inputConductor.setAttribute("id-vehiculo", data[0].idvehiculo);
                 inputConductor.value = data[0].usuario;
                 inputMarca.value = data[0].marca;
+                inputMarca.setAttribute("id-vehiculo",data[0].idvehiculo)
                 inputModelo.value = data[0].modelo;
                 inputPlaca.value = data[0].placa;
                 inputCapacidad.value = data[0].capacidad;

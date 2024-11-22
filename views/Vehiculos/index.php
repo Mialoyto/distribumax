@@ -59,7 +59,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editConductor" class="form-label">Conductor</label>
-                        <input type="text" class="form-control" id="editConductor" name="conductor" required>
+                        <input type="text" class="form-control" id="editConductor" name="conductor" disabled>
                     </div>
                     <div class="mb-3">
                         <label for="editMarca" class="form-label">Marca</label>

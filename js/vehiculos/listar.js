@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     tableContent += `
                         <tr>
-                            <td>${element.conductor}</td>
+                            <td>${element.datos}</td>
                             <td>${element.marca_vehiculo}</td>
                             <td>${element.modelo}</td>
                             <td>${element.placa}</td>

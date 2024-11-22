@@ -40,9 +40,9 @@ if(isset($_GET['operation'])){
         
         case 'getVehiculo':
             $datosEnviar = [
-                'idusuario' => $_GET['idusuario']
+                'idvehiculo' => $_GET['idvehiculo']
             ];
-            $datosRecibidos = $vehiculo->updateVehiculo($datosEnviar);
+            $datosRecibidos = $vehiculo->getVehiculo($datosEnviar);
             echo json_encode($datosRecibidos);
     }
 }

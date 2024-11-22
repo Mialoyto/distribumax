@@ -77,6 +77,20 @@
             die($e->getMessage());
         }
     }
+
+    public function getVehiculo($params = [])
+    {
+        try{
+            $query = $this->pdo->prepare("CALL sp_getVehiculo(?)");
+            $query->execute(array(
+                $params['idvehiculo']
+            ));
+            $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }
 // $vehiculo= new Vehiculo();
 // $dato=[

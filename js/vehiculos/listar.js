@@ -2,54 +2,55 @@ document.addEventListener("DOMContentLoaded", () => {
     function $(object = null) { return document.querySelector(object); }
     let dtvehiculo;
 
-    async function obtenerVehiculos(id) {
-        const params = new URLSearchParams();
-        params.append("operation", 'getVehiculo');
-        params.append("idusuario", id);
-        try {
-            const response = await fetch(`../../controller/vehiculo.controller.php?${params}`);
-            const data = await response.json();
-            console.log("Datos obtenidos:", data);
-            return data;
-        } catch (error) {
-            console.error("Error al obtener los vehiculos por ID:", error);
-        }
-    }
+    // async function obtenerVehiculos(id) {
+    //     const params = new URLSearchParams();
+    //     params.append("operation", 'getVehiculo');
+    //     params.append("idusuario", id);
+    //     try {
+    //         const response = await fetch(`../../controller/vehiculo.controller.php?${params}`);
+    //         const data = await response.json();
+    //         console.log("Datos obtenidos:", data);
+    //         return data;
+    //     } catch (error) {
+    //         console.error("Error al obtener los vehiculos por ID:", error);
+    //     }
+    // }
 
 
     async function cargarDatosModal(id) {
         try {
-            const modal = $(".edit-vehiculo");
-            const inputConductor = modal.querySelector("input[name='conductor']");
-            const inputMarca = modal.querySelector("input[name='marca_vehiculo']");
-            const inputModelo = modal.querySelector("input[name='modelo']");
-            const inputPlaca = modal.querySelector("input[name='placa']");
-            const inputCapacidad = modal.querySelector("input[name='capacidad']");
-            const inputCondicion = modal.querySelector("input[name='condicion']");
-            const btn = modal.querySelector(".btn-success");
-            
-            btn.setAttribute("disabled", "true"); 
-            inputConductor.value = "Cargando....";
-            inputMarca.value = "Cargando....";
-            inputModelo.value = "Cargando....";
-            inputPlaca.value = "Cargando....";
-            inputCapacidad.value = "Cargando....";
-            inputCondicion.value = "Cargando....";
+            const modal = $("#form-veh");
+            const inputConductor = modal.querySelector("#editConductor");
+            const inputMarca = modal.querySelector("#editMarca");
+            const inputModelo = modal.querySelector("#editModelo");
+            const inputPlaca = modal.querySelector("#editPlaca");
+            const inputCapacidad = modal.querySelector("#editCapacidad");
+            const inputCondicion = modal.querySelector("#editCondicion");
+            // const btn = modal.querySelector(".btn-success");
+            // btn.setAttribute("disabled", "true"); 
+             inputConductor.value = "Cargando....";
+             inputMarca.value = "Cargando....";
+             inputModelo.value = "Cargando....";
+             inputPlaca.value = "Cargando....";
+             inputCapacidad.value = "Cargando....";
+             inputCondicion.value = "Cargando....";
+            console.log(modal);
 
-            const data = await obtenerVehiculos(id);
+            const data = await getVehiculo(id);
             console.log("Datos para el modal:", data);
 
-            if (data && data.length > 0) {
-                inputConductor.value = data[0].conductor;
-                inputMarca.value = data[0].marca_vehiculo;
+            // if (data && data.length > 0) {
+                inputConductor.setAttribute("id-usuario", data[0].idusuario);
+                inputConductor.value = data[0].usuario;
+                inputMarca.value = data[0].marca;
                 inputModelo.value = data[0].modelo;
                 inputPlaca.value = data[0].placa;
                 inputCapacidad.value = data[0].capacidad;
                 inputCondicion.value = data[0].condicion;
-                btn.removeAttribute("disabled"); 
-            } else {
-                console.log("No hay datos disponibles para este vehiculo");
-            }
+            //     btn.removeAttribute("disabled"); 
+            // } else {
+            //     console.log("No hay datos disponibles para este vehiculo");
+            // }
         } catch (error) {
             console.error("Error al cargar los datos en el modal:", error);
         }
@@ -117,10 +118,10 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td>${element.condicion}</td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <a id-data="${element.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target=".edit-vehiculo">
+                                    <a id-data="${element.idvehiculo}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target=".edit-vehiculo">
                                         <i class="bi bi-pencil-square fs-5"></i>
                                     </a>
-                                    <a id-data="${element.id}" class="btn ${bgbtn} ms-2 estado" estado-cat="${element.status}">
+                                    <a id-data="${element.idvehiculo}" class="btn ${bgbtn} ms-2 estado" estado-cat="${element.status}">
                                         <i class="${icons}"></i>
                                     </a>
                                 </div>
@@ -135,11 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 editButtons.forEach((btn) => {
                     btn.addEventListener("click", async (e) => {
                         const id = e.currentTarget.getAttribute("id-data");
-                        if (id) {
-                            await cargarDatosModal(id);
-                        } else {
-                            console.error("El atributo id-data es null o undefined.");
-                        }
+                        console.log(id);
+                        await cargarDatosModal(id);
                     });
                 });
 

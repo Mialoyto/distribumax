@@ -66,8 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 { width: "20%", targets: 0 },
                 { width: "20%", targets: 1 },
                 { width: "20%", targets: 2 },
-                { width: "20%", targets: 3 },
-                { width: "20%", targets: 4 },
+                { width: "10%", targets: 3 },
+                { width: "10%", targets: 4 },
                 { width: "10%", targets: 5 },
                 { width: "10%", targets: 6 }
             ],

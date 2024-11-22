@@ -65,7 +65,6 @@ END;
 
 -- ELIMINAR
 DROP PROCEDURE IF EXISTS sp_update_estado_categoria;
-
 CREATE PROCEDURE sp_update_estado_categoria
 ( 
     IN _idcategoria INT,
@@ -96,7 +95,7 @@ BEGIN
 
 END;
 -- SELECT * FROM categorias;
-CALL sp_desactivar_categoria (0, 1);
+-- CALL sp_desactivar_categoria (0, 1);
 
 DROP PROCEDURE IF EXISTS sp_listar_categorias;
 

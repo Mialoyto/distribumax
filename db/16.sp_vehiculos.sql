@@ -56,10 +56,13 @@ BEGIN
     SELECT v_mensaje AS mensaje, v_idvehiculo AS idvehiculo;
 END;
 
+
+
+
 select * from usuarios;
 CALL sp_actualizar_vehiculo(
     1, 
-    'JAZAKA', 
+    'uuuu', 
     'SKS', 
     'OWP-122', 
     1, 

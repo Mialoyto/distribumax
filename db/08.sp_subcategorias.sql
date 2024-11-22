@@ -29,8 +29,6 @@ BEGIN
     SELECT v_mensaje AS mensaje, v_idsubcategoria AS idsubcategoria;
 END;
 
-CALL sp_registrar_subcategoria (1, 'Subcategoria 10');
-
 -- ACTUALIZAR SUBCATEGORIAS
 DROP PROCEDURE IF EXISTS sp_actualizar_subcategoria;
 
@@ -65,7 +63,6 @@ BEGIN
     SELECT v_mensaje AS mensaje, v_idsubcategoria AS idsubcategoria;
 END;
 
--- CALL sp_actualizar_subcategoria (5, 'SubcategoRia 10s');
 -- DESACTIVAR SUBCATEGORIAS
 DROP PROCEDURE IF EXISTS sp_update_estado_subcategoria;
 
@@ -98,48 +95,41 @@ BEGIN
     SELECT v_mensaje AS mensaje, v_estado AS estado;
 END;
 
-CALL sp_update_estado_subcategoria (3, '0');
 
+-- NOT TOCAR
 DROP PROCEDURE IF EXISTS getSubcategorias;
 
 CREATE PROCEDURE getSubcategorias (
-    IN _idsubcategoria INT
-    ) 
+    IN _idcategoria INT) 
 BEGIN
-SELECT 
-    CAT.categoria,
-    SUB.subcategoria
-FROM
-    subcategorias SUB
-    INNER JOIN categorias CAT ON CAT.idcategoria = SUB.idcategoria
-WHERE
-    SUB.idsubcategoria = _idsubcategoria
-    AND CAT.estado = 1
-ORDER BY SUB.idsubcategoria ASC;
+    SELECT 
+        SUB.idsubcategoria,
+        SUB.subcategoria
+    FROM
+        subcategorias SUB
+        INNER JOIN categorias CAT ON CAT.idcategoria = SUB.idcategoria
+    WHERE
+        CAT.idcategoria = _idcategoria
+        AND CAT.estado = 1
+    ORDER BY SUB.idsubcategoria ASC;
 END;
 
-CALL getSubcategorias (2);
 
---  GET SUBCATEGORIAS
-
-/* CREATE PROCEDURE getSubcategorias(
-IN _idsubcategoria INT
+-- LISTAR SUBCATEGORIASDROP PROCEDURE IF EXISTS sp_listar_subcategorias;
+DROP PROCEDURE IF EXISTS sp_getSubcategoria;
+CREATE PROCEDURE sp_getSubcategoria(
+    IN _idsubcategoria INT  
 )
 BEGIN
-SELECT 
-SUB.idsubcategoria,
-SUB.subcategoria
-FROM 
-categorias CAT
-RIGHT JOIN subcategorias SUB ON CAT.idcategoria = SUB.idcategoria
-WHERE 
-CAT.idcategoria = _idsubcategoria
-AND CAT.estado = 1 AND SUB.estado = 1
-ORDER BY SUB.idsubcategoria ASC;
+    SELECT 
+        CAT.categoria,
+        SUB.subcategoria
+    FROM
+        subcategorias SUB
+        INNER JOIN categorias CAT ON CAT.idcategoria = SUB.idcategoria
+    WHERE
+        SUB.idsubcategoria = _idsubcategoria;
 END;
-*/
--- LISTAR SUBCATEGORIASDROP PROCEDURE IF EXISTS sp_listar_subcategorias;
-DROP PROCEDURE IF EXISTS sp_listar_subcategorias;
 
 CREATE PROCEDURE sp_listar_subcategorias()
 BEGIN
@@ -161,7 +151,3 @@ BEGIN
     WHERE CAT.estado = 1
     ORDER BY SUB.subcategoria ASC;
 END;
-
-SELECT * FROM subcategorias;
-
-CALL sp_listar_subcategorias ();

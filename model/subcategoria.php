@@ -48,6 +48,23 @@ class Subcategoria extends Conexion
       $query = $this->pdo->prepare($sql);
       $query->execute(
         array(
+          $params['idcategoria']
+        )
+      );
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+
+  public function getSubcategoria($params = [])
+  {
+    try {
+      $sql = "CALL sp_getSubcategoria(?)";
+      $query = $this->pdo->prepare($sql);
+      $query->execute(
+        array(
           $params['idsubcategoria']
         )
       );
@@ -57,6 +74,8 @@ class Subcategoria extends Conexion
       die($e->getMessage());
     }
   }
+
+
   public function updateSubcategoria($params = [])
   {
     try {

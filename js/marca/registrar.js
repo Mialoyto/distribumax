@@ -32,8 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
     listProveedor.innerHTML = "";
     if (dataProveedor) {
       listProveedor.style.display = "block";
+      console.log(dataProveedor);
 
-      dataProveedor.data.forEach((item) => {
+      dataProveedor.forEach((item) => {
         const li = document.createElement("li");
         li.classList.add("list-group-item");
         li.innerHTML = `${item.proveedor} <span class="badge text-bg-secondary">${item.idempresa}</span>`;
@@ -57,6 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const idProveedorValue = idProveedor.getAttribute("data-id");
     const marcaValue = marca.value.trim();
     const categoriaValue = idselect.value;
+    console.log(idProveedorValue);
+    console.log(marcaValue);
+    console.log(categoriaValue);
 
     if (!idProveedorValue) {
       showToast("Seleccione un proveedor", "info");
@@ -117,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let dataProveedor;
   idProveedor.addEventListener("input", async () => {
     proveedores = idProveedor.value.trim();
+    console.log(proveedores);
     dataProveedor = await getProveedor(proveedores);
     console.log(dataProveedor);
 

@@ -5,8 +5,8 @@ require_once '../model/Proveedor.php';
 $proveedor = new Proveedor();
 $verbo = $_SERVER["REQUEST_METHOD"];
 
-if(isset($_POST['operation'])){
-  switch($_POST['operation']){
+if (isset($_POST['operation'])) {
+  switch ($_POST['operation']) {
     case 'addProveedor':
       // Agregar un nuevo proveedor
       $datos = [
@@ -43,11 +43,11 @@ if(isset($_POST['operation'])){
       ];
       $response = $proveedor->updateEstado($datos);
       echo json_encode($response);
-    }
+  }
 }
 
-if(isset($_GET['operation'])) {
-  switch($_GET['operation']) {
+if (isset($_GET['operation'])) {
+  switch ($_GET['operation']) {
     case 'getAll':
       $response = $proveedor->getAll();
       echo json_encode($response);
@@ -57,6 +57,13 @@ if(isset($_GET['operation'])) {
         'idproveedor' => $_GET['idproveedor']
       ];
       $datosRecibidos = $proveedor->getProveedores($datosEnviar);
+      echo json_encode($datosRecibidos);
+      break;
+    case 'getProveedor':
+      $datosEnviar = [
+        'proveedor' => $_GET['proveedor']
+      ];
+      $datosRecibidos = $proveedor->getProveedor($datosEnviar);
       echo json_encode($datosRecibidos);
   }
 }

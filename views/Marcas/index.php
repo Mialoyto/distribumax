@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <a href="registrar.php" class="btn btn-primary">Registrar Marca</a>
+            <a href="registrar-marca.php" class="btn btn-primary">Registrar Marca</a>
         </div>
     </div>
 </main>

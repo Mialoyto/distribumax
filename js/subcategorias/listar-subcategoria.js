@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
   async function cargarDatosModal(id) {
     try {
       const modal = $(".edit-categoria");
@@ -27,12 +26,13 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.setAttribute("disabled", "true");
       inputCategoria.value = "Cargando...";
       inputSubcategoria.value = "Cargando...";
+      console.log("ID:", id);
       const data = await obtenerSubcategoriaId(id);
       console.log("Datos para el modal:", data);
       if (data && data.length > 0) {
-        const modal = $(".edit-categoria");
-        const inputCategoria = modal.querySelector("input[name='categoria']");
-        const inputSubcategoria = modal.querySelector("input[name='subcategoria']");
+        // const modal = $(".edit-categoria");
+        // const inputCategoria = modal.querySelector("input[name='categoria']");
+        // const inputSubcategoria = modal.querySelector("input[name='subcategoria']");
         inputCategoria.value = data[0].categoria;
         inputSubcategoria.value = data[0].subcategoria;
         btn.removeAttribute("disabled");
@@ -80,13 +80,13 @@ document.addEventListener("DOMContentLoaded", function () {
       dtSubcategorias.destroy();
       dtSubcategorias = null;
     }
-    
+
     try {
       // URL para obtener las subcategorías
       const response = await fetch(`../../controller/subcategoria.controller.php?operation=getAll`);
       const data = await response.json();
       console.log("Datos de todas las subcategorías:", data);
-      
+
       const TablaSubcategorias = $("#table-subcategorias tbody");
       // Limpiar la tabla antes de agregar nuevas filas
       let tableContent = "";
@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
             id = e.currentTarget.getAttribute("id-data");
             id_sub.setAttribute("id-sub", id);
             if (id) {
+              console.log("ID:", id);
               await cargarDatosModal(id);
             } else {
               console.error("El atributo id-data es null o undefined.");
@@ -205,5 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error al cargar las subcategorías:", error);
     }
   }
+
+  
   CargarSubcategorias(); // Llamar la función para cargar los datos
 });

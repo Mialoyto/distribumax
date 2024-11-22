@@ -158,7 +158,7 @@ require_once '../header.php';
               </div>
               <div class="col-6 mb-3">
                 <div class="form-floating">
-                  <select name="" class="form-select select-categorias" required>
+                  <select name="" id="idcategoria" class="form-select select-categorias" required>
                     <option value="">Seleccione categoría</option>
                     <!-- Aquí puedes agregar más opciones de categorías -->
                   </select>

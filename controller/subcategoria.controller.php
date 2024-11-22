@@ -55,11 +55,18 @@ if (isset($_GET['operation'])) {
       $response = $subcategoria->getAll();
       echo json_encode($response);
       break;
+    case 'getSubcategorias':
+      $datosEnviar = [
+        'idcategoria' => $_GET['idcategoria']
+      ];
+      $datosRecibidos = $subcategoria->getSubcategorias($datosEnviar);
+      echo json_encode($datosRecibidos);
+      break;
     case 'getSubcategoria':
       $datosEnviar = [
         'idsubcategoria' => $_GET['idsubcategoria']
       ];
-      $datosRecibidos = $subcategoria->getSubcategorias($datosEnviar);
-      echo json_encode($datosRecibidos);
+      $response = $subcategoria->getSubcategoria($datosEnviar);
+      echo json_encode($response);
   }
 }

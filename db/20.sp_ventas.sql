@@ -356,7 +356,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS sp_getventas;
-DELIMITER $$
 
 CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
 BEGIN
@@ -378,7 +377,7 @@ BEGIN
     WHERE (   (_provincia IS NULL OR _provincia = '')  -- Si _provincia está vacío o es NULL, no aplicamos el filtro
            OR PROV.provincia LIKE CONCAT('%', _provincia, '%') )  
           AND VE.condicion = 'pendiente';
-END$$
+END;
 
 
 

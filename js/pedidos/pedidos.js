@@ -61,6 +61,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         desactivarCampos();
         $("#addProducto").focus();
       }
+      if(response[0].usuario_existe===1){
+        alert("Cliente:",response[0].mensaje);
+      }
 
       $("#direccion-cliente").value = response[0].direccion_cliente;
       idCliente = response[0].idcliente;

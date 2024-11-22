@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -127,29 +127,56 @@ END;
 DROP PROCEDURE IF EXISTS `sp_generar_reporte`;
 
 CREATE PROCEDURE `sp_generar_reporte` ( 
-	IN _idventa INT)
+    IN _idventa INT
+)
 BEGIN
-    -- Input validation can be added here if needed
     SELECT 
         ve.idventa,
         ve.fecha_venta,
         p.idpedido,
         tp.comprobantepago,
-        cli.idpersona,
-        cli.idempresa,
-        cli.tipo_cliente,
-        pe.nombres,
-        pe.appaterno,
-        pe.apmaterno,
-        em.razonsocial,
-        us.idusuario,
-        us.nombre_usuario,
-        pr.nombreproducto ,
-      --  GROUP_CONCAT(pr.preciounitario SEPARATOR ', ') AS precios_unitarios,
+        pr.codigo,
+        ve.igv,
+        ve.total_venta,
+        ve.subtotal as sub_venta,
+        -- Tipo de cliente
+        cli.tipo_cliente AS cliente,
+
+        -- Documento del cliente dependiendo del tipo
+        CASE 
+            WHEN cli.tipo_cliente = 'empresa' THEN em.idempresaruc
+            WHEN cli.tipo_cliente = 'persona' THEN pe.idpersonanrodoc
+            ELSE 'Sin documento'
+        END AS documento_cliente,
+
+        -- Nombre del cliente con mayúsculas
+        CASE 
+            WHEN cli.tipo_cliente = 'empresa' THEN UPPER(em.razonsocial)
+            WHEN cli.tipo_cliente = 'persona' THEN UPPER(CONCAT(pe.appaterno, ' ', pe.apmaterno, ' ', pe.nombres))
+            ELSE 'SIN DATOS'
+        END AS nombre_cliente,
+        CASE 
+            WHEN cli.tipo_cliente = 'empresa' THEN em.direccion
+            WHEN cli.tipo_cliente = 'persona' THEN pe.direccion
+        END AS direccion,    
+
+        -- Detalle del producto
+        pr.nombreproducto,
+        dp.precio_unitario,
         dp.cantidad_producto,
-        dp.unidad_medida,
+        
+        -- Modificación en la unidad de medida
+        CASE 
+            WHEN dp.unidad_medida = 'caja' THEN 'cj'
+            WHEN dp.unidad_medida = 'bolsa' THEN 'bl'
+            WHEN dp.unidad_medida = 'unidad' THEN 'un'
+            WHEN dp.unidad_medida = 'paquete' THEN 'pq'
+            ELSE dp.unidad_medida  -- En caso de que haya una unidad no reconocida
+        END AS unidad_medida,
+
         dp.precio_descuento,
-        GROUP_CONCAT(dp.subtotal SEPARATOR ', ') AS subtotales
+        dp.subtotal
+
     FROM ventas ve
         INNER JOIN pedidos p ON p.idpedido = ve.idpedido
         INNER JOIN detalle_pedidos dp ON p.idpedido = dp.idpedido
@@ -157,14 +184,15 @@ BEGIN
         INNER JOIN clientes cli ON cli.idcliente = p.idcliente
         LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
         LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
-        LEFT JOIN usuarios us ON us.idusuario=pe.idpersonanrodoc
-          LEFT JOIN 
-        tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
-    WHERE p.estado = 'Enviado' AND ve.idventa = _idventa
-    
-    GROUP BY p.idpedido, cli.idpersona, cli.idempresa, cli.tipo_cliente, pe.nombres, pe.appaterno, pe.apmaterno, em.razonsocial;
+        LEFT JOIN tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
+
+    WHERE p.estado = 'Enviado' AND ve.idventa = _idventa;
 END;
 
+
+select * from detalle_pedidos;
+select * from ventas;
+select * from unidades_medidas;
 
 -- LISTAR VENTAS DEL DIA
 DROP PROCEDURE IF EXISTS `sp_listar_ventas`;
@@ -204,7 +232,7 @@ BEGIN
     WHERE 
         p.estado = 'Enviado'
 	AND ve.estado='1'
-        AND DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
+        -- AND DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
     GROUP BY 
         ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
     ORDER BY 
@@ -354,7 +382,10 @@ BEGIN
         productos PO ON PO.idproducto = DP.idproducto
     WHERE 
        
-         DATE(VE.fecha_venta) = CURDATE() 
-         AND VE.estado = '1';
+        --  DATE(VE.fecha_venta) = CURDATE() 
+          VE.estado = '1'
+          AND VE.condicion='pendiente';
+
 END;
 
+select * from empresas;

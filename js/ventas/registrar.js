@@ -64,7 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(`../../controller/pedido.controller.php?${params}`);
-      return response.json();
+       return response.json();
+       
     } catch (e) {
       console.error(e);
     }
@@ -498,10 +499,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (inputPedido.trim().length != 0) {
       mostrarResultados();
+        $("#idtipocomprobante").removeAttribute("disabled")
+        $("#tipo_pago").removeAttribute("disabled")
       console.log(data);
     } if (inputPedido.trim().length == 0) {
       limpiarDatosPedido();
+      $("#idtipocomprobante").setAttribute("disabled",true)
+      $("#tipo_pago").setAttribute("disabled",true)
       $("#datalistIdPedido").style.display = 'none';
+
+      
     } else {
       $("#datalistIdPedido").style.display = 'none';
 
@@ -524,6 +531,7 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrar.removeAttribute("style")
       $("#add-metodo").style.display = 'block';
       $("#monto_pago_1").removeAttribute("disabled");
+      
     }
   });
 

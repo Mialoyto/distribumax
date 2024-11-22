@@ -1,20 +1,20 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
-CALL sp_registrar_lote(1, 'LOT001', '2025-10-05');
-CALL sp_registrar_lote(1, 'LOT002', '2024-12-21');
-CALL sp_registrar_lote(1, 'LOT003', '2024-12-21');
-CALL sp_registrar_lote(2, 'LOT002', '2025-10-06');
-CALL sp_registrar_lote(3, 'LOT003', '2025-10-07');
-CALL sp_registrar_lote(4, 'LOT004', '2025-10-08');
-CALL sp_registrar_lote(5, 'LOT005', '2025-10-09');
-CALL sp_registrar_lote(6, 'LOT006', '2025-10-10');
-CALL sp_registrar_lote(7, 'LOT007', '2025-10-11');
-CALL sp_registrar_lote(8, 'LOT008', '2025-10-12');
-CALL sp_registrar_lote(9, 'LOT009', '2024-12-21');
-CALL sp_registrar_lote(10, 'LOT010','2025-10-14');
-CALL sp_registrar_lote(11, 'LOT011','2025-10-15');
-CALL sp_registrar_lote(12, 'LOT012','2025-10-16');
-CALL sp_registrar_lote(7, 'LOT012','2024-12-20');
+CALL sp_registrar_lote(1, 'LOT001', '2025-01-17');
+CALL sp_registrar_lote(1, 'LOT002', '2025-01-17');
+CALL sp_registrar_lote(1, 'LOT003', '2025-01-17');
+CALL sp_registrar_lote(2, 'LOT002', '2025-01-17');
+CALL sp_registrar_lote(3, 'LOT003', '2025-01-17');
+CALL sp_registrar_lote(4, 'LOT004', '2025-01-17');
+CALL sp_registrar_lote(5, 'LOT005', '2025-01-17');
+CALL sp_registrar_lote(6, 'LOT006', '2025-01-17');
+CALL sp_registrar_lote(7, 'LOT007', '2025-01-17');
+CALL sp_registrar_lote(8, 'LOT008', '2025-01-17');
+CALL sp_registrar_lote(9, 'LOT009', '2025-01-17');
+CALL sp_registrar_lote(10, 'LOT010','2025-01-17');
+CALL sp_registrar_lote(11, 'LOT011','2025-01-17');
+CALL sp_registrar_lote(12, 'LOT012','2025-01-17');
+CALL sp_registrar_lote(7, 'LOT012','2025-01-17');
 
 
 CALL sp_registrarmovimiento_kardex(1, 1,1,'Ingreso', 100, 'Ingreso de productos adicionales');

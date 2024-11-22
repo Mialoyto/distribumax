@@ -1,113 +1,105 @@
 document.addEventListener("DOMContentLoaded", () => {
-    function $(object = null) {
-        return document.querySelector(object);
+    function $(selector = null) {
+        return document.querySelector(selector);
     }
 
-    const buscarConductor = async () => {
+    const listProveedor = $("#list-usuario");
+    const idProveedor = $("#idusuario");
+
+    // Función para buscar conductores
+    const buscarConductor = async (usuario) => {
         const params = new URLSearchParams();
         params.append('operation', 'searchConductor');
-        params.append('item', $("#idusuario").value);
-
-        const option = {
-            method: 'POST',
-            body: params
-        };
+        params.append('item', usuario);
 
         try {
-            const response = await fetch(`../../controller/vehiculo.controller.php`, option);
+            const response = await fetch(`../../controller/vehiculo.controller.php`, {
+                method: 'POST',
+                body: params
+            });
             return await response.json();
         } catch (e) {
-            console.error(e);
+            console.error("Error al buscar conductor:", e);
         }
     };
 
-    const mostrarResultados = async () => {
-        const datalist = $("#datalistConductor");
-        datalist.innerHTML = ''; // Limpiar resultados anteriores
-        const response = await buscarConductor();
+    // Renderizar datos en la lista
+    const renderData = (data) => {
+        listProveedor.innerHTML = ""; // Limpiar lista
+        if (data && data.length) {
+            listProveedor.style.display = "block";
 
-        if ( response.length > 0) {
-            response.forEach(item => {
-                const option = document.createElement('option');
-                option.innerHTML = `${item.nombres} ${item.apellidos}`;
-                option.value = item.idusuario; // Asigna el ID del usuario como valor del 'option'
-                 // Muestra nombres y apellidos
-                datalist.appendChild(option);
+            data.forEach((item) => {
+                const li = document.createElement("li");
+                li.classList.add("list-group-item");
+                li.textContent = `${item.nombres} ${item.apellidos}`;
+                li.addEventListener("click", () => {
+                    idProveedor.value = `${item.nombres} ${item.apellidos}`;
+                    idProveedor.setAttribute("data-id", item.idusuario);
+                    listProveedor.innerHTML = "";
+                    listProveedor.style.display = "none";
+                });
+                listProveedor.appendChild(li);
             });
-            datalist.style.display = 'block';
         } else {
-            datalist.style.display = 'none';
+            const li = document.createElement("li");
+            li.classList.add("list-group-item");
+            li.textContent = "Conductor no encontrado";
+            listProveedor.appendChild(li);
         }
     };
-   
-    // Evento para cuando se ingresa texto en el input de idusuario
-    $("#idusuario").addEventListener('input', async () => {
-        const idusuario = $("#idusuario").value;
-       
-        if (idusuario) {
-            await mostrarResultados();
-            //console.log(idusuario);
+
+    // Evento para buscar conductores cuando se escribe en el input
+    idProveedor.addEventListener("input", async () => {
+        const query = idProveedor.value.trim();
+        if (!query) {
+            listProveedor.innerHTML = "";
+            listProveedor.style.display = "none";
+            return;
         }
+        const dataProveedor = await buscarConductor(query);
+        renderData(dataProveedor);
     });
-    // Evento para agregar un guion -
-    $("#placa").addEventListener('input', function (event) {
-        let input = event.target;
-        let value = input.value;
-        
-        // Cuando el input tiene 3 caracteres, agregamos el guion si aún no está presente
-        if (value.length === 3 && !value.includes('-')) {
-            input.value = value + '-';
-        }
-        if (value.length === 4 && value.includes('-') && event.inputType === 'deleteContentBackward') {
-            input.value = value.slice(0, -1); // Borra el guion si lo tiene
-        }
-    });
-    
-    async function registrarVehiculo() {
+
+    // Validar y registrar vehículo
+    const registrarVehiculo = async () => {
         const params = new FormData();
         params.append('operation', 'addVehiculo');
-        params.append('idusuario', $("#idusuario").value); // Aquí se usa 'idusuario' correctamente
+        params.append('idusuario', idProveedor.getAttribute("data-id")); // Aquí tomamos el id del conductor
         params.append('marca_vehiculo', $("#marca_vehiculo").value);
         params.append('modelo', $("#modelo").value);
         params.append('placa', $("#placa").value);
         params.append('capacidad', $("#capacidad").value);
         params.append('condicion', $("#condicion").value);
 
-        const option = {
-            method: 'POST',
-            body: params
-        };
-
         try {
-            const response = await fetch(`../../controller/vehiculo.controller.php`, option);
-            const data = await response.json();
-            console.log(data);
-            return data;
+            const response = await fetch(`../../controller/vehiculo.controller.php`, {
+                method: 'POST',
+                body: params
+            });
+            return await response.json();
         } catch (e) {
-            console.error(e);
+            console.error("Error al registrar vehículo:", e);
         }
-    }
+    };
 
-    async function Limpiar() {
-        const form=$("#form-registrar-Vehiculo");
-        form.reset();
-    }
-    // Manejo del evento de envío del formulario
+    // Limpiar formulario
+    const limpiarFormulario = () => {
+        $("#form-registrar-Vehiculo").reset();
+    };
+
+    // Manejo del envío del formulario
     $("#form-registrar-Vehiculo").addEventListener("submit", async (event) => {
-        event.preventDefault(); // Prevenir comportamiento por defecto
+        event.preventDefault();
         const resultado = await registrarVehiculo();
-        const capacidad =$("#capacidad").value;
         if (resultado) {
-            alert("Registro exitoso");
-            await Limpiar();
+            showToast("Vehiculo registrado correctamente", "success", "SUCCESS");
+            limpiarFormulario();
         } else {
-            alert("Error al registrar el vehículo");
-        }
-
-        if(capacidad==0){
-            capacidad.value='';
+            showToast("No es posible registrarlo", "warning", "WARNING");
         }
     });
-    
-       
+
+    // Formato automático de placa
+ 
 });

@@ -24,7 +24,7 @@ require_once '../header.php';
                   type="search"
                   class="form-control"
                   id="idvehiculo"
-                  name="idproveedor"
+                  name=""
                   placeholder="Venta"
                   required>
                 <label for="idvehiculo" class="form-label">Buscar vehículo</label>
@@ -124,13 +124,13 @@ require_once '../header.php';
               </tbody>
             </table>
           </div>
-          <button type="submit" class="btn btn-primary">Registrar Vehículo</button>
+          <button type="submit" class="btn btn-primary">Registrar</button>
           <button type="reset" class="btn btn-danger">Cancelar</button>
         </form>
       </div>
 
       <div class="card-footer">
-        <a href="index.php" class="btn btn-secondary">Volver al Listado de Vehículos</a>
+        <a href="index.php" class="btn btn-secondary">Listar</a>
       </div>
     </div>
   </div>

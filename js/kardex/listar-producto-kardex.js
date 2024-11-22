@@ -16,14 +16,21 @@ async function getMovimientoProducto(idproducto) {
 
 async function RenderDatatable(data) {
   const table = document.querySelector("#table-productos");
-  
-  // Verificar si ya existe una instancia de DataTable y destruirla
-  if (DataTable.isDataTable(table)) {
-    DataTable.getInstance(table).destroy();
+  let dataTable = table.DataTable;
+
+  // Destruir la tabla existente si existe
+  try {
+    const existingTable = DataTable.isDataTable(table) ? new DataTable(table) : null;
+    if (existingTable) {
+      existingTable.destroy();
+      table.innerHTML = ''; // Limpiar el contenido HTML
+    }
+  } catch (error) {
+    console.error("Error al destruir la tabla:", error);
   }
 
   // Crear nueva instancia de DataTable
-  new DataTable(table, {
+  return new DataTable(table, {
     scrollX: true,
     searching: false,
     ordering: false,

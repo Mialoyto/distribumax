@@ -32,8 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
     listProveedor.innerHTML = "";
     if (dataProveedor) {
       listProveedor.style.display = "block";
+      console.log(dataProveedor);
 
-      dataProveedor.data.forEach((item) => {
+      dataProveedor.forEach((item) => {
         const li = document.createElement("li");
         li.classList.add("list-group-item");
         li.innerHTML = `${item.proveedor} <span class="badge text-bg-secondary">${item.idempresa}</span>`;
@@ -57,6 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const idProveedorValue = idProveedor.getAttribute("data-id");
     const marcaValue = marca.value.trim();
     const categoriaValue = idselect.value;
+    console.log(idProveedorValue);
+    console.log(marcaValue);
+    console.log(categoriaValue);
 
     if (!idProveedorValue) {
       showToast("Seleccione un proveedor", "info");
@@ -117,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let dataProveedor;
   idProveedor.addEventListener("input", async () => {
     proveedores = idProveedor.value.trim();
+    console.log(proveedores);
     dataProveedor = await getProveedor(proveedores);
     console.log(dataProveedor);
 
@@ -142,11 +147,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function addSubcategoria() {
     const contenedor = document.querySelector("#addsubcategoria")
     const div = document.createElement("div");
-    div.classList.add("input-group", "mb-3");
+    div.classList.add("input-group", "mb-3", "subcategoria");
 
     div.innerHTML = `
     <div class="form-floating">
-        <input type="text" id="subcategoria" name="subcategoria" class="form-control addsubcategoria" placeholder="Ej. Alimentos" required>
+        <input type="text" class="form-control inputSubcategoria" placeholder="Ej. Alimentos" required>
         <label for="subcategoria" class="form-label">
           <i class="bi bi-tag"></i>
           Subcategoría

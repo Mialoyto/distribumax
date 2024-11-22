@@ -48,10 +48,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (data[0].idcategoria > 0) {
                 showToast(`${data[0].mensaje}`, "success", "SUCCESS");
                 formcategoria.reset();
-                const cat = await getCategorias('.select-categorias');
-                console.log(cat);
+                await getCategorias('.select-categorias');
             } else {
-                // showToast(`${data[0].mensaje}`, "error", "ERROR");
                 categoria.classList.add("is-invalid");
                 const span = document.createElement("span");
                 span.classList.add("text-danger");
@@ -63,23 +61,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     getCategorias('.select-categorias');
 });
 
-// async function getCategorias() {
-//     const selectCategorias = document.querySelector("#idcategoria");
-//     const params = new URLSearchParams();
-//     params.append('operation', 'getCategorias');
-//     try {
-//         const response = await fetch(`../../controller/categoria.controller.php?${params}`);
-//         const categorias = await response.json();
-//         console.log(categorias);
-//         selectCategorias.innerHTML = "";
-//         selectCategorias.innerHTML = `<option value="">Seleccione una categoria</option>`;
-//         categorias.forEach(element => {
-//             const tagOption = document.createElement('option');
-//             tagOption.value = element.idcategoria;
-//             tagOption.innerText = element.categoria;
-//             selectCategorias.appendChild(tagOption);
-//         });
-//     } catch (e) {
-//         console.error(e);
-//     }
-// }

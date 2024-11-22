@@ -31,3 +31,4 @@ VALUES
     (1, 'Honda', 'Civic', 'XYZ789', 5, 'operativo' );
 
 SELECT * FROM vehiculos;
+select * from productos;

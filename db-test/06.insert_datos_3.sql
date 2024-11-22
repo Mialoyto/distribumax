@@ -380,3 +380,21 @@ CALL sp_registrar_vehiculo (
     1500, -- Capacidad en Kg
     'operativo' -- Condición del vehículo ('operativo', 'taller', 'averiado')
 );
+
+CALL sp_registrar_vehiculo (
+    2, -- ID del usuario (reemplaza con el ID correcto)
+    'Gretell', -- Marca del vehículo
+    'Confiable', -- Modelo del vehículo
+    'ADR-123', -- Placa del vehículo
+    1087, -- Capacidad en Kg
+    'operativo' -- Condición del vehículo ('operativo', 'taller', 'averiado')
+);
+
+CALL sp_registrar_vehiculo (
+    3, -- ID del usuario (reemplaza con el ID correcto)
+    'Emely', -- Marca del vehículo
+    'SEXO', -- Modelo del vehículo
+    'AD3-123', -- Placa del vehículo
+    1080, -- Capacidad en Kg
+    'taller' -- Condición del vehículo ('operativo', 'taller', 'averiado')
+);

@@ -65,7 +65,6 @@ END;
 
 -- ELIMINAR
 DROP PROCEDURE IF EXISTS sp_update_estado_categoria;
-
 CREATE PROCEDURE sp_update_estado_categoria
 ( 
     IN _idcategoria INT,

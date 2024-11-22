@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1731562917822@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- REGISTRAR VEHICULOS
 
@@ -56,10 +56,13 @@ BEGIN
     SELECT v_mensaje AS mensaje, v_idvehiculo AS idvehiculo;
 END;
 
+
+
+
 select * from usuarios;
 CALL sp_actualizar_vehiculo(
     1, 
-    'JAZAKA', 
+    'uuuu', 
     'SKS', 
     'OWP-122', 
     1, 
@@ -73,10 +76,12 @@ CREATE PROCEDURE sp_getVehiculo(
 )
 BEGIN
     SELECT
+        US.idusuario,
         US.nombre_usuario AS usuario, -- deberia de editarse
         VEH.marca_vehiculo AS marca,
         VEH.modelo,
         VEH.placa,
+        VEH.capacidad,
         VEH.condicion
     FROM vehiculos  VEH
         INNER JOIN usuarios US ON VEH.idusuario = US.idusuario

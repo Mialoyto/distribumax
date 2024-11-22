@@ -55,7 +55,7 @@
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Vehículo</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="form-edit" autocomplete="off" required method="POST">
+            <form id="form-veh" autocomplete="off" required method="POST">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editConductor" class="form-label">Conductor</label>
@@ -103,6 +103,7 @@
 </div>
 </main>
 <script src="http://localhost/distribumax/js/vehiculos/listar.js"> </script>
+<script src="http://localhost/distribumax/js/vehiculos/editar-vehiculo.js"> </script>
 <?php
 require_once '../footer.php';
 ?>

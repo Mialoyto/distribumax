@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1731562917822@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 CREATE DATABASE distribumax;
 
@@ -485,13 +485,11 @@ CREATE TABLE vehiculos (
     ) NOT NULL DEFAULT 'operativo',
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
-    estado CHAR(10) NOT NULL DEFAULT 'Activo',
+    estado CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idusuario_vehi FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT uk_placa_vehi UNIQUE (placa),
     CONSTRAINT ck_capacidad_veh CHECK (capacidad > 0),
-    CONSTRAINT ck_estado_veh CHECK (
-        estado IN ('Activo', 'Inactivo')
-    )
+    CONSTRAINT fk_estado_venta CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS despacho;

@@ -62,7 +62,7 @@
     public function updateVehiculo($params = [])
     {
         try{
-            $query = $this->pdo->prepare("CALL sp_actualizar_vehiculo(?,?,?,?,?,?");
+            $query = $this->pdo->prepare("CALL sp_actualizar_vehiculo(?,?,?,?,?,?)");
             $query->execute(array(
                 $params['idvehiculo'],
                 $params['marca_vehiculo'],
@@ -88,6 +88,24 @@
             $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
         }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function updateEstadoVehiculo($params = [])
+    {
+        try{
+            $sql = "CALL sp_update_estado_vehiculo(?,?)";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(
+                array(
+                    $params['idvehiculo'],
+                    $params['estado']
+                )
+                );
+                $response = $query->fetchAll(PDO::FETCH_ASSOC);
+                return $response;
+        } catch(Exception $e){
             die($e->getMessage());
         }
     }

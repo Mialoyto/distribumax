@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   const proveedor = document.querySelector("#searchProveedor");
+  const producto = document.querySelector("#searchProducto");
   let inputProveedor;
 
-  async function getProductosProveedor(proveedor) {
+  async function getProveedor(proveedor) {
 
     const params = new URLSearchParams();
     params.append('operation', 'getProductosProveedor');
@@ -16,10 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  async function renderList() {
+  async function renderListProveedor() {
     const list = document.querySelector('#listProveedor');
     inputProveedor = proveedor.value.trim();
-    const data = await getProductosProveedor(inputProveedor);
+    const data = await getProveedor(inputProveedor);
     list.innerHTML = '';
     if (data.length == 0) {
       console.log('No se encontraron productos');
@@ -42,15 +43,45 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         list.appendChild(li);
       });
-
     }
+  }
 
+
+  // obtener productos de proveedor
+  async function getProductosProveedor(idproveedor, producto) {
+    const params = new URLSearchParams();
+    params.append('operation', 'getProductosProveedor');
+    params.append('idproveedor', idproveedor);
+    params.append('producto', producto);
+    try {
+      const response = await fetch(`../../controller/compras.controller.php?${params}`);
+      const data = await response.json();
+      // console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function renderListProduct() {
+    const id = proveedor.getAttribute('id-proveedor');
+    const inputProducto = producto.value.trim();
+    const data = await getProductosProveedor(id, inputProducto)
+    console.log(data)
 
   }
 
+
   // evento para buscar proveedor
   proveedor.addEventListener('input', async function () {
-    renderList();
+    renderListProveedor();
+    // const data = await getProductosProveedor(1, 'a');
+
+  });
+
+  producto.addEventListener('input', async function () {
+    renderListProduct();
+
   })
 
 

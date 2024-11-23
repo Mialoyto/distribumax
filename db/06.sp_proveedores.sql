@@ -142,10 +142,6 @@ BEGIN
     ORDER BY PRO.proveedor ASC;
 END;
 
-CALL sp_listar_proveedor ();
-
-SELECT * FROM proveedores;
-
 -- OBTENER UN PROVEEDOR
 DROP PROCEDURE IF EXISTS sp_get_proveedor;
 
@@ -162,5 +158,8 @@ BEGIN
     AND _proveedor <> ''
     ORDER BY PRO.proveedor ASC;
 END;
+
 SELECT * FROM proveedores;
-CALL sp_get_proveedor ('P');
+
+CALL sp_get_proveedor ('');
+

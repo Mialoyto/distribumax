@@ -175,6 +175,27 @@ document.addEventListener("DOMContentLoaded", () => {
             listprovincia.innerHTML="";
             listprovincia.style.display="none";
           });
+           const renderdatos = document.querySelector("#detalle-ventas tbody");
+    renderdatos.innerHTML = ""; // Limpiar la tabla
+
+    provincia.forEach(venta => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${venta.idventa}</td>
+        <td>${venta.nombreproducto}</td>
+        <td>${venta.cantidad_producto}</td>
+        <td>${venta.provincia}</td>
+        <td>${venta.precio_unitario}</td>
+        <td>${venta.subtotal}</td>
+        <td>${venta.descuento}</td>
+        <td>${venta.total_venta}</td>
+        <td><button class="btn btn-danger btn-sm eliminar-fila">Eliminar</button></td>
+      `;
+      tr.querySelector(".eliminar-fila").addEventListener("click", () => {
+        tr.remove();
+      })
+      renderdatos.appendChild(tr);
+    });
           listprovincia.appendChild(li);
         });
       }else{

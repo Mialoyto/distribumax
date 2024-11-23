@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR DESPACHO
@@ -77,36 +77,52 @@ END;
 
 
 DROP PROCEDURE IF EXISTS sp_reporte_despacho_por_proveedor;
-
-
 CREATE PROCEDURE sp_reporte_despacho_por_proveedor(IN _iddespacho INT)
 BEGIN
     SELECT 
         Prove.proveedor,
-        MAR.marca,
+        upper(MAR.marca) AS marca,
         PRO.nombreproducto,
         SUM(DP.cantidad_producto) AS total,
-        DES.iddespacho,
+        DESP.iddespacho,
         VEN.idventa,
-        PRO.codigo
-        
-    FROM despacho_ventas DES
+        PRO.codigo,
+        UM.unidadmedida,
+        PER.perfil,
+        VH.placa,
+        VH.modelo,
+        VH.marca_vehiculo,
+        CONCAT (P.nombres,' ',P.appaterno ) AS datos
+    FROM despacho_ventas DESP
+    INNER JOIN despacho DESPA 
+		ON    DESPA.iddespacho=DESP.iddespacho
     INNER JOIN ventas VEN 
-        ON DES.idventa = VEN.idventa
+        ON DESP.idventa = VEN.idventa
     LEFT JOIN pedidos PED 
         ON PED.idpedido = VEN.idpedido
     LEFT JOIN detalle_pedidos DP
         ON DP.idpedido = PED.idpedido
     LEFT JOIN productos PRO 
         ON PRO.idproducto = DP.idproducto
+	LEFT  JOIN unidades_medidas UM
+		ON UM.idunidadmedida=PRO.idunidadmedida
     LEFT JOIN marcas MAR 
         ON MAR.idmarca = PRO.idmarca
     LEFT JOIN proveedores Prove 
         ON Prove.idproveedor = PRO.idproveedor
-    WHERE DES.iddespacho = _iddespacho
-    GROUP BY Prove.proveedor, MAR.marca, PRO.nombreproducto
+    LEFT JOIN vehiculos VH 
+        ON VH.idvehiculo = DESPA.idvehiculo
+    LEFT JOIN usuarios USU 
+        ON USU.idusuario = DESPA.idusuario
+    LEFT JOIN perfiles PER 
+        ON PER.idperfil = USU.idperfil
+    LEFT JOIN personas P 
+		ON P.idpersonanrodoc=USU.idpersona
+    WHERE DESP.iddespacho = _iddespacho
+
+    GROUP BY Prove.proveedor, MAR.marca, PRO.nombreproducto, DESP.iddespacho, VEN.idventa, PRO.codigo, PER.perfil
     ORDER BY Prove.proveedor, MAR.marca, PRO.nombreproducto;
-END ;
+END;
 
 
 DROP PROCEDURE IF EXISTS sp_listar_detalle_despacho;

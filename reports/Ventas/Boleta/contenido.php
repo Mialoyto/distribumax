@@ -12,7 +12,6 @@
             margin: 0;
             padding: 0;
             width: 100%;
-            background-color: #f4f4f4;
             color: #333;
         }
 
@@ -21,9 +20,7 @@
             margin: 0 auto;
             padding: 20px;
             border: 1px solid #ddd;
-            background-color: #fff;
             box-sizing: border-box;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .header {
@@ -40,12 +37,6 @@
             font-weight: bold;
             margin: 0;
             color: #2c3e50;
-        }
-
-        .header h2 {
-            font-size: 18px;
-            margin: 5px 0;
-            color: #7f8c8d;
         }
 
         .client-info {
@@ -119,23 +110,6 @@
         .footer p {
             margin: 0;
         }
-
-        .print-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #2980b9;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
-            width: 100%;
-        }
-
-        .print-button:hover {
-            background-color: #3498db;
-        }
-
     </style>
 
 </head>

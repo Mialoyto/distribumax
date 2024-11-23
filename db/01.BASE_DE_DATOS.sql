@@ -551,6 +551,7 @@ CREATE TABLE despacho_ventas (
     iddespacho INT NOT NULL,
     idventa INT NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
+    CONSTRAINT uk_venta_despacho UNIQUE(iddespacho,idventa),
     CONSTRAINT fk_despacho FOREIGN KEY (iddespacho) REFERENCES despacho (iddespacho),
     CONSTRAINT fk_venta FOREIGN KEY (idventa) REFERENCES ventas (idventa)
 ) ENGINE = INNODB;

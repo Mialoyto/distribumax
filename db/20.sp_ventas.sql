@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -75,41 +75,41 @@ END;
 
 DROP TRIGGER IF EXISTS after_cancelar_venta;
 
-CREATE TRIGGER after_cancelar_venta
-AFTER UPDATE ON ventas
-FOR EACH ROW
-BEGIN
-    DECLARE done INT DEFAULT 0;
-    DECLARE _idproducto INT;
-    DECLARE _cantidad INT;
+-- CREATE TRIGGER after_cancelar_venta
+-- AFTER UPDATE ON ventas
+-- FOR EACH ROW
+-- BEGIN
+--     DECLARE done INT DEFAULT 0;
+--     DECLARE _idproducto INT;
+--     DECLARE _idusuario  INT,
+--     DECLARE _cantidad INT;
 
-    -- Declara el cursor
-    DECLARE cur CURSOR FOR 
-        SELECT idproducto, cantidad_producto
-        FROM detalle_pedidos
-        WHERE idpedido = NEW.idpedido;
+--     -- Declara el cursor
+--     DECLARE cur CURSOR FOR 
+--         SELECT idproducto, cantidad_producto
+--         FROM detalle_pedidos
+--         WHERE idpedido = NEW.idpedido;
 
-    -- Manejo del final del cursor
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+--     -- Manejo del final del cursor
+--     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
-    -- Solo ejecuta si el estado es cancelado
-    IF NEW.estado = '0' THEN
-        OPEN cur;
+--     -- Solo ejecuta si el estado es cancelado
+--     IF NEW.estado = '0' THEN
+--         OPEN cur;
 
-        read_loop: LOOP
-            FETCH cur INTO _idproducto, _cantidad;
-            IF done THEN
-                LEAVE read_loop;
-            END IF;
+--         read_loop: LOOP
+--             FETCH cur INTO _idproducto, _cantidad;
+--             IF done THEN
+--                 LEAVE read_loop;
+--             END IF;
 
-            -- Llama al procedimiento para registrar el movimiento
-            CALL sp_registrarmovimiento_kardex(1, _idproducto, 0,'', 'Ingreso', _cantidad, 'Venta Cancelada');
-        END LOOP;
+--             -- Llama al procedimiento para registrar el movimiento
+--             CALL sp_registrarmovimiento_kardex(1, _idproducto, 0,'', 'Ingreso', _cantidad, 'Venta Cancelada');
+--         END LOOP;
 
-        CLOSE cur;
-    END IF;
-END ;
-
+--         CLOSE cur;
+--     END IF;
+-- END ;
 -- TRIGGER PARA ACTUALIZAR EL ESTADO DEL PEDIDO
 CREATE TRIGGER trg_actualizar_estado_pedido
 AFTER INSERT ON ventas
@@ -355,43 +355,59 @@ BEGIN
         AND VE.estado = '1';
 END;
 
-DROP PROCEDURE IF EXISTS sp_getventas;
+-- DROP PROCEDURE IF EXISTS sp_getventas;
 
+-- CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
+-- BEGIN
+--     -- Consulta con validación para el parámetro _provincia
+--     SELECT VE.idventa, VE.idpedido, VE.fecha_venta, VE.subtotal,
+--             CLI.idpersona, CLI.idempresa,
+--            PO.nombreproducto, DP.cantidad_producto, DP.precio_unitario, VE.total_venta, 
+--            VE.igv, VE.descuento, VE.estado,
+--            PROV.provincia-- Provincia del cliente
+--     FROM ventas VE
+--     LEFT JOIN pedidos PE ON PE.idpedido = VE.idpedido
+--     LEFT JOIN clientes CLI ON CLI.idcliente = PE.idcliente
+--     LEFT JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
+--     LEFT JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
+--     LEFT JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia  -- Provincia del cliente
+--     LEFT JOIN detalle_pedidos DP ON DP.idpedido = VE.idpedido
+--     LEFT JOIN productos PO ON PO.idproducto = DP.idproducto
+--     LEFT JOIN empresas EMP ON EMP.idempresaruc=CLI.idempresa
+--     WHERE (   (_provincia IS NULL OR _provincia = '')  -- Si _provincia está vacío o es NULL, no aplicamos el filtro
+--            OR PROV.provincia LIKE CONCAT('%', _provincia, '%') )  
+--           AND VE.condicion = 'pendiente';
+-- END;
+
+
+DROP PROCEDURE IF EXISTS sp_getventas;
 CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
 BEGIN
-    -- Consulta con validación para el parámetro _provincia
-    SELECT VE.idventa, VE.idpedido, VE.fecha_venta, VE.subtotal,
-            CLI.idpersona, CLI.idempresa,
-           PO.nombreproducto, DP.cantidad_producto, DP.precio_unitario, VE.total_venta, 
-           VE.igv, VE.descuento, VE.estado,
-           PROV.provincia-- Provincia del cliente
-    FROM ventas VE
+    -- Consulta para obtener ventas filtradas por provincia
+    SELECT 
+        DE.iddetalledespacho,
+        DE.iddespacho,
+        DE.idventa,
+        DE.create_at,
+        VE.fecha_venta,
+        CL.tipo_cliente,
+        PER.nombres,
+        PER.appaterno,
+        PER.apmaterno,
+        DIS.distrito,
+        PRO.provincia
+    FROM despacho_ventas DE
+    INNER JOIN ventas VE ON VE.idventa = DE.idventa
     LEFT JOIN pedidos PE ON PE.idpedido = VE.idpedido
-    LEFT JOIN clientes CLI ON CLI.idcliente = PE.idcliente
-    LEFT JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
-    LEFT JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
-    LEFT JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia  -- Provincia del cliente
-    LEFT JOIN detalle_pedidos DP ON DP.idpedido = VE.idpedido
-    LEFT JOIN productos PO ON PO.idproducto = DP.idproducto
-    LEFT JOIN empresas EMP ON EMP.idempresaruc=CLI.idempresa
-    WHERE (   (_provincia IS NULL OR _provincia = '')  -- Si _provincia está vacío o es NULL, no aplicamos el filtro
-           OR PROV.provincia LIKE CONCAT('%', _provincia, '%') )  
-          AND VE.condicion = 'pendiente';
+    LEFT JOIN clientes CL ON CL.idcliente = PE.idcliente
+    LEFT JOIN personas PER ON PER.idpersonanrodoc = CL.idpersona
+    LEFT JOIN distritos DIS ON DIS.iddistrito = PER.iddistrito
+    LEFT JOIN provincias PRO ON PRO.idprovincia = DIS.idprovincia
+    WHERE PRO.provincia LIKE CONCAT('%', _provincia, '%')
+    AND VE.condicion='pendiente';
 END;
 
 
 
 
 
-
-
-call sp_getventas('lima');
-select 
-
-select * from empresas;
-select * from clientes;
-select * from pedidos;
-select * from ventas
-
-select * from distritos  where iddistrito=1;
-select * from provincias where idprovincia=1

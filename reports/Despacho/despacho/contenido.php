@@ -36,7 +36,10 @@ foreach ($despachos as $item) {
 
 <body>
     <h1>Reporte de Despacho</h1>
-
+     <header>fecha</header>
+     <p><strong>Conductor:</strong> <?=$despachos[0]['datos']?></p>
+     <p><strong>Datos Vehiculo:</strong></p>
+     <p><?=$despachos[0]['placa']?> / <?=$despachos[0]['modelo']?> / <?=$despachos[0]['marca_vehiculo']?> </p>
     <?php foreach ($agrupados as $proveedor => $marcas): ?>
         <h2>Proveedor: <?=($proveedor) ?></h2>
             <table>
@@ -45,6 +48,7 @@ foreach ($despachos as $item) {
                     <tr>
                         <th>Marca</th>
                         <th>Producto</th>
+                        <th>Unidad M.</th>
                         <th>Código</th>
                         <th>Cantidad</th>
                     </tr>
@@ -54,6 +58,7 @@ foreach ($despachos as $item) {
                         <tr>
                             <td><?= ($producto['marca']) ?></td>
                             <td><?= ($producto['nombreproducto']) ?></td>
+                            <td><?= ($producto['unidadmedida']) ?></td>
                             <td><?= ($producto['codigo']) ?></td>
                             <td><?= ($producto['total']) ?></td>
                         </tr>

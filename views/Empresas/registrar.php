@@ -13,82 +13,111 @@
         Listado de Empresas
       </div>
       <div class="card-body">
-        <form method="POST" action="#" id="form-registrar-empresa" autocomplete="off">
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="idempresaruc" name="idempresaruc"
-                  pattern="^[0-9]{10}$|^[0-9]{20}$"
-                  title="Debe tener 10 o 20 dígitos" required>
-                <label for="idempresaruc">RUC</label>
+        <form action="" id="registrar-empresa" autocomplete="off">
+          <div class="card">
+            <div class="card-body">
+              <!-- Campos específicos para Empresa -->
+              <div class="row mb-3">
+                <div class="col-md-6 mt-3">
+                  <div class="input-group">
+                    <div class="form-floating">
+                      <input type="number"
+                        class="form-control"
+                        id="nro-doc-empresa"
+                        name="nro-doc-empresa"
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        placeholder="Ruc"
+                        minlength="11"
+                        maxlength="11"
+                        title="Por favor, ingresa solo números."
+                        required>
+                      <label for="nro-doc-empresa"><i class="bi bi-search"></i> Buscar ruc</label>
+                    </div>
+                    <button class="btn btn-primary" type="button" id="btn-cliente-empresa"><i class="bi bi-search"></i></button>
+                  </div>
+                  <span id="status" class="d-none">Buscando por favor espere...</span>
+                </div>
+                <div class="col-md-6 mt-3">
+                  <div class="form-floating">
+                    <select name="tipodoc" id="tipodoc" class="form-select documento" disabled="true">
+                      <option value="">Tipo de documento</option>
+                      <!-- genera desde el backend -->
+                    </select>
+                    <label for="tipodoc" class="form-label">Tipo Documento</label>
+
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-4 mt-3">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="iddistrito" placeholder="Distrito" disabled="true" required>
+                    <label for="">Distrito</label>
+                    <ul id="datalistDistrito" class="list-group position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
+                  </div>
+                </div>
+                <div class="col-md-8 mt-3">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="razon-social" placeholder="Razón Social" required disabled="true">
+                    <label for="razon-social" class="form-label">Razón Social</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-4 mt-3">
+                  <div class="form-floating">
+                    <input type="email" class="form-control" id="email" placeholder="Email" disabled="true">
+                    <label for="email" class="form-label">Email</label>
+                  </div>
+                </div>
+                <div class="col-md-5 mt-3">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="direccion" placeholder="Dirección" required disabled="true">
+                    <label for="">Dirección</label>
+                  </div>
+                </div>
+                <div class="col-md-3 mt-3">
+                  <div class="form-floating">
+                    <input
+                      type="number"
+                      minlength="9"
+                      maxlength="9"
+                      class="form-control"
+                      id="telefono-empresa"
+                      placeholder="Teléfono"
+                      disabled="true">
+                    <label for="">Teléfono</label>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-md-4 mb-3">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="razonsocial" name="razonsocial" maxlength="100" minlength="3" required>
-                <label for="razonsocial">
-                  <i class="fa fa-building me-2"></i> Razón Social
-                </label>
-              </div>
-            </div>
-            <div class="col-md-4 mb-3">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="direccion" name="direccion" maxlength="100" minlength="3" required>
-                <label for="direccion">
-                  <i class="fa fa-map-marker-alt me-2"></i> Dirección
-                </label>
-              </div>
-            </div>
+
           </div>
+          <div class="card-footer d-flex justify-content-end">
+            <a href="index.php" class="btn btn-outline-primary  mt-2 mb-2 me-2">Listar empresas</a>
 
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <div class="form-floating">
-                <input type="email" class="form-control" id="email" name="email" maxlength="100">
-                <label for="email">
-                  <i class="fa fa-envelope me-2"></i> Email
-                </label>
-              </div>
-            </div>
-            <div class="col-md-4 mb-3">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="telefono" name="telefono" maxlength="9" minlength="9" pattern="[0-9]+" title="Solo números" required>
-                <label for="telefono">
-                  <i class="fa fa-phone me-2"></i> Teléfono
-                </label>
-              </div>
-            </div>
-            <div class="col-md-4 mb-3">
-              <div class="form-floating">
-
-                <input type="search" class="form-control" id="searchDistrito" list="datalistDistrito" required>
-                <div class="error-container" style="display: none;"></div>
-                <label for="" class="form-label">Buscar Distrito</label>
-                <datalist id="datalistDistrito"></datalist>
-
-
-              </div>
-            </div>
-          </div>
-
-          <!-- Botones dentro del formulario -->
-          <div class="d-flex justify-content-end mt-4">
-            <button type="submit" class="btn btn-primary me-2">
-              <i class="fa fa-check me-2"></i> Registrar
+            <button
+              type="submit"
+              class="btn btn-success mt-2 mb-2 me-2"
+              id="registrarEmpresa"
+              disabled>
+              Registrar
             </button>
-            <button type="reset" class="btn btn-outline-secondary">
-              <i class="fa fa-times me-2"></i> Cancelar
+            <button
+              type="reset"
+              class="btn btn-outline-danger mt-2 mb-2">
+              Cancelar
             </button>
+
           </div>
         </form>
       </div>
-      <div class="card-footer">
-        <a href="index.php" class="btn btn-outline-primary">Listar empresa</a>
-      </div>
+
     </div>
   </div>
 </main>
 <script src="http://localhost/distribumax/js/empresas/registrar.js"></script>
+<script src="http://localhost/distribumax/js/utils/utils.js"></script>
 <?php require_once '../footer.php'; ?>
 </body>
 

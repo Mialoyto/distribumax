@@ -16,9 +16,6 @@
                     <a href=<?= $URL . 'reports/Vehiculos/contenidoPDF.php' ?> class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
                         <i class="fas fa-file-pdf me-1"></i> Generar PDF
                     </a>
-                    <a href="generar-excel.php" class="btn btn-success">
-                        <i class="fas fa-file-excel me-1"></i> Generar Excel
-                    </a>
                 </div>
             </div>
             </div>
@@ -59,7 +56,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editConductor" class="form-label">Conductor</label>
-                        <input type="text" class="form-control" id="editConductor" name="conductor" required>
+                        <input type="text" class="form-control" id="editConductor" name="conductor" disabled>
                     </div>
                     <div class="mb-3">
                         <label for="editMarca" class="form-label">Marca</label>
@@ -104,6 +101,7 @@
 </main>
 <script src="http://localhost/distribumax/js/vehiculos/listar.js"> </script>
 <script src="http://localhost/distribumax/js/vehiculos/editar-vehiculo.js"> </script>
+<script src="http://localhost/distribumax/js/vehiculos/disabled-vehiculo.js"></script>
 <?php
 require_once '../footer.php';
 ?>

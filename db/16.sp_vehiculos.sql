@@ -15,10 +15,11 @@ BEGIN
     VALUES (_idusuario, _marca_vehiculo, _modelo, _placa, _capacidad, _condicion);
 END;
 
+-- CALL sp_actualizar_vehiculo(5,'Kia','Susuki','ABR-124',200,'taller');
 -- ACTUALIZAR VEHICULOS
-
+DROP PROCEDURE IF EXISTS sp_actualizar_vehiculo;
 CREATE PROCEDURE sp_actualizar_vehiculo(
-    IN _idusuario INT,
+    IN _idvehiculo INT,
     IN _marca_vehiculo VARCHAR(100),
     IN _modelo VARCHAR(100),
     IN _placa VARCHAR(20),
@@ -32,7 +33,7 @@ BEGIN
     -- Verificar si el vehículo con la misma placa ya existe
     SELECT COUNT(*) INTO v_vehiculo_existe
     FROM vehiculos
-    WHERE placa = _placa AND idusuario != _idusuario;
+    WHERE placa = _placa AND idvehiculo != v_idvehiculo;
     IF v_vehiculo_existe > 0 THEN
         -- Si la placa ya existe, enviamos un mensaje de error
         SET v_mensaje = 'La placa ya está registrada para otro vehículo';
@@ -47,9 +48,9 @@ BEGIN
             capacidad = _capacidad,
             condicion = _condicion,
             update_at = NOW()
-        WHERE idusuario = _idusuario;
+        WHERE idvehiculo = _idvehiculo;
 
-        SET v_idvehiculo = _idusuario;
+        SET v_idvehiculo = _idvehiculo;
         SET v_mensaje = 'Datos del vehículo actualizados correctamente';
     END IF;
     -- Devolver el mensaje y el ID del vehículo actualizado
@@ -76,6 +77,7 @@ CREATE PROCEDURE sp_getVehiculo(
 )
 BEGIN
     SELECT
+        VEH.idvehiculo,
         US.idusuario,
         US.nombre_usuario AS usuario, -- deberia de editarse
         VEH.marca_vehiculo AS marca,
@@ -97,21 +99,28 @@ call sp_getVehiculo(1);
 
 -- lista vehiculos
 DROP PROCEDURE IF EXISTS `sp_listar_vehiculo`;
-
 CREATE PROCEDURE `sp_listar_vehiculo`()
 BEGIN
-		SELECT 
-         vh.idvehiculo,
-         vh.marca_vehiculo,
-         vh.modelo,
-         vh.placa,
-		 vh.capacidad,
-         vh.condicion,
-        CONCAT ( pe.appaterno,' ',pe.nombres) AS datos
-        FROM vehiculos vh
-        INNER JOIN usuarios us ON vh.idusuario=us.idusuario
-        INNER JOIN personas pe ON pe.idpersonanrodoc=us.idpersona
-        ORDER BY idvehiculo DESC;
+    SELECT 
+        vh.idvehiculo,
+        vh.marca_vehiculo,
+        vh.modelo,
+        vh.placa,
+        vh.capacidad,
+        vh.condicion,
+        CONCAT(pe.appaterno, ' ', pe.nombres) AS datos,
+        CASE vh.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS estado,
+        CASE vh.estado
+            WHEN '1' THEN '0'  -- Si el estado es 'Activo' (1), el 'status' será '0' (Inactivo)
+            WHEN '0' THEN '1'  -- Si el estado es 'Inactivo' (0), el 'status' será '1' (Activo)
+        END AS status
+    FROM vehiculos vh
+    INNER JOIN usuarios us ON vh.idusuario = us.idusuario
+    INNER JOIN personas pe ON pe.idpersonanrodoc = us.idpersona
+    ORDER BY vh.idvehiculo DESC;
 END;
 
 CALL sp_listar_vehiculo;
@@ -126,7 +135,7 @@ BEGIN
     SELECT 
         us.idusuario,
         rl. idperfil,
-        rl.rol,
+        
         pe.nombres,
         CONCAT(pe.appaterno, ' ', pe.apmaterno) AS apellidos,  -- Concatenación de apellidos
         us.estado AS estado_usuario,
@@ -134,19 +143,18 @@ BEGIN
     FROM 
         usuarios us
     INNER JOIN 
-        perfil rl ON us. idperfil = rl. idperfil
+        perfiles rl ON us.idperfil = rl.idperfil
     INNER JOIN 
         personas pe ON pe.idpersonanrodoc = us.idpersona
     WHERE 
         us.estado = '1' 
         AND rl.estado = '1' 
-        AND rl.rol = 'Conductor'
+        AND rl.perfil = 'Chofer'
         AND (pe.nombres LIKE CONCAT('%', _item, '%') OR 
             CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%'));  -- Filtrar por nombres o apellidos concatenados
 END;
 
 DROP PROCEDURE IF EXISTS `sp_buscar_vehiculos`;
-
 CREATE PROCEDURE `sp_buscar_vehiculos`
 (	
 	IN _item VARCHAR(50)
@@ -162,3 +170,36 @@ BEGIN
     OR VH.modelo  LIKE CONCAT('%',_item,'%')
     OR VH.marca_vehiculo LIKE  CONCAT('%',_item,'%');
 END;
+
+DROP PROCEDURE IF EXISTS sp_update_estado_vehiculo;
+CREATE PROCEDURE sp_update_estado_vehiculo
+(
+    IN _idvehiculo INT,
+    IN _estado     CHAR(10)
+)
+BEGIN
+    DECLARE v_mensaje VARCHAR(100);
+    DECLARE v_estado INT;
+
+    IF _estado = '0' THEN
+        UPDATE vehiculos
+        SET estado = _estado
+        WHERE idvehiculo = _idvehiculo;
+        SET v_estado = 1;
+        SET v_mensaje = "Vehiculo desactivado correctamente";
+    ELSEIF _estado = '1' THEN
+        UPDATE vehiculos
+        SET estado = _estado
+        WHERE idvehiculo = _idvehiculo;
+        SET v_estado = 1;
+        SET v_mensaje = 'Vehiculo activado correctamente';
+    ELSE
+        SET v_estado = 0;
+        SET v_mensaje = 'El estado es incorecto';
+    END IF;
+
+    SELECT v_estado AS estado, v_mensaje AS mensaje;
+END;
+
+SELECT * FROM vehiculos;
+CALL sp_update_estado_vehiculo(2,'0');

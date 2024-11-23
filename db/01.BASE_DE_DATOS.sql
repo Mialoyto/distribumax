@@ -154,6 +154,7 @@ CREATE TABLE perfiles
     idperfil            INT AUTO_INCREMENT PRIMARY KEY,
     perfil              VARCHAR(30)        NOT NULL,
     nombrecorto         CHAR(3)            NOT NULL,
+    estado              CHAR(1)            NOT NULL DEFAULT '1',
     create_at           DATETIME            NOT NULL DEFAULT NOW(),
     CONSTRAINT uk_perfil_per UNIQUE(perfil),
     CONSTRAINT uk_nombrecorto_per UNIQUE(nombrecorto)
@@ -484,28 +485,16 @@ CREATE TABLE vehiculos (
     ) NOT NULL DEFAULT 'operativo',
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
-    estado CHAR(10) NOT NULL DEFAULT 'Activo',
+    estado CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idusuario_vehi FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT uk_placa_vehi UNIQUE (placa),
     CONSTRAINT ck_capacidad_veh CHECK (capacidad > 0),
-    CONSTRAINT ck_estado_veh CHECK (
-        estado IN ('Activo', 'Inactivo')
-    )
+    CONSTRAINT fk_estado_venta CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS despacho;
-CREATE TABLE despacho (
-    iddespacho INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idvehiculo INT NOT NULL,
-    idusuario INT NOT NULL,
-    fecha_despacho DATE NOT NULL,
-    create_at DATETIME NOT NULL DEFAULT NOW(),
-    update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1", -- 1 : pendiente	0: despachado
-    CONSTRAINT fk_idvehiculo_desp FOREIGN KEY (idvehiculo) REFERENCES vehiculos (idvehiculo),
-    CONSTRAINT fk_idusuario_desp FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
-    CONSTRAINT fk_estado_desp CHECK (estado IN ("0", "1"))
-) ENGINE = INNODB;
+DROP TABLE IF EXISTS despacho;
+
 
 DROP TABLE IF EXISTS ventas;
 CREATE TABLE ventas (
@@ -520,6 +509,7 @@ CREATE TABLE ventas (
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1", -- 1: VENTA 	0: CANCELADO
+    condicion VARCHAR(50) NOT NULL DEFAULT 'pendiente',
     CONSTRAINT fk_idpedido_venta FOREIGN KEY (idpedido) REFERENCES pedidos (idpedido),
     CONSTRAINT fk_idtipocomprobante_venta FOREIGN KEY (idtipocomprobante) REFERENCES tipo_comprobante_pago (idtipocomprobante),
     CONSTRAINT fk_estado_venta CHECK (estado IN ("0", "1")),
@@ -527,7 +517,41 @@ CREATE TABLE ventas (
     CONSTRAINT ck_descuento CHECK (descuento >= 0),
     CONSTRAINT ck_igv CHECK (igv >= 0),
     CONSTRAINT ck_totalventa CHECK (total_venta > 0),
-    CONSTRAINT uk_idpedido UNIQUE (idpedido)
+    CONSTRAINT uk_idpedido UNIQUE (idpedido),
+     CONSTRAINT fk_condicion_venta CHECK (
+        condicion IN (
+            'pendiente',
+            'despachado'
+        )
+    )
+) ENGINE = INNODB;
+
+CREATE TABLE despacho (
+    iddespacho INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idventa    INT NOT NULL,
+    idvehiculo INT NOT NULL,
+    idusuario INT NOT NULL,
+    fecha_despacho DATE NOT NULL,
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    update_at DATETIME NULL ON UPDATE NOW(),
+    estado CHAR(1) NOT NULL DEFAULT "1", -- 1: pendiente, 0: despachado
+    CONSTRAINT fk_idventa_des FOREIGN KEY     (idventa) REFERENCES ventas (idventa),
+    CONSTRAINT fk_idvehiculo_desp FOREIGN KEY (idvehiculo) REFERENCES vehiculos (idvehiculo),
+    CONSTRAINT fk_idusuario_desp FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
+    CONSTRAINT fk_estado_desp CHECK (estado IN ("0", "1"))
+) ENGINE = INNODB;
+
+
+
+DROP TABLE IF EXISTS despacho_ventas;
+CREATE TABLE despacho_ventas (
+    iddetalledespacho INT AUTO_INCREMENT PRIMARY KEY,
+    iddespacho INT NOT NULL,
+    idventa INT NOT NULL,
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    CONSTRAINT uk_venta_despacho UNIQUE(iddespacho,idventa),
+    CONSTRAINT fk_despacho FOREIGN KEY (iddespacho) REFERENCES despacho (iddespacho),
+    CONSTRAINT fk_venta FOREIGN KEY (idventa) REFERENCES ventas (idventa)
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS detalle_meto_Pago;

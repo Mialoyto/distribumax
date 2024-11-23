@@ -1,4 +1,4 @@
--- Active: 1731562917822@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
@@ -242,6 +242,7 @@ CALL sp_registrar_usuario ( 26558002, 3,'CHF', 'conductor', 'admin' );
 CALL sp_registrar_usuario ( 26558003, 4, 'VND','vendedor', 'admin' );
 CALL sp_registrar_usuario(26558015,3,'ALM','almacen','admin');
 
+
 CALL sp_actualizar_usuario (
     'administrador',
     '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
@@ -390,11 +391,5 @@ CALL sp_registrar_vehiculo (
     'operativo' -- Condición del vehículo ('operativo', 'taller', 'averiado')
 );
 
-CALL sp_registrar_vehiculo (
-    3, -- ID del usuario (reemplaza con el ID correcto)
-    'Emely', -- Marca del vehículo
-    'SEXO', -- Modelo del vehículo
-    'AD3-123', -- Placa del vehículo
-    1080, -- Capacidad en Kg
-    'taller' -- Condición del vehículo ('operativo', 'taller', 'averiado')
-);
+-- PARA ELIMINAR UN VEHICULO
+-- DELETE FROM vehiculos WHERE idvehiculo = 3;

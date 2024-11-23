@@ -21,19 +21,19 @@ require_once '../header.php';
             <div class="row mb-3">
               <div class="col-md-4 mb-3">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="tipocliente" placeholder="Tipo Cliente" readonly>
+                  <input type="text" class="form-control" id="tipocliente" placeholder="Tipo Cliente" disabled>
                   <label for="tipocliente">Tipo Cliente</label>
                 </div>
               </div>
               <div class="col-md-4 mb-3">
                 <div class="form-floating">
-                  <input type="text" id="nombres" class="form-control" placeholder="Nombres" readonly>
+                  <input type="text" id="nombres" class="form-control" placeholder="Nombres" disabled>
                   <label for="nombres">Nombres</label>
                 </div>
               </div>
               <div class="col-md-4 mb-3">
                 <div class="form-floating">
-                  <input type="text" id="direccion" class="form-control" placeholder="Dirección" readonly>
+                  <input type="text" id="direccion" class="form-control" placeholder="Dirección" disabled>
                   <label for="direccion">Dirección</label>
                 </div>
               </div>
@@ -80,14 +80,14 @@ require_once '../header.php';
             <div class="row">
               <div class="col-md-4 mb-3">
                 <div class="form-floating">
-                  <input type="datetime-local" class="form-control" id="fecha_venta" name="fecha_venta" required readonly>
+                  <input type="datetime-local" class="form-control" id="fecha_venta" name="fecha_venta" required disabled>
                   <label for="fecha_venta">Fecha de Venta</label>
                 </div>
               </div>
 
               <div class="col-md-4 mb-3" id="tipo_comprobante_container">
                 <div class="form-floating">
-                  <select id="idtipocomprobante" class="form-select">
+                  <select id="idtipocomprobante" class="form-select" disabled>
                     <option value="">Selecione comprobante</option>
                   </select>
                   <label for="idtipocomprobante">Tipo de Comprobante</label>
@@ -96,7 +96,7 @@ require_once '../header.php';
 
               <div class="col-md-4 mb-3">
                 <div class="form-floating">
-                  <select id="tipo_pago" class="form-select">
+                  <select id="tipo_pago" class="form-select" disabled>
                     <option value="">Seleccione tipo de pago</option>
                     <option value="unico">Pago Único</option>
                     <option value="mixto">Pago Mixto</option>
@@ -121,14 +121,14 @@ require_once '../header.php';
                 <div class="col-md-6 mb-3 metodos">
                   <div class="input-group">
                     <div class="form-floating">
-                      <select id="idmetodopago" class="form-select metodo" name="idmetodopago">
+                      <select id="idmetodopago" class="form-select metodo" name="idmetodopago" >
                         <option value="">Selecione método</option>
                         <!-- Agrega más opciones según sea necesario -->
                       </select>
                       <label for="idmetodopago">Método de Pago</label>
                     </div>
                     <div class="form-floating mb-3 montos">
-                      <input type="number" step="0.01" min="1" class="form-control monto monto_pago_1" id="monto_pago_1" name="monto_pago_1" placeholder="Monto">
+                      <input type="number" step="0.01" min="1" class="form-control monto monto_pago_1" id="monto_pago_1" name="monto_pago_1" placeholder="Monto" >
                       <label for="monto_pago_2">Monto</label>
                     </div>
                   </div>
@@ -145,25 +145,25 @@ require_once '../header.php';
             <div class="row">
               <div class="col-md-3 mb-3">
                 <div class="form-floating">
-                  <input type="number" step="0.01" class="form-control" id="subtotal" name="subtotal" required readonly>
+                  <input type="number" step="0.01" class="form-control" id="subtotal" name="subtotal" required disabled>
                   <label for="subtotal">Subtotal</label>
                 </div>
               </div>
               <div class="col-md-3 mb-3">
                 <div class="form-floating">
-                  <input type="number" step="0.01" class="form-control" id="descuento" name="descuento" value="0.00" min="0" required readonly>
+                  <input type="number" step="0.01" class="form-control" id="descuento" name="descuento" value="0.00" min="0" required disabled>
                   <label for="descuento">Descuento</label>
                 </div>
               </div>
               <div class="col-md-3 mb-3">
                 <div class="form-floating">
-                  <input type="number" step="0.01" class="form-control" id="igv" name="igv" value="0.00" required readonly>
+                  <input type="number" step="0.01" class="form-control" id="igv" name="igv" value="0.00" required disabled>
                   <label for="igv">IGV</label>
                 </div>
               </div>
               <div class="col-md-3 mb-3">
                 <div class="form-floating">
-                  <input type="number" step="0.01" class="form-control" id="total_venta" name="total_venta" required readonly>
+                  <input type="number" step="0.01" class="form-control" id="total_venta" name="total_venta" required disabled>
                   <label for="total_venta">Total Venta</label>
                 </div>
               </div>
@@ -187,6 +187,7 @@ require_once '../header.php';
 
 <?php require_once '../footer.php'; ?>
 <script src="http://localhost/distribumax/js/ventas/registrar.js"></script>
+
 
 </body>
 

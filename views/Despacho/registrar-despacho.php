@@ -24,7 +24,7 @@ require_once '../header.php';
                   type="search"
                   class="form-control"
                   id="idvehiculo"
-                  name="idproveedor"
+                  name=""
                   placeholder="Venta"
                   required>
                 <label for="idvehiculo" class="form-label">Buscar vehículo</label>
@@ -81,11 +81,11 @@ require_once '../header.php';
                 <input
                   type="search"
                   class="form-control"
-                  id="idventa"
+                  id="provincia"
                   name="idproveedor"
-                  placeholder="Venta"
+                  placeholder="Provincia"
                   required>
-                <label for="idventa" class="form-label">Buscar Venta</label>
+                <label for="provincia" class="form-label">Buscar Provincia</label>
 
                 <!-- Botón GetAll posicionado dentro de la estructura de input group -->
                 <div class="input-group-append position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
@@ -94,8 +94,8 @@ require_once '../header.php';
 
                 <!-- Lista de ventas para mostrar resultados de búsqueda -->
                 <ul
-                  id="list-venta"
-                  class="list-group position-absolute w-100 listarDatos"
+                  id="list-provincias"
+                  class="list-group position-absolute w-100 "
                   style="z-index: 1000; display: none; top: 100%;">
                 </ul>
               </div>
@@ -124,13 +124,13 @@ require_once '../header.php';
               </tbody>
             </table>
           </div>
-          <button type="submit" class="btn btn-primary">Registrar Vehículo</button>
+          <button type="submit" class="btn btn-primary">Registrar</button>
           <button type="reset" class="btn btn-danger">Cancelar</button>
         </form>
       </div>
 
       <div class="card-footer">
-        <a href="index.php" class="btn btn-secondary">Volver al Listado de Vehículos</a>
+        <a href="index.php" class="btn btn-secondary">Listar</a>
       </div>
     </div>
   </div>

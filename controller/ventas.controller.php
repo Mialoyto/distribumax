@@ -18,12 +18,7 @@ if (isset($_POST['operation'])) {
       $id = $venta->addVentas($datos);
       echo json_encode(['id' => $id]);
       break;
-    case 'reporteVenta':
-      $datos = [
-        'idventa' => $_POST['idventa']
-      ];
-      echo json_encode($venta->reporteVenta($datos));
-      break;
+      
     case 'upVenta':
       $dato = [
         'estado' => $_POST['estado'],
@@ -55,7 +50,16 @@ if (isset($_GET['operation'])) {
       echo json_encode($venta->buscarventa($dato));
       break;
     case 'getventas':
-      echo json_encode($venta->getventas());
+      $dato=[
+        'provincia'=>$_GET['provincia']
+      ];
+      echo json_encode($venta->getventas($dato));
     break;
+    case 'reporteVenta':
+      $datos = [
+        'idventa' => $_GET['idventa']
+      ];
+      echo json_encode($venta->reporteVenta($datos));
+      break;
   }
 }

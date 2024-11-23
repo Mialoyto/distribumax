@@ -44,5 +44,43 @@ if(isset($_GET['operation'])){
             ];
             $datosRecibidos = $vehiculo->getVehiculo($datosEnviar);
             echo json_encode($datosRecibidos);
+            break;
+        case 'updateVehiculo':
+            $idvehiculo = $_GET['idvehiculo'];
+            $marca = $_GET['marca_vehiculo'];
+            $modelo = $_GET['modelo'];
+            $placa = $_GET['placa'];
+            $capacidad = $_GET['capacidad'];
+            $condicion = $_GET['condicion'];
+
+            if(empty($idvehiculo) || empty($marca) || empty($modelo) || empty($placa) || empty($capacidad) || empty($condicion)){
+                echo json_encode(['status' => 'error', 'message' => 'Faltan datos']);
+                return;
+            } else if(!is_numeric($idvehiculo)){
+                echo json_encode(['status' => 'error', 'message' => 'El id del vehiculo debe ser un número']);
+                return;
+            } else{
+                $datos = [
+                    'idvehiculo' => $idvehiculo,
+                    'marca_vehiculo' => $marca,
+                    'modelo' => $modelo,
+                    'placa' => $placa,
+                    'capacidad' => $capacidad,
+                    'condicion' => $condicion
+                ];
+                $response = $vehiculo->updateVehiculo($datos);
+                echo json_encode($response);
+            }
+            break;
+        case 'updateEstadoVehiculo':
+            $idvehiculo = $_GET['idvehiculo'];
+            $estado = $_GET['estado'];
+            $datos = [
+                'idvehiculo' => $idvehiculo,
+                'estado'     => $estado
+            ];
+            $response = $vehiculo->updateEstadoVehiculo($datos);
+            echo json_encode($response);
+            break;
     }
 }

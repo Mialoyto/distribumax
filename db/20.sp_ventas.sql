@@ -1,4 +1,4 @@
--- Active: 1728094991284@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -75,41 +75,41 @@ END;
 
 DROP TRIGGER IF EXISTS after_cancelar_venta;
 
-CREATE TRIGGER after_cancelar_venta
-AFTER UPDATE ON ventas
-FOR EACH ROW
-BEGIN
-    DECLARE done INT DEFAULT 0;
-    DECLARE _idproducto INT;
-    DECLARE _cantidad INT;
+-- CREATE TRIGGER after_cancelar_venta
+-- AFTER UPDATE ON ventas
+-- FOR EACH ROW
+-- BEGIN
+--     DECLARE done INT DEFAULT 0;
+--     DECLARE _idproducto INT;
+--     DECLARE _idusuario  INT,
+--     DECLARE _cantidad INT;
 
-    -- Declara el cursor
-    DECLARE cur CURSOR FOR 
-        SELECT idproducto, cantidad_producto
-        FROM detalle_pedidos
-        WHERE idpedido = NEW.idpedido;
+--     -- Declara el cursor
+--     DECLARE cur CURSOR FOR 
+--         SELECT idproducto, cantidad_producto
+--         FROM detalle_pedidos
+--         WHERE idpedido = NEW.idpedido;
 
-    -- Manejo del final del cursor
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+--     -- Manejo del final del cursor
+--     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
-    -- Solo ejecuta si el estado es cancelado
-    IF NEW.estado = '0' THEN
-        OPEN cur;
+--     -- Solo ejecuta si el estado es cancelado
+--     IF NEW.estado = '0' THEN
+--         OPEN cur;
 
-        read_loop: LOOP
-            FETCH cur INTO _idproducto, _cantidad;
-            IF done THEN
-                LEAVE read_loop;
-            END IF;
+--         read_loop: LOOP
+--             FETCH cur INTO _idproducto, _cantidad;
+--             IF done THEN
+--                 LEAVE read_loop;
+--             END IF;
 
-            -- Llama al procedimiento para registrar el movimiento
-            CALL sp_registrarmovimiento_kardex(1, _idproducto, 0,'', 'Ingreso', _cantidad, 'Venta Cancelada');
-        END LOOP;
+--             -- Llama al procedimiento para registrar el movimiento
+--             CALL sp_registrarmovimiento_kardex(1, _idproducto, 0,'', 'Ingreso', _cantidad, 'Venta Cancelada');
+--         END LOOP;
 
-        CLOSE cur;
-    END IF;
-END ;
-
+--         CLOSE cur;
+--     END IF;
+-- END ;
 -- TRIGGER PARA ACTUALIZAR EL ESTADO DEL PEDIDO
 CREATE TRIGGER trg_actualizar_estado_pedido
 AFTER INSERT ON ventas
@@ -127,29 +127,56 @@ END;
 DROP PROCEDURE IF EXISTS `sp_generar_reporte`;
 
 CREATE PROCEDURE `sp_generar_reporte` ( 
-	IN _idventa INT)
+    IN _idventa INT
+)
 BEGIN
-    -- Input validation can be added here if needed
     SELECT 
         ve.idventa,
         ve.fecha_venta,
         p.idpedido,
         tp.comprobantepago,
-        cli.idpersona,
-        cli.idempresa,
-        cli.tipo_cliente,
-        pe.nombres,
-        pe.appaterno,
-        pe.apmaterno,
-        em.razonsocial,
-        us.idusuario,
-        us.nombre_usuario,
-        pr.nombreproducto ,
-      --  GROUP_CONCAT(pr.preciounitario SEPARATOR ', ') AS precios_unitarios,
+        pr.codigo,
+        ve.igv,
+        ve.total_venta,
+        ve.subtotal as sub_venta,
+        -- Tipo de cliente
+        cli.tipo_cliente AS cliente,
+
+        -- Documento del cliente dependiendo del tipo
+        CASE 
+            WHEN cli.tipo_cliente = 'empresa' THEN em.idempresaruc
+            WHEN cli.tipo_cliente = 'persona' THEN pe.idpersonanrodoc
+            ELSE 'Sin documento'
+        END AS documento_cliente,
+
+        -- Nombre del cliente con mayúsculas
+        CASE 
+            WHEN cli.tipo_cliente = 'empresa' THEN UPPER(em.razonsocial)
+            WHEN cli.tipo_cliente = 'persona' THEN UPPER(CONCAT(pe.appaterno, ' ', pe.apmaterno, ' ', pe.nombres))
+            ELSE 'SIN DATOS'
+        END AS nombre_cliente,
+        CASE 
+            WHEN cli.tipo_cliente = 'empresa' THEN em.direccion
+            WHEN cli.tipo_cliente = 'persona' THEN pe.direccion
+        END AS direccion,    
+
+        -- Detalle del producto
+        pr.nombreproducto,
+        dp.precio_unitario,
         dp.cantidad_producto,
-        dp.unidad_medida,
+        
+        -- Modificación en la unidad de medida
+        CASE 
+            WHEN dp.unidad_medida = 'caja' THEN 'cj'
+            WHEN dp.unidad_medida = 'bolsa' THEN 'bl'
+            WHEN dp.unidad_medida = 'unidad' THEN 'un'
+            WHEN dp.unidad_medida = 'paquete' THEN 'pq'
+            ELSE dp.unidad_medida  -- En caso de que haya una unidad no reconocida
+        END AS unidad_medida,
+
         dp.precio_descuento,
-        GROUP_CONCAT(dp.subtotal SEPARATOR ', ') AS subtotales
+        dp.subtotal
+
     FROM ventas ve
         INNER JOIN pedidos p ON p.idpedido = ve.idpedido
         INNER JOIN detalle_pedidos dp ON p.idpedido = dp.idpedido
@@ -157,14 +184,15 @@ BEGIN
         INNER JOIN clientes cli ON cli.idcliente = p.idcliente
         LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
         LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
-        LEFT JOIN usuarios us ON us.idusuario=pe.idpersonanrodoc
-          LEFT JOIN 
-        tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
-    WHERE p.estado = 'Enviado' AND ve.idventa = _idventa
-    
-    GROUP BY p.idpedido, cli.idpersona, cli.idempresa, cli.tipo_cliente, pe.nombres, pe.appaterno, pe.apmaterno, em.razonsocial;
+        LEFT JOIN tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
+
+    WHERE p.estado = 'Enviado' AND ve.idventa = _idventa;
 END;
 
+
+select * from detalle_pedidos;
+select * from ventas;
+select * from unidades_medidas;
 
 -- LISTAR VENTAS DEL DIA
 DROP PROCEDURE IF EXISTS `sp_listar_ventas`;
@@ -204,7 +232,7 @@ BEGIN
     WHERE 
         p.estado = 'Enviado'
 	AND ve.estado='1'
-        AND DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
+        -- AND DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
     GROUP BY 
         ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
     ORDER BY 
@@ -327,34 +355,59 @@ BEGIN
         AND VE.estado = '1';
 END;
 
+-- DROP PROCEDURE IF EXISTS sp_getventas;
+
+-- CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
+-- BEGIN
+--     -- Consulta con validación para el parámetro _provincia
+--     SELECT VE.idventa, VE.idpedido, VE.fecha_venta, VE.subtotal,
+--             CLI.idpersona, CLI.idempresa,
+--            PO.nombreproducto, DP.cantidad_producto, DP.precio_unitario, VE.total_venta, 
+--            VE.igv, VE.descuento, VE.estado,
+--            PROV.provincia-- Provincia del cliente
+--     FROM ventas VE
+--     LEFT JOIN pedidos PE ON PE.idpedido = VE.idpedido
+--     LEFT JOIN clientes CLI ON CLI.idcliente = PE.idcliente
+--     LEFT JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
+--     LEFT JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
+--     LEFT JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia  -- Provincia del cliente
+--     LEFT JOIN detalle_pedidos DP ON DP.idpedido = VE.idpedido
+--     LEFT JOIN productos PO ON PO.idproducto = DP.idproducto
+--     LEFT JOIN empresas EMP ON EMP.idempresaruc=CLI.idempresa
+--     WHERE (   (_provincia IS NULL OR _provincia = '')  -- Si _provincia está vacío o es NULL, no aplicamos el filtro
+--            OR PROV.provincia LIKE CONCAT('%', _provincia, '%') )  
+--           AND VE.condicion = 'pendiente';
+-- END;
+
+
 DROP PROCEDURE IF EXISTS sp_getventas;
-CREATE PROCEDURE  sp_getventas()
+CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
 BEGIN
-     SELECT 
-        VE.idventa,
-        VE.idpedido,
+    -- Consulta para obtener ventas filtradas por provincia
+    SELECT 
+        DE.iddetalledespacho,
+        DE.iddespacho,
+        DE.idventa,
+        DE.create_at,
         VE.fecha_venta,
-        VE.subtotal,
-        PO.nombreproducto,
-        DP.cantidad_producto,
-        DP.unidad_medida,
-        DP.precio_unitario,
-        VE.descuento,
-        VE.total_venta,
-        VE.igv,
-        VE.estado,
-        PE.estado
-    FROM 
-        ventas VE
-    LEFT JOIN 
-        pedidos PE ON PE.idpedido = VE.idventa
-    LEFT JOIN 
-        detalle_pedidos DP ON DP.idpedido = VE.idpedido
-    LEFT JOIN 
-        productos PO ON PO.idproducto = DP.idproducto
-    WHERE 
-       
-         DATE(VE.fecha_venta) = CURDATE() 
-         AND VE.estado = '1';
+        CL.tipo_cliente,
+        PER.nombres,
+        PER.appaterno,
+        PER.apmaterno,
+        DIS.distrito,
+        PRO.provincia
+    FROM despacho_ventas DE
+    INNER JOIN ventas VE ON VE.idventa = DE.idventa
+    LEFT JOIN pedidos PE ON PE.idpedido = VE.idpedido
+    LEFT JOIN clientes CL ON CL.idcliente = PE.idcliente
+    LEFT JOIN personas PER ON PER.idpersonanrodoc = CL.idpersona
+    LEFT JOIN distritos DIS ON DIS.iddistrito = PER.iddistrito
+    LEFT JOIN provincias PRO ON PRO.idprovincia = DIS.idprovincia
+    WHERE PRO.provincia LIKE CONCAT('%', _provincia, '%')
+    AND VE.condicion='pendiente';
 END;
+
+
+
+
 

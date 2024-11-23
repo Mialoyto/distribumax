@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1731562917822@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 --  REGISTRAR PEDIDOS
@@ -34,15 +34,43 @@ END;
 
 -- ACTUALIZAR EL PEDIDO  ('Pendiente', 'Enviado', 'Cancelado', 'Entregado')
 
-CREATE PROCEDURE sp_estado_pedido(
-    IN  _estado         BIT,
-    IN  _idpedido       CHAR(15) 
+DROP PROCEDURE IF EXISTS sp_update_estado_pedido;
+CREATE PROCEDURE sp_update_estado_pedido
+(
+    IN _idpedido CHAR(15),
+    IN _estado CHAR(10)
 )
 BEGIN
-    UPDATE pedidos SET
-        estado = _estado
-    WHERE idpedido = _idpedido;
+    DECLARE v_mensaje VARCHAR(100);
+    DECLARE v_estado INT;
+
+    -- Validar si el estado proporcionado es válido
+    IF _estado NOT IN ('Pendiente', 'Enviado', 'Cancelado', 'Entregado') THEN
+        SET v_estado = 0;
+        SET v_mensaje = 'El estado proporcionado no es válido.';
+    ELSE
+        -- Actualizar el estado del pedido
+        UPDATE pedidos
+        SET estado = _estado,
+            update_at = NOW()
+        WHERE idpedido = _idpedido;
+
+        -- Verificar si se actualizó correctamente
+        IF ROW_COUNT() > 0 THEN
+            SET v_estado = 1;
+            SET v_mensaje = CONCAT('Pedido ', _idpedido, ' actualizado a estado: ', _estado);
+        ELSE
+            SET v_estado = 0;
+            SET v_mensaje = 'No se encontró el pedido con el ID proporcionado.';
+        END IF;
+    END IF;
+
+    -- Devolver el resultado
+    SELECT v_estado AS estado, v_mensaje AS mensaje;
 END;
+
+CALL sp_update_estado_pedido('PED-000000001','Cancelado');
+-- NO MOVER NADA DEL PROCEDIMIENTO , FALTA TERMINAR DE IMPLEMENTARLO
 
 -- buscador para pedidos por id
 

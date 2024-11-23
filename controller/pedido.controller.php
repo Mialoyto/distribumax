@@ -24,6 +24,17 @@ switch ($verbo) {
           ];
           echo json_encode($pedido->getById($datos));
           break;
+
+        case 'UpdateEstadoPedido':
+          $idpedido = $_GET['idpedido'];
+          $estad = $_GET['estado'];
+          $datos = [
+            'idpedido' => $idpedido,
+            'estado'   => $estado
+          ];
+          $response = $pedido->UpdateEstadoPedido($datos);
+          echo json_encode($response);
+          break;
       }
     }
     break;

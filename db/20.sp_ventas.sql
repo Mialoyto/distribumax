@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -356,36 +356,42 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS sp_getventas;
-CREATE PROCEDURE  sp_getventas()
-BEGIN
-     SELECT 
-        VE.idventa,
-        VE.idpedido,
-        VE.fecha_venta,
-        VE.subtotal,
-        PO.nombreproducto,
-        DP.cantidad_producto,
-        DP.unidad_medida,
-        DP.precio_unitario,
-        VE.descuento,
-        VE.total_venta,
-        VE.igv,
-        VE.estado,
-        PE.estado
-    FROM 
-        ventas VE
-    LEFT JOIN 
-        pedidos PE ON PE.idpedido = VE.idventa
-    LEFT JOIN 
-        detalle_pedidos DP ON DP.idpedido = VE.idpedido
-    LEFT JOIN 
-        productos PO ON PO.idproducto = DP.idproducto
-    WHERE 
-       
-        --  DATE(VE.fecha_venta) = CURDATE() 
-          VE.estado = '1'
-          AND VE.condicion='pendiente';
 
+CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
+BEGIN
+    -- Consulta con validación para el parámetro _provincia
+    SELECT VE.idventa, VE.idpedido, VE.fecha_venta, VE.subtotal,
+            CLI.idpersona, CLI.idempresa,
+           PO.nombreproducto, DP.cantidad_producto, DP.precio_unitario, VE.total_venta, 
+           VE.igv, VE.descuento, VE.estado,
+           PROV.provincia-- Provincia del cliente
+    FROM ventas VE
+    LEFT JOIN pedidos PE ON PE.idpedido = VE.idpedido
+    LEFT JOIN clientes CLI ON CLI.idcliente = PE.idcliente
+    LEFT JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
+    LEFT JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
+    LEFT JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia  -- Provincia del cliente
+    LEFT JOIN detalle_pedidos DP ON DP.idpedido = VE.idpedido
+    LEFT JOIN productos PO ON PO.idproducto = DP.idproducto
+    LEFT JOIN empresas EMP ON EMP.idempresaruc=CLI.idempresa
+    WHERE (   (_provincia IS NULL OR _provincia = '')  -- Si _provincia está vacío o es NULL, no aplicamos el filtro
+           OR PROV.provincia LIKE CONCAT('%', _provincia, '%') )  
+          AND VE.condicion = 'pendiente';
 END;
 
+
+
+
+
+
+
+call sp_getventas('lima');
+select 
+
 select * from empresas;
+select * from clientes;
+select * from pedidos;
+select * from ventas
+
+select * from distritos  where iddistrito=1;
+select * from provincias where idprovincia=1

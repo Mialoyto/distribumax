@@ -50,7 +50,10 @@ if (isset($_GET['operation'])) {
       echo json_encode($venta->buscarventa($dato));
       break;
     case 'getventas':
-      echo json_encode($venta->getventas());
+      $dato=[
+        'provincia'=>$_GET['provincia']
+      ];
+      echo json_encode($venta->getventas($dato));
     break;
     case 'reporteVenta':
       $datos = [

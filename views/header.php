@@ -193,7 +193,7 @@ $host = "http://localhost/distribumax";
               Marcas
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Vehiculos/">
-              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-truck fs-4"></i></div>
               Vehiculos
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Despacho/">

@@ -42,6 +42,12 @@ async function showConfirm(pregunta = ``, modulo = ``) {
   } else if (respuesta.isDenied) {
     return false;
   }
+}
 
-
+// Función para activar tooltips en todos los elementos que los tengan
+function initializeTooltips() {
+  const tooltipElements = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  tooltipElements.forEach(element => {
+    new bootstrap.Tooltip(element);
+  });
 }

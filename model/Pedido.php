@@ -58,5 +58,21 @@ class Pedidos extends Conexion
     }
   }
 
-  
+  public function UpdateEstadoPedido($params = [])
+  {
+    try{
+      $sql = "CALL sp_update_estado_pedido(?,?)";
+      $query = $this->pdo->prepare($sql);
+      $query->execute(
+        array(
+          $params['idpedido'],
+          $params['estado']
+        )
+        );
+        $response = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $response;
+    } catch(Exception $e){
+      die($e->getMessage());
+    }
+  }
 }

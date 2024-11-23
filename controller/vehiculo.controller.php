@@ -71,5 +71,16 @@ if(isset($_GET['operation'])){
                 $response = $vehiculo->updateVehiculo($datos);
                 echo json_encode($response);
             }
+            break;
+        case 'updateEstadoVehiculo':
+            $idvehiculo = $_GET['idvehiculo'];
+            $estado = $_GET['estado'];
+            $datos = [
+                'idvehiculo' => $idvehiculo,
+                'estado'     => $estado
+            ];
+            $response = $vehiculo->updateEstadoVehiculo($datos);
+            echo json_encode($response);
+            break;
     }
 }

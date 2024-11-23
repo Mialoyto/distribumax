@@ -91,6 +91,24 @@
             die($e->getMessage());
         }
     }
+
+    public function updateEstadoVehiculo($params = [])
+    {
+        try{
+            $sql = "CALL sp_update_estado_vehiculo(?,?)";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(
+                array(
+                    $params['idvehiculo'],
+                    $params['estado']
+                )
+                );
+                $response = $query->fetchAll(PDO::FETCH_ASSOC);
+                return $response;
+        } catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }
 // $vehiculo= new Vehiculo();
 // $dato=[

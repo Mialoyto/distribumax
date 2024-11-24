@@ -14,10 +14,19 @@ require_once '../header.php';
       </div>
       <div class="card-body">
         <form method="POST" action="#" autocomplete="off" id="form-venta-registrar">
-
+          <!-- Obtener el id de la sesion -->
+          <input type="hidden" id="idusuario" value="<?= $_SESSION['login']['idusuario'] ?>">
+          <div class="col-4 mt-1">
+            <span class="badge text-bg-light text-uppercase text-end  " id="iduser" data-id="<?= $_SESSION['login']['idusuario'] ?>">
+              <?= $_SESSION['login']['perfil']  ?> :
+              <?= $_SESSION['login']['nombres']  ?>
+              <?= $_SESSION['login']['appaterno']  ?>
+              <?= $_SESSION['login']['apmaterno']  ?>
+            </span>
+          </div>
           <!-- Selección de Pedido -->
-          <div class="mb-4">
-            <h5>Cliente</h5>
+          <div class="mt-2">
+            <h5 >Cliente</h5>
             <div class="row mb-3">
               <div class="col-md-4 mb-3">
                 <div class="form-floating">
@@ -112,8 +121,8 @@ require_once '../header.php';
           <div id="loadMetodos" style="display: none;"> <!-- Ocultar por defecto -->
             <div class="mb-4">
               <div class="d-inline-flex justify-content-center align-items-center gap-1">
-                  <h5 class="mb-3">Métodos de Pago</h5>
-                  <button type="button" class="btn btn-primary mb-3" id="add-metodo"><i class="fa-solid fa-plus fa-lg"></i></button>
+                <h5 class="mb-3">Métodos de Pago</h5>
+                <button type="button" class="btn btn-primary mb-3" id="add-metodo"><i class="fa-solid fa-plus fa-lg"></i></button>
               </div>
 
               <div class="row mt-3" id="container-metodos">
@@ -121,14 +130,14 @@ require_once '../header.php';
                 <div class="col-md-6 mb-3 metodos">
                   <div class="input-group">
                     <div class="form-floating">
-                      <select id="idmetodopago" class="form-select metodo" name="idmetodopago" >
+                      <select id="idmetodopago" class="form-select metodo" name="idmetodopago">
                         <option value="">Selecione método</option>
                         <!-- Agrega más opciones según sea necesario -->
                       </select>
                       <label for="idmetodopago">Método de Pago</label>
                     </div>
                     <div class="form-floating mb-3 montos">
-                      <input type="number" step="0.01" min="1" class="form-control monto monto_pago_1" id="monto_pago_1" name="monto_pago_1" placeholder="Monto" >
+                      <input type="number" step="0.01" min="1" class="form-control monto monto_pago_1" id="monto_pago_1" name="monto_pago_1" placeholder="Monto">
                       <label for="monto_pago_2">Monto</label>
                     </div>
                   </div>

@@ -199,6 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const params = new FormData();
     params.append('operation', 'addVentas');
     params.append('idpedido', $("#idpedido").value);
+    params.append('idusuario',$("#idusuario").value);
     params.append('idtipocomprobante', $("#idtipocomprobante").value);
     params.append('fecha_venta', $("#fecha_venta").value);
     params.append('subtotal', $("#subtotal").value);

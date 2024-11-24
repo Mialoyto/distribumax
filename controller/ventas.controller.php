@@ -8,6 +8,7 @@ if (isset($_POST['operation'])) {
     case 'addVentas':
       $datos = [
         'idpedido' => $_POST['idpedido'],
+        'idusuario'=>$_POST['idusuario'],
         'idtipocomprobante' => $_POST['idtipocomprobante'],
         'fecha_venta' => $_POST['fecha_venta'],
         'subtotal' => $_POST['subtotal'],
@@ -29,11 +30,21 @@ if (isset($_POST['operation'])) {
   }
 }
 
+
 if (isset($_GET['operation'])) {
   switch ($_GET['operation']) {
     case 'getAll':
-      echo json_encode($venta->getAll());
+      // Si no se pasa 'fecha_venta', se listan todas las ventas
+      if (isset($_GET['fecha_venta']) && !empty($_GET['fecha_venta'])) {
+        // Si se pasa la fecha, se filtra por fecha
+        $dato = ['fecha_venta' => $_GET['fecha_venta']];
+        echo json_encode($venta->listar_fecha($dato)); // Llama a listar ventas por fecha
+      } else {
+        // Si no se pasa fecha, se listan todas las ventas
+        echo json_encode($venta->getAll());
+      }
       break;
+    
     case 'historial':
       echo json_encode($venta->historial());
       break;
@@ -44,17 +55,17 @@ if (isset($_GET['operation'])) {
       echo json_encode($venta->getByID($dato));
       break;
     case 'buscarventa':
-      $dato=[
-        'item'=>$_GET['item']
+      $dato = [
+        'item' => $_GET['item']
       ];
       echo json_encode($venta->buscarventa($dato));
       break;
     case 'getventas':
-      $dato=[
-        'provincia'=>$_GET['provincia']
+      $dato = [
+        'provincia' => $_GET['provincia']
       ];
       echo json_encode($venta->getventas($dato));
-    break;
+      break;
     case 'reporteVenta':
       $datos = [
         'idventa' => $_GET['idventa']
@@ -63,3 +74,6 @@ if (isset($_GET['operation'])) {
       break;
   }
 }
+
+
+

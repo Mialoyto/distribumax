@@ -6,6 +6,7 @@ DROP PROCEDURE IF EXISTS `sp_registrar_venta`;
 
 CREATE PROCEDURE `sp_registrar_venta`(
     IN _idpedido            VARCHAR(15),
+    IN _idusuario           INT,
     IN _idtipocomprobante   INT,
     IN _fecha_venta         DATETIME,
     IN _subtotal            DECIMAL(10, 2),
@@ -16,9 +17,9 @@ CREATE PROCEDURE `sp_registrar_venta`(
 )
 BEGIN
     INSERT INTO ventas 
-    (idpedido, idtipocomprobante,fecha_venta, subtotal, descuento, igv,total_venta) 
+    (idpedido,idusuario, idtipocomprobante,fecha_venta, subtotal, descuento, igv,total_venta) 
     VALUES
-    (_idpedido,_idtipocomprobante,_fecha_venta,_subtotal, _descuento,_igv,_total_venta);
+    (_idpedido,_idusuario,_idtipocomprobante,_fecha_venta,_subtotal, _descuento,_igv,_total_venta);
     SELECT  last_insert_id() AS idventa;
 END;
 
@@ -55,61 +56,86 @@ CREATE PROCEDURE `sp_estado_venta`(
     IN _idventa INT
 )
 BEGIN
+    -- Declarar las variables necesarias
+    DECLARE _idproducto INT;
+    DECLARE _idlote INT ; -- Asume que el ID del lote es 1
+    DECLARE _cantidad INT;
+    DECLARE _idusuario INT;
+    DECLARE done INT DEFAULT 0;
+    DECLARE _idpedido CHAR(15);
+
+    -- Declarar el cursor para iterar sobre los productos del pedido relacionado con la venta
+    DECLARE cur CURSOR FOR
+    SELECT 
+        pr.idproducto,
+        dp.cantidad_producto,
+        ve.idusuario,
+        lt.idlote
+    FROM detalle_pedidos dp
+    LEFT JOIN pedidos p ON dp.idpedido = p.idpedido
+    LEFT JOIN ventas ve ON ve.idpedido = p.idpedido
+    LEFT JOIN productos pr ON pr.idproducto = dp.idproducto
+    LEFT JOIN lotes lt ON lt.idproducto =pr.idproducto
+    WHERE p.idpedido = _idpedido;
+
+    -- Declarar un handler para controlar el fin del cursor
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    -- Asignar el idpedido relacionado con la venta (esto va al principio)
+    SELECT idpedido INTO _idpedido
+    FROM ventas
+    WHERE idventa = _idventa;
+
     -- Actualizar el estado de la venta
     UPDATE ventas SET
         estado = _estado,
         update_at = NOW()
     WHERE idventa = _idventa;
 
-    -- Verificar si el estado de la venta es '0' (cancelado)
+    -- Si el estado es "pendiente"
+    IF _estado = '1' THEN
+        -- Actualizar el pedido relacionado a "Enviado"
+        UPDATE pedidos SET
+            estado = 'Enviado',
+            update_at = NOW()
+        WHERE idpedido = _idpedido;
+    END IF;
+
+    -- Si el estado es "cancelado"
     IF _estado = '0' THEN
-        -- Actualizar el estado del pedido relacionado a 'Cancelado'
+        -- Actualizar el pedido relacionado a "Cancelado"
         UPDATE pedidos SET
             estado = 'Cancelado',
             update_at = NOW()
-       WHERE idpedido = (SELECT idpedido FROM ventas WHERE idventa = _idventa);
+        WHERE idpedido = _idpedido;
+
+        -- Abrir el cursor
+        OPEN cur;
+
+        -- Iterar sobre los productos del pedido
+        read_loop: LOOP
+            FETCH cur INTO _idproducto, _cantidad, _idusuario, _idlote;
+
+            -- Salir del bucle si no hay más filas
+            IF done = 1 THEN
+                LEAVE read_loop;
+            END IF;
+
+            -- Registrar el movimiento en el kardex
+            CALL sp_registrarmovimiento_kardex(
+                _idusuario,
+                _idproducto,
+                _idlote,
+                'Ingreso',
+                _cantidad,
+                'Venta Cancelada'
+            );
+        END LOOP;
+
+        -- Cerrar el cursor
+        CLOSE cur;
     END IF;
 END;
-
--- Trigger que devolvera los productos al kardex
-
-DROP TRIGGER IF EXISTS after_cancelar_venta;
-
--- CREATE TRIGGER after_cancelar_venta
--- AFTER UPDATE ON ventas
--- FOR EACH ROW
--- BEGIN
---     DECLARE done INT DEFAULT 0;
---     DECLARE _idproducto INT;
---     DECLARE _idusuario  INT,
---     DECLARE _cantidad INT;
-
---     -- Declara el cursor
---     DECLARE cur CURSOR FOR 
---         SELECT idproducto, cantidad_producto
---         FROM detalle_pedidos
---         WHERE idpedido = NEW.idpedido;
-
---     -- Manejo del final del cursor
---     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-
---     -- Solo ejecuta si el estado es cancelado
---     IF NEW.estado = '0' THEN
---         OPEN cur;
-
---         read_loop: LOOP
---             FETCH cur INTO _idproducto, _cantidad;
---             IF done THEN
---                 LEAVE read_loop;
---             END IF;
-
---             -- Llama al procedimiento para registrar el movimiento
---             CALL sp_registrarmovimiento_kardex(1, _idproducto, 0,'', 'Ingreso', _cantidad, 'Venta Cancelada');
---         END LOOP;
-
---         CLOSE cur;
---     END IF;
--- END ;
 -- TRIGGER PARA ACTUALIZAR EL ESTADO DEL PEDIDO
 CREATE TRIGGER trg_actualizar_estado_pedido
 AFTER INSERT ON ventas
@@ -190,14 +216,61 @@ BEGIN
 END;
 
 
-select * from detalle_pedidos;
-select * from ventas;
-select * from unidades_medidas;
 
 -- LISTAR VENTAS DEL DIA
 DROP PROCEDURE IF EXISTS `sp_listar_ventas`;
 
 CREATE PROCEDURE `sp_listar_ventas`()
+BEGIN
+    SELECT 
+        ve.idventa,
+        ve.fecha_venta,
+        p.idpedido,
+        tp.comprobantepago,
+        cli.idpersona,
+        cli.tipo_cliente,
+        pr.nombreproducto,
+        dp.cantidad_producto,
+        dp.subtotal,
+        CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno) AS datos,
+        pe.idpersonanrodoc,
+        em.razonsocial,
+        em.idempresaruc,
+        CASE ve.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS estado,
+        CASE ve.estado
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS `status`
+    FROM 
+        ventas ve
+    INNER JOIN 
+        pedidos p ON p.idpedido = ve.idpedido
+    INNER JOIN 
+        detalle_pedidos dp ON p.idpedido = dp.idpedido
+    INNER JOIN 
+        productos pr ON pr.idproducto = dp.idproducto
+    INNER JOIN 
+        clientes cli ON cli.idcliente = p.idcliente
+    LEFT JOIN 
+        personas pe ON pe.idpersonanrodoc = cli.idpersona
+    LEFT JOIN 
+        empresas em ON em.idempresaruc = cli.idempresa
+    LEFT JOIN 
+        tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
+    WHERE 
+        p.estado = 'Enviado'
+	AND ve.estado='1'
+        -- AND DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
+    GROUP BY 
+        ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
+    ORDER BY 
+        p.idpedido DESC;
+END ;
+
+CREATE PROCEDURE `sp_listar_fecha`(IN _fecha_venta DATE)
 BEGIN
     SELECT 
         ve.idventa,
@@ -231,13 +304,13 @@ BEGIN
         tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE 
         p.estado = 'Enviado'
-	AND ve.estado='1'
-        -- AND DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
+        AND ve.estado = '1'
+        AND DATE(ve.fecha_venta) = _fecha_venta -- Comparar solo fechas
     GROUP BY 
         ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
     ORDER BY 
         p.idpedido DESC;
-END ;
+END;
 
 -- listar ventas historial 
 DROP PROCEDURE IF EXISTS `sp_historial_ventas`;

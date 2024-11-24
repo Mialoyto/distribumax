@@ -107,7 +107,7 @@ ORDER BY
     LIMIT 10;
 END;
 
-CALL sp_buscar_productos ('cas');
+-- CALL sp_buscar_productos ('cas');
 
 -- buscar productos por codigo
 DROP PROCEDURE IF EXISTS spu_buscar_lote;

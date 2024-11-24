@@ -15,7 +15,6 @@ BEGIN
     VALUES (_idusuario, _marca_vehiculo, _modelo, _placa, _capacidad, _condicion);
 END;
 
--- CALL sp_actualizar_vehiculo(5,'Kia','Susuki','ABR-124',200,'taller');
 -- ACTUALIZAR VEHICULOS
 DROP PROCEDURE IF EXISTS sp_actualizar_vehiculo;
 CREATE PROCEDURE sp_actualizar_vehiculo(
@@ -28,16 +27,19 @@ CREATE PROCEDURE sp_actualizar_vehiculo(
 )
 BEGIN
     DECLARE v_mensaje VARCHAR(100);
-    DECLARE v_vehiculo_existe INT;
     DECLARE v_idvehiculo INT;
+    DECLARE v_placa VARCHAR(20);
+    DECLARE v_estado INT;
     -- Verificar si el vehículo con la misma placa ya existe
-    SELECT COUNT(*) INTO v_vehiculo_existe
+    SELECT placa INTO  v_placa
     FROM vehiculos
-    WHERE placa = _placa AND idvehiculo != v_idvehiculo;
-    IF v_vehiculo_existe > 0 THEN
+    WHERE placa = _placa AND idvehiculo != _idvehiculo;
+
+    IF v_placa = _placa THEN
         -- Si la placa ya existe, enviamos un mensaje de error
-        SET v_mensaje = 'La placa ya está registrada para otro vehículo';
+        SET v_mensaje = 'La placa ya está registrada';
         SET v_idvehiculo = -1;
+        SET v_estado = 0;
     ELSE
         -- Si no existe, actualizamos los datos del vehículo
         UPDATE vehiculos
@@ -52,26 +54,15 @@ BEGIN
 
         SET v_idvehiculo = _idvehiculo;
         SET v_mensaje = 'Datos del vehículo actualizados correctamente';
+        SET v_estado = 1;
     END IF;
     -- Devolver el mensaje y el ID del vehículo actualizado
-    SELECT v_mensaje AS mensaje, v_idvehiculo AS idvehiculo;
+    SELECT v_mensaje AS mensaje, v_idvehiculo AS idvehiculo, v_estado AS estado;
 END;
 
-
-
-
-select * from usuarios;
-CALL sp_actualizar_vehiculo(
-    1, 
-    'uuuu', 
-    'SKS', 
-    'OWP-122', 
-    1, 
-    'taller'
-);
-select * from vehiculos;
-
+-- OBTENER VEHICULO PARA EDITAR EN EL MODAL
 DROP PROCEDURE IF EXISTS sp_getVehiculo;
+
 CREATE PROCEDURE sp_getVehiculo(
     IN _idvehiculo INT
 )
@@ -89,16 +80,10 @@ BEGIN
         INNER JOIN usuarios US ON VEH.idusuario = US.idusuario
     WHERE VEH.idvehiculo = _idvehiculo;
 END;
-call sp_getVehiculo(1);
 
-
-
-
-
-
-
--- lista vehiculos
+-- LISTAR VEHICULOS
 DROP PROCEDURE IF EXISTS `sp_listar_vehiculo`;
+
 CREATE PROCEDURE `sp_listar_vehiculo`()
 BEGIN
     SELECT 
@@ -122,8 +107,6 @@ BEGIN
     INNER JOIN personas pe ON pe.idpersonanrodoc = us.idpersona
     ORDER BY vh.idvehiculo DESC;
 END;
-
-CALL sp_listar_vehiculo;
 
 -- buscador de usuarios, para el rol conductor
 DROP PROCEDURE IF EXISTS `sp_buscar_conductor`;
@@ -155,6 +138,7 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS `sp_buscar_vehiculos`;
+
 CREATE PROCEDURE `sp_buscar_vehiculos`
 (	
 	IN _item VARCHAR(50)
@@ -172,6 +156,7 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS sp_update_estado_vehiculo;
+
 CREATE PROCEDURE sp_update_estado_vehiculo
 (
     IN _idvehiculo INT,
@@ -201,5 +186,4 @@ BEGIN
     SELECT v_estado AS estado, v_mensaje AS mensaje;
 END;
 
-SELECT * FROM vehiculos;
-CALL sp_update_estado_vehiculo(2,'0');
+CALL sp_update_estado_vehiculo (2, '0');

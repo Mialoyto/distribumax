@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1731562917822@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROOVEDORES
@@ -51,9 +51,6 @@ BEGIN
     WHERE idproveedor = _idproveedor;
 END;
 
-SELECT * FROM proveedores;
-
-CALL sp_getProveedor (1);
 
 -- DESACTIVAR PROOVEDOR
 DROP PROCEDURE IF EXISTS sp_estado_proveedor;
@@ -117,7 +114,6 @@ END;
 CALL sp_search_proveedor (1);
 
 DROP PROCEDURE IF EXISTS sp_listar_proveedor;
-
 CREATE PROCEDURE sp_listar_proveedor()
 BEGIN
     SELECT
@@ -142,10 +138,6 @@ BEGIN
     ORDER BY PRO.proveedor ASC;
 END;
 
-CALL sp_listar_proveedor ();
-
-SELECT * FROM proveedores;
-
 -- OBTENER UN PROVEEDOR
 DROP PROCEDURE IF EXISTS sp_get_proveedor;
 
@@ -162,5 +154,64 @@ BEGIN
     AND _proveedor <> ''
     ORDER BY PRO.proveedor ASC;
 END;
+
 SELECT * FROM proveedores;
-CALL sp_get_proveedor ('P');
+-- HE CREADO UN NUEVO PROCEDIMIENTO PARA ACTUALIZAR PROVEEDOR
+DROP PROCEDURE IF EXISTS sp_actualizar_proveedor;
+CREATE PROCEDURE sp_actualizar_proveedor(
+    IN _idproveedor             INT,
+    IN _idempresa               BIGINT(20),
+    IN _proveedor               VARCHAR(100),
+    IN _contacto_principal      VARCHAR(50),
+    IN _telefono_contacto       CHAR(9),
+    IN _direccion               VARCHAR(100),
+    IN _email                   VARCHAR(100)
+)
+BEGIN
+    DECLARE v_mensaje VARCHAR(100);
+    DECLARE v_idproveedor INT;
+    DECLARE v_proveedor VARCHAR(100);
+    DECLARE v_estado INT;
+
+    -- Verificar si el proveedor con el mismo nombre ya existe
+    SELECT proveedor INTO v_proveedor
+    FROM proveedores
+    WHERE proveedor = _proveedor AND idproveedor != _idproveedor;
+
+    IF v_proveedor = _proveedor THEN
+        -- Si el proveedor ya existe, enviamos un mensaje de error
+        SET v_mensaje = 'El proveedor ya está registrado';
+        SET v_idproveedor = -1;
+        SET v_estado = 0;
+    ELSE
+        -- Si no existe, actualizamos los datos del proveedor
+        UPDATE proveedores
+        SET 
+            idempresa = _idempresa,
+            proveedor = UPPER(_proveedor),
+            contacto_principal = _contacto_principal,
+            telefono_contacto = _telefono_contacto,
+            direccion = _direccion,
+            email = _email,
+            update_at = NOW()
+        WHERE idproveedor = _idproveedor;
+
+        SET v_idproveedor = _idproveedor;
+        SET v_mensaje = 'Datos del proveedor actualizados correctamente';
+        SET v_estado = 1;
+    END IF;
+
+    -- Devolver el mensaje y el ID del proveedor actualizado
+    SELECT v_mensaje AS mensaje, v_idproveedor AS idproveedor, v_estado AS estado;
+END;
+
+select * from proveedores;
+CALL sp_actualizar_proveedor(
+    1,
+    20100085063,
+    'Ajinomoto',
+    'Juan Pérez',
+    '987654321',
+    'Calle San Martin',
+    'juan@xyz.com'
+);

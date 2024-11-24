@@ -101,5 +101,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Formato automático de placa
- 
+
 });

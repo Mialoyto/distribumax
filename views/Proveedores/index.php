@@ -49,47 +49,47 @@
                   <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Proveedor</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="edit-proveedor" id="form-edit" autocomplete="off">
+                <form id="form-prov" id="form-edit" autocomplete="off">
                   <div class="modal-body">
                     <div class="form-floating mb-3">
-                      <input type="text" name="proveedor" id="ruc" class="form-control proveedor" placeholder="Ej. Dijisa" autocomplete="off" required>
-                      <label for="proveedor" class="form-label">
+                      <input type="text" name="proveedor" id="editIdEmpresa" class="form-control proveedor" placeholder="Ej. Dijisa" autocomplete="off" required>
+                      <label for="editIdEmpresa" class="form-label">
                         <i class="bi bi-tag"></i>
                         Ruc
                       </label>
                     </div>
                     <div class="form-floating mb-3">
-                      <input type="text" name="proveedor" id="proveedor" class="form-control" placeholder="Ej. Dijisa" autocomplete="off" required>
-                      <label for="proveedor" class="form-label">
+                      <input type="text" name="proveedor" id="editProveedor" class="form-control" placeholder="Ej. Dijisa" autocomplete="off" required>
+                      <label for="editProveedor" class="form-label">
                         <i class="bi bi-tag"></i>
                         Proveedor
                       </label>
                     </div>
 
                     <div class="form-floating mb-3">
-                      <input type="text" name="proveedor" id="direccion" class="form-control proveedor" placeholder="Ej. Dijisa" autocomplete="off" required>
-                      <label for="proveedor" class="form-label">
+                      <input type="text" name="proveedor" id="editDireccion" class="form-control proveedor" placeholder="Ej. Dijisa" autocomplete="off" required>
+                      <label for="editDireccion" class="form-label">
                         <i class="bi bi-tag"></i>
                         Direccion
                       </label>
                     </div>
                     <div class="form-floating mb-3">
-                      <input type="text" name="proveedor" id="email" class="form-control proveedor" placeholder="Ej. Dijisa" autocomplete="off" required>
-                      <label for="proveedor" class="form-label">
+                      <input type="text" name="proveedor" id="editCorreo" class="form-control proveedor" placeholder="Ej. Dijisa" autocomplete="off" required>
+                      <label for="editCorreo" class="form-label">
                         <i class="bi bi-tag"></i>
                         Email
                       </label>
                     </div>
                     <div class="form-floating mb-3">
-                      <input type="text" name="proveedor" id="contacto" class="form-control proveedor" placeholder="Ej. Dijisa" autocomplete="off" required>
-                      <label for="proveedor" class="form-label">
+                      <input type="text" name="proveedor" id="editContacto" class="form-control proveedor" placeholder="Ej. Dijisa" autocomplete="off" required>
+                      <label for="editContacto" class="form-label">
                         <i class="bi bi-tag"></i>
                         Contacto
                       </label>
                     </div>
                     <div class="form-floating mb-3">
-                      <input type="text" name="proveedor" id="telefono" class="form-control proveedor" placeholder="Ej. Dijisa" autocomplete="off" required>
-                      <label for="proveedor" class="form-label">
+                      <input type="text" name="proveedor" id="editTelefono" class="form-control proveedor" placeholder="Ej. Dijisa" autocomplete="off" required>
+                      <label for="editTelefono" class="form-label">
                         <i class="bi bi-tag"></i>
                         Telefono
                       </label>
@@ -115,6 +115,7 @@
 <?php require_once '../footer.php'; ?>
 <script src="http://localhost/distribumax/js/proveedor/listar-proveedor.js"></script>
 <script src="http://localhost/distribumax/js/proveedor/editar-proveedor.js"></script>
+<script src="http://localhost/distribumax/js/proveedor/disabled-proveedor.js"></script>
 </body>
 
 </html>

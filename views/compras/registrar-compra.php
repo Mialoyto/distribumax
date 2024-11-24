@@ -78,7 +78,7 @@
             <h4 class="mb-3">Detalle de compras</h4>
             <div class="col-md-12">
               <div class="form-floating align-items-center">
-                <input type="search" class="form-control" id="cantidad" name="cantidad" placeholder="cantidad" required>
+                <input type="search" class="form-control" id="searchProducto" name="cantidad" placeholder="cantidad" required>
                 <label for="cantidad" class="form-label"><i class="bi bi-search fa-lg"></i> Agregar Producto</label>
               </div>
             </div>

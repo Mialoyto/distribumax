@@ -137,11 +137,11 @@ $host = "http://localhost/distribumax";
 
 
             <a class="nav-link" href="<?= $host ?>/views/Pedidos/">
-              <div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-list fa-lg"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-clipboard-plus fs-4"></i></i></div>
               Pedidos
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Ventas/">
-              <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-plus fa-lg"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-cart-plus fs-4"></i></i></div>
               Ventas
             </a>
 
@@ -150,7 +150,7 @@ $host = "http://localhost/distribumax";
               Clientes
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Empresas/">
-              <div class="sb-nav-link-icon"><i class="fa-solid fa-building fa-lg"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-building fs-4"></i></div>
               Empresas
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Productos/">
@@ -162,20 +162,20 @@ $host = "http://localhost/distribumax";
               Kardex
             </a>
             <a class="nav-link" href="<?= $host ?>/views/compras/registrar-compra.php">
-              <div class="sb-nav-link-icon"><i class="bi bi-basket-fill fa-lg"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-basket3 fs-4"></i></i></div>
               Compras
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Proveedores/">
-              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-people fs-4"></i></div>
               Proveedores
             </a>
             <div class="sb-sidenav-menu-heading">Módulos personas</div>
             <a class="nav-link" href="<?= $host ?>/views/Personas/">
-              <div class="sb-nav-link-icon"><i class="fa-solid fa-person-circle-plus fa-lg"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-person fs-4"></i></i></div>
               Registrar persona
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Usuarios/">
-              <div class="sb-nav-link-icon"><i class="fa-solid fa-user-plus fa-lg"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-person-add fs-4"></i></i></div>
               Registrar usuario
             </a>
             <div class="sb-sidenav-menu-heading">Módulos reportes</div>
@@ -189,7 +189,7 @@ $host = "http://localhost/distribumax";
             </a> -->
             
             <a class="nav-link" href="<?= $host ?>/views/Marcas/registrar-marca.php">
-              <div class="sb-nav-link-icon"><i class="bi bi-tags-fill"></i></div>
+              <div class="sb-nav-link-icon"><i class="bi bi-tag fs-4"></i></div>
               Marcas
             </a>
             <a class="nav-link" href="<?= $host ?>/views/Vehiculos/">

@@ -53,12 +53,18 @@ class Vehiculo extends Conexion
 		}
 	}
 
-	public function searchVehiculo($params = [])
+	public function searchVehiculoDespacho($params = [])
 	{
 		try {
-			$query = $this->pdo->prepare("CALL sp_buscar_vehiculos (?)");
-			$query->execute(array($params['item']));
-			return $query->fetchAll(PDO::FETCH_ASSOC);
+			$sql = "CALL sp_buscar_vehiculos(?)";
+			$query = $this->pdo->prepare($sql);
+			$query->execute(
+				array(
+					$params['item']
+				)
+			);
+			$response = $query->fetchAll(PDO::FETCH_ASSOC);
+			return $response;
 		} catch (Exception $e) {
 			die($e->getMessage());
 		}

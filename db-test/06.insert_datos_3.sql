@@ -400,6 +400,15 @@ CALL sp_registrar_vehiculo (
     1087, -- Capacidad en Kg
     'operativo' -- Condición del vehículo ('operativo', 'taller', 'averiado')
 );
+
+CALL sp_registrar_vehiculo (
+    4, -- ID del usuario (reemplaza con el ID correcto)
+    'KIA', -- Marca del vehículo
+    'Confiable', -- Modelo del vehículo
+    'ABF-123', -- Placa del vehículo
+    1087, -- Capacidad en Kg
+    'operativo' -- Condición del vehículo ('operativo', 'taller', 'averiado')
+);
 -- PARA ELIMINAR UN VEHICULO
 -- DELETE FROM vehiculos WHERE idvehiculo = 3;
 SELECT

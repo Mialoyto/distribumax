@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+
   function $(object = null) {
     return document.querySelector(object);
   }
 
+  const placa = document.querySelector("#idvehiculo");
+  const lista = document.querySelector("#list-vehiculo");
 
   function generarFechaActual() {
     const now = new Date();
@@ -13,8 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
-
-
 
   async function Validarfecha() {
     const now = new Date();
@@ -27,27 +28,28 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('fecha_despacho').setAttribute('min', minDateTime);
   }
 
-
   generarFechaActual();
   Validarfecha();
 
 
-  async function buscarVehiculo() {
+  // TODO: FUNCION PARA BUSCAR VEHICULO POR LA PLACA
+  async function buscarVehiculo(idvehiculo) {
     const params = new URLSearchParams();
     params.append("operation", "searchVehiculo");
-    params.append("item", $("#idvehiculo").value);
+    params.append("item", idvehiculo);
 
     const option = {
       method: "POST",
       body: params,
     };
-
     try {
       const response = await fetch(`../../controller/vehiculo.controller.php`, option);
       if (!response.ok) {
         throw new Error("Error en la solicitud al servidor.");
+      } else {
+        const data = await response.json();
+        return data;
       }
-      return await response.json();
     } catch (e) {
       console.error("Error al buscar el vehículo:", e);
       return null; // Retorna null en caso de error
@@ -55,20 +57,20 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 
-
   const mostrarResultados = async () => {
-    const datalist = $("#list-vehiculo");
+    const datalist = lista;
     datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
-
-    const response = await buscarVehiculo();
+    const INPUTPLACA = placa.value.trim();
+    console.log(INPUTPLACA);
+    const response = await buscarVehiculo(INPUTPLACA);
     console.log(response);
     if (response && response.length > 0) {
-      $("#list-vehiculo").style.display = "block"; // Muestra la lista
+      lista.style.display = "block"; // Muestra la lista
 
       response.forEach((element) => {
         const li = document.createElement("li");
         li.classList.add("list-group-item");
-        li.innerHTML = `${element.marca_vehiculo} - ${element.modelo} - ${element.placa}`;
+        li.innerHTML = `${element.placa}`;
 
         // Agrega evento para seleccionar el vehículo
         li.addEventListener("click", () => {
@@ -76,16 +78,18 @@ document.addEventListener("DOMContentLoaded", () => {
           $("#idvehiculo").value = element.placa;
 
           // Rellena los detalles del vehículo
-          $("#datos").value = element.datos || "";
+          $("#conductor").value = element.conductor || "";
           $("#modelo").value = element.modelo || "";
           $("#capacidad").value = element.capacidad || "";
           $("#placa").value = element.placa || "";
 
           // Oculta la lista después de seleccionar
-          $("#list-vehiculo").style.display = "none";
+          lista.style.display = "none";
+
         });
 
         datalist.appendChild(li); // Añade el ítem a la lista
+        // datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
       });
     } else {
       const li = document.createElement("li");
@@ -103,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
       $("#modelo").value = '';
       $("#capacidad").value = '';
       $("#placa").value = '';
-      $("#datos").value = '';
+      $("#condutor").value = '';
       $("#btnGetAll").setAttribute("disabled", true);
 
     } else {
@@ -116,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#modelo").setAttribute("disabled", true);
     $("#capacidad").setAttribute("disabled", true);
     $("#placa").setAttribute("disabled", true);
-    $("#datos").setAttribute("disabled", true);
+    $("#conductor").setAttribute("disabled", true);
     // $("#idventa").setAttribute("disabled", true);
     $("#btnGetAll").setAttribute("disabled", true);
   }

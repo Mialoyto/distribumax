@@ -1,3 +1,4 @@
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 
 
 INSERT INTO tipos_promociones (tipopromocion, descripcion)
@@ -32,3 +33,13 @@ VALUES
 
 SELECT * FROM vehiculos;
 select * from productos;
+SELECT * FROM despachos;
+SELECT * FROM VEHICULOS;
+select * from usuarios;
+SELECT * FROM despacho_ventas;
+SELECT * FROM ventas;
+select * from despachos;
+
+SELECT CURDATE();
+
+CALL sp_despacho_registrar (1, 1, '2024-12-01');

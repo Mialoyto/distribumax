@@ -80,8 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
     async function RenderDatatable() {
         dtventa = new DataTable("#table-ventas", {
             columnDefs: [
-                { width: "5%", targets: 0 },
-                { width: "16%", targets: 1 },
+                { width: "10%", targets: 0 },
+                { width: "10%", targets: 1 },
                 { width: "16%", targets: 2 },
                 { width: "16%", targets: 3 },
                 { width: "16%", targets: 4 },

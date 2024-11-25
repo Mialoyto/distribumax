@@ -4,22 +4,20 @@ require_once '../header.php';
 <main>
   <div class="container-fluid px-4">
     <h1 class="mt-4">Registrar Nuevo Despacho</h1>
-    <ol class="breadcrumb mb-4">
-      <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
-    </ol>
-
     <!-- Card para el Registro de Vehículo -->
     <div class="card mb-4">
+      <!-- // ? CABECERA DE LA TARJETA -->
       <div class="card-header">
         <i class="fas fa-car me-1"></i>
         Datos del despacho
       </div>
+      <!-- // ? CUERPOR DE LA TARJETA -->
       <div class="card-body">
         <form action="" method="" id="form-registrar-despacho" autocomplete="off">
           <div class="row">
 
             <div class="col-md-6 mb-3">
-            <div class="form-floating position-relative">
+              <div class="form-floating position-relative">
                 <input
                   type="search"
                   class="form-control"
@@ -29,7 +27,7 @@ require_once '../header.php';
                   required>
                 <label for="idvehiculo" class="form-label">Buscar vehículo</label>
 
-             
+
                 <ul
                   id="list-vehiculo"
                   class="list-group position-absolute w-100 "
@@ -128,7 +126,7 @@ require_once '../header.php';
           <button type="reset" class="btn btn-danger">Cancelar</button>
         </form>
       </div>
-
+      <!-- //  ? PIE DE LA TARJETA -->
       <div class="card-footer">
         <a href="index.php" class="btn btn-secondary">Listar</a>
       </div>

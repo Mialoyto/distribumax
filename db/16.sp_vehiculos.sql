@@ -142,19 +142,34 @@ DROP PROCEDURE IF EXISTS `sp_buscar_vehiculos`;
 
 CREATE PROCEDURE `sp_buscar_vehiculos`
 (	
-	IN _item VARCHAR(50)
+    IN _item VARCHAR(50)
 )
 BEGIN	
-	SELECT 
-    VH.idvehiculo,VH.placa,VH.modelo,VH.marca_vehiculo,VH.capacidad,
-    CONCAT(PE.appaterno,' ',PE.apmaterno,' ',PE.nombres)AS datos
-    FROM vehiculos VH
-    INNER JOIN usuarios US ON US.idusuario=VH.idusuario
-    LEFT JOIN  personas PE ON PE.idpersonanrodoc=US.idpersona
-    WHERE VH.placa LIKE CONCAT('%',_item,'%')
-    OR VH.modelo  LIKE CONCAT('%',_item,'%')
-    OR VH.marca_vehiculo LIKE  CONCAT('%',_item,'%');
+    SELECT 
+        VH.idvehiculo,
+        US.idperfil,
+        PER.perfil,
+        CONCAT(PE.appaterno,' ',PE.apmaterno,' ',PE.nombres) AS conductor,
+        VH.marca_vehiculo,
+        VH.modelo,
+        VH.placa,
+        VH.capacidad
+    FROM USUARIOS US
+    INNER JOIN vehiculos VH ON US.idusuario = VH.idusuario
+    INNER JOIN perfiles PER ON US.idperfil = PER.idperfil
+    INNER JOIN personas PE ON US.idpersona = PE.idpersonanrodoc
+    WHERE PER.perfil = 'CHF'
+        AND (_item = '' OR CONCAT(PE.appaterno, ' ', PE.apmaterno, ' ', PE.nombres) LIKE CONCAT('%', _item, '%'));
 END;
+SELECT * FROM usuarios WHERE perfil = 'CHF';
+
+CALL sp_buscar_vehiculos ('a');
+
+SELECT * FROM usuarios;
+
+SELECT * FROM personas;
+
+SELECT * FROM perfiles;
 
 DROP PROCEDURE IF EXISTS sp_update_estado_vehiculo;
 

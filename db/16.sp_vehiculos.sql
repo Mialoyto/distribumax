@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1731562917822@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- REGISTRAR VEHICULOS
 
@@ -17,7 +17,6 @@ END;
 
 -- ACTUALIZAR VEHICULOS
 DROP PROCEDURE IF EXISTS sp_actualizar_vehiculo;
-
 CREATE PROCEDURE sp_actualizar_vehiculo(
     IN _idvehiculo INT,
     IN _marca_vehiculo VARCHAR(100),
@@ -201,7 +200,5 @@ BEGIN
 
     SELECT v_estado AS estado, v_mensaje AS mensaje;
 END;
-
-SELECT * FROM vehiculos;
 
 CALL sp_update_estado_vehiculo (2, '0');

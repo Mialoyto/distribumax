@@ -2,51 +2,63 @@ document.addEventListener("DOMContentLoaded", () => {
     function $(object = null) { return document.querySelector(object); }
     let dtventa;
 
-    async function CargarDatos() {
-        const Tablaventas = $("#table-ventas tbody");
-
-        const response = await fetch(`../../controller/ventas.controller.php?operation=getAll`);
+    async function CargarDatos(fechaSeleccionada = null) {
+        const Tablaventas = $("#contenido-venta");
+         console.log(Tablaventas);
+      
+        const url = fechaSeleccionada 
+            ? `../../controller/ventas.controller.php?operation=getAll&fecha_venta=${fechaSeleccionada}` 
+            : `../../controller/ventas.controller.php?operation=getAll`;
+    
+        const response = await fetch(url);
         const data = await response.json();
-        // console.log(data);
-
+         console.log('Datos recibidos:', data);  // Verificar los datos recibidos
+         dtventa.destroy();
         Tablaventas.innerHTML = ''; // Limpiar contenido previo
-
+        
+    
+        
         data.forEach(element => {
+            // console.log(data);
+            // console.log(element)
+            const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
+            const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+            const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
             const clienteNombre = element.tipo_cliente === 'Empresa' ? element.razonsocial : element.datos;
             const documento = element.tipo_cliente === 'Empresa' ? element.idempresaruc : element.idpersonanrodoc;
+          
             Tablaventas.innerHTML += `
-    <tr>
-        <td><a href='#' class='text-primary info' 
-            data-bs-toggle="modal" 
-            data-bs-target="#generarReporte" 
-            data-idpedido='${element.idventa}'>${element.idpedido}</a></td>
-        <td>${element.tipo_cliente}</td>
-        <td>${clienteNombre}</td>
-        <td >${documento}</td>
-        <td>${element.fecha_venta}</td>
-        <td>
-            <button class="btn btn-outline-danger info reporte" 
-                data-idventa="${element.idventa}">
-                <i class="fas fa-file-alt me-2"></i>
-            </button>
-            <button class="btn btn-warning estado" 
-                data-bs-toggle="modal"
-                data-bs-target="#cambiarestado"
-                data-idventa="${element.idventa}"> 
-                Estado
-            </button>
-        </td>
-    </tr>
-`;
+                <tr>
+                    <td><a href='#' class='text-primary info' 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#generarReporte"
+                        data-idpedido='${element.idventa}'>${element.idpedido}</a>
+                    </td>
+                    <td>${element.tipo_cliente}</td>
+                    <td>${clienteNombre}</td>
+                    <td>${documento}</td>
+                    <td>${element.fecha_venta}</td>
+                    <td><strong class="${estadoClass}">
+                    ${element.estado}
+                    </strong></td>
+                    <td>
+                        <button class="btn btn-outline-danger info reporte" 
+                            data-idventa="${element.idventa}"
+                             >
+                            <i class="fas fa-file-alt me-2"></i>
 
+                        <button class="btn btn-warning estado" 
+                            data-bs-toggle="modal"
+                            data-bs-target="#cambiarestado"
+                            data-idventa="${element.idventa}"> 
+                            Estado
+                        </button>
+                    </td>
+                </tr>
+            `;
         });
-
-        if (dtventa) {
-            dtventa.destroy(); // Destruir la tabla anterior si existe
-        }
         RenderDatatable();
-
-        // Añadir listeners a los botones de reporte
+    
         const tagsreporte = document.querySelectorAll('.reporte');
         tagsreporte.forEach(element => {
             element.addEventListener("click", async (event) => {
@@ -76,6 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
+      
+    (()=>{
+        RenderDatatable();
+    })();
 
     async function RenderDatatable() {
         dtventa = new DataTable("#table-ventas", {
@@ -85,7 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 { width: "16%", targets: 2 },
                 { width: "16%", targets: 3 },
                 { width: "16%", targets: 4 },
-                { width: "16%", targets: 5 }
+                { width: "10%", targets: 5 },
+                { width: "10%", targets: 6 }
             ],
             language: {
                 lengthMenu: "Mostrar _MENU_ registros por página",
@@ -126,28 +143,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function Reporte(idventa) {
-        // Crear los parámetros para la solicitud
         const params = new URLSearchParams();
         params.append('operation', 'reporteVenta');
         params.append('idventa', idventa);
 
         try {
-            // Realizar la solicitud al servidor
             const response = await fetch(`../../controller/ventas.controller.php?${params}`, {
                 method: 'GET',
             });
 
-            // Verificar si la respuesta es válida
             if (!response.ok) {
                 throw new Error(`Error en la solicitud: ${response.status}`);
             }
 
-            // Parsear los datos de la respuesta
             const data = await response.json();
 
-            // Validar que los datos recibidos sean correctos
             if (data.length > 0 && data[0].comprobantepago) {
-                // Abrir la página correspondiente según el comprobante de pago
                 if (data[0].comprobantepago === 'Boleta') {
                     window.open(`../../reports/Ventas/Boleta/boleta.php?idventa=${idventa}`, '_blank');
                 } else {
@@ -166,8 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
     async function UpdateEstado(idventa, estado) {
         const params = new FormData();
         params.append('operation', 'upVenta');
-        params.append('estado', estado);  // Usar el estado seleccionado
-        params.append('idventa', idventa);  // Usar el idventa pasado
+        params.append('estado', estado);
+        params.append('idventa', idventa);
 
         const options = {
             method: 'POST',
@@ -176,27 +187,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const response = await fetch(`../../controller/ventas.controller.php`, options);
         const data = await response.json();
-        console.log(data);  // Verificar la respuesta del servidor
+        console.log(data);
     }
 
-    // Escuchar el evento de clic en el botón "Actualizar"
-    $("#actualizar").addEventListener("click", async function (event) {
-        event.preventDefault(); // Evitar que se recargue la página al enviar el formulario
-
-        const estadoSeleccionado = document.getElementById("estado").value; // Obtener el valor del select
-        const idventa = document.getElementById("cambiarestado").getAttribute("data-idventa"); // OBTENER idventa ALMACENADO EN EL MODAL
-
-        // Verificar si se ha seleccionado una opción
-        if (estadoSeleccionado === "") {
-            alert("Por favor, seleccione un estado.");
-        } else {
-            console.log("Estado seleccionado: " + estadoSeleccionado);
-            console.log("ID Venta: " + idventa);
-
-            // Llamar a la función para actualizar el estado en el backend
-            await UpdateEstado(idventa, estadoSeleccionado);
-        }
+    // Filtrar ventas por fecha cuando se seleccione una nueva fecha
+    $("#filtrar").addEventListener("click", () => {
+        const fechaSeleccionada = $("#fecha-venta").value;
+       CargarDatos(fechaSeleccionada);
+        
+   
     });
 
+    // Llamar a CargarDatos sin filtro inicialmente
     CargarDatos();
 });

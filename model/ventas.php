@@ -14,9 +14,10 @@ class Ventas extends Conexion
 	{
 		try {
 			$id = -1;
-			$query = $this->pdo->prepare("CALL sp_registrar_venta(?,?,?,?,?,?,?) ");
+			$query = $this->pdo->prepare("CALL sp_registrar_venta(?,?,?,?,?,?,?,?) ");
 			$id = $query->execute(array(
 				$params['idpedido'],
+				$params['idusuario'],
 				$params['idtipocomprobante'],
 				$params['fecha_venta'],
 				$params['subtotal'],
@@ -56,6 +57,18 @@ class Ventas extends Conexion
 			die($e->getMessage());
 		}
 	}
+	public function listar_fecha($params=[])
+	{
+		try {
+			$query = $this->pdo->prepare("CALL sp_listar_fecha(?)");
+			$query->execute(array($params['fecha_venta']));
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (Exception $e) {
+			die($e->getMessage());
+		}
+	}
+  
+
 
 	public function historial()
 	{

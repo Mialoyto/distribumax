@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   renderDocumento('.documento');
 
-
   // fucntion para buscar ruc por api
   async function getApiRuc(ruc) {
     try {

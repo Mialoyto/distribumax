@@ -18,7 +18,7 @@ if (isset($_POST['operation'])) {
         'email'              => $_POST['email']
       ];
       echo json_encode($proveedor->addProveedor($datos));
-      break;
+      break;    
   }
 }
 
@@ -91,5 +91,16 @@ if (isset($_GET['operation'])) {
         $response = $proveedor->updateEstado($datos);
         echo json_encode($response);
         break;
+
+      case 'searchProveedor':
+          if (isset($_GET['item'])) {
+              $datos = [
+                  'item' => $_GET['item']
+              ];
+              echo json_encode($proveedor->searchProveedor($datos));
+          } else {
+              echo json_encode(["error" => "Falta el término de búsqueda."]);
+          }
+          break;
   }
 }

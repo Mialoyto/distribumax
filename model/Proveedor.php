@@ -1,4 +1,7 @@
 <?php
+
+use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\F;
+
 require_once 'Conexion.php';
 class Proveedor extends Conexion
 {
@@ -37,6 +40,18 @@ class Proveedor extends Conexion
             die($e->getMessage());
         }
     }
+
+    public function searchProveedor($params = []): array
+    {
+        try{
+            $query = $this->pdo->prepare("CALL sp_buscar_proveedor(?)");
+            $query->execute(array($params['item']));
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
     public function updateProveedor($params = [])
     {
         try {

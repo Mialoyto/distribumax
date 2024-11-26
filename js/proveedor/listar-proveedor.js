@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           tableContent += `
             <tr>
-              <td>${element.ruc}</td>
+              <td>${element.idempresaruc}</td>
               <td>${element.proveedor}</td>
               <td>${element.contacto_principal}</td>
               <td>${element.telefono_contacto}</td>

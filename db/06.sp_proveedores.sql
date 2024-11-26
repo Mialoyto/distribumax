@@ -12,45 +12,27 @@ CREATE PROCEDURE sp_proovedor_registrar(
     IN _email               	VARCHAR(100)
 )
 BEGIN
-    INSERT INTO proveedores
-    ( 
-        idempresa, 
-    proveedor, 
-    contacto_principal, 
-    telefono_contacto, 
-    direccion, 
-    email
-    ) 
-    VALUES 
-    ( 
-        _idempresa, 
-    _proveedor, 
-    _contacto_principal, 
-    _telefono_contacto, 
-    _direccion, 
-    _email
-    );
+    INSERT INTO proveedores(idempresa,proveedor,contacto_principal,telefono_contacto,direccion, email) 
+    VALUES (_idempresa,_proveedor,_contacto_principal,_telefono_contacto,_direccion, _email);
 END;
 
 -- ACTUALIZAR PROVEEDORES
-DROP PROCEDURE IF EXISTS sp_getProveedor;
-
-CREATE PROCEDURE sp_getProveedor(
-    IN _idproveedor           INT
-)
-BEGIN
-    SELECT
-        idproveedor,
-        idempresa,
-        proveedor,
-        contacto_principal,
-        telefono_contacto,
-        direccion,
-        email
-    FROM proveedores
-    WHERE idproveedor = _idproveedor;
-END;
-
+-- DROP PROCEDURE IF EXISTS sp_getProveedor;
+-- CREATE PROCEDURE sp_getProveedor(
+--     IN _idproveedor           INT
+-- )
+-- BEGIN
+--     SELECT
+--         idproveedor,
+--         idempresa,
+--         proveedor,
+--         contacto_principal,
+--         telefono_contacto,
+--         direccion,
+--         email
+--     FROM proveedores
+--     WHERE idproveedor = _idproveedor;
+-- END;
 
 -- DESACTIVAR PROOVEDOR
 DROP PROCEDURE IF EXISTS sp_estado_proveedor;
@@ -86,32 +68,46 @@ BEGIN
     SELECT v_mensaje AS mensaje, v_estado AS estado;
 END;
 
-CALL sp_estado_proveedor (3, '0');
 
 -- BUSCAR PROVEEDOR
-DROP PROCEDURE IF EXISTS sp_search_proveedor;
-
-CREATE PROCEDURE sp_search_proveedor(
-    IN _searchProveedor VARCHAR(100)
+DROP PROCEDURE IF EXISTS sp_buscar_proveedor;
+CREATE PROCEDURE sp_buscar_proveedor(
+    IN _item VARCHAR(100)
 )
 BEGIN
-IF LENGTH(TRIM(_searchProveedor)) > 0 THEN
-    SELECT 
-        PROV.idproveedor,
-        PROV.idempresa,
-        PROV.proveedor,
-        PROV.contacto_principal,
-        PROV.telefono_contacto,
-        PROV.direccion,
-        PROV.email
-    FROM proveedores PROV
-    WHERE (PROV.proveedor LIKE CONCAT('%',_searchProveedor,'%') 
-        OR PROV.idempresa LIKE CONCAT('%',_searchProveedor,'%'))
-    AND PROV.estado = '1';
+    IF LENGTH(TRIM(_item)) > 0 THEN
+        SELECT 
+            PRO.idproveedor,
+            PRO.idempresa,
+            PRO.proveedor,
+            PRO.contacto_principal,
+            PRO.telefono_contacto,
+            PRO.direccion,
+            PRO.email
+        FROM proveedores PRO
+        WHERE 
+            (PRO.proveedor LIKE CONCAT('%', _item, '%') OR 
+             PRO.idempresa LIKE CONCAT('%', _item, '%')) 
+            AND PRO.estado = '1';
+        
+        IF NOT EXISTS (
+            SELECT 1
+            FROM proveedores PRO
+            WHERE 
+                (PRO.proveedor LIKE CONCAT('%', _item, '%') OR 
+                 PRO.idempresa LIKE CONCAT('%', _item, '%'))
+                AND PRO.estado = '1'
+        ) THEN
+            SELECT 'Proveedor no encontrado' AS mensaje;
+        ELSE
+            SELECT 'Proveedor(s) encontrado(s)' AS mensaje;
+        END IF;
+
+    ELSE
+        SELECT 'Por favor ingrese un término de búsqueda válido' AS mensaje;
     END IF;
 END;
-
-CALL sp_search_proveedor (1);
+CALL sp_buscar_proveedor ('dkdkd');
 
 DROP PROCEDURE IF EXISTS sp_listar_proveedor;
 CREATE PROCEDURE sp_listar_proveedor()

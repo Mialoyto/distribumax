@@ -138,6 +138,7 @@ require_once '../header.php';
                       </div>
                       <span id="status" class="d-none">Buscando por favor espere...</span>
                     </div>
+
                     <div class="col-md-6 mt-3">
                       <div class="form-floating">
                         <select name="tipodoc" id="tipodoc" class="form-select documento"  disabled="true">
@@ -184,7 +185,7 @@ require_once '../header.php';
                           minlength="9"
                           maxlength="9"
                           class="form-control"
-                          id="telefono-empresa"
+                          id="telefono-edmpresa"
                           placeholder="Teléfono"
                           disabled="true">
                         <label for="">Teléfono</label>

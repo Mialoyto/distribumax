@@ -1,120 +1,237 @@
 document.addEventListener("DOMContentLoaded", () => {
-  function $(selector) {
-    return document.querySelector(selector);
+
+  // Helper para simplificar el uso de querySelector
+  function $(object = null) {
+    return document.querySelector(object);
   }
+  renderDocumento('.documento');
 
-  let selectedProvider;
-
-  // Deshabilitar campos
-  function deshabilitarCampos() {
-    ["#proveedor", "#contacto_principal", "#telefono_contacto", "#direccion", "#email"].forEach(id => {
-      $(id).setAttribute("disabled", true);
-    });
-  }
-
-  // Habilitar campos
-  function habilitarCampos() {
-    ["#proveedor", "#contacto_principal", "#telefono_contacto", "#direccion", "#email"].forEach(id => {
-      $(id).removeAttribute("disabled");
-    });
-  }
-
-  // Limpiar campos
-  function limpiarCampos() {
-    ["#proveedor", "#contacto_principal", "#telefono_contacto", "#direccion", "#email"].forEach(id => {
-      $(id).value = "";
-    });
-  }
-
-  // Mostrar datos del proveedor seleccionado
-  function mostrarDatosProveedor() {
-    if (selectedProvider) {
-      $("#proveedor").value = selectedProvider.proveedor;
-      $("#contacto_principal").value = selectedProvider.contacto_principal;
-      $("#telefono_contacto").value = selectedProvider.telefono_contacto;
-      $("#direccion").value = selectedProvider.direccion;
-      $("#email").value = selectedProvider.email;
-    }
-  }
-
-  // Renderizar lista de proveedores
-  async function renderData(proveedores) {
-    $("#list-proveedor").innerHTML = "";
-    const response = await getProveedor(proveedores);
-
-    if (response?.data?.length) {
-      $("#list-proveedor").style.display = "block";
-      response.data.forEach(item => {
-        const li = document.createElement("li");
-        li.classList.add("list-group-item");
-        li.textContent = item.proveedor;
-        li.addEventListener("click", () => {
-          $("#idproveedor").value = item.proveedor;
-          selectedProvider = item;
-          mostrarDatosProveedor();
-          deshabilitarCampos();
-          $("#list-proveedor").style.display = "none";
-        });
-        $("#list-proveedor").appendChild(li);
-      });
-    } else {
-      habilitarCampos();
-    }
-  }
-
-  // Obtener proveedores desde la API
-  async function getProveedor(proveedor) {
-    const params = new URLSearchParams();
-    params.append("operation", "getProveedor");
-    params.append("idproveedor", proveedor);
-
+  // Función para buscar ruc por api
+  async function getApiRuc(ruc) {
     try {
-      const response = await fetch(`../../controller/proveedor.controller.php?${params}`);
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  // Registrar proveedor
-  async function registrarProveedor() {
-    const params = new FormData();
-    params.append("operation", "addProveedor");
-    params.append("proveedor", $("#proveedor").value);
-    params.append("contacto_principal", $("#contacto_principal").value);
-    params.append("telefono_contacto", $("#telefono_contacto").value);
-    params.append("direccion", $("#direccion").value);
-    params.append("email", $("#email").value);
-
-    try {
-      const response = await fetch("../../controller/proveedor.controller.php", {
-        method: "POST",
-        body: params,
+      $("#status").classList.remove("d-none");
+      const response = await fetch(`../../app/api/api.ruc.php?ruc=${ruc}`, {
+        method: 'GET'
       });
-
-      const result = await response.json();
-      if (result.success) {
-        alert("Proveedor registrado correctamente.");
-        limpiarCampos();
-        habilitarCampos();
+      const data = await response.json();  // Parsear la respuesta como JSON
+      console.log(data);
+      $("#status").classList.add("d-none");
+      if (data.hasOwnProperty('message')) {
+        showToast("No se encontraron datos", "info", "INFO");
+        $("#iddistrito").value = '';
+        $("#razon-social").value = '';
+        $("#direccion").value = '';
+        document.querySelector('.documento').value = '';
       } else {
-        alert("Error al registrar proveedor.");
+        $("#razon-social").value = data['razonSocial'];
+        $("#direccion").value = data['direccion'];
+        $("#tipodoc").value = 2;
       }
-    } catch (error) {
-      console.error(error);
+      return data;
+    } catch (e) {
+      console.error("Error en buscarRuc: ", e);
     }
   }
 
-  // Eventos
-  $("#idproveedor").addEventListener("input", async () => {
-    const proveedores = $("#idproveedor").value.trim();
-    if (proveedores) {
-      await renderData(proveedores);
+  async function validarDatos() {
+    const ruc = $("#nro-doc-empresa").value;
+    const response = await searchClienteEmpresa(ruc);
+    console.log(response);
+    if (response.length == 0) {
+      if (ruc.length === 0) {
+        showToast("Ingrese un número de RUC", "info", "INFO");
+        return;
+
+      } else if (ruc.length === 11) {
+        const data = await getApiRuc(ruc);
+        if (data.hasOwnProperty('message')) {
+          showToast("No se encontraron datos", "info", "INFO");
+          addCliente(false);
+        } else {
+          addCliente(true);
+        }
+      } else {
+        showToast("El número de RUC debe tener 11 dígitos", "info", "INFO");
+        addCliente(false);
+      }
     } else {
-      limpiarCampos();
-      habilitarCampos();
+      showToast("El cliente ya se encuentra registrado", "info", "INFO");
+      addCliente(false);
+    }
+  }
+
+  $("#btn-cliente-empresa").addEventListener('click', async () => {
+    await validarDatos();
+  });
+
+  function addCliente(newdata = false) {
+    if (!newdata) {
+      $("#email").setAttribute('disabled', true);
+      $("#telefono_contacto").setAttribute('disabled', true);
+      $("#registrarEmpresa").setAttribute('disabled', true);
+    } else {
+      $("#email").removeAttribute('disabled');
+      $("#iddistrito").removeAttribute('disabled');
+      $("#telefono_contacto").removeAttribute('disabled');
+      $("#registrarEmpresa").removeAttribute('disabled');
+    }
+  }
+
+  // Función para buscar los datos del cliente (empresa o persona)
+  async function searchClienteEmpresa(ruc) {
+    const params = new URLSearchParams();
+    params.append("operation", "search");
+    params.append("ruc", ruc);
+
+    try {
+      const response = await fetch(`../../controller/empresa.controller.php?${params}`);
+      const data = await response.json();  // Parsear la respuesta como JSON
+      // console.log(data);
+      if (data.length > 0) {
+        $("#tipodoc").value = data[0].idtipodocumento;
+        $("#iddistrito").value = data[0].distrito;
+        $("#email").value = data[0].email;
+        $("#telefono_contacto").value = data[0].telefono;
+        $("#razon-social").value = data[0].razonsocial;
+        $("#direccion").value = data[0].direccion;
+      }
+      return data;
+    } catch (e) {
+      console.error("Error en dataCliente: ", e);
+    }
+  }
+
+  // Función para registrar la empresa como cliente
+  async function registrarEmpresa() {
+    const params = new FormData();
+    params.append('operation', 'add');
+    params.append('idtipodocumento', $("#tipodoc").value);
+    params.append('idempresaruc', $("#nro-doc-empresa").value);
+    params.append('iddistrito', iddistrito);
+    params.append('razonsocial', $("#razon-social").value);
+    params.append('direccion', $("#direccion").value);
+    params.append('email', $("#email").value);
+    params.append('telefono', $("#telefono_contacto").value);
+
+    const options = {
+      method: 'POST',
+      body: params
+    };
+    const response = await fetch(`../../controller/empresa.controller.php`, options);
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
+
+  // Función para registrar el cliente
+  async function registrarCliente(idempresa) {
+    let idpersona = $("#nor-doc-persona");
+    idpersona = null;
+    const params = new FormData();
+    params.append('operation', 'addcliente');
+    params.append('idpersona', idpersona); // Asegúrate de que este campo tenga el valor correcto
+    params.append('idempresa', idempresa); // Usa el ID de la empresa que acabas de registrar
+    params.append('tipo_cliente', 'Empresa');
+
+    const options = {
+      method: 'POST',
+      body: params
+    };
+
+    try {
+      const response = await fetch(`../../controller/cliente.controller.php`, options);
+      const data = await response.json();
+      console.log(data);
+      return data;
+
+    } catch (error) {
+      console.error("Error al registrar el cliente:", error);
+    }
+  }
+
+  const searchDist = async (distrito) => {
+    let searchData = new FormData();
+    searchData.append('operation', 'searchDistrito');
+    searchData.append('distrito', distrito);
+    const option = {
+      method: 'POST',
+      body: searchData
+    }
+    try {
+      const response = await fetch(`../../controller/distrito.controller.php`, option);
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  const dataList = $("#datalistDistrito");
+  let iddistrito;
+  async function mostraResultados() {
+    $("#iddistrito").innerHTML = '';
+    const response = await searchDist(nomdistrito);
+    console.log(response);
+    dataList.innerHTML = '';
+    if (response.length != 0) {
+      dataList.style.display = 'block';
+
+      response.forEach((distrito) => {
+        const li = document.createElement('li');
+        li.classList.add('list-group-item');
+        li.setAttribute('data-id', distrito.iddistrito);
+        li.innerHTML = ` ${distrito.distrito},${distrito.provincia}, ${distrito.departamento}`;
+        li.addEventListener('click', () => {
+          $("#iddistrito").value = li.textContent;
+          iddistrito = li.getAttribute('data-id');
+          dataList.innerHTML = '';
+        });
+        dataList.appendChild(li);
+      });
+    }
+  }
+
+  let nomdistrito;
+  $("#iddistrito").addEventListener('input', async () => {
+    nomdistrito = $("#iddistrito").value.trim();
+    await mostraResultados();
+    console.log(nomdistrito);
+    // const data = await mostraResultados
+    // console.log(data);
+  });
+
+  // Evento para registrar la empresa o persona
+  $("#registrar-empresa").addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (await showConfirm("¿Desea registrar la empresa y el cliente?", "Clientes")) {
+      // Primero, registra la empresa y espera a que se complete
+      const empresaResponse = await registrarEmpresa();
+      console.log(empresaResponse);
+      const id = empresaResponse.idempresa;
+      console.log(id);
+      if (id != 0) {
+        const data = await registrarCliente(id);
+        console.log(data);
+        $("#registrar-empresa").reset();
+        showToast("Cliente registrado con éxito", "success", "SUCCESS");
+      } else {
+        showToast("No se pudo registrar la empresa", "error", "ERROR");
+      }
+    } else {
+      console.log("Registro cancelado");
     }
   });
 
-  $("#btn-registrar").addEventListener("click", registrarProveedor);
+  $("#nro-doc-empresa").addEventListener('input', async () => {
+    if ($("#nro-doc-empresa").value.length !== 11) {
+      $("#razon-social").value = '';
+      $("#direccion").value = '';
+      $("#iddistrito").value = '';
+      $("#email").value = '';
+      $("#telefono_contacto").value = '';
+    }
+  });
+
 });

@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728549444267@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- TODO: PROCEDIMIENTO PARA REGISTRAR UN DESPACHO;
@@ -7,13 +7,11 @@ CREATE PROCEDURE sp_despacho_registrar(
     IN _idvehiculo       INT,
     IN _idusuario        INT,
     IN _fecha_despacho   DATE 
-)
-BEGIN
+    )
+    BEGIN
     INSERT INTO despachos (idvehiculo, idusuario, fecha_despacho) 
     VALUES (_idvehiculo, _idusuario, _fecha_despacho);
-    
-    -- Devolver el ID del último despachos insertado
-    SELECT LAST_INSERT_ID() AS iddespacho;
+        SELECT LAST_INSERT_ID() AS iddespacho;
 END;
 
 -- TODO: TRIGGER PARA VERIFICAR LA FECHA DE DESPACHO
@@ -183,6 +181,8 @@ DROP PROCEDURE IF EXISTS sp_listar_despacho;
 --     ON PERS.idpersonanrodoc=USU.idpersona
 --     WHERE DES.estado='1' AND PER.perfil='Chofer';
 -- END;
+
+
 CREATE PROCEDURE sp_listar_despacho()
 BEGIN
     SELECT  

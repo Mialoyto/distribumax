@@ -74,5 +74,28 @@ if (isset($_GET['operation'])) {
       ];
       echo json_encode($despacho->listarventas($dato));
       break;
+    case 'listProvinciasVentas':
+      $response = $despacho->listarProvinciasVentasPendientes();
+      echo json_encode($response);
+      break;
+    case 'listVentasPorProvincia':
+      $provincia = $_GET['provincia'];
+      $datos = [
+        'status' => 0,
+        'message' => ''
+      ];
+
+      if (!empty($provincia)) {
+        $datosEnviar = [
+          'provincia' => $provincia
+        ];
+        $response = $despacho->listVentasPendientes($datosEnviar);
+        echo json_encode($response);
+      } else {
+        $datos['message'] = 'Faltan datos';
+        echo json_encode($datos);
+      }
+
+      break;
   }
 }

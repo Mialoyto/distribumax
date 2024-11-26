@@ -4,33 +4,31 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(object);
   }
 
-  const placa = document.querySelector("#idvehiculo");
-  const lista = document.querySelector("#list-vehiculo");
+  const placa = $("#idvehiculo");
+  const lista = $("#list-vehiculo");
+  const provincia = $("#provincia");
+  const tabla = $("#detalle-despacho tbody");
 
-  function generarFechaActual() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  }
+  $("#idvehiculo").addEventListener("input", async () => {
+    const idvehiculo = $("#idvehiculo").value;
+    console.log(idvehiculo);
+    console.log(idvehiculo.length);
+    console.log(idvehiculo ? true : false);
+    if (!idvehiculo) {
+      lista.innerHTML = "";
+      $("#modelo").value = '';
+      $("#capacidad").value = '';
+      $("#placa").value = '';
+      $("#conductor").value = '';
+      provincia.innerHTML = '';
+      provincia.innerHTML = '<option value="" selected>Seleccione una provincia</option>';
 
-  async function Validarfecha() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
-    document.getElementById('fecha_despacho').setAttribute('min', minDateTime);
-  }
-
-  generarFechaActual();
-  Validarfecha();
-
+    } else {
+      const INPUTPLACA = placa.value.trim();
+      console.log(INPUTPLACA);
+      await mostrarResultados(INPUTPLACA);
+    }
+  });
 
   // TODO: FUNCION PARA BUSCAR VEHICULO POR LA PLACA
   async function buscarVehiculo(idvehiculo) {
@@ -56,13 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-
-  const mostrarResultados = async () => {
+  async function mostrarResultados(placa) {
     const datalist = lista;
     datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
-    const INPUTPLACA = placa.value.trim();
-    console.log(INPUTPLACA);
-    const response = await buscarVehiculo(INPUTPLACA);
+    const response = await buscarVehiculo(placa);
+    console.log(response.length);
     console.log(response);
     if (response && response.length > 0) {
       lista.style.display = "block"; // Muestra la lista
@@ -73,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         li.innerHTML = `${element.placa}`;
 
         // Agrega evento para seleccionar el vehículo
-        li.addEventListener("click", () => {
+        li.addEventListener("click", async () => {
           $("#idvehiculo").setAttribute("data-id", element.idvehiculo);
           $("#idvehiculo").value = element.placa;
 
@@ -82,12 +78,13 @@ document.addEventListener("DOMContentLoaded", () => {
           $("#modelo").value = element.modelo || "";
           $("#capacidad").value = element.capacidad || "";
           $("#placa").value = element.placa || "";
-
+          // ? DESPUES DE SELECCIONAR UN VEHICULO CARGA LAS VENTAS DE LA PROVINCIA
+          await renderSelect();
           // Oculta la lista después de seleccionar
           lista.style.display = "none";
-
+          lista.innerHTML = ""; // Limpia la lista después de seleccionar
         });
-
+        lista.innerHTML = ""; // Limpia la lista antes de mostrar resultados
         datalist.appendChild(li); // Añade el ítem a la lista
         // datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
       });
@@ -100,165 +97,83 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-
-  $("#idvehiculo").addEventListener("input", async () => {
-    const idvehiculo = $("#idvehiculo").value;
-    if (idvehiculo == "") {
-      $("#modelo").value = '';
-      $("#capacidad").value = '';
-      $("#placa").value = '';
-      $("#condutor").value = '';
-      $("#btnGetAll").setAttribute("disabled", true);
-
-    } else {
-      await mostrarResultados();
-      $("#btnGetAll").removeAttribute("disabled");
-    }
-  });
-
-  function desactivarCampos() {
-    $("#modelo").setAttribute("disabled", true);
-    $("#capacidad").setAttribute("disabled", true);
-    $("#placa").setAttribute("disabled", true);
-    $("#conductor").setAttribute("disabled", true);
-    // $("#idventa").setAttribute("disabled", true);
-    $("#btnGetAll").setAttribute("disabled", true);
-  }
-  desactivarCampos();
-
-  let venta;
-
-  // async function getVenta(venta) {
-  //   const params = new URLSearchParams();
-  //   params.append("operation", "buscarventa");
-  //   params.append("item", venta);
-
-  //   const response = await fetch(`../../controller/ventas.controller.php?${params}`);
-  //   return response.json(); // Retorna la promesa resuelta
-  // }
-
-  async function getAll(provincia) {
+  // TODO: FUNCION PARA BUSCAR LAS VENTAS POR PROVINCIA
+  async function getProvincias() {
     const params = new URLSearchParams();
-    params.append("operation", "getventas");
-    params.append("provincia", provincia);
-    const response = await fetch(`../../controller/ventas.controller.php?${params}`);
-    const data = await response.json(); // Obtener datos en JSON
-    console.log(data);
-    return data;
-    // const renderdatos = document.querySelector("#detalle-ventas tbody");
-    // renderdatos.innerHTML = ""; // Limpiar la tabla
-
-    // data.forEach(venta => {
-    //   const tr = document.createElement("tr");
-    //   tr.innerHTML = `
-    //     <td>${venta.idventa}</td>
-    //     <td>${venta.nombreproducto}</td>
-    //     <td>${venta.cantidad_producto}</td>
-    //     <td>${venta.unidad_medida}</td>
-    //     <td>${venta.precio_unitario}</td>
-    //     <td>${venta.subtotal}</td>
-    //     <td>${venta.descuento}</td>
-    //     <td>${venta.total_venta}</td>
-    //     <td><button class="btn btn-danger btn-sm eliminar-fila">Eliminar</button></td>
-    //   `;
-    //   tr.querySelector(".eliminar-fila").addEventListener("click", () => {
-    //     tr.remove();
-    //   })
-    //   renderdatos.appendChild(tr);
-    // });
-
-
+    params.append("operation", "listProvinciasVentas");
+    try {
+      const response = await fetch(`../../controller/despacho.controller.php?${params}`);
+      const data = await response.json(); // Obtener datos en JSON
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.error("Error al obtener las ventas:", e);
+      return null;
+    }
   }
 
-  const listprovincia = $("#list-provincias");
-  const idprovincia = $("#provincia");
+  // TODO: FUNCION PARA RENDERIZAR LAS PROVINCIAS EN EL SELECT
+  async function renderSelect() {
+    const provincias = await getProvincias();
+    console.log(provincias);
+    const select = $("#provincia");
+    provincia.innerHTML = "";
+    provincia.innerHTML = '<option value="" selected>Seleccione una provincia</option>';
+    provincias.forEach((provincia) => {
+      const option = document.createElement("option");
+      option.value = provincia.provincia;
+      option.textContent = provincia.provincia;
+      select.appendChild(option);
+    });
+  }
 
-  async function renderData(provincia) {
-    $("#list-provincias").innerHTML = "";
-    //const response = await getAll(provincia); // Llama a getVenta con el valor de 'venta'
-    listprovincia.innerHTML = "";
-    if (provincia && provincia.length) {
-      listprovincia.style.display = 'block';
-      provincia.forEach(item => {
-        const li = document.createElement("li");
-        li.classList.add("list-group-item");
-        li.textContent = `${item.provincia}`;
-        li.addEventListener("click", () => {
-          idprovincia.value = `${item.provincia}`;
-          idprovincia.setAttribute("data-id", item.provincia);
-          listprovincia.innerHTML = "";
-          listprovincia.style.display = "none";
-        });
-        const renderdatos = document.querySelector("#detalle-ventas tbody");
-        renderdatos.innerHTML = ""; // Limpiar la tabla
+  // TODO: FUNCION PARA LISTAR LAS VENTAS POR PROVINCIA
+  async function getVentasPendientes(provincia) {
+    const params = new URLSearchParams();
+    params.append("operation", "listVentasPorProvincia");
+    params.append("provincia", provincia);
+    try {
+      const response = await fetch(`../../controller/despacho.controller.php?${params}`);
+      const data = await response.json(); // Obtener datos en JSON
+      return data;
+    } catch (e) {
+      console.error("Error al obtener las ventas:", e);
+      return null;
+    }
+  }
 
-        provincia.forEach(venta => {
+
+
+
+  provincia.addEventListener("change", async () => {
+    const provincia = $("#provincia").value;
+    console.log(provincia);
+    if (provincia) {
+      const data = await getVentasPendientes(provincia);
+      console.log(data);
+      if (data) {
+        // LIMPIAR LA TABLA
+        tabla.innerHTML = "";
+        // RENDERIZAR EN LA TABLA
+        data.forEach((element) => {
+
           const tr = document.createElement("tr");
           tr.innerHTML = `
-        <td>${venta.idventa}</td>
-        <td>${venta.nombreproducto}</td>
-        <td>${venta.cantidad_producto}</td>
-        <td>${venta.provincia}</td>
-        <td>${venta.precio_unitario}</td>
-        <td>${venta.subtotal}</td>
-        <td>${venta.descuento}</td>
-        <td>${venta.total_venta}</td>
-        <td><button class="btn btn-danger btn-sm eliminar-fila">Eliminar</button></td>
-      `;
-          tr.querySelector(".eliminar-fila").addEventListener("click", () => {
-            tr.remove();
-          })
-          renderdatos.appendChild(tr);
+        <td>${element.codigo}</td>
+        <td>${element.producto}</td>
+        <td>${element.unidadmedida}</td>
+        <td>${element.cantidad_producto}</td>
+        <td>${element.total_venta_producto}</td>
+        `;
+          tabla.appendChild(tr);
         });
-        listprovincia.appendChild(li);
-      });
+      } else {
+        console.log('No hay ventas pend');
+
+      }
     } else {
-      const li = document.createElement("li");
-      li.classList.add("list-group-item");
-      li.textContent = "No hay registros con esta provincia";
-      listprovincia.appendChild(li);
-    }
-
-  }
-
-
-
-  idprovincia.addEventListener("input", async () => {
-    const query = idprovincia.value.trim();
-    if (!query) {
-      listprovincia.innerHTML = "";
-      listprovincia.style.display = "none";
+      tabla.innerHTML = "";
       return;
-    } else {
-      const dataprovincia = await getAll(query);
-      renderData(dataprovincia);
     }
-  })
-  // async function RegistrarDespacho(idventa) {
-  //   const params = new FormData();
-  //   params.append('operation','add');
-  //   params.append('idventa',idventa);
-  //   params.append('idvehiculo',$("#idvehiculo").value);
-  //   params.append('idusuario',$("#idusuario").value);
-  //   params.append('fecha_despacho',$('#fecha_despacho').value);
-  //   const options={
-  //     method : 'POST',
-  //     body   : params
-  //   }
-
-  //   const response = await fetch(`../../controller/despacho.controller.php`,options);
-  //   const data = await response.json();
-  //   console.log(data);
-  //   return data;
-
-  // }
-
-  // //aqui es donde se agregara mas de una venta
-  // async function RegistrarDetalledespacho(iddespacho) {
-  //   let dataventa=[];
-  //   const  params= new FormData();
-  //   params.append('operation','add');
-  //   params.append('idventa',dataventa);
-  //   params.append('iddespacho',iddespacho)
-  // }
+  });
 });

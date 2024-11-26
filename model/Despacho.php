@@ -77,4 +77,37 @@ class Despachos  extends Conexion
       die($e->getMessage());
     }
   }
+
+  // ? FUNCION PARA LISTAR PROVINCIAS CON VENTAS PENDIENTES
+  public function listarProvinciasVentasPendientes()
+  {
+    try {
+      $tsql = "CALL sp_getListProvinciaVentas()";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute();
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+
+  // ? FUNCION PARA LISTAR LAS VENTAS POR PROVINCIAS
+
+  public function listVentasPendientes($params = [])
+  {
+    try {
+      $tsql = "CALL sp_getventas(?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(
+        array(
+          $params['provincia']
+        )
+      );
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 }

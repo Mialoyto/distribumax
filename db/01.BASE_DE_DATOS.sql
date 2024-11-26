@@ -1,10 +1,12 @@
 -- Active: 1731562917822@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
+
 CREATE DATABASE distribumax;
 
 USE distribumax;
 -- -----------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS departamentos;
+
 CREATE TABLE departamentos (
     iddepartamento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     departamento VARCHAR(250) NOT NULL,
@@ -16,6 +18,7 @@ CREATE TABLE departamentos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS provincias;
+
 CREATE TABLE provincias (
     idprovincia INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     iddepartamento INT NOT NULL,
@@ -28,6 +31,7 @@ CREATE TABLE provincias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS distritos;
+
 CREATE TABLE distritos (
     iddistrito INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idprovincia INT NOT NULL,
@@ -40,6 +44,7 @@ CREATE TABLE distritos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS categorias;
+
 CREATE TABLE categorias (
     idcategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     categoria VARCHAR(150) NOT NULL,
@@ -51,6 +56,7 @@ CREATE TABLE categorias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS subcategorias;
+
 CREATE TABLE subcategorias (
     idsubcategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idcategoria INT NOT NULL,
@@ -64,6 +70,7 @@ CREATE TABLE subcategorias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS tipo_comprobante_pago;
+
 CREATE TABLE tipo_comprobante_pago (
     idtipocomprobante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     comprobantepago VARCHAR(150) NOT NULL,
@@ -75,6 +82,7 @@ CREATE TABLE tipo_comprobante_pago (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS metodos_pago;
+
 CREATE TABLE metodos_pago (
     idmetodopago INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     metodopago VARCHAR(150) NOT NULL,
@@ -86,6 +94,7 @@ CREATE TABLE metodos_pago (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS accesos;
+
 CREATE TABLE accesos (
     idacceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     modulo VARCHAR(100) NOT NULL,
@@ -96,8 +105,8 @@ CREATE TABLE accesos (
     CONSTRAINT fk_estado_acce CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-
 DROP TABLE IF EXISTS tipo_documento;
+
 CREATE TABLE tipo_documento (
     idtipodocumento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     documento CHAR(6) NOT NULL,
@@ -110,6 +119,7 @@ CREATE TABLE tipo_documento (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS personas;
+
 CREATE TABLE personas (
     idtipodocumento INT NOT NULL,
     idpersonanrodoc CHAR(11) NOT NULL PRIMARY KEY,
@@ -131,6 +141,7 @@ CREATE TABLE personas (
 
 /* modificaciones en la base tabla tipo doc por defecto la empresas se registraran con ruc */
 DROP TABLES IF EXISTS empresas;
+
 CREATE TABLE empresas (
     idtipodocumento INT NOT NULL,
     idempresaruc BIGINT NOT NULL PRIMARY KEY,
@@ -149,23 +160,23 @@ CREATE TABLE empresas (
     CONSTRAINT fk_estado_emp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-CREATE TABLE perfiles
-(
-    idperfil            INT AUTO_INCREMENT PRIMARY KEY,
-    perfil              VARCHAR(30)        NOT NULL,
-    nombrecorto         CHAR(3)            NOT NULL,
-    estado              CHAR(1)            NOT NULL DEFAULT '1',
-    create_at           DATETIME            NOT NULL DEFAULT NOW(),
-    CONSTRAINT uk_perfil_per UNIQUE(perfil),
-    CONSTRAINT uk_nombrecorto_per UNIQUE(nombrecorto)
-)ENGINE = INNODB;
+CREATE TABLE perfiles (
+    idperfil INT AUTO_INCREMENT PRIMARY KEY,
+    perfil VARCHAR(30) NOT NULL,
+    nombrecorto CHAR(3) NOT NULL,
+    estado CHAR(1) NOT NULL DEFAULT '1',
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    CONSTRAINT uk_perfil_per UNIQUE (perfil),
+    CONSTRAINT uk_nombrecorto_per UNIQUE (nombrecorto)
+) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS usuarios;
+
 CREATE TABLE usuarios (
-    idusuario       INT PRIMARY KEY AUTO_INCREMENT,
-    idpersona       CHAR(11) NOT NULL,
-    perfil          CHAR(3)     NOT NULL,
-    idperfil       INT          NOT NULL,
+    idusuario INT PRIMARY KEY AUTO_INCREMENT,
+    idpersona CHAR(11) NOT NULL,
+    perfil CHAR(3) NOT NULL,
+    idperfil INT NOT NULL,
     nombre_usuario VARCHAR(100) NOT NULL,
     password_usuario VARCHAR(150) NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
@@ -174,11 +185,13 @@ CREATE TABLE usuarios (
     CONSTRAINT fk_idpersona_usua FOREIGN KEY (idpersona) REFERENCES personas (idpersonanrodoc),
     CONSTRAINT uk_nombre_usuario_usua UNIQUE (nombre_usuario),
     CONSTRAINT fk_estado_usuario CHECK (estado IN ("0", "1")),
-    CONSTRAINT fk_idperfil_usu FOREIGN KEY(idperfil) REFERENCES perfiles(idperfil)
+    CONSTRAINT fk_idperfil_usu FOREIGN KEY (idperfil) REFERENCES perfiles (idperfil)
 ) ENGINE = INNODB;
 
-select * from usuarios;
+SELECT * FROM usuarios;
+
 DROP TABLES IF EXISTS clientes;
+
 CREATE TABLE clientes (
     idcliente INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idpersona CHAR(11) DEFAULT NULL,
@@ -198,6 +211,7 @@ CREATE TABLE clientes (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS proveedores;
+
 CREATE TABLE proveedores (
     idproveedor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idempresa BIGINT NOT NULL,
@@ -216,6 +230,7 @@ CREATE TABLE proveedores (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS marcas;
+
 CREATE TABLE marcas (
     idmarca INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idproveedor INT NOT NULL,
@@ -225,11 +240,12 @@ CREATE TABLE marcas (
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_categorias_marca FOREIGN KEY (idcategoria) REFERENCES categorias (idcategoria),
-    CONSTRAINT uk_marca UNIQUE (marca,idcategoria),
+    CONSTRAINT uk_marca UNIQUE (marca, idcategoria),
     CONSTRAINT fk_estado_mar CHECK (estado IN ('0', '1'))
 ) ENGINE = INNODB;
 -- BORRAR
 DROP TABLE IF EXISTS tipos_promociones;
+
 CREATE TABLE tipos_promociones (
     idtipopromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     tipopromocion VARCHAR(150) NOT NULL,
@@ -243,6 +259,7 @@ CREATE TABLE tipos_promociones (
 
 -- BORRAR
 DROP TABLE IF EXISTS promociones;
+
 CREATE TABLE promociones (
     idpromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idtipopromocion INT NOT NULL,
@@ -260,6 +277,7 @@ CREATE TABLE promociones (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS unidades_medidas;
+
 CREATE TABLE unidades_medidas (
     idunidadmedida INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     unidadmedida VARCHAR(100) NOT NULL,
@@ -272,6 +290,7 @@ CREATE TABLE unidades_medidas (
 
 -- TABLA PRODUCTOS
 DROP TABLE IF EXISTS productos;
+
 CREATE TABLE productos (
     idproducto INT PRIMARY KEY AUTO_INCREMENT,
     idproveedor INT NOT NULL,
@@ -289,7 +308,6 @@ CREATE TABLE productos (
     update_at DATETIME NULL,
     inactive_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
-    
     CONSTRAINT fk_idproveedor_prod FOREIGN KEY (idproveedor) REFERENCES proveedores (idproveedor),
     CONSTRAINT fk_idmarca_prod FOREIGN KEY (idmarca) REFERENCES marcas (idmarca),
     CONSTRAINT fk_sbcategoria_prod FOREIGN KEY (idsubcategoria) REFERENCES subcategorias (idsubcategoria),
@@ -309,9 +327,9 @@ CREATE TABLE productos (
     )
 ) ENGINE = INNODB;
 
-
 -- BORRAR
 DROP TABLE IF EXISTS detalle_promociones;
+
 CREATE TABLE detalle_promociones (
     iddetallepromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idpromocion INT NOT NULL,
@@ -326,6 +344,7 @@ CREATE TABLE detalle_promociones (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS precios_historicos;
+
 CREATE TABLE precios_historicos (
     id_precio_historico INT PRIMARY KEY AUTO_INCREMENT,
     idproducto INT NOT NULL,
@@ -339,6 +358,7 @@ CREATE TABLE precios_historicos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS pedidos;
+
 CREATE TABLE pedidos (
     idpedido CHAR(15) NOT NULL PRIMARY KEY,
     idusuario INT NOT NULL,
@@ -360,6 +380,7 @@ CREATE TABLE pedidos (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS detalle_pedidos;
+
 CREATE TABLE detalle_pedidos (
     id_detalle_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idpedido CHAR(15) NOT NULL,
@@ -384,41 +405,42 @@ CREATE TABLE detalle_pedidos (
 -- DROP TABLE IF EXISTS kardex;
 
 /* CREATE TABLE kardex (
-    idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idusuario INT NOT NULL,
-    idproducto INT NOT NULL,
-    fecha_vencimiento DATE NULL,
-    numlote VARCHAR(60) NULL,
-    stockactual INT NULL DEFAULT 0,
-    tipomovimiento ENUM('Ingreso', 'Salida') NOT NULL,
-    cantidad INT NOT NULL,
-    motivo VARCHAR(255),
-    create_at DATETIME NOT NULL DEFAULT NOW(),
-    update_at DATETIME NULL,
-    estado CHAR(15) NOT NULL DEFAULT 'Disponible',
-    CONSTRAINT fk_idusuario_kardex FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
-    CONSTRAINT fk_idproducto_kardex FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
-    CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
-    CONSTRAINT ck_cantidad CHECK (cantidad > 0),
-    CONSTRAINT fk_estado_kardex CHECK (
-        estado IN (
-            'Disponible',
-            'Agotado',
-            'Vencido',
-            'Por vencer',
-            'Por agotarse'
-        )
-    )
+idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+idusuario INT NOT NULL,
+idproducto INT NOT NULL,
+fecha_vencimiento DATE NULL,
+numlote VARCHAR(60) NULL,
+stockactual INT NULL DEFAULT 0,
+tipomovimiento ENUM('Ingreso', 'Salida') NOT NULL,
+cantidad INT NOT NULL,
+motivo VARCHAR(255),
+create_at DATETIME NOT NULL DEFAULT NOW(),
+update_at DATETIME NULL,
+estado CHAR(15) NOT NULL DEFAULT 'Disponible',
+CONSTRAINT fk_idusuario_kardex FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
+CONSTRAINT fk_idproducto_kardex FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
+CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
+CONSTRAINT ck_cantidad CHECK (cantidad > 0),
+CONSTRAINT fk_estado_kardex CHECK (
+estado IN (
+'Disponible',
+'Agotado',
+'Vencido',
+'Por vencer',
+'Por agotarse'
+)
+)
 ) ENGINE = INNODB; */
 
 -- ------------------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS lotes;
+
 CREATE TABLE lotes (
     idlote INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idproducto INT NOT NULL,
     numlote VARCHAR(60) NOT NULL,
     fecha_vencimiento DATE NULL,
-    stockactual     INT NULL DEFAULT 0,
+    stockactual INT NULL DEFAULT 0,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     inactive_at DATETIME NULL,
@@ -439,38 +461,39 @@ CREATE TABLE lotes (
 
 -- ------------------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS kardex;
+
 CREATE TABLE kardex (
-idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-idusuario INT NOT NULL,
-idproducto INT NOT NULL,
-idlote      INT  NULL,
-stockactual INT NULL DEFAULT 0,
-tipomovimiento ENUM('Ingreso', 'Salida') NOT NULL,
-cantidad INT NOT NULL,
-motivo VARCHAR(255),
-create_at DATETIME NOT NULL DEFAULT NOW(),
-update_at DATETIME NULL,
-estado CHAR(100) NOT NULL DEFAULT 'Disponible',
-CONSTRAINT fk_idusuario_kardex FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
-CONSTRAINT fk_idproducto_kardex FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
-CONSTRAINT fk_idlote_kardex FOREIGN KEY (idlote) REFERENCES lotes (idlote),
-CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
-CONSTRAINT ck_cantidad CHECK (cantidad > 0),
-CONSTRAINT fk_estado_kardex CHECK (
-estado IN (
-'Disponible',
-'Agotado',
-'Vencido',
-'Por vencer',
-'Por agotarse'
-)
-)
+    idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    idusuario INT NOT NULL,
+    idproducto INT NOT NULL,
+    idlote INT NULL,
+    stockactual INT NULL DEFAULT 0,
+    tipomovimiento ENUM('Ingreso', 'Salida') NOT NULL,
+    cantidad INT NOT NULL,
+    motivo VARCHAR(255),
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    update_at DATETIME NULL,
+    estado CHAR(100) NOT NULL DEFAULT 'Disponible',
+    CONSTRAINT fk_idusuario_kardex FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
+    CONSTRAINT fk_idproducto_kardex FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
+    CONSTRAINT fk_idlote_kardex FOREIGN KEY (idlote) REFERENCES lotes (idlote),
+    CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
+    CONSTRAINT ck_cantidad CHECK (cantidad > 0),
+    CONSTRAINT fk_estado_kardex CHECK (
+        estado IN (
+            'Disponible',
+            'Agotado',
+            'Vencido',
+            'Por vencer',
+            'Por agotarse'
+        )
+    )
 ) ENGINE = INNODB;
 --
 -- CALL kardex('Ingreso', 1, 1, 1, 10, 'Ingreso de productos', 'Disponible');
 
-
 DROP TABLE IF EXISTS vehiculos;
+
 CREATE TABLE vehiculos (
     idvehiculo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idusuario INT NOT NULL,
@@ -493,10 +516,11 @@ CREATE TABLE vehiculos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS despacho;
+
 DROP TABLE IF EXISTS despacho;
 
-
 DROP TABLE IF EXISTS ventas;
+
 CREATE TABLE ventas (
     idventa INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idusuario INT NOT NULL ,
@@ -520,40 +544,40 @@ CREATE TABLE ventas (
     CONSTRAINT ck_igv CHECK (igv >= 0),
     CONSTRAINT ck_totalventa CHECK (total_venta > 0),
     CONSTRAINT uk_idpedido UNIQUE (idpedido),
-     CONSTRAINT fk_condicion_venta CHECK (
-        condicion IN (
-            'pendiente',
-            'despachado'
-        )
+    CONSTRAINT fk_condicion_venta CHECK (
+        condicion IN ('pendiente', 'despachado')
     )
-) ENGINE = INNODB; 
-CREATE TABLE despacho (
+) ENGINE = INNODB;
+
+-- TODO: TABLA DE DESPACHO
+CREATE TABLE despachos (
     iddespacho INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idventa    INT NOT NULL,
-    idvehiculo INT NOT NULL,
-    idusuario INT NOT NULL,
-    fecha_despacho DATE NOT NULL,
+    idvehiculo INT NOT NULL, -- ? REFERENCIA AL VEHICULO ASOCIADO
+    idusuario INT NOT NULL, -- ? PERSONA QUE REGISTRO EL DESPACHO
+    fecha_despacho DATE NOT NULL, -- ? FECHA PROGRAMADA PARA LA ENTREGA DEL PEDIDO
     create_at DATETIME NOT NULL DEFAULT NOW(),
-    update_at DATETIME NULL ON UPDATE NOW(),
+    update_at DATETIME NULL,
+    inactive_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1", -- 1: pendiente, 0: despachado
-    CONSTRAINT fk_idventa_des FOREIGN KEY     (idventa) REFERENCES ventas (idventa),
+
     CONSTRAINT fk_idvehiculo_desp FOREIGN KEY (idvehiculo) REFERENCES vehiculos (idvehiculo),
     CONSTRAINT fk_idusuario_desp FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_estado_desp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-
-
+--  TODO: DETALLE  DEL DESPACHO
 DROP TABLE IF EXISTS despacho_ventas;
+
 CREATE TABLE despacho_ventas (
     iddetalledespacho INT AUTO_INCREMENT PRIMARY KEY,
     iddespacho INT NOT NULL,
     idventa INT NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
-    CONSTRAINT uk_venta_despacho UNIQUE(iddespacho,idventa),
-    CONSTRAINT fk_despacho FOREIGN KEY (iddespacho) REFERENCES despacho (iddespacho),
+    CONSTRAINT uk_venta_despacho UNIQUE (iddespacho, idventa),
+    CONSTRAINT fk_despacho FOREIGN KEY (iddespacho) REFERENCES despachos (iddespacho),
     CONSTRAINT fk_venta FOREIGN KEY (idventa) REFERENCES ventas (idventa)
 ) ENGINE = INNODB;
+
 
 DROP TABLE IF EXISTS detalle_meto_Pago;
 CREATE TABLE detalle_meto_Pago (
@@ -570,6 +594,7 @@ CREATE TABLE detalle_meto_Pago (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS comprobantes;
+
 CREATE TABLE comprobantes (
     idcomprobante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idventa INT NOT NULL,
@@ -580,165 +605,382 @@ CREATE TABLE comprobantes (
     CONSTRAINT fk_estado_comp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 -- ------------------------------------------------------------------------------------------------------
-
+-- TODO: NUEVAS TABLAS
 -- CREANDO NUEVAS TABLAS PARA QUE FUNCIONE LOS PERMISOS
-CREATE TABLE modulos
-(
-    idmodulo        INT AUTO_INCREMENT PRIMARY KEY,
-    modulo          VARCHAR(30)        NOT NULL,
-    create_at       DATETIME           NOT NULL DEFAULT NOW(),
-    CONSTRAINT uk_modulo_mod UNIQUE(modulo)
-)ENGINE = INNODB;
+CREATE TABLE modulos (
+    idmodulo INT AUTO_INCREMENT PRIMARY KEY,
+    modulo VARCHAR(30) NOT NULL,
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    CONSTRAINT uk_modulo_mod UNIQUE (modulo)
+) ENGINE = INNODB;
 
-CREATE TABLE vistas
-(
-    idvista         INT AUTO_INCREMENT PRIMARY KEY,
-    idmodulo        INT                        NULL,
-    ruta            VARCHAR(50)            NOT NULL,
-    sidebaroption   CHAR(1)                NOT NULL,
-    texto           VARCHAR(20)            NULL,
-    icono           VARCHAR(20)            NULL,
-    CONSTRAINT fk_idmodulo_vis FOREIGN KEY(idmodulo) REFERENCES modulos(idmodulo),
-    CONSTRAINT uk_ruta_vis UNIQUE(ruta),
-    CONSTRAINT ck_sidebaroption_vis CHECK(sidebaroption IN('S','N'))
-)ENGINE = INNODB;
--- TABLA PERMISOS 
-CREATE TABLE permisos
-(
-	idpermiso			INT AUTO_INCREMENT PRIMARY KEY,
-    idperfil			INT 				NOT NULL,
-    idvista				INT 				NOT NULL,
-    create_at			DATETIME			NOT NULL DEFAULT NOW(),
+CREATE TABLE vistas (
+    idvista INT AUTO_INCREMENT PRIMARY KEY,
+    idmodulo INT NULL,
+    ruta VARCHAR(50) NOT NULL,
+    sidebaroption CHAR(1) NOT NULL,
+    texto VARCHAR(20) NULL,
+    icono VARCHAR(20) NULL,
+    CONSTRAINT fk_idmodulo_vis FOREIGN KEY (idmodulo) REFERENCES modulos (idmodulo),
+    CONSTRAINT uk_ruta_vis UNIQUE (ruta),
+    CONSTRAINT ck_sidebaroption_vis CHECK (sidebaroption IN ('S', 'N'))
+) ENGINE = INNODB;
+-- TABLA PERMISOS
+CREATE TABLE permisos (
+    idpermiso INT AUTO_INCREMENT PRIMARY KEY,
+    idperfil INT NOT NULL,
+    idvista INT NOT NULL,
+    create_at DATETIME NOT NULL DEFAULT NOW(),
     CONSTRAINT fk_idperfil_per FOREIGN KEY (idperfil) REFERENCES perfiles (idperfil),
     CONSTRAINT fk_idvisita_per FOREIGN KEY (idvista) REFERENCES vistas (idvista),
     CONSTRAINT uk_vista_per UNIQUE (idperfil, idvista)
-)ENGINE = INNODB;
+) ENGINE = INNODB;
 
-
--- INSERSIONES DE DATOS DE LAS TABLAS 
+-- INSERSIONES DE DATOS DE LAS TABLAS
 -- INSERTAR DATOS A LA TABLA PERFILES
-INSERT INTO perfiles(perfil, nombrecorto) VALUES
-    ('Administrador','ADM'),
-    ('Vendedor','VND'),
-    ('Almacenador','ALM'),
-    ('Chofer','CHF');
+INSERT INTO
+    perfiles (perfil, nombrecorto)
+VALUES ('Administrador', 'ADM'),
+    ('Vendedor', 'VND'),
+    ('Almacenador', 'ALM'),
+    ('Chofer', 'CHF');
 
 -- INSERTAR DATOS A LA TABLA MODULOS
-INSERT INTO modulos (modulo) VALUES
-        ('Pedidos'),
-        ('Ventas'),
-        ('Clientes'),
-        ('Empresas'),
-        ('Productos'),
-        ('Kardex'),
-        ('Proveedores'),
-        ('Registrar persona'),
-        ('Registrar Usuario'),
-        ('Promociones'),
-        ('Tipo de Promociones'),
-        ('Categorias'),
-        ('Subcategorias'),
-        ('Marcas'),
-        ('Vehiculos'),
-        ('Despachos');
+INSERT INTO
+    modulos (modulo)
+VALUES ('Pedidos'),
+    ('Ventas'),
+    ('Clientes'),
+    ('Empresas'),
+    ('Productos'),
+    ('Kardex'),
+    ('Proveedores'),
+    ('Registrar persona'),
+    ('Registrar Usuario'),
+    ('Promociones'),
+    ('Tipo de Promociones'),
+    ('Categorias'),
+    ('Subcategorias'),
+    ('Marcas'),
+    ('Vehiculos'),
+    ('Despachos');
 
 -- INSERTAR DATPS A LA TABLA VISTAS
--- PEDIDOS 
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (NULL, 'Home','S','Inicio','fa-solid fa-wallet');
+-- PEDIDOS
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        NULL,
+        'Home',
+        'S',
+        'Inicio',
+        'fa-solid fa-wallet'
+    );
 
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (1, '../views/Pedidos/index.php','S','Pedidos','fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        1,
+        '../views/Pedidos/index.php',
+        'S',
+        'Pedidos',
+        'fa-solid fa-wallet'
+    );
 
--- VENTAS 
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (2, '../views/Ventas/index.php','S','Ventas', 'fa-solid fa-wallet');
+-- VENTAS
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        2,
+        '../views/Ventas/index.php',
+        'S',
+        'Ventas',
+        'fa-solid fa-wallet'
+    );
 
 -- CLIENTES
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (3, '../views/Clientes/index.php','S','Clientes', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        3,
+        '../views/Clientes/index.php',
+        'S',
+        'Clientes',
+        'fa-solid fa-wallet'
+    );
 
 -- EMPRESAS
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (4, '../views/Empresas/index.php','S','Empresas', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        4,
+        '../views/Empresas/index.php',
+        'S',
+        'Empresas',
+        'fa-solid fa-wallet'
+    );
 
 -- PRODUCTOS
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (5, '../views/Productos/index.php','S','Productos', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        5,
+        '../views/Productos/index.php',
+        'S',
+        'Productos',
+        'fa-solid fa-wallet'
+    );
 
 -- KARDEX
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (6, '../views/Kardex/index.php','S','Kardex', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        6,
+        '../views/Kardex/index.php',
+        'S',
+        'Kardex',
+        'fa-solid fa-wallet'
+    );
 
 -- PROVEEDORES
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (7, '../views/Proveedores/index.php','S','Proveedores', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        7,
+        '../views/Proveedores/index.php',
+        'S',
+        'Proveedores',
+        'fa-solid fa-wallet'
+    );
 
 -- PERSONAS
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (8, '../views/Personas/index.php','S','Personas', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        8,
+        '../views/Personas/index.php',
+        'S',
+        'Personas',
+        'fa-solid fa-wallet'
+    );
 
 -- USUARIOS
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (9, '../views/Usuarios/index.php','S','Usuarios', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        9,
+        '../views/Usuarios/index.php',
+        'S',
+        'Usuarios',
+        'fa-solid fa-wallet'
+    );
 
 -- PROMOCIONES
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (10, '../views/Promociones/index.php','S','Promociones', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        10,
+        '../views/Promociones/index.php',
+        'S',
+        'Promociones',
+        'fa-solid fa-wallet'
+    );
 
 -- TIPO DE PROMOCIONES
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (11, '../views/Tipo de Promociones/index.php','S','Tipo de Promociones', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        11,
+        '../views/Tipo de Promociones/index.php',
+        'S',
+        'Tipo de Promociones',
+        'fa-solid fa-wallet'
+    );
 
 -- CATEGORIA
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (12, '../views/Categorias/index.php','S','Categorias', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        12,
+        '../views/Categorias/index.php',
+        'S',
+        'Categorias',
+        'fa-solid fa-wallet'
+    );
 
 -- SUBCATEGORIAS
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (13, '../views/Subcategoria/index.php','S','Subcategorias', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        13,
+        '../views/Subcategoria/index.php',
+        'S',
+        'Subcategorias',
+        'fa-solid fa-wallet'
+    );
 
 -- MARCAS
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (14, '../views/Marcas/index.php','S','Marcas', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        14,
+        '../views/Marcas/index.php',
+        'S',
+        'Marcas',
+        'fa-solid fa-wallet'
+    );
 
 -- VEHICULOS
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (15, '../views/Vehiculos/index.php','S','Vehiculos', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        15,
+        '../views/Vehiculos/index.php',
+        'S',
+        'Vehiculos',
+        'fa-solid fa-wallet'
+    );
 
 -- DESPACHOS
-INSERT INTO vistas(idmodulo, ruta, sidebaroption, texto, icono) VALUES
-    (16, '../views/Despacho/index.php','S','Despachos', 'fa-solid fa-wallet');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        16,
+        '../views/Despacho/index.php',
+        'S',
+        'Despachos',
+        'fa-solid fa-wallet'
+    );
 
 -- AGREGAR DATOS A LA TABLA PERMISOS
 -- ADMINISTRADOR
-INSERT INTO permisos(idperfil, idvista) VALUES
-    (1,1),
-    (1,2),
-    (1,3),
-    (1,4),
-    (1,5),
-    (1,6),
-    (1,7),
-    (1,8),
-    (1,9),
-    (1,10),
-    (1,11),
-    (1,12),
-    (1,13),
-    (1,14),
-    (1,15),
-    (1,16);
-    
+INSERT INTO
+    permisos (idperfil, idvista)
+VALUES (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (1, 5),
+    (1, 6),
+    (1, 7),
+    (1, 8),
+    (1, 9),
+    (1, 10),
+    (1, 11),
+    (1, 12),
+    (1, 13),
+    (1, 14),
+    (1, 15),
+    (1, 16);
 -- VENDEDOR
-INSERT INTO permisos(idperfil, idvista) VALUES
-    (2,1),
-    (2,2),
-    (2,13);
-    
--- ALMACENADOR 
-INSERT INTO permisos(idperfil, idvista) VALUES
-    (3,6);
+INSERT INTO
+    permisos (idperfil, idvista)
+VALUES (2, 1),
+    (2, 2),
+    (2, 13);
+-- ALMACENADOR
+INSERT INTO permisos (idperfil, idvista) VALUES (3, 6);
 -- CHOFER
-INSERT INTO permisos(idperfil, idvista) VALUES
-    (4,16);
+INSERT INTO permisos (idperfil, idvista) VALUES (4, 16);

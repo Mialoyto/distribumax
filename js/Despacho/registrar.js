@@ -1,9 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
+
   function $(object = null) {
     return document.querySelector(object);
   }
-  
- 
+
+  const placa = document.querySelector("#idvehiculo");
+  const lista = document.querySelector("#list-vehiculo");
+
   function generarFechaActual() {
     const now = new Date();
     const year = now.getFullYear();
@@ -13,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
+
   async function Validarfecha() {
     const now = new Date();
     const year = now.getFullYear();
@@ -23,59 +27,69 @@ document.addEventListener("DOMContentLoaded", () => {
     const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
     document.getElementById('fecha_despacho').setAttribute('min', minDateTime);
   }
+
   generarFechaActual();
   Validarfecha();
-  const buscarVehiculo = async () => {
+
+
+  // TODO: FUNCION PARA BUSCAR VEHICULO POR LA PLACA
+  async function buscarVehiculo(idvehiculo) {
     const params = new URLSearchParams();
     params.append("operation", "searchVehiculo");
-    params.append("item", $("#idvehiculo").value);
-  
+    params.append("item", idvehiculo);
+
     const option = {
       method: "POST",
       body: params,
     };
-  
     try {
       const response = await fetch(`../../controller/vehiculo.controller.php`, option);
       if (!response.ok) {
         throw new Error("Error en la solicitud al servidor.");
+      } else {
+        const data = await response.json();
+        return data;
       }
-      return await response.json();
     } catch (e) {
       console.error("Error al buscar el vehículo:", e);
       return null; // Retorna null en caso de error
     }
   };
-  
+
+
   const mostrarResultados = async () => {
-    const datalist = $("#list-vehiculo");
+    const datalist = lista;
     datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
-  
-    const response = await buscarVehiculo();
+    const INPUTPLACA = placa.value.trim();
+    console.log(INPUTPLACA);
+    const response = await buscarVehiculo(INPUTPLACA);
+    console.log(response);
     if (response && response.length > 0) {
-      $("#list-vehiculo").style.display = "block"; // Muestra la lista
-  
+      lista.style.display = "block"; // Muestra la lista
+
       response.forEach((element) => {
         const li = document.createElement("li");
         li.classList.add("list-group-item");
-        li.innerHTML = `${element.marca_vehiculo} - ${element.modelo} - ${element.placa}`;
-  
+        li.innerHTML = `${element.placa}`;
+
         // Agrega evento para seleccionar el vehículo
         li.addEventListener("click", () => {
           $("#idvehiculo").setAttribute("data-id", element.idvehiculo);
           $("#idvehiculo").value = element.placa;
-  
+
           // Rellena los detalles del vehículo
-          $("#datos").value = element.datos || "";
+          $("#conductor").value = element.conductor || "";
           $("#modelo").value = element.modelo || "";
           $("#capacidad").value = element.capacidad || "";
           $("#placa").value = element.placa || "";
-  
+
           // Oculta la lista después de seleccionar
-          $("#list-vehiculo").style.display = "none";
+          lista.style.display = "none";
+
         });
-  
+
         datalist.appendChild(li); // Añade el ítem a la lista
+        // datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
       });
     } else {
       const li = document.createElement("li");
@@ -85,20 +99,20 @@ document.addEventListener("DOMContentLoaded", () => {
       $("#list-vehiculo").style.display = "none"; // Oculta la lista si no hay resultados
     }
   };
-  
+
 
   $("#idvehiculo").addEventListener("input", async () => {
     const idvehiculo = $("#idvehiculo").value;
     if (idvehiculo == "") {
-      $("#modelo").value='';
-      $("#capacidad").value='';
-      $("#placa").value='';
-      $("#datos").value='';
-      $("#btnGetAll").setAttribute("disabled",true);
- 
+      $("#modelo").value = '';
+      $("#capacidad").value = '';
+      $("#placa").value = '';
+      $("#condutor").value = '';
+      $("#btnGetAll").setAttribute("disabled", true);
+
     } else {
-        await mostrarResultados();
-        $("#btnGetAll").removeAttribute("disabled");
+      await mostrarResultados();
+      $("#btnGetAll").removeAttribute("disabled");
     }
   });
 
@@ -106,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#modelo").setAttribute("disabled", true);
     $("#capacidad").setAttribute("disabled", true);
     $("#placa").setAttribute("disabled", true);
-    $("#datos").setAttribute("disabled", true);
+    $("#conductor").setAttribute("disabled", true);
     // $("#idventa").setAttribute("disabled", true);
     $("#btnGetAll").setAttribute("disabled", true);
   }
@@ -153,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //   renderdatos.appendChild(tr);
     // });
 
-    
+
   }
 
   const listprovincia = $("#list-provincias");
@@ -162,25 +176,25 @@ document.addEventListener("DOMContentLoaded", () => {
   async function renderData(provincia) {
     $("#list-provincias").innerHTML = "";
     //const response = await getAll(provincia); // Llama a getVenta con el valor de 'venta'
-      listprovincia.innerHTML="";
-      if(provincia && provincia.length){
-        listprovincia.style.display='block';
-       provincia.forEach(item => {
-          const li = document.createElement("li");
-          li.classList.add("list-group-item");
-          li.textContent=`${item.provincia}`;
-          li.addEventListener("click",()=>{
-            idprovincia.value=`${item.provincia}`;
-            idprovincia.setAttribute("data-id",item.provincia);
-            listprovincia.innerHTML="";
-            listprovincia.style.display="none";
-          });
-           const renderdatos = document.querySelector("#detalle-ventas tbody");
-    renderdatos.innerHTML = ""; // Limpiar la tabla
+    listprovincia.innerHTML = "";
+    if (provincia && provincia.length) {
+      listprovincia.style.display = 'block';
+      provincia.forEach(item => {
+        const li = document.createElement("li");
+        li.classList.add("list-group-item");
+        li.textContent = `${item.provincia}`;
+        li.addEventListener("click", () => {
+          idprovincia.value = `${item.provincia}`;
+          idprovincia.setAttribute("data-id", item.provincia);
+          listprovincia.innerHTML = "";
+          listprovincia.style.display = "none";
+        });
+        const renderdatos = document.querySelector("#detalle-ventas tbody");
+        renderdatos.innerHTML = ""; // Limpiar la tabla
 
-    provincia.forEach(venta => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
+        provincia.forEach(venta => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
         <td>${venta.idventa}</td>
         <td>${venta.nombreproducto}</td>
         <td>${venta.cantidad_producto}</td>
@@ -191,31 +205,31 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${venta.total_venta}</td>
         <td><button class="btn btn-danger btn-sm eliminar-fila">Eliminar</button></td>
       `;
-      tr.querySelector(".eliminar-fila").addEventListener("click", () => {
-        tr.remove();
-      })
-      renderdatos.appendChild(tr);
-    });
-          listprovincia.appendChild(li);
+          tr.querySelector(".eliminar-fila").addEventListener("click", () => {
+            tr.remove();
+          })
+          renderdatos.appendChild(tr);
         });
-      }else{
-        const li =document.createElement("li");
-        li.classList.add("list-group-item");
-        li.textContent="No hay registros con esta provincia";
         listprovincia.appendChild(li);
-      }
-   
+      });
+    } else {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+      li.textContent = "No hay registros con esta provincia";
+      listprovincia.appendChild(li);
+    }
+
   }
 
-  
 
-  idprovincia.addEventListener("input",async()=>{
-    const query=idprovincia.value.trim();
-    if(!query){
-      listprovincia.innerHTML="";
-      listprovincia.style.display="none";
+
+  idprovincia.addEventListener("input", async () => {
+    const query = idprovincia.value.trim();
+    if (!query) {
+      listprovincia.innerHTML = "";
+      listprovincia.style.display = "none";
       return;
-    }else{
+    } else {
       const dataprovincia = await getAll(query);
       renderData(dataprovincia);
     }
@@ -236,9 +250,9 @@ document.addEventListener("DOMContentLoaded", () => {
   //   const data = await response.json();
   //   console.log(data);
   //   return data;
-  
+
   // }
-  
+
   // //aqui es donde se agregara mas de una venta
   // async function RegistrarDetalledespacho(iddespacho) {
   //   let dataventa=[];

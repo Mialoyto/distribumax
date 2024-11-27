@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if(response[0].usuario_existe===1){
         alert("Cliente:",response[0].mensaje);
       }
+  
 
       $("#direccion-cliente").value = response[0].direccion_cliente;
       idCliente = response[0].idcliente;
@@ -108,10 +109,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error(e);
     }
   }
+  
+
 
   // EVENTOS
   $("#nro-doc").addEventListener("input", async () => {
-
+  
     if ($("#nro-doc").value === "") {
       desactivarCampos();
       $("#addProducto").setAttribute("disabled", true);
@@ -123,6 +126,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (response.length != 0) {
         // desactivarCampos();
         await validarNroDoc(response);
+        if(response[0].mensaje==="El cliente ya tiene un pedido pendiente."){
+          showToast(`${response[0].mensaje}`, "info", "INFO");
+          $("#addProducto").setAttribute("disabled", true);
+          setTimeout(async () => {
+            if (await showConfirm("Desea registrar un nuevo Pedido?", "Distribumax")) {
+               $("#addProducto").removeAttribute("disabled");
+            }else{
+          
+            }
+        }, 3000);
+        }else{
+          $("#addProducto").removeAttribute("disabled");
+        }
+        
+        
       } else {
         // desactivarCampos();
         $("#detalle-pedido").innerHTML = "";

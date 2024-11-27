@@ -11,6 +11,15 @@ document.addEventListener("DOMContentLoaded", () => {
       
         Tablaventas.innerHTML = ''; // Limpiar contenido previo
             data.forEach(element => {
+                let estadoClass;
+                switch (element.estado) {
+                
+                    case "Inactivo":
+                        estadoClass = "text-danger";
+                    break;
+                   
+                   
+                }
                 const clienteNombre = element.tipo_cliente === 'Empresa' ? element.razonsocial : element.datos;
                 const documento = element.tipo_cliente === 'Empresa' ? element.idempresaruc : element.idpersonanrodoc;
                 Tablaventas.innerHTML += `
@@ -26,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${clienteNombre}</td>
                     <td >${documento}</td>
                     <td>${element.fecha_venta}</td>
+                    <td><strong class="${estadoClass}">${element.estado}</strong></td>
                     <td>
                       
                     </td>
@@ -69,12 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
     async function RenderDatatable() {
         dtventa = new DataTable("#table-ventas", {
             columnDefs: [
-                { width: "5%", targets: 0 },  // Columna del contador de filas
+                { width: "10%", targets: 0 },  // Columna del contador de filas
                 { width: "16%", targets: 1 }, // Ancho para la columna de Pedido
                 { width: "16%", targets: 2 }, // Ancho para la columna de Tipo Cliente
                 { width: "16%", targets: 3 }, // Ancho para la columna de Cliente
                 { width: "16%", targets: 4 },
-                { width: "16%", targets: 5 } // Ancho para la columna de Documento
+                { width: "22%", targets: 5 }, // Ancho para la columna de Documento
+                { width: "10%", targets: 6 } // Ancho para la columna de Documento
             
             ],
             language: {

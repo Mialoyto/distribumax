@@ -74,6 +74,7 @@ DROP TABLE IF EXISTS tipo_comprobante_pago;
 CREATE TABLE tipo_comprobante_pago (
     idtipocomprobante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     comprobantepago VARCHAR(150) NOT NULL,
+    contador INT  NULL DEFAULT 0,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
@@ -530,6 +531,7 @@ CREATE TABLE ventas (
     subtotal DECIMAL(10, 2) NOT NULL,
     descuento DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     igv DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    numero_comprobante VARCHAR(50) NOT NULL,
     total_venta DECIMAL(10, 2) NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
@@ -542,6 +544,7 @@ CREATE TABLE ventas (
     CONSTRAINT ck_subtotal_venta CHECK (subtotal > 0),
     CONSTRAINT ck_descuento CHECK (descuento >= 0),
     CONSTRAINT ck_igv CHECK (igv >= 0),
+    CONSTRAINT ck_numero_comprobante UNIQUE(numero_comprobante),
     CONSTRAINT ck_totalventa CHECK (total_venta > 0),
     CONSTRAINT uk_idpedido UNIQUE (idpedido),
     CONSTRAINT fk_condicion_venta CHECK (

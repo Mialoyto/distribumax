@@ -4,7 +4,7 @@ require_once '../header.php';
 
 <main>
   <div class="container-fluid px-4">
-    <h1 class="mt-4">Ventas</h1>
+
     <ol class="breadcrumb mb-4"></ol>
 
     <div class="card mb-4">

@@ -1,9 +1,12 @@
 <?php require_once '../header.php'; ?>
 <main>
-  <div class="container mt-4">
-    <!-- Formulario en un solo card -->
-    <div class="card shadow-lg border-0 rounded-lg">
-      <div class="card-header text-center">
+  <div class="container-fluid px-4">
+    <ol class="breadcrumb mb-4">
+      <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
+    </ol>
+
+    <div class="card ">
+      <div class="card-header ">
         <h2 class="card-title">Registro de Pedido y Detalles</h2>
       </div>
       <div class="card-body">
@@ -116,7 +119,7 @@
           <!-- fin tabla productos -->
           <div class="d-flex justify-content-between">
             <div class="d-flex justify-content-start mt-3">
-              <a class="btn btn-primary">Listar pedidos</a>
+              <a  class="btn btn-primary" href="listar.php">Listar pedidos</a>
             </div>
             <!-- Botones -->
             <div class="d-flex justify-content-end mt-3">
@@ -127,6 +130,7 @@
         </form>
       </div>
     </div>
+
   </div>
 </main>
 <?php require_once '../footer.php'; ?>

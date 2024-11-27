@@ -35,3 +35,44 @@ CREATE PROCEDURE sp_listar_comprobate()
 BEGIN
 	SELECT * FROM tipo_comprobante_pago;
 END;
+
+
+
+DROP PROCEDURE IF EXISTS obtener_siguiente_comprobante;
+CREATE PROCEDURE obtener_siguiente_comprobante(
+    IN _idtipocomprobante INT,
+    OUT siguiente_comprobante VARCHAR(50)
+)
+BEGIN
+    DECLARE _contador_actual INT DEFAULT 0;
+    DECLARE tipo_comprobante VARCHAR(50);
+
+    -- Verificar si el idtipocomprobante existe
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM tipo_comprobante_pago 
+        WHERE idtipocomprobante = _idtipocomprobante
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El tipo de comprobante no existe.';
+    END IF;
+
+    -- Obtener el contador actual y el tipo de comprobante
+    SELECT contador, comprobantepago INTO _contador_actual, tipo_comprobante
+    FROM tipo_comprobante_pago
+    WHERE idtipocomprobante = _idtipocomprobante
+    FOR UPDATE;
+
+    -- Incrementar el contador
+    SET _contador_actual = _contador_actual + 1;
+
+    -- Actualizar el contador y el campo update_at en la tabla
+    UPDATE tipo_comprobante_pago
+    SET contador = _contador_actual, update_at = NOW()
+    WHERE idtipocomprobante = _idtipocomprobante;
+
+    -- Formatear el siguiente número de comprobante
+    SET siguiente_comprobante = CONCAT(tipo_comprobante, '-', LPAD(_contador_actual, 7, '0'));
+    
+END;
+

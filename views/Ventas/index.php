@@ -92,7 +92,7 @@ require_once '../../app/config/App.php';
         <div class="table-responsive">
           <table id="table-ventas" class="table" style="width: 100%;">
             <thead>
-              <tr >
+              <tr>
                 <th>Pedido</th>
                 <th>Tipo Cliente</th>
                 <th>Cliente</th>
@@ -107,13 +107,15 @@ require_once '../../app/config/App.php';
             </tbody>
           </table>
         </div>
-        <div class="card-footer">
+
+      </div>
+       <div class="card-footer">
           <a href="registrar.php" class="btn btn-primary">Registrar nueva Venta</a>
           <a href="listar.php" class="btn btn-success">Historial de Ventas</a>
 
         </div>
-      </div>
     </div>
+
   </div>
 </main>
 

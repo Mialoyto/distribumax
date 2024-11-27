@@ -1,7 +1,7 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1728549444267@@127.0.0.1@3306@distribumax
 USE distribumax;
 
--- REGISTRAR DESPACHO
+-- TODO: PROCEDIMIENTO PARA REGISTRAR UN DESPACHO;
 DROP PROCEDURE IF EXISTS sp_despacho_registrar;
 
 
@@ -36,13 +36,12 @@ END;
 
 -- actualizar el estado de la venta de pendiente a despachado
 CREATE TRIGGER trg_actualizar_estado_venta
-AFTER INSERT ON despacho
+AFTER INSERT ON despachos
 FOR EACH ROW
 BEGIN
     UPDATE ventas
     SET condicion = 'despachado'
-    WHERE idventa = NEW.idventa 
-      AND condicion <> 'despachado';  
+    AND condicion <> 'despachado';  
 END;
 
 -- actualizar el estado del pedido de enviado a entregado cuando se registre el despacho
@@ -72,15 +71,15 @@ END;
 
 -- ACTUALIZAR DESPACHO
 
+-- TODO: PROCEDIMIENTO PARA ACTUALIZAR UN DESPACHO
 CREATE PROCEDURE sp_actualizar_despacho(
-
 	IN _iddespacho		INT,
-	IN _idvehiculo 		INT,
+		IN _idvehiculo 		INT,
     IN _fecha_despacho	DATE,
     IN _estado          CHAR(1)	-- 1 : pendiente	0: despachado
 )
 BEGIN
-	UPDATE despacho
+	UPDATE despachos
 		SET
 			iddespacho =_iddespacho,
             idvehiculo = _idvehiculo,
@@ -90,18 +89,21 @@ BEGIN
         WHERE iddespacho =_iddespacho;
 END;
 
-
+-- TODO: PROCEDIMIENTO PARA ACTUALIZAR EL ESTADO DE UN DESPACHO
 DROP PROCEDURE IF EXISTS sp_actualizar_estado;
+
 CREATE PROCEDURE sp_actualizar_estado(
 
     IN  _iddespacho  INT,
     IN  _estado       CHAR(1)
 )BEGIN
-    UPDATE despacho SET estado=_estado
+    UPDATE despachos SET estado=_estado
     WHERE iddespacho=_iddespacho;
 END;
 
+--  TODO: PROCEDIMIENTO PARA REGISTRAR DETALLES DEL DESPACHO
 DROP PROCEDURE IF EXISTS sp_registrar_detalledespacho;
+
 
 CREATE PROCEDURE sp_registrar_detalledespacho
 (
@@ -130,6 +132,7 @@ END;
 
 
 DROP PROCEDURE IF EXISTS sp_reporte_despacho_por_proveedor;
+
 CREATE PROCEDURE sp_reporte_despacho_por_proveedor(IN _iddespacho INT)
 BEGIN
     SELECT 
@@ -147,7 +150,7 @@ BEGIN
         VH.marca_vehiculo,
         CONCAT (P.nombres,' ',P.appaterno ) AS datos
     FROM despacho_ventas DESP
-    INNER JOIN despacho DESPA 
+    INNER JOIN despachos DESPA 
 		ON    DESPA.iddespacho=DESP.iddespacho
     INNER JOIN ventas VEN 
         ON DESP.idventa = VEN.idventa
@@ -177,8 +180,8 @@ BEGIN
     ORDER BY Prove.proveedor, MAR.marca, PRO.nombreproducto;
 END;
 
-
 DROP PROCEDURE IF EXISTS sp_listar_detalle_despacho;
+
 CREATE PROCEDURE sp_listar_detalle_despacho(IN _iddespacho INT)
 BEGIN
  SELECT 
@@ -195,7 +198,7 @@ DROP PROCEDURE IF EXISTS sp_listar_despacho;
 
 -- CREATE PROCEDURE sp_listar_despacho()
 -- BEGIN
---     SELECT  
+--     SELECT
 --      DES.iddespacho,
 --      DES.fecha_despacho,
 --      PER.perfil,
@@ -211,12 +214,11 @@ DROP PROCEDURE IF EXISTS sp_listar_despacho;
 --      CONCAT(VH.placa,' ',VH.modelo,' ',VH.marca_vehiculo) AS vehiculo,
 --      USU.idusuario,
 --      CONCAT(PERS.nombres,' ',PERS.appaterno,' ',PERS.apmaterno)AS datos
-     
---     FROM despacho DES INNER JOIN vehiculos VH
+--     FROM despachos DES INNER JOIN vehiculos VH
 --     ON VH.idvehiculo=DES.idvehiculo
---     LEFT JOIN usuarios USU 
+--     LEFT JOIN usuarios USU
 --     ON USU.idusuario=VH.idusuario
---     LEFT JOIN  perfiles PER 
+--     LEFT JOIN  perfiles PER
 --     ON PER.idperfil=USU.idperfil
 --     LEFT JOIN personas PERS
 --     ON PERS.idpersonanrodoc=USU.idpersona
@@ -243,7 +245,7 @@ BEGIN
      USU.idusuario,
      CONCAT(PERS.nombres,' ',PERS.appaterno,' ',PERS.apmaterno)AS datos
      
-    FROM despacho DES INNER JOIN vehiculos VH
+    FROM despachos DES INNER JOIN vehiculos VH
     ON VH.idvehiculo=DES.idvehiculo
     LEFT JOIN usuarios USU 
     ON USU.idusuario=VH.idusuario

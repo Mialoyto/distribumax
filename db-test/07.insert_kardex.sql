@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 CALL sp_registrar_lote(1, 'LOT001', '2025-01-17');
 CALL sp_registrar_lote(1, 'LOT002', '2025-01-17');

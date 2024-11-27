@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1732602331319@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -48,30 +48,30 @@ BEGIN
     SELECT last_insert_id() AS idventa;
 END;
 
+
 -- ACTUALIZAR VENTAS
 
 CREATE PROCEDURE sp_actualizar_venta(
-    IN _idpedido CHAR(15),
-    IN _idmetodopago INT,
-    IN _idtipocomprobante INT,
-    IN _subtotal DATE,
-    IN _descuento DECIMAL(8, 2),
-    IN _igv DECIMAL(10, 2),
-    IN _total_venta INT
-)
-BEGIN
-    UPDATE ventas
-        SET
-            idcliente=_idcliente,
-            idusuario=_idusuario,
-            idpedido=_idpedido,
-            fecha_venta=_fecha_venta,
-            total_venta=_total_venta,
-            estado=_estado,
-            update_at=now()
-        WHERE idventa=_idventa; 
+		IN _idpedido CHAR(15),
+		IN _idmetodopago INT,
+		IN _idtipocomprobante INT,
+		IN _subtotal DATE,
+		IN _descuento DECIMAL(8, 2),
+		IN _igv DECIMAL(10, 2),
+		IN _total_venta INT
+	)
+	BEGIN
+		UPDATE ventas
+				SET
+						idcliente=_idcliente,
+						idusuario=_idusuario,
+						idpedido=_idpedido,
+						fecha_venta=_fecha_venta,
+						total_venta=_total_venta,
+						estado=_estado,
+						update_at=now()
+				WHERE idventa=_idventa; 
 END;
-
 
 -- ESTADO VENTAS
 DROP PROCEDURE IF EXISTS `sp_estado_venta`;
@@ -103,19 +103,19 @@ BEGIN
     LEFT JOIN lotes lt ON lt.idproducto = pr.idproducto
     WHERE p.idpedido = _idpedido;
 
-    -- Declarar un handler para controlar el fin del cursor
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+			-- Declarar un handler para controlar el fin del cursor
+			DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
-    -- Asignar el idpedido relacionado con la venta (esto va al principio)
-    SELECT idpedido INTO _idpedido
-    FROM ventas
-    WHERE idventa = _idventa;
+			-- Asignar el idpedido relacionado con la venta (esto va al principio)
+			SELECT idpedido INTO _idpedido
+			FROM ventas
+			WHERE idventa = _idventa;
 
-    -- Actualizar el estado de la venta
-    UPDATE ventas SET
-        estado = _estado,
-        update_at = NOW()
-    WHERE idventa = _idventa;
+			-- Actualizar el estado de la venta
+			UPDATE ventas SET
+					estado = _estado,
+					update_at = NOW()
+			WHERE idventa = _idventa;
 
     -- Si el estado es "pendiente"
     IF _estado = '1' THEN
@@ -152,25 +152,25 @@ BEGIN
         CLOSE cur;
     END IF;
 
-    -- Si el estado es "cancelado"
-    IF _estado = '0' THEN
-        -- Actualizar el pedido relacionado a "Cancelado"
-        UPDATE pedidos SET
-            estado = 'Cancelado',
-            update_at = NOW()
-        WHERE idpedido = _idpedido;
+			-- Si el estado es "cancelado"
+			IF _estado = '0' THEN
+					-- Actualizar el pedido relacionado a "Cancelado"
+					UPDATE pedidos SET
+							estado = 'Cancelado',
+							update_at = NOW()
+					WHERE idpedido = _idpedido;
 
-        -- Abrir el cursor
-        OPEN cur;
+					-- Abrir el cursor
+					OPEN cur;
 
-        -- Iterar sobre los productos del pedido
-        read_loop: LOOP
-            FETCH cur INTO _idproducto, _cantidad, _idusuario, _idlote;
+					-- Iterar sobre los productos del pedido
+					read_loop: LOOP
+							FETCH cur INTO _idproducto, _cantidad, _idusuario, _idlote;
 
-            -- Salir del bucle si no hay más filas
-            IF done = 1 THEN
-                LEAVE read_loop;
-            END IF;
+							-- Salir del bucle si no hay más filas
+							IF done = 1 THEN
+									LEAVE read_loop;
+							END IF;
 
             -- Registrar el movimiento en el kardex para ingresar los productos
             CALL sp_registrarmovimiento_kardex(
@@ -183,10 +183,11 @@ BEGIN
             );
         END LOOP;
 
-        -- Cerrar el cursor
-        CLOSE cur;
-    END IF;
+					-- Cerrar el cursor
+					CLOSE cur;
+			END IF;
 END;
+
 
 -- TRIGGER PARA ACTUALIZAR EL ESTADO DEL PEDIDO
 CREATE TRIGGER trg_actualizar_estado_pedido
@@ -199,6 +200,20 @@ BEGIN
       AND estado <> 'Enviado';  
 END;
 
+
+DROP TRIGGER IF EXISTS trg_verificar_fecha_despacho;
+CREATE TRIGGER trg_verificar_fecha_despacho
+BEFORE INSERT ON despachos
+FOR EACH ROW
+BEGIN
+    DECLARE fecha_actual DATE;
+    SET fecha_actual = CURDATE();
+
+    IF NEW.fecha_despacho < fecha_actual THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'La fecha de despacho no puede ser menor a la fecha actual';
+    END IF;
+END;
 
 -- GENERAR REPORTE
 DROP PROCEDURE IF EXISTS `sp_generar_reporte`;
@@ -266,8 +281,6 @@ BEGIN
 
     WHERE p.estado = 'Enviado'  OR p.estado='Entregado' AND ve.idventa = _idventa;
 END;
-
-
 
 -- LISTAR VENTAS DEL DIA
 DROP PROCEDURE IF EXISTS `sp_listar_ventas`;
@@ -371,7 +384,7 @@ BEGIN
         p.idpedido DESC;
 END;
 
--- listar ventas historial 
+-- listar ventas historial
 DROP PROCEDURE IF EXISTS `sp_historial_ventas`;
 
 CREATE PROCEDURE `sp_historial_ventas`()
@@ -425,45 +438,32 @@ BEGIN
         p.idpedido DESC;
 END ;
 
-
-
+--  TODO: PROCEDIMIENTO PARA OBTENER UNA VENTA POR ID	
 DROP PROCEDURE IF EXISTS `sp_getById_venta`;
 
-CREATE PROCEDURE `sp_getById_venta`
-(
-	IN _idventa   INT
-)
+CREATE PROCEDURE `sp_getById_venta` (IN _idventa   INT)
 BEGIN 
-SELECT 
-    ve.idventa,
-    pr.nombreproducto,
-    dp.cantidad_producto,
-    dp.unidad_medida,
-    cl.tipo_cliente,
-   CONCAT( per.nombres,' ',per.appaterno ) AS datos,
-    em.razonsocial
-FROM 
-    ventas ve
-INNER JOIN 
-    pedidos pe ON pe.idpedido = ve.idpedido
-LEFT JOIN 
-	clientes cl ON  cl.idcliente=pe.idcliente 
-LEFT JOIN
-	personas per ON per.idpersonanrodoc=cl.idpersona
-LEFT JOIN 
-	empresas em ON em.idempresaruc=cl.idempresa
-LEFT JOIN  
-    detalle_pedidos dp ON dp.idpedido = pe.idpedido
-LEFT JOIN 
-    productos pr ON pr.idproducto = dp.idproducto
-
--- Relaciona con la columna idproducto en detalle_pedidos
-WHERE ve.idventa = _idventa;
+	SELECT 
+			ve.idventa,
+			pr.nombreproducto,
+			dp.cantidad_producto,
+			dp.unidad_medida,
+			cl.tipo_cliente,
+	CONCAT( per.nombres,' ',per.appaterno ) AS datos,
+			em.razonsocial
+	FROM ventas ve
+	INNER JOIN pedidos pe ON pe.idpedido = ve.idpedido
+	LEFT JOIN clientes cl ON  cl.idcliente=pe.idcliente 
+	LEFT JOIN personas per ON per.idpersonanrodoc=cl.idpersona
+	LEFT JOIN empresas em ON em.idempresaruc=cl.idempresa
+	LEFT JOIN  detalle_pedidos dp ON dp.idpedido = pe.idpedido
+	LEFT JOIN productos pr ON pr.idproducto = dp.idproducto
+	WHERE ve.idventa = _idventa;
 END;
-
 
 -- buscar un pedido o seleccionar todos
 DROP PROCEDURE IF EXISTS sp_buscar_venta;
+
 CREATE PROCEDURE sp_buscar_venta(IN _item INT)
 BEGIN
     SELECT 
@@ -479,74 +479,115 @@ BEGIN
         VE.total_venta,
         VE.igv,
         VE.estado
-    FROM 
-        ventas VE
-    LEFT JOIN 
-        pedidos PE ON PE.idpedido = VE.idventa
-    LEFT JOIN 
-        detalle_pedidos DP ON DP.idpedido = VE.idpedido
-    LEFT JOIN 
-        productos PO ON PO.idproducto = DP.idproducto
+    FROM ventas VE
+    LEFT JOIN pedidos PE ON PE.idpedido = VE.idventa
+    LEFT JOIN detalle_pedidos DP ON DP.idpedido = VE.idpedido
+    LEFT JOIN productos PO ON PO.idproducto = DP.idproducto
     WHERE 
         (VE.idpedido LIKE CONCAT('%', _item, '%') OR 
-         PE.idpedido LIKE CONCAT('%', _item, '%'))
-        AND DATE(VE.fecha_venta) = CURDATE() 
-        AND VE.estado = '1';
+        PE.idpedido LIKE CONCAT('%', _item, '%'))
+    AND DATE(VE.fecha_venta) = CURDATE() 
+    AND VE.estado = '1';
 END;
 
--- DROP PROCEDURE IF EXISTS sp_getventas;
-
--- CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
--- BEGIN
---     -- Consulta con validación para el parámetro _provincia
---     SELECT VE.idventa, VE.idpedido, VE.fecha_venta, VE.subtotal,
---             CLI.idpersona, CLI.idempresa,
---            PO.nombreproducto, DP.cantidad_producto, DP.precio_unitario, VE.total_venta, 
---            VE.igv, VE.descuento, VE.estado,
---            PROV.provincia-- Provincia del cliente
---     FROM ventas VE
---     LEFT JOIN pedidos PE ON PE.idpedido = VE.idpedido
---     LEFT JOIN clientes CLI ON CLI.idcliente = PE.idcliente
---     LEFT JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
---     LEFT JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
---     LEFT JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia  -- Provincia del cliente
---     LEFT JOIN detalle_pedidos DP ON DP.idpedido = VE.idpedido
---     LEFT JOIN productos PO ON PO.idproducto = DP.idproducto
---     LEFT JOIN empresas EMP ON EMP.idempresaruc=CLI.idempresa
---     WHERE (   (_provincia IS NULL OR _provincia = '')  -- Si _provincia está vacío o es NULL, no aplicamos el filtro
---            OR PROV.provincia LIKE CONCAT('%', _provincia, '%') )  
---           AND VE.condicion = 'pendiente';
--- END;
-
-
+-- TODO: PROCEDIMIENTO PARA OBTENER LAS VENTAS POR PROVINCIA (ZONA DE DISTRIBUCIÓN)
 DROP PROCEDURE IF EXISTS sp_getventas;
+
 CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
 BEGIN
-    -- Consulta para obtener ventas filtradas por provincia
     SELECT 
-        DE.iddetalledespacho,
-        DE.iddespacho,
-        DE.idventa,
-        DE.create_at,
-        VE.fecha_venta,
-        CL.tipo_cliente,
-        PER.nombres,
-        PER.appaterno,
-        PER.apmaterno,
-        DIS.distrito,
-        PRO.provincia
-    FROM despacho_ventas DE
-    INNER JOIN ventas VE ON VE.idventa = DE.idventa
+        PO.idproducto,
+        PRO.idempresa,
+        PO.codigo,
+        CONCAT(PO.nombreproducto,'-',UNM.unidadmedida,' ',PO.cantidad_presentacion, 'X', PO.peso_unitario) AS producto,
+        UNM.unidadmedida,
+        SUM(DP.cantidad_producto) AS cantidad_producto,
+        SUM(VE.total_venta) AS total_venta_producto,
+        PROV.provincia AS zona,
+        VE.condicion
+    FROM ventas VE
     LEFT JOIN pedidos PE ON PE.idpedido = VE.idpedido
-    LEFT JOIN clientes CL ON CL.idcliente = PE.idcliente
-    LEFT JOIN personas PER ON PER.idpersonanrodoc = CL.idpersona
-    LEFT JOIN distritos DIS ON DIS.iddistrito = PER.iddistrito
-    LEFT JOIN provincias PRO ON PRO.idprovincia = DIS.idprovincia
-    WHERE PRO.provincia LIKE CONCAT('%', _provincia, '%')
-    AND VE.condicion='pendiente';
+    LEFT JOIN detalle_pedidos DP ON DP.idpedido = PE.idpedido
+    LEFT JOIN productos PO ON PO.idproducto = DP.idproducto
+    LEFT JOIN unidades_medidas UNM ON UNM.idunidadmedida = PO.idunidadmedida
+    LEFT JOIN clientes CLI ON CLI.idcliente = PE.idcliente
+    LEFT JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
+    LEFT JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
+    LEFT JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
+    LEFT JOIN empresas EMP ON EMP.idempresaruc = CLI.idempresa
+    LEFT JOIN proveedores PRO ON PRO.idproveedor = PO.idproveedor
+    WHERE (
+        (_provincia IS NULL OR _provincia = '')
+        OR PROV.provincia LIKE CONCAT('%', _provincia, '%')
+    )
+    AND VE.condicion = 'pendiente'
+    GROUP BY 
+        PO.idproducto,
+        PO.codigo,
+        PO.nombreproducto,
+        UNM.unidadmedida,
+        PROV.provincia,
+        VE.condicion
+    ORDER BY 
+        PROV.provincia,
+        PO.nombreproducto;
 END;
 
+SELECT * FROM PROVINCIAS WHERE PROVINCIA = 'CHINCHA';
 
 
+/* DROP PROCEDURE IF EXISTS sp_getProvinciaVentas;
+DELIMITER $$
+CREATE PROCEDURE sp_getProvinciaVentas(IN _provincia VARCHAR(100))
+BEGIN
+    SELECT 
+        PROV.provincia,
+        COUNT(DISTINCT VE.idventa) as total_ventas,
+        COUNT(DISTINCT PO.idproducto) as total_productos,
+        SUM(DP.cantidad_producto) AS cantidad_total_productos,
+        SUM(VE.total_venta) AS monto_total_ventas
+    FROM ventas VE
+    INNER JOIN pedidos PE ON PE.idpedido = VE.idpedido
+    INNER JOIN detalle_pedidos DP ON DP.idpedido = PE.idpedido
+    INNER JOIN productos PO ON PO.idproducto = DP.idproducto
+    INNER JOIN clientes CLI ON CLI.idcliente = PE.idcliente
+    INNER JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
+    INNER JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
+    INNER JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
+    WHERE VE.condicion = 'pendiente'
+    AND (
+        _provincia IS NULL 
+        OR PROV.provincia LIKE CONCAT('%', _provincia, '%')
+    )
+    GROUP BY 
+        PROV.provincia
+    HAVING 
+        COUNT(VE.idventa) > 0
+    ORDER BY 
+        PROV.provincia;
+END; */
 
+-- TODO: LISTAR LAS PROVINCIAS DONDE LAS VENTAS ESTE PENDIENTES
+DROP PROCEDURE IF EXISTS sp_getListProvinciaVentas;
 
+CREATE PROCEDURE sp_getListProvinciaVentas()
+BEGIN
+    SELECT 
+        PROV.provincia
+
+    FROM ventas VE
+    INNER JOIN pedidos PE ON PE.idpedido = VE.idpedido
+    INNER JOIN detalle_pedidos DP ON DP.idpedido = PE.idpedido
+    INNER JOIN productos PO ON PO.idproducto = DP.idproducto
+    INNER JOIN clientes CLI ON CLI.idcliente = PE.idcliente
+    INNER JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
+    INNER JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
+    INNER JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
+    WHERE VE.condicion = 'pendiente'
+    GROUP BY 
+        PROV.provincia
+    HAVING 
+        COUNT(VE.idventa) > 0
+    ORDER BY 
+        PROV.provincia;
+END;

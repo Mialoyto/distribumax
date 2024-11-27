@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
         dtventa = new DataTable("#table-ventas", {
             columnDefs: [
                 { width: "10%", targets: 0 },
-                { width: "15%", targets: 1 },
+                { width: "10%", targets: 1 },
                 { width: "16%", targets: 2 },
                 { width: "16%", targets: 3 },
                 { width: "16%", targets: 4 },

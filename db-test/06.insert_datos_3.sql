@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  PERSONAS**/
 CALL spu_registrar_personas (
@@ -235,12 +235,11 @@ CALL spu_registrar_personas (
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/
 CALL sp_registrar_usuario ( 26558000, 1,'ADM', 'administrador', 'admin' );
 
-CALL sp_registrar_usuario ( 26558001, 2,'ADM', 'usuario', 'admin' );
+CALL sp_registrar_usuario ( 26558001, 2,'VND', 'usuario', 'admin' );
 
-CALL sp_registrar_usuario ( 26558002, 3,'CHF', 'conductor', 'admin' );
+CALL sp_registrar_usuario ( 26558003, 3, 'ALM','vendedor', 'admin' );
 
-CALL sp_registrar_usuario ( 26558003, 4, 'VND','vendedor', 'admin' );
-CALL sp_registrar_usuario(26558015,3,'ALM','almacen','admin');
+CALL sp_registrar_usuario ( 26558002, 4,'CHF', 'conductor', 'admin' );
 
 
 CALL sp_actualizar_usuario (
@@ -255,17 +254,19 @@ CALL sp_actualizar_usuario (
     2
 );
 
+
 CALL sp_actualizar_usuario (
-    'conductor',
+    'vendedor',
     '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
     3
 );
 
 CALL sp_actualizar_usuario (
-    'vendedor',
+    'conductor',
     '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
     4
 );
+
 
 -- -------------------------------------------------
 CALL sp_cliente_registrar (26558000, NULL, 'Persona');
@@ -384,12 +385,41 @@ CALL sp_registrar_vehiculo (
 
 CALL sp_registrar_vehiculo (
     2, -- ID del usuario (reemplaza con el ID correcto)
-    'Gretell', -- Marca del vehículo
+    'Hilux', -- Marca del vehículo
     'Confiable', -- Modelo del vehículo
     'ADR-123', -- Placa del vehículo
     1087, -- Capacidad en Kg
     'operativo' -- Condición del vehículo ('operativo', 'taller', 'averiado')
 );
 
+CALL sp_registrar_vehiculo (
+    3, -- ID del usuario (reemplaza con el ID correcto)
+    'KIA', -- Marca del vehículo
+    'Confiable', -- Modelo del vehículo
+    'ABE-123', -- Placa del vehículo
+    1087, -- Capacidad en Kg
+    'operativo' -- Condición del vehículo ('operativo', 'taller', 'averiado')
+);
+
+CALL sp_registrar_vehiculo (
+    4, -- ID del usuario (reemplaza con el ID correcto)
+    'KIA', -- Marca del vehículo
+    'Confiable', -- Modelo del vehículo
+    'ABF-123', -- Placa del vehículo
+    1087, -- Capacidad en Kg
+    'operativo' -- Condición del vehículo ('operativo', 'taller', 'averiado')
+);
 -- PARA ELIMINAR UN VEHICULO
 -- DELETE FROM vehiculos WHERE idvehiculo = 3;
+SELECT
+    PER.idpersonanrodoc,
+    PER.nombres,
+    PER.appaterno,
+    PER.apmaterno,
+    PE.perfil
+FROM personas PER
+INNER JOIN usuarios USU
+    ON USU.idpersona = PER.idpersonanrodoc
+INNER JOIN perfiles PE
+    ON PE.idperfil = USU.idperfil
+WHERE PE.perfil = 'chofer';

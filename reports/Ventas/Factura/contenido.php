@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factura - <?= 'FC-0000' . $ventas[0]['idventa'] ?></title>
+    <title>Factura - <?=$ventas[0]['numero_comprobante'] ?></title>
 
     <style>
         body {
@@ -12,7 +12,6 @@
             margin: 0;
             padding: 0;
             width: 100%;
-            
         }
 
         .container {
@@ -145,8 +144,14 @@
         <!-- Encabezado con logo a la izquierda -->
         <div class="header">
             <div>
-                <h1><?= 'FC-0000' . $ventas[0]['idventa'] ?></h1>
+                <h1>Factura: <?=$ventas[0]['numero_comprobante'] ?></h1>
                 <p><strong>Fecha:</strong> <?= $ventas[0]['fecha_venta'] ?></p>
+                <p><strong>Tipo de Documento:</strong> Factura</p>
+            </div>
+            <div>
+                <h2>DistribuMax S.A.C.</h2>
+                <p><strong>RUC:</strong> 12345678901</p>
+                <p><strong>Dirección:</strong> Calle Ficticia 123, Lima, Perú</p>
             </div>
         </div>
 
@@ -189,9 +194,9 @@
                                 <td>" . $producto['nombreproducto'] . "</td>
                                 <td>" . $producto['cantidad_producto'] . "</td>
                                 <td>" . $producto['unidad_medida'] . "</td>
-                                <td>" . $producto['precio_unitario'] . "</td>
-                                <td>" . $producto['precio_descuento'] . "</td>
-                                <td>" . $producto['subtotal'] . "</td>
+                                <td>S/ " . $producto['precio_unitario'] . "</td>
+                                <td>" . $producto['precio_descuento'] . "%</td>
+                                <td>S/ " . $producto['subtotal'] . "</td>
                             </tr>";
                     }
                     ?>
@@ -200,9 +205,9 @@
         </div>
 
         <div class="total">
-            <p><strong>Venta:</strong> <?= $ventas[0]['sub_venta'] ?> </p>
-            <p><strong>IGV:</strong> <?= $ventas[0]['igv'] ?> </p>
-            <p><strong>Total:</strong> <?= $ventas[0]['total_venta'] ?> </p>
+            <p><strong>Venta:</strong> S/ <?= $ventas[0]['sub_venta'] ?> </p>
+            <p><strong>IGV:</strong> S/ <?= $ventas[0]['igv'] ?> </p>
+            <p><strong>Total:</strong> S/ <?= $ventas[0]['total_venta'] ?> </p>
         </div>
 
         <div class="footer">

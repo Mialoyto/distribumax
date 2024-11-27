@@ -5,21 +5,36 @@ USE distribumax;
 DROP PROCEDURE IF EXISTS sp_despacho_registrar;
 
 
+DROP PROCEDURE IF EXISTS sp_despacho_registrar;
 CREATE PROCEDURE sp_despacho_registrar(
     IN _idventa         INT,
-    IN _idvehiculo       INT,
-    IN _idusuario        INT,
-    IN _fecha_despacho   DATE -- 1: pendiente, 0: despachado
+    IN _idvehiculo      INT,
+    IN _idusuario       INT,
+    IN _fecha_despacho  DATE
 )
 BEGIN
-    -- Insertar un nuevo despacho en la tabla despacho
-    INSERT INTO despacho (idvehiculo, idventa, idusuario, fecha_despacho) 
-    VALUES (_idvehiculo, _idventa, _idusuario, _fecha_despacho);
-    
-    -- Devolver el ID del último despacho insertado
-    SELECT LAST_INSERT_ID() AS iddespacho;
+    -- Verificar si la venta está activa
+    IF EXISTS (
+        SELECT 1 
+        FROM ventas 
+        WHERE idventa = _idventa AND estado = 1
+    ) THEN
+        -- Insertar un nuevo despacho en la tabla despacho
+        INSERT INTO despacho (idvehiculo, idventa, idusuario, fecha_despacho) 
+        VALUES (_idvehiculo, _idventa, _idusuario, _fecha_despacho);
+        
+        -- Devolver el ID del último despacho insertado
+        SELECT LAST_INSERT_ID() AS iddespacho;
+    ELSE
+        -- Enviar un mensaje de error si la venta no está activa
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'La venta no está activa o no existe.';
+    END IF;
 END;
 
+
+
+-- actualizar el estado de la venta de pendiente a despachado
 CREATE TRIGGER trg_actualizar_estado_venta
 AFTER INSERT ON despacho
 FOR EACH ROW
@@ -29,6 +44,32 @@ BEGIN
     WHERE idventa = NEW.idventa 
       AND condicion <> 'despachado';  
 END;
+
+-- actualizar el estado del pedido de enviado a entregado cuando se registre el despacho
+DROP TRIGGER IF EXISTS  trg_actualizar_estado_pedido;
+
+CREATE TRIGGER trg_actualizar_estado_pedido_despacho
+AFTER INSERT ON despacho
+FOR EACH ROW
+BEGIN
+    -- Variable temporal para almacenar idpedido
+    DECLARE _idpedido INT;
+
+    -- Obtener el idpedido relacionado con la idventa
+    SELECT idpedido INTO _idpedido 
+    FROM ventas 
+    WHERE idventa = NEW.idventa;
+
+    -- Verificar si se encontró un idpedido válido
+    IF _idpedido IS NOT NULL THEN
+        -- Actualizar el estado del pedido
+        UPDATE pedidos
+        SET estado = 'Entregado'
+        WHERE idpedido = _idpedido
+          AND estado <> 'Entregado';
+    END IF;
+END;
+
 -- ACTUALIZAR DESPACHO
 
 CREATE PROCEDURE sp_actualizar_despacho(
@@ -61,19 +102,31 @@ CREATE PROCEDURE sp_actualizar_estado(
 END;
 
 DROP PROCEDURE IF EXISTS sp_registrar_detalledespacho;
+
 CREATE PROCEDURE sp_registrar_detalledespacho
 (
     IN _idventa INT,
     IN _iddespacho INT
 )
 BEGIN
-    -- Inserta los datos en la tabla despacho_ventas
-    INSERT INTO despacho_ventas (iddespacho, idventa)
-    VALUES (_iddespacho, _idventa);
+    -- Verificar si la venta está activa (estado = 1)
+    IF EXISTS (
+        SELECT 1 
+        FROM ventas 
+        WHERE idventa = _idventa AND estado = 1
+    ) THEN
+        -- Insertar los datos en la tabla despacho_ventas
+        INSERT INTO despacho_ventas (iddespacho, idventa)
+        VALUES (_iddespacho, _idventa);
 
-    -- Devuelve el último ID insertado
-    SELECT LAST_INSERT_ID() AS iddetalle_despacho;
+        -- Retornar el ID del detalle registrado
+        SELECT    LAST_INSERT_ID() AS iddetalle_despacho;
+    ELSE
+        -- Enviar un mensaje indicando que la venta no está activa
+        SELECT 'La venta no está activa' AS mensaje;
+    END IF;
 END;
+
 
 
 DROP PROCEDURE IF EXISTS sp_reporte_despacho_por_proveedor;

@@ -112,10 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
                       <div class="d-flex justify-content-center">
                           <a id-data="${element.idvehiculo}" class="btn btn-warning" data-bs-toggle="modal"  data-bs-target=".edit-vehiculo">
                               <i class="bi bi-pencil-square fs-5"></i>
-                          </a>
-                          <a id-data="${element.idvehiculo}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">
+                      </a>
+                      <a id-data="${element.idvehiculo}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">
                               <i class="${icons}"></i>
-                          </a>
+                      </a>
                       </div>
                   </td>
               </tr>

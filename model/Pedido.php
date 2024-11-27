@@ -75,4 +75,23 @@ class Pedidos extends Conexion
       die($e->getMessage());
     }
   }
+  public function getAll(){
+    try{
+       $query=$this->pdo->prepare("call sp_listar_pedidos");
+       $query->execute();
+       return $query->fetchAll(PDO::FETCH_ASSOC);
+    }catch(Exception $e){
+      die($e->getMessage());
+    }
+  }
+
+  public function GetPedido($params=[]){
+      try{
+          $query=$this->pdo->prepare("call sp_obtener_pedido(?)");
+          $query->execute(array($params['idpedido']));
+          return $query->fetchAll(PDO::FETCH_ASSOC);
+      }catch(Exception $e){
+        die($e->getMessage());
+      }
+  }
 }

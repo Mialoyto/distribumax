@@ -2,9 +2,8 @@
 USE distribumax;
 
 -- REGISTRAR VENTAS
-DROP PROCEDURE IF EXISTS `sp_registrar_venta`;
-
-CREATE PROCEDURE `sp_registrar_venta`(
+DROP PROCEDURE IF EXISTS sp_registrar_venta;
+CREATE PROCEDURE sp_registrar_venta(
     IN _idpedido            VARCHAR(15),
     IN _idusuario           INT,
     IN _idtipocomprobante   INT,
@@ -13,14 +12,40 @@ CREATE PROCEDURE `sp_registrar_venta`(
     IN _descuento           DECIMAL(10, 2),
     IN _igv                 DECIMAL(10, 2),
     IN _total_venta         DECIMAL(10, 2)
-
 )
 BEGIN
-    INSERT INTO ventas 
-    (idpedido,idusuario, idtipocomprobante,fecha_venta, subtotal, descuento, igv,total_venta) 
-    VALUES
-    (_idpedido,_idusuario,_idtipocomprobante,_fecha_venta,_subtotal, _descuento,_igv,_total_venta);
-    SELECT  last_insert_id() AS idventa;
+    DECLARE siguiente_comprobante VARCHAR(50);
+
+    -- Validar la existencia de idpedido y idtipocomprobante
+    IF NOT EXISTS (
+        SELECT 1 FROM pedidos WHERE idpedido = _idpedido
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El pedido proporcionado no existe.';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM tipo_comprobante_pago WHERE idtipocomprobante = _idtipocomprobante
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El tipo de comprobante proporcionado no existe.';
+    END IF;
+
+    -- Obtener el siguiente número de comprobante y almacenarlo en una variable local
+    CALL obtener_siguiente_comprobante(_idtipocomprobante, siguiente_comprobante);
+
+    -- Insertar la venta con el número de comprobante generado
+    INSERT INTO ventas (
+        idpedido, idusuario, idtipocomprobante, fecha_venta, 
+        subtotal, descuento, igv, total_venta, numero_comprobante
+    ) 
+    VALUES (
+        _idpedido, _idusuario, _idtipocomprobante, _fecha_venta, 
+        _subtotal, _descuento, _igv, _total_venta, siguiente_comprobante
+    );
+
+    -- Devolver el ID de la venta insertada
+    SELECT last_insert_id() AS idventa;
 END;
 
 -- ACTUALIZAR VENTAS
@@ -58,7 +83,7 @@ CREATE PROCEDURE `sp_estado_venta`(
 BEGIN
     -- Declarar las variables necesarias
     DECLARE _idproducto INT;
-    DECLARE _idlote INT ; -- Asume que el ID del lote es 1
+    DECLARE _idlote INT;
     DECLARE _cantidad INT;
     DECLARE _idusuario INT;
     DECLARE done INT DEFAULT 0;
@@ -75,7 +100,7 @@ BEGIN
     LEFT JOIN pedidos p ON dp.idpedido = p.idpedido
     LEFT JOIN ventas ve ON ve.idpedido = p.idpedido
     LEFT JOIN productos pr ON pr.idproducto = dp.idproducto
-    LEFT JOIN lotes lt ON lt.idproducto =pr.idproducto
+    LEFT JOIN lotes lt ON lt.idproducto = pr.idproducto
     WHERE p.idpedido = _idpedido;
 
     -- Declarar un handler para controlar el fin del cursor
@@ -99,6 +124,32 @@ BEGIN
             estado = 'Enviado',
             update_at = NOW()
         WHERE idpedido = _idpedido;
+
+        -- Abrir el cursor
+        OPEN cur;
+
+        -- Iterar sobre los productos del pedido
+        read_loop: LOOP
+            FETCH cur INTO _idproducto, _cantidad, _idusuario, _idlote;
+
+            -- Salir del bucle si no hay más filas
+            IF done = 1 THEN
+                LEAVE read_loop;
+            END IF;
+
+            -- Registrar el movimiento en el kardex para retirar los productos
+            CALL sp_registrarmovimiento_kardex(
+                _idusuario,
+                _idproducto,
+                _idlote,
+                'Salida',
+                _cantidad,
+                'Venta Enviada'
+            );
+        END LOOP;
+
+        -- Cerrar el cursor
+        CLOSE cur;
     END IF;
 
     -- Si el estado es "cancelado"
@@ -121,7 +172,7 @@ BEGIN
                 LEAVE read_loop;
             END IF;
 
-            -- Registrar el movimiento en el kardex
+            -- Registrar el movimiento en el kardex para ingresar los productos
             CALL sp_registrarmovimiento_kardex(
                 _idusuario,
                 _idproducto,
@@ -136,6 +187,7 @@ BEGIN
         CLOSE cur;
     END IF;
 END;
+
 -- TRIGGER PARA ACTUALIZAR EL ESTADO DEL PEDIDO
 CREATE TRIGGER trg_actualizar_estado_pedido
 AFTER INSERT ON ventas
@@ -148,7 +200,6 @@ BEGIN
 END;
 
 
-
 -- GENERAR REPORTE
 DROP PROCEDURE IF EXISTS `sp_generar_reporte`;
 
@@ -159,6 +210,7 @@ BEGIN
     SELECT 
         ve.idventa,
         ve.fecha_venta,
+        ve.numero_comprobante,
         p.idpedido,
         tp.comprobantepago,
         pr.codigo,
@@ -212,7 +264,7 @@ BEGIN
         LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
         LEFT JOIN tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
 
-    WHERE p.estado = 'Enviado' AND ve.idventa = _idventa;
+    WHERE p.estado = 'Enviado'  OR p.estado='Entregado' AND ve.idventa = _idventa;
 END;
 
 
@@ -236,14 +288,12 @@ BEGIN
         pe.idpersonanrodoc,
         em.razonsocial,
         em.idempresaruc,
-        CASE ve.estado
-            WHEN '1' THEN 'Activo'
-            WHEN '0' THEN 'Inactivo'
-        END AS estado,
+        p.estado,
         CASE ve.estado
             WHEN '1' THEN '0'
             WHEN '0' THEN '1'
         END AS `status`
+
     FROM 
         ventas ve
     INNER JOIN 
@@ -262,6 +312,8 @@ BEGIN
         tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE 
         p.estado = 'Enviado'
+    OR
+        P.estado = 'Entregado'
 	AND ve.estado='1'
         -- AND DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
     GROUP BY 
@@ -270,6 +322,8 @@ BEGIN
         p.idpedido DESC;
 END ;
 
+
+DROP PROCEDURE IF EXISTS `sp_listar_fecha`;
 CREATE PROCEDURE `sp_listar_fecha`(IN _fecha_venta DATE)
 BEGIN
     SELECT 
@@ -285,7 +339,8 @@ BEGIN
         CONCAT(pe.nombres, ' ', pe.appaterno, ' ', pe.apmaterno) AS datos,
         pe.idpersonanrodoc,
         em.razonsocial,
-        em.idempresaruc
+        em.idempresaruc,
+        p.estado
     FROM 
         ventas ve
     INNER JOIN 
@@ -304,8 +359,12 @@ BEGIN
         tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE 
         p.estado = 'Enviado'
-        AND ve.estado = '1'
-        AND DATE(ve.fecha_venta) = _fecha_venta -- Comparar solo fechas
+    OR   
+       p.estado='Entregado'
+    AND 
+    ve.estado = '1'
+    AND 
+    DATE(ve.fecha_venta) = _fecha_venta -- Comparar solo fechas
     GROUP BY 
         ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
     ORDER BY 
@@ -331,7 +390,14 @@ BEGIN
         pe.idpersonanrodoc,
         em.razonsocial,
         em.idempresaruc,
-        ve.estado
+        CASE ve.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS estado,
+        CASE ve.estado
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS `status`
     FROM 
         ventas ve
     INNER JOIN 

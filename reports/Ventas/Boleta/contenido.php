@@ -1,10 +1,12 @@
+<?php $host = "http://localhost/distribumax";?>
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boleta - <?= 'BO-0000' . $ventas[0]['idventa'] ?></title>
+    <title><?=$ventas[0]['numero_comprobante'] ?></title>
 
     <style>
         body {
@@ -122,10 +124,11 @@
         <!-- Encabezado -->
         <div class="header">
             <div>
-                <img src="path/to/logo.png" alt="Logo Empresa" style="max-height: 60px;">
+                <!-- <img src="../../../img/logo2.png" alt="Logo Empresa" style="max-height: 60px;"> -->
+                <img src="<?=$host?>/img/logo2.png" alt="">
             </div>
             <div>
-                <h1><?= 'BO-0000' . $ventas[0]['idventa'] ?></h1>
+                <h1><?=$ventas[0]['numero_comprobante'] ?></h1>
                 <p><strong>Fecha:</strong> <?= $ventas[0]['fecha_venta'] ?></p>
             </div>
         </div>

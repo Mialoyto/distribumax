@@ -72,6 +72,7 @@ require_once '../../app/config/App.php';
                       <th>Productos</th>
                       <th>Unidad Medida</th>
                       <th>Cantidades</th>
+                      <th>Total</th>
                     </tr>
                   </thead>
                   <tbody>

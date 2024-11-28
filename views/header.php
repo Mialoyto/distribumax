@@ -101,7 +101,7 @@ $host = "http://localhost/distribumax";
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="#!">Configuracion</a></li>
-            <li><a class="dropdown-item" href="#!">Cambiar Contraseña</a></li>
+            <li><a class="dropdown-item" href="<?=$host?>/views/User/update-password.php">Cambiar Contraseña</a></li>
             <li><a class="dropdown-item" href="#!">Historial</a></li>
             <li>
               <hr class="dropdown-divider" />

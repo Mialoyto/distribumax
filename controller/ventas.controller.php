@@ -27,6 +27,7 @@ if (isset($_POST['operation'])) {
       ];
       echo json_encode($venta->upVenta($dato));
       break;
+    
   }
 }
 
@@ -71,6 +72,12 @@ if (isset($_GET['operation'])) {
         'idventa' => $_GET['idventa']
       ];
       echo json_encode($venta->reporteVenta($datos));
+      break;
+      case 'ventasDay':
+        $dato=[
+          'fecha'=>$_GET['fecha']
+        ];
+        echo json_encode($venta->ventasDay($dato));
       break;
   }
 }

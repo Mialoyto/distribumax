@@ -18,7 +18,7 @@ if (isset($_SESSION['login']) && $_SESSION['login']['estado'] == true) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
-        /* Estilos para centrar el formulario */
+        /* Estilos generales para centrar */
         html,
         body {
             height: 100%;
@@ -29,51 +29,70 @@ if (isset($_SESSION['login']) && $_SESSION['login']['estado'] == true) {
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #007bff;
+            padding: 15px;
+            background-image: url('img/fondo.jpg'); /* Ruta de la imagen de fondo */
+            background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+            background-position: center; /* Centra la imagen de fondo */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
         }
 
         .card {
             width: 100%;
-            max-width: 400px;
-            /* Tamaño máximo del formulario */
+            max-width: 360px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .logo {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             display: block;
             margin: 0 auto 20px auto;
-            /* Centrar el logo y añadir espacio debajo */
+        }
+
+        .card-header h3 {
+            font-weight: bold;
+            color: #333;
         }
     </style>
 </head>
 
 <body>
-    <div class="card shadow-lg border-0 rounded-lg">
-        <div class="card-header text-center">
-            <!-- Ruta del logo -->
-            <h3 class="text-center font-weight-light my-4">Bienvenido!</h3>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header text-center">
+                    <h3 class="text-center my-4">Bienvenido!</h3>
+                </div>
+                <div class="card-body">
+                    <form autocomplete="off" id="form-login">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="nombre_usuario" type="text" autofocus placeholder="correo@gmail.com" required />
+                            <label for="nombre_usuario">Usuario</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="inputPassword" type="password" placeholder="Password" required />
+                            <label for="inputPassword">Contraseña</label>
+                        </div>
+                        <div class="mb-3 text-cemter">
+                            <a href="#" class="">¿Olvide mi contraseña?</a>
+                        </div>
+                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <form autocomplete="off" id="form-login">
-                <div class="form-floating mb-3">
-                    <input class="form-control" id="nombre_usuario" type="text" autofocus placeholder="correo@gmail.com" required />
-                    <label for="nombre_usuario">Usuario</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input class="form-control" id="inputPassword" type="password" placeholder="Password" required />
-                    <label for="inputPassword">Contraseña</label>
-                </div>
-                <button class="btn btn-primary w-100" type="submit">Login</button>
-            </form>
+        <div class="col-6">
+            <img src="http://localhost/distribumax/img/logo2.png" alt="Logo" style="width: 100%; height: auto;">
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> -->
     <script src="http://localhost/distribumax/js/login/login.js"></script>
-    <script>
+    <script src="http://localhost/distribumax/js/utils/sweetalert.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    </script>
 </body>
 
 </html>

@@ -80,7 +80,7 @@ BEGIN
 END;
 
 
-CALL sp_update_estado_pedido ('PED-000000001', 'Cancelado');
+
 -- NO MOVER NADA DEL PROCEDIMIENTO , FALTA TERMINAR DE IMPLEMENTARLO
 
 -- buscador para pedidos por id
@@ -200,3 +200,80 @@ BEGIN
     WHERE pe.idpedido = _idpedido
       AND pe.estado = 'pendiente';
 END;
+
+
+
+
+-- //?todo piola hola que hace
+-- DROP TRIGGER IF EXISTS trg_actualizar_kardex_pedido
+
+-- CREATE TRIGGER trg_actualizar_kardex_pedido
+-- AFTER UPDATE ON pedidos
+-- FOR EACH ROW
+-- BEGIN
+--     DECLARE _idproducto INT;
+--     DECLARE _idlote INT;
+--     DECLARE _cantidad INT;
+--     DECLARE done INT DEFAULT 0;
+
+--     -- Cursor para iterar sobre los productos del pedido
+--     DECLARE cur CURSOR FOR
+--     SELECT 
+--         pr.idproducto,
+--         dp.cantidad_producto,
+--         lt.idlote
+--     FROM detalle_pedidos dp
+--     LEFT JOIN productos pr ON pr.idproducto = dp.idproducto
+--     LEFT JOIN lotes lt ON lt.idproducto = pr.idproducto
+--     WHERE dp.idpedido = NEW.idpedido;
+
+--     -- Handler para controlar el fin del cursor
+--     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+--     -- Verificar si el cambio es entre 'Pendiente' y 'Cancelado'
+--     IF (OLD.estado = 'Pendiente' AND NEW.estado = 'Cancelado') OR 
+--        (OLD.estado = 'Cancelado' AND NEW.estado = 'Pendiente') THEN
+--         -- Abrir el cursor
+--         OPEN cur;
+
+--         -- Iterar sobre los productos del pedido
+--         read_loop: LOOP
+--             FETCH cur INTO _idproducto, _cantidad, _idlote;
+
+--             -- Salir del bucle si no hay más filas
+--             IF done = 1 THEN
+--                 LEAVE read_loop;
+--             END IF;
+
+--             -- Registrar movimientos en el kardex según la transición
+--             IF NEW.estado = 'Cancelado' THEN
+--                 -- Registrar ingreso en el kardex
+--                 CALL sp_registrarmovimiento_kardex(
+--                     NEW.idusuario, 
+--                     _idproducto,
+--                     _idlote,
+--                     'Ingreso',
+--                     _cantidad,
+--                     'Pedido Cancelado'
+--                 );
+--             ELSEIF NEW.estado = 'Pendiente' THEN
+--                 -- Registrar salida en el kardex
+--                 CALL sp_registrarmovimiento_kardex(
+--                     NEW.idusuario, 
+--                     _idproducto,
+--                     _idlote,
+--                     'Salida',
+--                     _cantidad,
+--                     'Pedido Pendiente'
+--                 );
+--             END IF;
+--         END LOOP;
+
+--         -- Cerrar el cursor
+--         CLOSE cur;
+--     END IF;
+
+-- END ;
+
+
+-- CALL sp_update_estado_pedido ('PED-000000006', 'Cancelado');

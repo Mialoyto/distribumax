@@ -1,33 +1,37 @@
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelector("#form-login").addEventListener("submit", (event) => {
-      event.preventDefault();
-      // Datos a enviar
-      const fomrData = new FormData();
-      fomrData.append("operation", "login");
-      fomrData.append("nombre_usuario", document.querySelector("#nombre_usuario").value);
-      fomrData.append("password_usuario", document.querySelector("#inputPassword").value);
+  function $(object = null) { return document.querySelector(object) }
 
-      fetch(`controller/usuario.controller.php`,{
-          method: 'POST',
-          body:fomrData
-      })
-          .then(response => response.json())
-          .then(data => {
-              
-            console.log(data);
-            console.log(data.accesos);
-            //   alert(data.status);
-            //   alert("revisar json");
-              if (!data.estado) {
-                  // console.log(data);
-                  alert(data.status);
-                  alert("Usuario o contraseña incorrectos");
-              } else {
-                // alert("Bienvenido");
 
-                  console.log(data);
-                  window.location.href = `http://localhost/distribumax/views`;
-              }
-          });
+  async function Login() {
+    const fomrData = new FormData();
+    fomrData.append("operation", "login");
+    fomrData.append("nombre_usuario", $("#nombre_usuario").value)
+    fomrData.append("password_usuario", $("#inputPassword").value);
+    const response = await fetch(`controller/usuario.controller.php`, {
+      method: 'POST',
+      body: fomrData
+    });
+    const data = await response.json();
+     
+    console.log(data)
+     return data;
+  }
+
+ 
+
+  $("#form-login").addEventListener("submit",async (event) => {
+    event.preventDefault();
+      const data = await Login();
+    if (!data.estado) {
+      // console.log(data);
+      //alert(data.status);
+      showToast(data.status, "error", "ERROR");
+      //alert("Usuario o contraseña incorrectos");
+  } else {
+    // alert("Bienvenido");
+
+      console.log(data);
+      window.location.href = `http://localhost/distribumax/views`;
+  }
   });
 });

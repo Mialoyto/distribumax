@@ -26,7 +26,9 @@ require_once '../header.php';
                 <thead>
                   <tr>
                     <th>Productos</th>
+                    <th>Unidad M</th>
                     <th>Cantidades</th>
+                    <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>

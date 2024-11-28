@@ -121,7 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
             Tablaventas.innerHTML += `
             <tr>
                 <td>${element.nombreproducto}</td>
+                <td>${element.unidad_medida}</td>
                 <td>${element.cantidad_producto}</td>
+                
             </tr>
             `;
 

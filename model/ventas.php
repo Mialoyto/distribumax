@@ -130,4 +130,13 @@ class Ventas extends Conexion
 			die($e->getMessage());
 		}
 	}
+	public function  ventasDay($params=[]){
+		try{
+			$query=$this->pdo->prepare("CALL sp_VentasPorDia(?)");
+			$query->execute(array($params['fecha']));
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		}catch(Exception $e){	
+			die($e->getMessage());
+		}
+	}
 }

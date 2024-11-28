@@ -109,37 +109,36 @@ BEGIN
 END;
 
 -- buscador de usuarios, para el rol conductor
-DROP PROCEDURE IF EXISTS `sp_buscar_conductor`;
+-- DROP PROCEDURE IF EXISTS `sp_buscar_conductor`;
 
-CREATE PROCEDURE `sp_buscar_conductor`(
-    IN _item VARCHAR(80)
-    )
-    BEGIN
-        SELECT 
-            us.idusuario,
-            rl.idperfil,
+-- CREATE PROCEDURE `sp_buscar_conductor`(
+--     IN _item VARCHAR(80)
+--     )
+--     BEGIN
+--         SELECT 
+--             us.idusuario,
+--             rl.idperfil,
             
-            pe.nombres,
-            CONCAT(pe.appaterno, ' ', pe.apmaterno) AS apellidos,  -- Concatenación de apellidos
-            us.estado AS estado_usuario,
-            rl.estado AS estado_rol
-        FROM 
-            usuarios us
-        INNER JOIN 
-            perfiles rl ON us.idperfil = rl.idperfil
-        INNER JOIN 
-            personas pe ON pe.idpersonanrodoc = us.idpersona
-        WHERE 
-            us.estado = '1' 
-            AND rl.estado = '1' 
-            AND rl.perfil = 'Chofer'
-            AND (pe.nombres LIKE CONCAT('%', _item, '%') OR 
-                CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%'));  -- Filtrar por nombres o apellidos concatenados
-END;
+--             pe.nombres,
+--             CONCAT(pe.appaterno, ' ', pe.apmaterno) AS apellidos,  -- Concatenación de apellidos
+--             us.estado AS estado_usuario,
+--             rl.estado AS estado_rol
+--         FROM 
+--             usuarios us
+--         INNER JOIN 
+--             perfiles rl ON us.idperfil = rl.idperfil
+--         INNER JOIN 
+--             personas pe ON pe.idpersonanrodoc = us.idpersona
+--         WHERE 
+--             us.estado = '1' 
+--             AND rl.estado = '1' 
+--             AND rl.perfil = 'Chofer'
+--             AND (pe.nombres LIKE CONCAT('%', _item, '%') OR 
+--                 CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%'));  -- Filtrar por nombres o apellidos concatenados
+-- END;
 
 
 DROP PROCEDURE IF EXISTS `sp_buscar_vehiculos`;
-DELIMITER $$;
 CREATE PROCEDURE `sp_buscar_vehiculos`(	
     IN _item VARCHAR(50)
 )

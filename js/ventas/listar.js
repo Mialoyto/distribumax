@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     bgbtn="btn-success";
                     break;
               
-                case "Entregado":
+                case "Despachado":
                     estadoClass = "text-primary";
                     icons="bi bi-toggle2-on fs-5";
                     bgbtn="btn-success";
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     ${element.estado}
                     </strong></td>
                     <td>
-                        <button class="btn btn-outline-danger info reporte" 
+                        <button class="btn btn-outline-danger  reporte" 
                             data-idventa="${element.idventa}"
                              >
                             <i class="fas fa-file-alt me-2"></i>
@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
             element.addEventListener("click", async (event) => {
                 event.preventDefault();
                 const idventa = element.getAttribute("data-idventa");
+                console.log(idventa);
                 await Reporte(idventa); // Llamar a la función reporte
             });
         });
@@ -181,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${element.nombreproducto}</td>
                 <td>${element.unidad_medida}</td>
                 <td>${element.cantidad_producto}</td>
+               
             </tr>
             `;
 

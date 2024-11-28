@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(data);
     console.log(iddespacho);
     if (data) {
-      window.open(`../../reports/Despacho/despacho/despacho.php?iddespacho=${iddespacho}`, '_blank');
+      window.open(`../../reports/Despacho/despacho.php?iddespacho=${iddespacho}`, '_blank');
     } else {
       showToast("No se puede generar el reporte", "error", "ERROR");
     }

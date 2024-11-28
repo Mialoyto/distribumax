@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -46,7 +46,6 @@ VALUES
         );
         SELECT LAST_INSERT_ID() AS idproducto;
 END;
--- call sp_registrar_producto(1, 1, 1, 'Producto 1', 1, 1, '1', 1, 1, 2, 3);
 
 -- ACTUALIZA PRODUCTOS
 CREATE PROCEDURE sp_actualziar_producto (
@@ -87,6 +86,7 @@ END;
 
 -- PRUEBA DE BUSQUEDA de productos
 DROP PROCEDURE IF EXISTS sp_buscar_productos;
+
 CREATE PROCEDURE sp_buscar_productos(
     IN _nombreproducto VARCHAR (250)) 
 BEGIN
@@ -96,10 +96,11 @@ SELECT
     UME.unidadmedida
 FROM
     productos PRO
-    INNER JOIN unidades_medidas UME ON UME.idunidadmedida = PRO.idunidadmedida
+    LEFT JOIN unidades_medidas UME ON UME.idunidadmedida = PRO.idunidadmedida
 WHERE
-    ( nombreproducto LIKE CONCAT ('%', _nombreproducto, '%'))
+    (PRO.nombreproducto LIKE CONCAT ('%', _nombreproducto, '%'))
     AND PRO.estado = '1'
+    AND _nombreproducto <> ''
 GROUP BY
     PRO.idproducto
 ORDER BY
@@ -107,7 +108,7 @@ ORDER BY
     LIMIT 10;
 END;
 
--- CALL sp_buscar_productos ('cas');
+CALL sp_buscar_productos('');
 
 -- buscar productos por codigo
 DROP PROCEDURE IF EXISTS spu_buscar_lote;

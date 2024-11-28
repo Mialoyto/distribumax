@@ -16,8 +16,8 @@
           </div>
           <!-- Button trigger modal -->
           <a type="button" href="http://localhost/distribumax/views/productos/registrar.php" class="btn btn-primary btn-sm align-items-center">
-          <i class="bi bi-plus-circle fa-lg"></i>
-                  Registrar producto
+            <i class="bi bi-plus-circle fa-lg"></i>
+            Registrar producto
           </a>
         </div>
       </div>
@@ -80,6 +80,8 @@
               <div class="form-floating align-items-center">
                 <input type="search" class="form-control" id="searchProducto" name="cantidad" placeholder="cantidad" required>
                 <label for="cantidad" class="form-label"><i class="bi bi-search fa-lg"></i> Agregar Producto</label>
+                <ul id="listProduct" class="list-group position-absolute w-100" style="z-index: 1000;"></ul>
+
               </div>
             </div>
           </div>
@@ -93,37 +95,13 @@
                   <tr>
                     <th>Cantidad</th>
                     <th>Producto</th>
+                    <th>Unidad Medida</th>
                     <th>Precio Unitario</th>
                     <th>Valor compra</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <!--  <tr>
-                    <td>
-                      <div class="form-floating">
-                        <input type="number" class="form-control" id="cantidad" name="cantidad" placeholder="cantidad" required>
-                        <label for="cantidad" class="form-label">Cantidad</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-floating">
-                        <input type="text" class="form-control" id="producto" name="producto" placeholder="producto" required>
-                        <label for="producto" class="form-label">Producto</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-floating">
-                        <input type="number" class="form-control" id="precio" name="precio" placeholder="precio" required>
-                        <label for="precio" class="form-label">Precio Unitario</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-floating">
-                        <input type="number" class="form-control" id="valor" name="valor" placeholder="valor" readonly>
-                        <label for="valor" class="form-label">Valor compra</label>
-                      </div>
-                    </td>
-                  </tr> -->
+
 
                 </tbody>
               </table>

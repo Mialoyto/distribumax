@@ -22,13 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 
   (() => {
-    fetch(`../../controller/`)
+    const params = new URLSearchParams();
+    params.append('operation', 'listarPerfil');
+    fetch(`../../controller/perfil.controller.php?${params}`)
       .then(response => response.json())
       .then(data => {
+        console.log(data);
         data.forEach(element => {
           const tagOption = document.createElement('option');
-          tagOption.value = element. idperfil;
-          tagOption.innerText = element.rol;
+          tagOption.value = element.idperfil;
+          tagOption.setAttribute('perfil', element.nombrecorto);
+          tagOption.innerText = element.perfil;
           $("#rol").appendChild(tagOption);
         });
       })
@@ -45,18 +49,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if ($("#rol").value.trim() == '') {
       alert("Seleccione un rol de usuario")
     } else {
-      const formData = new FormData();
-      formData.append('operation', 'addUsuario');
-      formData.append('idpersona', idpersona);
-      formData.append('nombre_usuario', $("#usuario").value.trim());
-      formData.append('password_usuario', $("#password").value);
-      formData.append(' idperfil', $("#rol").value);
+      const selectedOption = $("#rol").selectedOptions[0];
+      const perfil = selectedOption.getAttribute('perfil');
+
+      const params = new FormData();
+      params.append('operation', 'addUsuario');
+      params.append('idpersona', idpersona);
+      params.append('idperfil', $("#rol").value);
+      params.append('perfil', perfil);
+      params.append('nombre_usuario', $("#usuario").value.trim());
+      params.append('password_usuario', $("#password").value.trim());
+
+      params.forEach((value, key) => {
+        console.log(key, value);
+      });
+
       const options = {
         method: 'POST',
-        body: formData
+        body: params
       }
-      const response = await fetch(`../controller/usuario.controller.php`, options);
-      return response.text();
+      const response = await fetch(`../../controller/usuario.controller.php`, options);
+      const data = response.json();
+      return data;
       // console.log(text)
     }
   }

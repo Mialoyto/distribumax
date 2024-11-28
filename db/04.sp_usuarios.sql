@@ -1,6 +1,6 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1732637704938@@127.0.0.1@3306@distribumax
 USE distribumax;
--- Registrar 
+-- Registrar
 
 CREATE PROCEDURE sp_registrar_usuario(
    IN   _idpersona          VARCHAR(11),
@@ -17,10 +17,10 @@ BEGIN
     SELECT LAST_INSERT_ID() AS idusuario;
 END;
 
-select * FROM usuarios;
 
--- Login 
+-- Login
 DROP PROCEDURE IF EXISTS sp_usuario_login;
+
 CREATE PROCEDURE sp_usuario_login(IN _nombre_usuario	VARCHAR(100))
 BEGIN
 SELECT
@@ -39,10 +39,11 @@ SELECT
     WHERE USU.nombre_usuario = _nombre_usuario AND USU.estado=1;
 END;
 
-select * FROM usuarios;
-select * FROM perfiles;
--- Actualizar 
-CALL sp_usuario_login('administrador');
+SELECT * FROM usuarios;
+
+SELECT * FROM perfiles;
+-- Actualizar
+CALL sp_usuario_login ('administrador');
 
 CREATE PROCEDURE sp_actualizar_usuario(
 
@@ -71,7 +72,6 @@ BEGIN
 			estado = _estado
 		WHERE _nombre_usuario = nombre_usuario;
 END;
-
 
 CREATE PROCEDURE sp_buscarusuarios_registrados(
 IN _idtipodocumento INT ,

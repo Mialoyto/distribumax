@@ -29,7 +29,7 @@ class Marca extends Conexion
     public function getAll()
     {
         try {
-            $sql = "CALL sp_listar_marca";
+            $sql = "CALL sp_listar_marcas";
             $query = $this->pdo->prepare($sql);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);

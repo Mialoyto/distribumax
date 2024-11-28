@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1731562917822@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR MARCAS
@@ -43,31 +43,31 @@ END;
 
 -- ACTUALIZAR MARCAS
 
-CREATE PROCEDURE sp_actualizar_marca(
-    IN _idmarca INT,
-    IN _marca 	VARCHAR(150)
-)
-BEGIN
-    UPDATE marcas
-    SET marca = _marca,
-        update_at = NOW()
-    WHERE idmarca = _idmarca;
-END;
+-- CREATE PROCEDURE sp_actualizar_marca(
+--     IN _idmarca INT,
+--     IN _marca 	VARCHAR(150)
+-- )
+-- BEGIN
+--     UPDATE marcas
+--     SET marca = _marca,
+--         update_at = NOW()
+--     WHERE idmarca = _idmarca;
+-- END;
 
--- ELIMINAR MARCAS
+-- -- ELIMINAR MARCAS
 
-CREATE PROCEDURE sp_eliminar_marca(
-    IN _idmarca INT,
-    IN _estado 	CHAR(1)
-)
-BEGIN
-    UPDATE marcas
-    SET 
-        estado = _estado
-    WHERE idmarca = _idmarca;
-END;
+-- CREATE PROCEDURE sp_eliminar_marca(
+--     IN _idmarca INT,
+--     IN _estado 	CHAR(1)
+-- )
+-- BEGIN
+--     UPDATE marcas
+--     SET 
+--         estado = _estado
+--     WHERE idmarca = _idmarca;
+-- END;
 
-DROP PROCEDURE IF EXISTS sp_getMarcas;
+-- DROP PROCEDURE IF EXISTS sp_getMarcas;
 
 CREATE PROCEDURE sp_getMarcas (
     IN _idproveedor   VARCHAR(100)
@@ -91,22 +91,21 @@ END;
 -- WHERE
 --     estado = '1'
 -- ORDER BY marca ASC;
-
-DROP PROCEDURE IF EXISTS sp_listar_marca;
-CREATE PROCEDURE sp_listar_marca()
+DROP PROCEDURE IF EXISTS sp_listar_marcas;
+CREATE PROCEDURE sp_listar_marcas()
 BEGIN
     SELECT 
         PRO.proveedor,
+        PRO.contacto_principal,
         MAR.marca,
-        CAT.categoria,
         CASE MAR.estado
             WHEN '1' THEN 'Activo'
             WHEN '0' THEN 'Inactivo'
-        END AS 'estado'
+        END AS estado_marca
     FROM 
         marcas MAR
     INNER JOIN proveedores PRO ON MAR.idproveedor = PRO.idproveedor
-    INNER JOIN categorias CAT ON MAR.idcategoria = CAT.idcategoria;
+    ORDER BY PRO.proveedor ASC;
 END;
 
-CALL sp_listar_marca ();
+CALL sp_listar_marcas();

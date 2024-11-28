@@ -82,6 +82,25 @@ CREATE PROCEDURE `sp_buscar_cliente` (
     IN _nro_documento CHAR(12)
 )
 BEGIN
+    -- Declarar variables locales para el manejo de mensajes
+    DECLARE _mensaje VARCHAR(255);
+    DECLARE _tiene_pedidos INT;
+
+    -- Verificar si el cliente tiene pedidos pendientes
+    SELECT COUNT(*) INTO _tiene_pedidos
+    FROM pedidos P
+    INNER JOIN clientes C ON C.idcliente = P.idcliente
+    WHERE (C.idpersona = _nro_documento OR C.idempresa = _nro_documento)
+      AND P.estado = 'Pendiente';
+
+    -- Si tiene pedidos pendientes, retornar el mensaje
+    IF _tiene_pedidos > 0 THEN
+        SET _mensaje = 'El cliente ya tiene un pedido pendiente.';
+    ELSE
+        SET _mensaje = 'Cliente encontrado, puede registrar un nuevo pedido.';
+    END IF;
+
+    -- Retornar el mensaje y los datos del cliente
     SELECT
         CLI.idcliente,
         CLI.tipo_cliente,
@@ -93,27 +112,20 @@ BEGIN
         DIS.iddistrito,
         DIS.distrito,
         PER.telefono,
-        PER.direccion,
         CASE 
             WHEN CLI.idpersona IS NOT NULL THEN PER.direccion
             WHEN CLI.idempresa IS NOT NULL THEN EMP.direccion
         END AS direccion_cliente,
-        CLI.estado
-        
-        FROM clientes CLI 
-        LEFT JOIN personas PER ON CLI.idpersona= PER.idpersonanrodoc
-        LEFT JOIN empresas EMP ON CLI.idempresa= EMP.idempresaruc
-        LEFT JOIN distritos DIS ON DIS.iddistrito=PER.iddistrito
-        LEFT JOIN provincias PRO ON PRO.idprovincia=DIS.idprovincia
-        LEFT JOIN departamentos DEP ON DEP.iddepartamento=PRO.iddepartamento
-        WHERE (CLI.idpersona = _nro_documento OR CLI.idempresa =_nro_documento)
-        AND CLI.estado = '1';
-
-        IF EXISTS (SELECT * FROM clientes WHERE idpersona = _nro_documento OR idempresa = _nro_documento) THEN
-            SELECT 'Cliente encontrado' as mensaje;
-        ELSE
-            SELECT 'Cliente no encontrado' as mensaje;
-        END IF;
+        CLI.estado,
+        _mensaje AS mensaje
+    FROM clientes CLI 
+    LEFT JOIN personas PER ON CLI.idpersona = PER.idpersonanrodoc
+    LEFT JOIN empresas EMP ON CLI.idempresa = EMP.idempresaruc
+    LEFT JOIN distritos DIS ON DIS.iddistrito = PER.iddistrito
+    LEFT JOIN provincias PRO ON PRO.idprovincia = DIS.idprovincia
+    LEFT JOIN departamentos DEP ON DEP.iddepartamento = PRO.iddepartamento
+    WHERE (CLI.idpersona = _nro_documento OR CLI.idempresa = _nro_documento)
+      AND CLI.estado = '1';
 END;
 CALL sp_buscar_cliente('73217990');
 

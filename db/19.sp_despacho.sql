@@ -4,6 +4,9 @@ USE distribumax;
 -- TODO: PROCEDIMIENTO PARA REGISTRAR UN DESPACHO;
 DROP PROCEDURE IF EXISTS sp_despacho_registrar;
 
+
+DROP PROCEDURE IF EXISTS sp_despacho_registrar;
+
 CREATE PROCEDURE sp_despacho_registrar(
     IN _idvehiculo       INT,
     IN _idusuario        INT,
@@ -45,6 +48,33 @@ BEGIN
     AND condicion <> 'despachado';  
 END;
 
+-- actualizar el estado del pedido de enviado a entregado cuando se registre el despacho
+DROP TRIGGER IF EXISTS  trg_actualizar_estado_pedido;
+
+CREATE TRIGGER trg_actualizar_estado_pedido_despacho
+AFTER INSERT ON despacho
+FOR EACH ROW
+BEGIN
+    -- Variable temporal para almacenar idpedido
+    DECLARE _idpedido INT;
+
+    -- Obtener el idpedido relacionado con la idventa
+    SELECT idpedido INTO _idpedido 
+    FROM ventas 
+    WHERE idventa = NEW.idventa;
+
+    -- Verificar si se encontró un idpedido válido
+    IF _idpedido IS NOT NULL THEN
+        -- Actualizar el estado del pedido
+        UPDATE pedidos
+        SET estado = 'Entregado'
+        WHERE idpedido = _idpedido
+          AND estado <> 'Entregado';
+    END IF;
+END;
+
+-- ACTUALIZAR DESPACHO
+
 -- TODO: PROCEDIMIENTO PARA ACTUALIZAR UN DESPACHO
 CREATE PROCEDURE sp_actualizar_despacho(
 	IN _iddespacho		INT,
@@ -77,6 +107,7 @@ END;
 
 --  TODO: PROCEDIMIENTO PARA REGISTRAR DETALLES DEL DESPACHO
 DROP PROCEDURE IF EXISTS sp_registrar_detalledespacho;
+
 
 CREATE PROCEDURE sp_registrar_detalledespacho
 (

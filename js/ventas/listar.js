@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function CargarDatos(fechaSeleccionada = null) {
         const Tablaventas = $("#contenido-venta");
-         console.log(Tablaventas);
+         //console.log(Tablaventas);
       
         const url = fechaSeleccionada 
             ? `../../controller/ventas.controller.php?operation=getAll&fecha_venta=${fechaSeleccionada}` 
@@ -12,18 +12,41 @@ document.addEventListener("DOMContentLoaded", () => {
     
         const response = await fetch(url);
         const data = await response.json();
-         console.log('Datos recibidos:', data);  // Verificar los datos recibidos
+
+        //    if(data!=0){
+            // $("#filtrar").removeAttribute("disabled");
+            // $("#fecha-venta").removeAttribute("disabled");
+        //    }else{
+            // $("#fecha-venta").setAttribute("disabled",true);
+            // $("#filtrar").setAttribute("disabled",true)
+        //    }
+        console.log('Datos recibidos:', data);  // Verificar los datos recibidos
          dtventa.destroy();
         Tablaventas.innerHTML = ''; // Limpiar contenido previo
         
-    
+       
         
         data.forEach(element => {
-            // console.log(data);
-            // console.log(element)
-            const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-            const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
-            const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
+            let estadoClass;
+            let icons;
+            let bgbtn;
+            switch (element.estado) {
+                case "Enviado":
+                    estadoClass = "text-success";
+                    icons ="bi bi-toggle2-on fs-5"
+                    bgbtn="btn-success";
+                    break;
+              
+                case "Entregado":
+                    estadoClass = "text-primary";
+                    icons="bi bi-toggle2-on fs-5";
+                    bgbtn="btn-success";
+                    break;
+            
+               
+            }
+            
+            
             const clienteNombre = element.tipo_cliente === 'Empresa' ? element.razonsocial : element.datos;
             const documento = element.tipo_cliente === 'Empresa' ? element.idempresaruc : element.idpersonanrodoc;
           
@@ -46,13 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
                             data-idventa="${element.idventa}"
                              >
                             <i class="fas fa-file-alt me-2"></i>
-
-                        <button class="btn btn-warning estado" 
-                            data-bs-toggle="modal"
-                            data-bs-target="#cambiarestado"
-                            data-idventa="${element.idventa}"> 
-                            Estado
                         </button>
+                           <a  id-data="${element.idventa}" class="btn ${bgbtn} ms-2 estado" estado-cat="${element.status}">
+                        <i class="${icons}"></i>
+                      </a>
                     </td>
                 </tr>
             `;
@@ -78,15 +98,41 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        const tagestado = document.querySelectorAll('.estado');
-        tagestado.forEach(element => {
-            element.addEventListener("click", async (event) => {
-                event.preventDefault();
-                const idventa = element.getAttribute("data-idventa"); // OBTENER idventa
-                document.getElementById("cambiarestado").setAttribute("data-idventa", idventa); // ALMACENAR idventa EN EL MODAL
-                console.log("idventa para actualizar: ", idventa);
+        // const tagestado = document.querySelectorAll('.estado');
+        // tagestado.forEach(element => {
+        //     element.addEventListener("click", async (event) => {
+        //         event.preventDefault();
+        //         const idventa = element.getAttribute("data-idventa"); // OBTENER idventa
+        //         const estado= $("#estado").value
+        //          UpdateEstado(idventa,estado) // ALMACENAR idventa EN EL MODAL
+        //         console.log("idventa para actualizar: ", idventa);
+        //     });
+        // });
+
+
+        
+        const btnDisabled=document.querySelectorAll(".estado");
+        const clase =document.querySelectorAll(".btn-danger")
+        let id;
+        btnDisabled.forEach((btn) => {
+            btn.addEventListener("click", async (e) => {
+              try {
+                e.preventDefault();
+                id = e.currentTarget.getAttribute("id-data");
+                const status = e.currentTarget.getAttribute("estado-cat");
+                console.log("ID:", id, "Status:", status);
+                if (await showConfirm("¿Estás seguro de cambiar el estado de la venta?")) {
+                  const data = await  UpdateEstado(id, status);
+                  console.log("Estado actualizado correctamente:", data);
+      
+                } else {
+                  console.error("El atributo id-data o status es null o undefined.");
+                }
+              } catch (error) {
+                console.error("Error al cambiar el estado de la subcategoría:", error);
+              }
             });
-        });
+          });
     }
       
     (()=>{

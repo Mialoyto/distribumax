@@ -18,7 +18,7 @@ CREATE PROCEDURE sp_despacho_registrar(
     SELECT LAST_INSERT_ID() AS iddespacho;
 END;
 
-CALL sp_despacho_registrar (1, 1, '2024-12-01');
+-- CALL sp_despacho_registrar (1, 1, '2024-12-01');
 
 -- TODO: TRIGGER PARA VERIFICAR LA FECHA DE DESPACHO
 

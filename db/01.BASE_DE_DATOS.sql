@@ -579,7 +579,7 @@ CREATE TABLE despacho_ventas (
     CONSTRAINT fk_venta_det_desp_ FOREIGN KEY (idventa) REFERENCES ventas (idventa),
     CONSTRAINT fk_producto_det_desp FOREIGN KEY (idproducto) REFERENCES productos (idproducto)
 ) ENGINE = INNODB;
-call despacho_ventas(1, 1, 1);
+
 
 
 DROP TABLE IF EXISTS detalle_meto_Pago;

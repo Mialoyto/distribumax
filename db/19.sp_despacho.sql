@@ -49,29 +49,32 @@ BEGIN
 END;
 
 -- actualizar el estado del pedido de enviado a entregado cuando se registre el despacho
-DROP TRIGGER IF EXISTS  trg_actualizar_estado_pedido;
+DROP TRIGGER IF EXISTS  trg_actualizar_estado_pedido_despacho;
 
 CREATE TRIGGER trg_actualizar_estado_pedido_despacho
-AFTER INSERT ON despacho
+AFTER INSERT ON despachos
 FOR EACH ROW
 BEGIN
     -- Variable temporal para almacenar idpedido
     DECLARE _idpedido INT;
 
-    -- Obtener el idpedido relacionado con la idventa
-    SELECT idpedido INTO _idpedido 
-    FROM ventas 
-    WHERE idventa = NEW.idventa;
+    -- Obtener el idpedido relacionado con la idventa de la tabla despacho_ventas
+    SELECT idpedido INTO _idpedido
+    FROM despacho_ventas pv
+    INNER JOIN despachos des ON des.iddespacho = pv.iddespacho
+    LEFT JOIN ventas ve ON ve.idventa = pv.idventa
+    WHERE pv.iddespacho = NEW.iddespacho;  -- Asegúrate de que usamos el iddespacho de NEW
 
     -- Verificar si se encontró un idpedido válido
     IF _idpedido IS NOT NULL THEN
-        -- Actualizar el estado del pedido
+        -- Actualizar el estado del pedido a 'Entregado' si aún no está marcado como tal
         UPDATE pedidos
         SET estado = 'Entregado'
         WHERE idpedido = _idpedido
           AND estado <> 'Entregado';
     END IF;
 END;
+
 
 -- ACTUALIZAR DESPACHO
 

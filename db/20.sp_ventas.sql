@@ -1,7 +1,7 @@
--- Active: 1732637704938@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
--- REGISTRAR VENTAS
+-- todo reade papeto
 DROP PROCEDURE IF EXISTS sp_registrar_venta;
 CREATE PROCEDURE sp_registrar_venta(
     IN _idpedido            VARCHAR(15),
@@ -72,7 +72,8 @@ CREATE PROCEDURE sp_actualizar_venta(
 				WHERE idventa=_idventa; 
 END;
 
--- ESTADO VENTAS
+-- aun falta el idlote, ya que cuando tiene dos lotes hace
+-- realiza una duplicida.
 DROP PROCEDURE IF EXISTS `sp_estado_venta`;
 
 CREATE PROCEDURE `sp_estado_venta`(
@@ -200,29 +201,28 @@ BEGIN
 END;
 
 
-DROP TRIGGER IF EXISTS trg_verificar_fecha_despacho;
-CREATE TRIGGER trg_verificar_fecha_despacho
-BEFORE INSERT ON despachos
-FOR EACH ROW
-BEGIN
-    DECLARE fecha_actual DATE;
-    SET fecha_actual = CURDATE();
+-- DROP TRIGGER IF EXISTS trg_verificar_fecha_despacho;
+-- CREATE TRIGGER trg_verificar_fecha_despacho
+-- BEFORE INSERT ON despachos
+-- FOR EACH ROW
+-- BEGIN
+--     DECLARE fecha_actual DATE;
+--     SET fecha_actual = CURDATE();
 
-    IF NEW.fecha_despacho < fecha_actual THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'La fecha de despacho no puede ser menor a la fecha actual';
-    END IF;
-END;
+--     IF NEW.fecha_despacho < fecha_actual THEN
+--         SIGNAL SQLSTATE '45000'
+--         SET MESSAGE_TEXT = 'La fecha de despacho no puede ser menor a la fecha actual';
+--     END IF;
+-- END;
 
 -- GENERAR REPORTE
-DROP PROCEDURE IF EXISTS `sp_generar_reporte`;
+DROP PROCEDURE IF EXISTS  `sp_generar_reporte`;
 
 CREATE PROCEDURE `sp_generar_reporte` ( 
     IN _idventa INT
 )
 BEGIN
-    SELECT 
-        ve.idventa,
+    SELECT   ve.idventa,
         ve.fecha_venta,
         ve.numero_comprobante,
         p.idpedido,
@@ -230,7 +230,8 @@ BEGIN
         pr.codigo,
         ve.igv,
         ve.total_venta,
-        ve.subtotal as sub_venta,
+        ve.subtotal AS sub_venta,
+
         -- Tipo de cliente
         cli.tipo_cliente AS cliente,
 
@@ -247,6 +248,7 @@ BEGIN
             WHEN cli.tipo_cliente = 'persona' THEN UPPER(CONCAT(pe.appaterno, ' ', pe.apmaterno, ' ', pe.nombres))
             ELSE 'SIN DATOS'
         END AS nombre_cliente,
+
         CASE 
             WHEN cli.tipo_cliente = 'empresa' THEN em.direccion
             WHEN cli.tipo_cliente = 'persona' THEN pe.direccion
@@ -256,7 +258,7 @@ BEGIN
         pr.nombreproducto,
         dp.precio_unitario,
         dp.cantidad_producto,
-        
+
         -- Modificación en la unidad de medida
         CASE 
             WHEN dp.unidad_medida = 'caja' THEN 'cj'
@@ -278,10 +280,14 @@ BEGIN
         LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
         LEFT JOIN tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
 
-    WHERE p.estado = 'Enviado'  OR p.estado='Entregado' AND ve.idventa = _idventa;
+    WHERE ve.idventa = _idventa
+    AND (p.estado = 'Enviado' OR p.estado = 'Entregado');
+   
 END;
 
--- LISTAR VENTAS DEL DIA
+
+
+-- ?todo reade papeto
 DROP PROCEDURE IF EXISTS `sp_listar_ventas`;
 
 CREATE PROCEDURE `sp_listar_ventas`()
@@ -304,8 +310,8 @@ BEGIN
         CASE ve.estado
             WHEN '1' THEN '0'
             WHEN '0' THEN '1'
-        END AS `status`
-
+        END AS `status`,
+        ve.condicion
     FROM 
         ventas ve
     INNER JOIN 
@@ -326,8 +332,13 @@ BEGIN
         p.estado = 'Enviado'
     OR
         P.estado = 'Entregado'
-	AND ve.estado='1'
-        -- AND DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
+
+    OR 
+    ve.condicion ='Pendiente'
+	AND 
+    ve.estado='1'
+    AND   
+      DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
     GROUP BY 
         ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
     ORDER BY 
@@ -335,6 +346,7 @@ BEGIN
 END ;
 
 
+-- Todo reade papeto
 DROP PROCEDURE IF EXISTS `sp_listar_fecha`;
 CREATE PROCEDURE `sp_listar_fecha`(IN _fecha_venta DATE)
 BEGIN
@@ -370,13 +382,11 @@ BEGIN
     LEFT JOIN 
         tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE 
-        p.estado = 'Enviado'
-    OR   
-       p.estado='Entregado'
+        (p.estado = 'Enviado' OR p.estado = 'Entregado' OR ve.condicion='Pendiente') -- Agrupamos con paréntesis
     AND 
-    ve.estado = '1'
+        ve.estado = '1'
     AND 
-    DATE(ve.fecha_venta) = _fecha_venta -- Comparar solo fechas
+        DATE(ve.fecha_venta) = _fecha_venta -- Comparar solo fechas
     GROUP BY 
         ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
     ORDER BY 
@@ -448,6 +458,7 @@ BEGIN
 			dp.cantidad_producto,
 			dp.unidad_medida,
 			cl.tipo_cliente,
+            ve.subtotal,
 	CONCAT( per.nombres,' ',per.appaterno ) AS datos,
 			em.razonsocial
 	FROM ventas ve
@@ -585,4 +596,18 @@ BEGIN
         COUNT(VE.idventa) > 0
     ORDER BY 
         PROV.provincia;
+END;
+
+DROP PROCEDURE IF EXISTS sp_VentasPorDia;
+CREATE PROCEDURE sp_VentasPorDia(IN _fecha DATE)
+BEGIN
+    SELECT 
+        DATE(ve.fecha_venta) AS fecha,
+        COUNT(CASE WHEN ve.estado = '1' THEN 1 END) AS total_ventas_realizadas,
+        SUM(CASE WHEN ve.estado = '1' THEN ve.total_venta ELSE 0 END) AS monto_realizado,
+        COUNT(CASE WHEN ve.estado = '0' THEN 1 END) AS total_ventas_canceladas,
+        SUM(CASE WHEN ve.estado = '0' THEN ve.total_venta ELSE 0 END) AS monto_cancelado
+    FROM ventas ve
+    WHERE DATE(ve.fecha_venta) = _fecha
+    GROUP BY DATE(ve.fecha_venta);
 END;

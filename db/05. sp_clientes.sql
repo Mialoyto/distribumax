@@ -77,7 +77,6 @@ END;
 
 -- BUSCAR CLIENTE POR DNI O RUC
 DROP PROCEDURE IF EXISTS `sp_buscar_cliente`;
-
 CREATE PROCEDURE `sp_buscar_cliente` (
     IN _nro_documento CHAR(12)
 )
@@ -127,6 +126,7 @@ BEGIN
     WHERE (CLI.idpersona = _nro_documento OR CLI.idempresa = _nro_documento)
       AND CLI.estado = '1';
 END;
+
 CALL sp_buscar_cliente('73217990');
 
 -- LISTAR CLIENTES
@@ -159,31 +159,30 @@ END;
 CALL sp_listar_clientes ();
 SELECT * FROM clientes WHERE estado = '0';
 
-/* DROP PROCEDURE IF EXISTS sp_listar_clientes;
+--  DROP PROCEDURE IF EXISTS sp_listar_clientes;
 
-CREATE PROCEDURE `sp_listar_clientes`(
-    IN p_start INT,
-    IN p_length INT,
-    IN p_search VARCHAR(255),
-    IN p_orderColumn VARCHAR(50),
-    IN p_orderDir VARCHAR(4)
-)
-BEGIN
-    SET @sql = CONCAT(
-        'SELECT DISTINCT c.idcliente, c.idpersona,c.idempresa, c.tipo_cliente, c.create_at, c.estado
-                        FROM clientes c
-                        WHERE c.estado = 1 AND (c.idcliente LIKE ? OR c.idpersona LIKE ? OR c.idempresa LIKE ?)
-                        ORDER BY ', p_orderColumn, ' ', p_orderDir, ' 
-                        LIMIT ?, ?');
+-- CREATE PROCEDURE `sp_listar_clientes`(
+--     IN p_start INT,
+--     IN p_length INT,
+--     IN p_search VARCHAR(255),
+--     IN p_orderColumn VARCHAR(50),
+--     IN p_orderDir VARCHAR(4)
+-- )
+-- BEGIN
+--     SET @sql = CONCAT(
+--         'SELECT DISTINCT c.idcliente, c.idpersona,c.idempresa, c.tipo_cliente, c.create_at, c.estado
+--                         FROM clientes c
+--                         WHERE c.estado = 1 AND (c.idcliente LIKE ? OR c.idpersona LIKE ? OR c.idempresa LIKE ?)
+--                         ORDER BY ', p_orderColumn, ' ', p_orderDir, ' 
+--                         LIMIT ?, ?');
 
-    PREPARE stmt FROM @sql;
-    SET @search_param = CONCAT('%', p_search, '%');
-    EXECUTE stmt USING @search_param, @search_param, p_start, p_length;
-    DEALLOCATE PREPARE stmt;
-END;
+--     PREPARE stmt FROM @sql;
+--     SET @search_param = CONCAT('%', p_search, '%');
+--     EXECUTE stmt USING @search_param, @search_param, p_start, p_length;
+--     DEALLOCATE PREPARE stmt;
+-- END;
 
-DELIMITER;
+-- DELIMITER;
 
-CALL sp_listar_clientes (  0, 10, '26', 'idcliente', 'DESC' );
+-- CALL sp_listar_clientes (  0, 10, '26', 'idcliente', 'DESC' );
 
-SELECT * FROM clientes; */

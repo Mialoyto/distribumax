@@ -1,4 +1,7 @@
 <?php
+
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Arabic;
+
 require_once 'Conexion.php';
 
 class Usuario extends Conexion
@@ -64,7 +67,7 @@ class Usuario extends Conexion
         }
     }
 
-    function getUser($params = []):bool
+    function getUser($params = []): bool
     {
         $user = false;
         try {
@@ -80,27 +83,42 @@ class Usuario extends Conexion
         }
     }
 
-    public function getAll(){
-        try{
-            $query=$this->pdo->prepare("CALL spu_listar_usuarios");
+    public function getAll()
+    {
+        try {
+            $query = $this->pdo->prepare("CALL spu_listar_usuarios");
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             die($e->getMessage());
         }
     }
 
     public function obtenerPermisos($params = []): array
-  {
-    try {
-      $cmd = $this->pdo->prepare("CALL spu_obtener_acceso_usuario(?)");
-      $cmd->execute(
-        array($params['idperfil'])
-      );
-      return $cmd->fetchAll(PDO::FETCH_ASSOC);
-    } catch (Exception $e) {
-      error_log("Error: " . $e->getMessage());
-      return [];
+    {
+        try {
+            $cmd = $this->pdo->prepare("CALL spu_obtener_acceso_usuario(?)");
+            $cmd->execute(
+                array($params['idperfil'])
+            );
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            error_log("Error: " . $e->getMessage());
+            return [];
+        }
     }
-  }
+    
+    public function updatepassword($params=[]){
+        try{
+            $status=-1;
+            $query=$this->pdo->prepare("CALL sp_actualizar_contraseña (?,?)");
+            $status=$query->execute(array(
+                $params['idusuario'],
+                password_hash($params["password_usuario"], PASSWORD_BCRYPT)
+            ));
+            return $status;
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }

@@ -56,9 +56,7 @@
                                  </div>
                                  <div class="col-md-6 mb-2">
                                     <div class="form-floating">
-                                       <select class="form-control" id="update-cliente" name="update-cliente" disabled required>
-                                          <!-- Opciones dinámicas -->
-                                       </select>
+                                       <input type="text" class="form-control" id="update-cliente" disabled>
                                        <label for="update-cliente"><i class="fa-regular fa-id-card fa-lg"></i> Tipo de cliente</label>
                                     </div>
                                  </div>
@@ -150,3 +148,4 @@
 </main>
 <?php require_once '../footer.php'; ?>
 <script type="module" src="http://localhost/distribumax/js/pedidos/listar.js"></script>
+<script type="module" src="http://localhost/distribumax/js/pedidos/update-pedido.js"></script>

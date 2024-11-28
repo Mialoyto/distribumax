@@ -37,7 +37,7 @@ switch ($verbo) {
             }
         }
         break;
-    case 'POST':
+case 'POST':
         if (isset($_POST['operation'])) {
             switch ($_POST['operation']) {
                 case 'addUsuario':
@@ -90,6 +90,13 @@ switch ($verbo) {
                     $_SESSION['login'] = $login;
                     echo json_encode($login);
                     break;
+                case 'updatepassword':
+                    $datosEnviar=[
+                        'idusuario'=>$_POST['idusuario'],
+                        'password_usuario'=>$_POST['password_usuario']
+                    ];
+                    echo json_encode($usuario->updatepassword($datosEnviar));
+                break;
             }
         }
         break;

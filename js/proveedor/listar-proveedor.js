@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await getProveedor(id); // Función que obtiene datos del proveedor
       if (data && data.length > 0) {
         const proveedor = data[0];
-        inputProveedor.setAttribute("id-proveedor", proveedor.idproveedor);
+        inputProveedor.setAttribute("id-proveedo¿", proveedor.idproveedor);
         inputEmpresa.value = proveedor.idempresa;
         inputProveedor.value = proveedor.proveedor;
         inputContacto.value = proveedor.contacto_principal;

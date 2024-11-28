@@ -108,14 +108,13 @@ document.addEventListener("DOMContentLoaded", function () {
                   </td>
                   <td>
                     <div class="d-flex justify-content-center">
-                      <a  id-data="${element.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target=".edit-categoria">
-                        <i class="bi bi-pencil-square fs-5"></i>
-                      </a>     
-                      <a  id-data="${element.id}" class="btn ${bgbtn} ms-2 estado" estado-cat="${element.status}">
-                        <i class="${icons}"></i>
-                      </a>
-
-                      </div>
+  <a id-data="${element.id}" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target=".edit-categoria">
+    <i class="bi bi-pencil-square fs-5"></i>
+  </a>
+  <a id-data="${element.id}" class="btn ${bgbtn} ms-2 estado btn-sm" estado-cat="${element.status}">
+    <i class="${icons}"></i>
+  </a>
+</div>
                   </td>
                 </tr>
                 `;

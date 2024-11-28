@@ -11,7 +11,7 @@ class Productos extends Conexion
     $this->pdo = parent::getConexion();
   }
 
-  public function addProducto($params = []):int|null
+  public function addProducto($params = []): int|null
   {
     $id = null;
     try {
@@ -36,7 +36,7 @@ class Productos extends Conexion
       return $id;
     }
   }
- 
+
   public function getAll()
   {
     try {
@@ -93,15 +93,52 @@ class Productos extends Conexion
   }
 
   // Método para eliminar producto
-  public function deleteProducto($idproducto): bool
+  public function UpdateEstado($params = [])
   {
     try {
-      $sql = "CALL sp_eliminar_producto(?)";
+      $status = -1;
+      $sql = "CALL sp_estado_producto(?,?)";
       $query = $this->pdo->prepare($sql);
-      $query->execute(array($idproducto));
-      return $query->rowCount() > 0;
+      $status = $query->execute(array(
+        $params['estado'],
+        $params['idproducto']
+      ));
+      return $status;
     } catch (Exception $e) {
       return false;
+    }
+  }
+
+  public function updateProducto($params = [])
+  {
+
+    try {
+      $query = $this->pdo->prepare("call sp_registrar_producto(?,?,?,?,?,?,?,?,?,?)");
+      $query->execute(
+        $params['idmarca'],
+        $params['idsubcategoria'],
+        $params['nombreproducto'],
+        $params['idunidadmedida'],
+        $params['cantidad_presentacion'],
+        $params['codigo'],
+        $params['precio_compra'],
+        $params['precio_mayorista'],
+        $params['precio_minorista'],
+        $params['idproducto']
+      );
+      return $query->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+
+  public function ObtenerProducto($params=[]){
+    try{
+        $query=$this->pdo->prepare("call sp_obtener_producto(?)");
+        $query->execute(array($params['idproducto']));
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }catch(Exception $e){
+      die($e->getMessage());
     }
   }
 }

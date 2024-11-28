@@ -1,5 +1,6 @@
--- Active: 1732798376350@@127.0.0.1@3306@distribumax
+-- Active: 1732637704938@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
+
 CREATE DATABASE distribumax;
 USE distribumax;
 -- -----------------------------------------------------------------------------------------------
@@ -498,10 +499,6 @@ CREATE TABLE vehiculos (
     CONSTRAINT fk_estado_venta CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS despacho;
-
-DROP TABLE IF EXISTS despacho;
-
 DROP TABLE IF EXISTS ventas;
 
 CREATE TABLE ventas (
@@ -540,6 +537,7 @@ CREATE TABLE despachos (
     idvehiculo INT NOT NULL, -- ? REFERENCIA AL VEHICULO ASOCIADO
     idusuario INT NOT NULL, -- ? PERSONA QUE REGISTRO EL DESPACHO
     fecha_despacho DATE NOT NULL, -- ? FECHA PROGRAMADA PARA LA ENTREGA DEL PEDIDO
+
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     inactive_at DATETIME NULL,
@@ -557,11 +555,14 @@ CREATE TABLE despacho_ventas (
     iddetalledespacho INT AUTO_INCREMENT PRIMARY KEY,
     iddespacho INT NOT NULL,
     idventa INT NOT NULL,
+    idproducto INT NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
-    CONSTRAINT uk_venta_despacho UNIQUE (iddespacho, idventa),
-    CONSTRAINT fk_despacho FOREIGN KEY (iddespacho) REFERENCES despachos (iddespacho),
-    CONSTRAINT fk_venta FOREIGN KEY (idventa) REFERENCES ventas (idventa)
+
+    CONSTRAINT fk_despacho_det_desp FOREIGN KEY (iddespacho) REFERENCES despachos (iddespacho),
+    CONSTRAINT fk_venta_det_desp_ FOREIGN KEY (idventa) REFERENCES ventas (idventa),
+    CONSTRAINT fk_producto_det_desp FOREIGN KEY (idproducto) REFERENCES productos (idproducto)
 ) ENGINE = INNODB;
+
 
 
 DROP TABLE IF EXISTS detalle_meto_Pago;

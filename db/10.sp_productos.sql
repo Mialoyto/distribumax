@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -49,42 +49,59 @@ END;
 -- call sp_registrar_producto(1, 1, 1, 'Producto 1', 1, 1, '1', 1, 1, 2, 3);
 
 -- ACTUALIZA PRODUCTOS
-CREATE PROCEDURE sp_actualziar_producto (
+DROP PROCEDURE IF EXISTS sp_actualziar_producto;
+CREATE PROCEDURE sp_actualizar_producto (
     IN _idmarca INT,
     IN _idsubcategoria INT,
-    IN _nombreproducto VARCHAR (250),
-    IN _descripcion VARCHAR (250),
-    IN _codigo CHAR (30),
+    IN _nombreproducto VARCHAR(250),
+    IN _idunidadmedida INT,
+    IN _cantidad_presentacion INT,
+    IN _codigo CHAR(30),
+    IN _precio_compra DECIMAL(10,2),
+    IN _precio_mayorista DECIMAL(10,2),
+    IN _precio_minorista DECIMAL(10,2),
     IN _idproducto INT
-) BEGIN
-UPDATE
-    productos
-SET
-    idmarca = _idmarca,
-    idsubcategoria = _idsubcategoria,
-    nombreproducto = _nombreproducto,
-    descripcion = _descripcion,
-    codigo = _codigo,
-    update_at = NOW()
-WHERE
-    idproducto = _idproducto;
-END;
-
-
--- ESTADO producto
-CREATE PROCEDURE sp_estado_producto (
-    IN _estado CHAR (1), 
-    IN _idproducto INT) 
+) 
 BEGIN
-UPDATE
-    productos
-SET
-    estado = _estado
-WHERE
-    idproducto = _idproducto;
+    UPDATE productos
+    SET
+        idmarca = _idmarca,
+        idsubcategoria = _idsubcategoria,
+        nombreproducto = _nombreproducto,
+        idunidadmedida = _idunidadmedida,
+        cantidad_presentacion = _cantidad_presentacion,
+        codigo = _codigo,
+        precio_compra = _precio_compra,
+        precio_mayorista = _precio_mayorista,
+        precio_minorista = _precio_minorista,
+        update_at = NOW()
+    WHERE
+        idproducto = _idproducto;
 END;
 
 
+DROP PROCEDURE IF EXISTS sp_estado_producto;
+
+CREATE PROCEDURE sp_estado_producto (
+    IN _estado CHAR(1),
+    IN _idproducto INT
+)
+BEGIN
+    -- Comprobar si el producto existe
+   
+        -- Actualizar el estado y la fecha de actualización
+        UPDATE productos
+        SET
+            estado = _estado,
+            update_at = NOW()
+        WHERE
+            idproducto = _idproducto;
+    
+END;
+
+
+call sp_estado_producto('0',1);
+select * from productos;
 -- PRUEBA DE BUSQUEDA de productos
 DROP PROCEDURE IF EXISTS sp_buscar_productos;
 CREATE PROCEDURE sp_buscar_productos(
@@ -153,30 +170,82 @@ END;
 CALL sp_get_codigo_producto('AJI-SZ-001');
 -- LISTAR PRODUCTOS
 
+
+DROP PROCEDURE IF EXISTS sp_listar_productos;
 CREATE PROCEDURE sp_listar_productos()
 BEGIN
     SELECT 
+        p.idproducto,
         m.marca,
         c.categoria,
         p.nombreproducto,
-        p.codigo
+        p.codigo,
+        CASE p.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS estado,
+        CASE p.estado
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS `status`
+    FROM 
+        productos p
+    JOIN 
+        marcas m ON p.idmarca = m.idmarca
+    JOIN 
+        categorias c ON m.idcategoria = c.idcategoria;
+   -- Solo productos activos
+END;
+select * from productos;
+call sp_listar_productos();
+
+-- CREATE PROCEDURE sp_eliminar_producto(IN _idproducto INT)
+-- BEGIN
+--     -- Verifica que el producto existe antes de eliminarlo
+--     IF EXISTS (SELECT 1 FROM productos WHERE idproducto = _idproducto) THEN
+--     DELETE FROM productos WHERE idproducto = _idproducto;
+--     ELSE
+--     -- Si el producto no existe, puedes lanzar un mensaje de error o simplemente terminar
+--     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El producto no existe';
+--     END IF;
+-- END;
+
+
+DROP PROCEDURE IF EXISTS sp_obtener_producto;
+
+CREATE PROCEDURE sp_obtener_producto (IN _idproducto INT)
+BEGIN
+    SELECT 
+        p.idproducto,
+        m.marca,
+        m.idmarca,
+        m.idmarca,
+        c.categoria,
+        sb.subcategoria,
+        sb.idsubcategoria,
+        p.nombreproducto,
+        p.codigo,
+        p.precio_compra,
+        p.precio_mayorista,
+        p.precio_minorista,
+        um.unidadmedida,
+        um.idunidadmedida
     FROM 
         productos p
     JOIN 
         marcas m ON p.idmarca = m.idmarca
     JOIN 
         categorias c ON m.idcategoria = c.idcategoria
+
+    JOIN 
+       subcategorias sb ON c.idcategoria=sb.idsubcategoria
+    JOIN 
+        unidades_medidas um ON p.idunidadmedida = um.idunidadmedida
     WHERE 
-        p.estado = '1'; -- Solo productos activos
+        p.idproducto = _idproducto
+        AND p.estado = '1';
 END;
 
-CREATE PROCEDURE sp_eliminar_producto(IN _idproducto INT)
-BEGIN
-    -- Verifica que el producto existe antes de eliminarlo
-    IF EXISTS (SELECT 1 FROM productos WHERE idproducto = _idproducto) THEN
-    DELETE FROM productos WHERE idproducto = _idproducto;
-    ELSE
-    -- Si el producto no existe, puedes lanzar un mensaje de error o simplemente terminar
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El producto no existe';
-    END IF;
-END;
+call sp_obtener_producto(2);
+select * from productos;
+select * from unidades_medidas

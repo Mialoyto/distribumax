@@ -1,26 +1,30 @@
 <?php
 // Incluir el autoloader de Composer
-require_once '../../../vendor/autoload.php';
+require_once '../../vendor/autoload.php';
 
-require_once '../../../model/Despacho.php';
+require_once '../../model/Despacho.php';
+
+// Crear una instancia de Dompdf
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 // Instanciar la clase Ventas
-
 $despacho = new Despachos();
 
 // Obtener los datos de la venta con el idventa pasado por GET
 $despachos=$despacho->reporte(['iddespacho'=>$_GET['iddespacho']]);
 
-// Crear una instancia de Dompdf
-use Dompdf\Dompdf;
-use Dompdf\Options;
 
 // Configurar Dompdf
 $options = new Options();
 $options->set('isHtml5ParserEnabled', true);  // Habilitar el parser HTML5
 $options->set('isPhpEnabled', true);          // Habilitar PHP dentro de HTML (si es necesario)
 $options->set('isCssFloatEnabled', true);     // Habilitar flotantes en CSS
+$options->set('isRemoteEnabled', true); // Habilitar imágenes remotas
+$options->setChroot(__DIR__); // Establecer el directorio raíz para las imágenes
+
 $dompdf = new Dompdf($options);
+
 
 // Iniciar el almacenamiento en búfer
 ob_start();

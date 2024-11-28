@@ -185,7 +185,7 @@ require_once '../header.php';
                           minlength="9"
                           maxlength="9"
                           class="form-control"
-                          id="telefono-edmpresa"
+                          id="telefono-empresa"
                           placeholder="Teléfono"
                           disabled="true">
                         <label for="">Teléfono</label>

@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    const btnDisabled=document.querySelectorAll(".estado");
-    const clase =document.querySelectorAll(".btn-danger")
+    const btnDisabled = document.querySelectorAll(".estado");
+    const clase = document.querySelectorAll(".btn-danger")
     let id;
 
     clase.forEach((btn) => {
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-  
+
   }
 
   CargarDatos();
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(data);
     console.log(iddespacho);
     if (data) {
-      window.open(`../../reports/Despacho/despacho/despacho.php?iddespacho=${iddespacho}`, '_blank');
+      window.open(`../../reports/Despacho/despacho.php?iddespacho=${iddespacho}`, '_blank');
     } else {
       showToast("No se puede generar el reporte", "error", "ERROR");
     }
@@ -155,18 +155,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  async function updateEstado(estado,iddespacho) {
-    const params= new FormData();
-    params.append('operation','updateEstado');
-    params.append('estado',estado);
-    params.append('iddespacho',iddespacho);
+  async function updateEstado(estado, iddespacho) {
+    const params = new FormData();
+    params.append('operation', 'updateEstado');
+    params.append('estado', estado);
+    params.append('iddespacho', iddespacho);
 
-    const option={
-      method : 'POST',
-      body   : params
+    const option = {
+      method: 'POST',
+      body: params
     }
 
-    const response = await fetch(`../../controller/despacho.controller.php`,option)
+    const response = await fetch(`../../controller/despacho.controller.php`, option)
     const data = await response.json();
     console.log(data);
 

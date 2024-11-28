@@ -27,10 +27,10 @@ BEGIN
     FROM perfiles;
 END;
 
-CALL spu_listar_perfiles();
+/* CALL spu_listar_perfiles();
 
 
 -- Ejecuta el procedimiento
 CALL spu_obtener_acceso_usuario(1);
 select * from usuarios;
-select * from perfiles;
+select * from perfiles; */

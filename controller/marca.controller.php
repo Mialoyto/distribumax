@@ -37,12 +37,9 @@ if (isset($_GET['operation'])) {
             $datosRecibidos = $marca->getMarca($dataEnviar);
             echo json_encode(['marcas' => $datosRecibidos]);
             break;
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    if ($_GET['operation'] == 'getAll') {
-        $dataMarca = $marca->getAll();
-        echo json_encode($dataMarca);
+        case 'getAll':
+            $response = $marca->getAll();
+            echo json_encode($response);
+            break;
     }
 }

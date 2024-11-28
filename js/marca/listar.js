@@ -18,9 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         dtmarca = new DataTable("#table-marcas", {
             columnDefs: [
                 { width: "25%", targets: 0 },
-                { width: "25%", targets: 1 },
-                { width: "25%", targets: 2 },
-                { width: "25%", targets: 3 }
+                { width: "25%", targets: 1 }
             ],
             language: {
                 sEmptyTable: "No hay datos disponibles en la tabla",
@@ -56,20 +54,28 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.length > 0) {
                 data.forEach((element) => {
                     // Asignar clases dependiendo del estado
-                    const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-                    const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
-                    const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
+                    const estadoClass = element.estado_marca === "Activo" ? "text-success" : "text-danger";
+                    const icons = element.estado_marca === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+                    const bgbtn = element.estado_marca === "Activo" ? "btn-success" : "btn-danger";
                     
                     tableContent += `
                         <tr>
-                            <td>${element.proveedor}</td>
-                            <td>${element.contacto_principal}</td>
                             <td>${element.marca}</td>
                             <td>
-                                <button class="btn ${bgbtn} ${estadoClass}" disabled>
-                                    <i class="${icons}"></i> ${element.estado}
-                                </button>
-                            </td>
+                    <strong class="${estadoClass}">
+                    ${element.estado_marca}
+                    </strong>
+                    </td>
+                    <td>
+                    <div class="d-flex justify-content-center">
+                        <a  id-data="${element.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit-categoria" >
+                            <i class="bi bi-pencil-square fs-5"></i>
+                        </a>     
+                        <a  id-data="${element.id}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">
+                            <i class="${icons}"></i>
+                        </a>
+                    </div>
+                    </td>
                         </tr>
                     `;
                 });

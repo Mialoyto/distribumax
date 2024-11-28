@@ -22,9 +22,7 @@
                 <table id="table-marcas" class="table" style="width: 100%;">
                     <thead>
                         <tr class="text-center">
-                            <th>Nombre Proveedor</th>
-                            <th>Contacto Principal</th>
-                            <th>Marca</th>
+                            <th>Nombre Marca</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>

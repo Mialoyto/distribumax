@@ -4,7 +4,6 @@ USE distribumax;
 -- REGISTRAR MARCAS
 
 DROP PROCEDURE IF EXISTS sp_registrar_marca;
-
 CREATE PROCEDURE sp_registrar_marca(
     IN _idproveedor INT,
     IN _marca       VARCHAR(150),
@@ -42,17 +41,23 @@ END;
 -- CALL sp_registrar_marca(1,'Marca 2',5);
 
 -- ACTUALIZAR MARCAS
+DROP PROCEDURE IF EXISTS sp_actualizar_marca;
+CREATE PROCEDURE sp_actualizar_marca(
+    IN _idmarca INT,             
+    IN _marca VARCHAR(255)       
+)
+BEGIN
+    -- Actualizamos el nombre de la marca en la tabla 'marcas'
+    UPDATE marcas
+    SET marca = _marca
+    WHERE idmarca = _idmarca;
+    IF ROW_COUNT() > 0 THEN
+        SELECT 'Marca actualizada exitosamente' AS mensaje;  -- Confirmación de actualización
+    ELSE
+        SELECT 'No se encontró la marca con el ID proporcionado' AS mensaje;  -- Error si no se encuentra la marca
+    END IF;
+END;
 
--- CREATE PROCEDURE sp_actualizar_marca(
---     IN _idmarca INT,
---     IN _marca 	VARCHAR(150)
--- )
--- BEGIN
---     UPDATE marcas
---     SET marca = _marca,
---         update_at = NOW()
---     WHERE idmarca = _idmarca;
--- END;
 
 -- -- ELIMINAR MARCAS
 
@@ -95,17 +100,55 @@ DROP PROCEDURE IF EXISTS sp_listar_marcas;
 CREATE PROCEDURE sp_listar_marcas()
 BEGIN
     SELECT 
-        PRO.proveedor,
-        PRO.contacto_principal,
-        MAR.marca,
+        MAR.marca,  -- Nombre de la marca
         CASE MAR.estado
-            WHEN '1' THEN 'Activo'
+            WHEN '1' THEN 'Activo'   
             WHEN '0' THEN 'Inactivo'
-        END AS estado_marca
+        END AS estado_marca        
     FROM 
         marcas MAR
-    INNER JOIN proveedores PRO ON MAR.idproveedor = PRO.idproveedor
-    ORDER BY PRO.proveedor ASC;
+    ORDER BY MAR.marca ASC; 
 END;
 
-CALL sp_listar_marcas();
+
+
+DROP PROCEDURE IF EXISTS sp_update_estado_marca;
+CREATE PROCEDURE sp_update_estado_marca(
+    IN _idmarca INT,       
+    IN _estado CHAR(1)      
+)
+BEGIN
+    DECLARE v_mensaje VARCHAR(100); 
+    DECLARE v_estado INT;            
+    IF _estado = '0' THEN
+        UPDATE marcas
+        SET estado = _estado
+        WHERE idmarca = _idmarca;
+        IF ROW_COUNT() > 0 THEN
+            SET v_estado = 1;
+            SET v_mensaje = 'Marca desactivada correctamente';
+        ELSE
+            SET v_estado = 0;
+            SET v_mensaje = 'No se encontró la marca con el ID proporcionado';
+        END IF;
+
+    ELSEIF _estado = '1' THEN
+        UPDATE marcas
+        SET estado = _estado
+        WHERE idmarca = _idmarca;
+        IF ROW_COUNT() > 0 THEN
+            SET v_estado = 1;
+            SET v_mensaje = 'Marca activada correctamente';
+        ELSE
+            SET v_estado = 0;
+            SET v_mensaje = 'No se encontró la marca con el ID proporcionado';
+        END IF;
+
+    ELSE
+        SET v_estado = 0;
+        SET v_mensaje = 'El estado proporcionado es incorrecto';
+    END IF;
+    SELECT v_estado AS estado, v_mensaje AS mensaje;
+END;
+
+CALL sp_update_estado_marca(3,'0');

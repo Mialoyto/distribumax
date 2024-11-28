@@ -1,10 +1,12 @@
--- Active: 1728548966539@@127.0.0.1@3306
+-- Active: 1732637704938@@127.0.0.1@3306@distribumax
 USE distribumax;
-
+SELECT * FROM DESPACHOS;
+SELECT * FROM DESPACHO_ventas;
+SELECT * FROM ventas;
 -- --------------------------------------------------------------------------------------------------------------------------------
 -- NOTA : ESTO SOLO SON PRUEBAS DE CONSULTAS
 SELECT * FROM categorias;
-
+SELECT * FROM despachos;
 SELECT * FROM subcategorias;
 
 SELECT * FROM productos;
@@ -24,7 +26,6 @@ CALL sp_get_codigo_producto ('AJI-SZ-001');
 
 SELECT codigo FROM productos WHERE codigo = '265580';
 
-SELECT * FROM ventas;
 
 SELECT * FROM detalle_meto_pago;
 
@@ -42,7 +43,7 @@ select * from clientes;
 SELECT * FROM departamentos;
 
 SELECT * FROM provincias WHERE provincia = 'Chincha';
-
+SELECT * FROM  despachos;
 SELECT * FROM distritos;
 select * from lotes;
 select * from kardex;

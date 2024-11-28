@@ -13,7 +13,7 @@ class Despachos  extends Conexion
   }
 
   // ? ESTA FUNCION REGISTRA UN DESPACHO
-  public function addDespacho($params)
+  public function addDespacho($params = []): int
   {
     $id = -1;
     try {
@@ -25,9 +25,9 @@ class Despachos  extends Conexion
         $params['fecha_despacho']
       ));
       $id = $query->fetch(PDO::FETCH_ASSOC);
-      return $id;
+      return $id['iddespacho'];
     } catch (Exception $e) {
-      throw new Exception("Error al registrar el despacho", $e->getMessage());
+      die($e->getMessage());
     }
   }
 

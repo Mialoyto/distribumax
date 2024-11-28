@@ -139,7 +139,7 @@ END;
 
 
 DROP PROCEDURE IF EXISTS `sp_buscar_vehiculos`;
-DELIMITER $$;
+
 CREATE PROCEDURE `sp_buscar_vehiculos`(	
     IN _item VARCHAR(50)
 )

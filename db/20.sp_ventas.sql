@@ -1,4 +1,4 @@
--- Active: 1732602331319@@127.0.0.1@3306@distribumax
+-- Active: 1732637704938@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR VENTAS
@@ -22,7 +22,6 @@ CREATE PROCEDURE `sp_registrar_venta`(
     (_idpedido,_idusuario,_idtipocomprobante,_fecha_venta,_subtotal, _descuento,_igv,_total_venta);
     SELECT  last_insert_id() AS idventa;
 END;
-
 
 -- ACTUALIZAR VENTAS
 
@@ -355,7 +354,7 @@ BEGIN
         p.idpedido DESC;
 END ;
 
---  TODO: PROCEDIMIENTO PARA OBTENER UNA VENTA POR ID	
+--  TODO: PROCEDIMIENTO PARA OBTENER UNA VENTA POR ID
 DROP PROCEDURE IF EXISTS `sp_getById_venta`;
 
 CREATE PROCEDURE `sp_getById_venta` (IN _idventa   INT)
@@ -408,11 +407,13 @@ BEGIN
 END;
 
 -- TODO: PROCEDIMIENTO PARA OBTENER LAS VENTAS POR PROVINCIA (ZONA DE DISTRIBUCIÓN)
+
 DROP PROCEDURE IF EXISTS sp_getventas;
 
 CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
 BEGIN
-    SELECT 
+    SELECT
+        VE.idventa,
         PO.idproducto,
         PRO.idempresa,
         PO.codigo,
@@ -429,9 +430,9 @@ BEGIN
     LEFT JOIN unidades_medidas UNM ON UNM.idunidadmedida = PO.idunidadmedida
     LEFT JOIN clientes CLI ON CLI.idcliente = PE.idcliente
     LEFT JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
-    LEFT JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
-    LEFT JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
     LEFT JOIN empresas EMP ON EMP.idempresaruc = CLI.idempresa
+    LEFT JOIN distritos DIS ON DIS.iddistrito = COALESCE(PERS.iddistrito, EMP.iddistrito)
+    LEFT JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
     LEFT JOIN proveedores PRO ON PRO.idproveedor = PO.idproveedor
     WHERE (
         (_provincia IS NULL OR _provincia = '')
@@ -439,6 +440,7 @@ BEGIN
     )
     AND VE.condicion = 'pendiente'
     GROUP BY 
+        VE.idventa,
         PO.idproducto,
         PO.codigo,
         PO.nombreproducto,
@@ -450,41 +452,10 @@ BEGIN
         PO.nombreproducto;
 END;
 
-SELECT * FROM PROVINCIAS WHERE PROVINCIA = 'CHINCHA';
-
-
-/* DROP PROCEDURE IF EXISTS sp_getProvinciaVentas;
-DELIMITER $$
-CREATE PROCEDURE sp_getProvinciaVentas(IN _provincia VARCHAR(100))
-BEGIN
-    SELECT 
-        PROV.provincia,
-        COUNT(DISTINCT VE.idventa) as total_ventas,
-        COUNT(DISTINCT PO.idproducto) as total_productos,
-        SUM(DP.cantidad_producto) AS cantidad_total_productos,
-        SUM(VE.total_venta) AS monto_total_ventas
-    FROM ventas VE
-    INNER JOIN pedidos PE ON PE.idpedido = VE.idpedido
-    INNER JOIN detalle_pedidos DP ON DP.idpedido = PE.idpedido
-    INNER JOIN productos PO ON PO.idproducto = DP.idproducto
-    INNER JOIN clientes CLI ON CLI.idcliente = PE.idcliente
-    INNER JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
-    INNER JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
-    INNER JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
-    WHERE VE.condicion = 'pendiente'
-    AND (
-        _provincia IS NULL 
-        OR PROV.provincia LIKE CONCAT('%', _provincia, '%')
-    )
-    GROUP BY 
-        PROV.provincia
-    HAVING 
-        COUNT(VE.idventa) > 0
-    ORDER BY 
-        PROV.provincia;
-END; */
+CALL sp_getventas ('chincha');
 
 -- TODO: LISTAR LAS PROVINCIAS DONDE LAS VENTAS ESTE PENDIENTES
+
 DROP PROCEDURE IF EXISTS sp_getListProvinciaVentas;
 
 CREATE PROCEDURE sp_getListProvinciaVentas()
@@ -499,6 +470,30 @@ BEGIN
     INNER JOIN clientes CLI ON CLI.idcliente = PE.idcliente
     INNER JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
     INNER JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
+    INNER JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
+    WHERE VE.condicion = 'pendiente'
+    GROUP BY 
+        PROV.provincia
+    HAVING 
+        COUNT(VE.idventa) > 0
+    ORDER BY 
+        PROV.provincia;
+END;
+
+CALL sp_getListProvinciaVentas ();
+
+DROP PROCEDURE IF EXISTS sp_getListProvinciaVentas;
+
+CREATE PROCEDURE sp_getListProvinciaVentas()
+BEGIN
+    SELECT 
+        PROV.provincia
+    FROM ventas VE
+    INNER JOIN pedidos PE ON PE.idpedido = VE.idpedido
+    INNER JOIN clientes CLI ON CLI.idcliente = PE.idcliente
+    LEFT JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
+    LEFT JOIN empresas EMP ON EMP.idempresaruc = CLI.idempresa
+    INNER JOIN distritos DIS ON DIS.iddistrito = COALESCE(PERS.iddistrito, EMP.iddistrito)
     INNER JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
     WHERE VE.condicion = 'pendiente'
     GROUP BY 

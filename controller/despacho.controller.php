@@ -9,7 +9,7 @@ if (isset($_POST['operation'])) {
   switch ($_POST['operation']) {
     case 'addDespacho':
       $datos = [
-        'status' => 0,
+        'status' => false,
         'message' => ''
       ];
 
@@ -22,22 +22,29 @@ if (isset($_POST['operation'])) {
           $datos['message'] = 'La fecha de despacho no puede ser menor o igual a la fecha actual';
           echo json_encode($datos);
           return;
+        }
+        // Validar fin de semana
+        $diaSemana = date('N', strtotime($fecha_despacho));
+        if ($diaSemana > 6) {
+          $datos['message'] = 'No se pueden programar despachos en fin de semana';
+          echo json_encode($datos);
+          return;
+        }
+        $dataEnviar = [
+          'idvehiculo' => $idvehiculo,
+          'idusuario' => $idusuario,
+          'fecha_despacho' => $fecha_despacho
+        ];
+        $response = $despacho->addDespacho($dataEnviar);
+        // echo $response ? true : false;
+        if (!$response) {
+          $datos['message'] = 'Error al registrar el despacho';
+          echo json_encode($datos);
         } else {
-          $dataEnviar = [
-            'idvehiculo' => $idvehiculo,
-            'idusuario' => $idusuario,
-            'fecha_despacho' => $fecha_despacho
-          ];
-          $response = $despacho->addDespacho($dataEnviar);
-
-          if (!$response) {
-            $datos['message'] = 'Error al registrar el despacho';
-            echo json_encode($datos);
-          } else {
-            $datos['status'] = 1;
-            $datos['message'] = 'Despacho registrado correctamente';
-            echo json_encode($datos);
-          }
+          $datos['status'] = true;
+          $datos['message'] = 'Despacho registrado correctamente';
+          $datos['iddespacho'] = $response;
+          echo json_encode($datos);
         }
       } else {
         $datos['message'] = 'Faltan datos';

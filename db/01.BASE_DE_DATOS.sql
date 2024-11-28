@@ -1,7 +1,6 @@
 -- Active: 1732637704938@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
-select * from marcas;
 CREATE DATABASE distribumax;
 
 USE distribumax;

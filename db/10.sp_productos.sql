@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -153,13 +153,23 @@ END;
 CALL sp_get_codigo_producto('AJI-SZ-001');
 -- LISTAR PRODUCTOS
 
+
+DROP PROCEDURE IF EXISTS sp_listar_productos;
 CREATE PROCEDURE sp_listar_productos()
 BEGIN
     SELECT 
         m.marca,
         c.categoria,
         p.nombreproducto,
-        p.codigo
+        p.codigo,
+        CASE p.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS estado,
+        CASE p.estado
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS `status`
     FROM 
         productos p
     JOIN 

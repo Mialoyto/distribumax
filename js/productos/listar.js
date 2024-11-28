@@ -13,12 +13,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (data.length > 0) {
         data.forEach(element => {
+          const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
+          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+          const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
           Tablaproductos.innerHTML += `
                   <tr>
                       <td>${element.marca}</td>
                       <td>${element.categoria}</td>
                       <td>${element.nombreproducto}</td>
                       <td>${element.codigo}</td>
+                      <td><strong class="${estadoClass}"></strong>${element.estado}</td>
                       <td>
                           <a href="#" class="btn btn-warning">
                               <i class="bi bi-pencil-fill"></i>
@@ -43,9 +47,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           });
         });
+        RenderDatatable();
       } else {
         Tablaproductos.innerHTML = '<tr><td colspan="5" class="text-center">No hay datos disponibles</td></tr>';
       }
+      
     } catch (error) {
       console.error("Error al cargar productos:", error);
     }
@@ -78,13 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Función para inicializar DataTable
   function RenderDatatable() {
     dtproductos = new DataTable("#table-productos", {
-      columnDefs: [
-        { width: "10%", targets: 0 },
-        { width: "10%", targets: 1 },
-        { width: "10%", targets: 2 },
-        { width: "5%", targets: 3 },
-        { width: "5%", targets: 4 }
-      ],
+     
       language: {
         "sEmptyTable": "No hay datos disponibles en la tabla",
         "info": "",

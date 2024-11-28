@@ -90,7 +90,7 @@ class Proveedor extends Conexion
     public function getProveedor($params = [])
     {
         try {
-            $tsql = "CALL sp_search_proveedor (?)";
+            $tsql = "CALL sp_buscar_proveedor (?)";
             $query = $this->pdo->prepare($tsql);
             $query->execute(
                 array(

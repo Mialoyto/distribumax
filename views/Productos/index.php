@@ -1,7 +1,12 @@
 <?php require_once '../header.php';?>
 <?php require_once '../../app/config/App.php' ?>
 <main>
-    <div class="card mb-4">
+<div class="container-fluid px-4">
+    <h1>Productos</h1>
+      <ol class="breadcrumb mb-4">
+         <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
+      </ol>
+      <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
             Listado de Productos
@@ -25,6 +30,7 @@
                             <th>Categoría</th>
                             <th>Nombre del Producto</th>
                             <th>Código</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -38,6 +44,9 @@
             </div>
         </div>
     </div>
+
+      
+   </div>
 </main>
 <script src="http://localhost/distribumax/js/productos/listar.js"></script>
 <?php require_once '../footer.php'; ?>

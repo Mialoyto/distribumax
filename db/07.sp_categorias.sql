@@ -92,7 +92,6 @@ BEGIN
     END IF;
 
     SELECT v_estado AS estado, v_mensaje AS mensaje;
-
 END;
 -- SELECT * FROM categorias;
 -- CALL sp_desactivar_categoria (0, 1);

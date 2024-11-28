@@ -51,4 +51,40 @@ class Marca extends Conexion
             die($e->getMessage());
         }
     }
+
+    public function updateMarca($params = []): array
+    {
+        try{
+            $tsql = "CALL sp_actualizar_marca(?,?)";
+            $query = $this->pdo->prepare($tsql);
+            $query->execute(
+                array(
+                    $params['idmarca'],
+                    $params['marca']
+                )
+            );
+            $response = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $response;
+        } catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function updateEstado($params = [])
+    {
+        try{
+            $sql = "CALL sp_update_estado_marca(?,?)";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(
+                array(
+                    $params['idmarca'],
+                    $params['estado']
+                )
+            );
+            $response = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $response;
+        } catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }

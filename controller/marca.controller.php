@@ -41,5 +41,34 @@ if (isset($_GET['operation'])) {
             $response = $marca->getAll();
             echo json_encode($response);
             break;
+        case 'updateMarca':
+            $idmarca = $_GET['idmarca'];
+            $nombremarca = $_GET['marca'];
+
+            if (empty($idmarca) || empty($marca)){
+                echo json_encode(['status' => 'error', 'message' => 'Faltan datos']);
+                return;
+            } else if(!is_numeric($idmarca)){
+                echo json_encode(['status' => 'error', 'message' => 'El id de la marca debe ser un número']);
+                return;
+            } else{
+                $datos = [
+                    'idmarca' => $idmarca,
+                    'marca'   => $marca
+                ];
+                $response = $marca->updateMarca($datos);
+                echo json_encode($response);
+            }
+            break;
+        case 'updateEstado':
+            $idmarca = $_GET['idmarca'];
+            $estado = $_GET['estado'];
+            $datos = [
+                'idmarca' => $idmarca,
+                'estado'  => $estado
+            ];
+            $response = $marca->updateEstado($datos);
+            echo json_encode($response);
+            break;
     }
 }

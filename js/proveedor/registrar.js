@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   // Helper para simplificar el uso de querySelector
   function $(object = null) {
     return document.querySelector(object);
   }
+
   renderDocumento('.documento');
 
-  // Función para buscar ruc por api
+  // Función para buscar RUC por API
   async function getApiRuc(ruc) {
     try {
       $("#status").classList.remove("d-none");
@@ -19,13 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.hasOwnProperty('message')) {
         showToast("No se encontraron datos", "info", "INFO");
         $("#iddistrito").value = '';
-        $("#razon-social").value = '';
+        $("#proveedor").value = '';
         $("#direccion").value = '';
         document.querySelector('.documento').value = '';
       } else {
-        $("#razon-social").value = data['razonSocial'];
+        $("#proveedor").value = data['razonSocial'];
         $("#direccion").value = data['direccion'];
-        $("#tipodoc").value = 2;
+        $("#idtipodocumento").value = 2;  // Tipo documento 2 por defecto (RUC)
+        addProveedor(true);  // Habilitar los campos
       }
       return data;
     } catch (e) {
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Función para validar los datos y verificar si el proveedor está registrado
   async function validarDatos() {
     const ruc = $("#nro-doc-empresa").value;
     const response = await searchClienteEmpresa(ruc);
@@ -41,22 +43,31 @@ document.addEventListener("DOMContentLoaded", () => {
       if (ruc.length === 0) {
         showToast("Ingrese un número de RUC", "info", "INFO");
         return;
-
       } else if (ruc.length === 11) {
         const data = await getApiRuc(ruc);
         if (data.hasOwnProperty('message')) {
           showToast("No se encontraron datos", "info", "INFO");
-          addCliente(false);
+          addProveedor(false);  // Deshabilitar los campos
         } else {
-          addCliente(true);
+          addProveedor(true);  // Habilitar los campos
         }
       } else {
         showToast("El número de RUC debe tener 11 dígitos", "info", "INFO");
-        addCliente(false);
+        addProveedor(false);  // Deshabilitar los campos
       }
     } else {
-      showToast("El cliente ya se encuentra registrado", "info", "INFO");
-      addCliente(false);
+      // Si el proveedor ya está registrado, muestra los datos
+      showToast("El proveedor ya se encuentra registrado", "info", "INFO");
+      // Cargar los datos del proveedor en los campos del formulario
+      $("#tipodoc").value = response[0].idtipodocumento;
+      $("#iddistrito").value = response[0].distrito;
+      $("#email").value = response[0].email;
+      $("#telefono_contacto").value = response[0].telefono;
+      $("#razon-social").value = response[0].razonsocial;
+      $("#direccion").value = response[0].direccion;
+      
+      // Deshabilitar los campos de edición si ya está registrado
+      addProveedor(false);
     }
   }
 
@@ -64,9 +75,11 @@ document.addEventListener("DOMContentLoaded", () => {
     await validarDatos();
   });
 
-  function addCliente(newdata = false) {
+  // Habilitar/deshabilitar los campos según los datos del proveedor
+  function addProveedor(newdata = false) {
     if (!newdata) {
       $("#email").setAttribute('disabled', true);
+      $("#iddistrito").setAttribute('disabled', true);
       $("#telefono_contacto").setAttribute('disabled', true);
       $("#registrarEmpresa").setAttribute('disabled', true);
     } else {
@@ -85,8 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(`../../controller/empresa.controller.php?${params}`);
-      const data = await response.json();  // Parsear la respuesta como JSON
-      // console.log(data);
+      const data = await response.json();
       if (data.length > 0) {
         $("#tipodoc").value = data[0].idtipodocumento;
         $("#iddistrito").value = data[0].distrito;
@@ -101,17 +113,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Función para registrar la empresa como cliente
-  async function registrarEmpresa() {
+  // Función para registrar la empresa como proveedor
+  async function registrarProveedor() {
     const params = new FormData();
     params.append('operation', 'add');
-    params.append('idtipodocumento', $("#tipodoc").value);
-    params.append('idempresaruc', $("#nro-doc-empresa").value);
-    params.append('iddistrito', iddistrito);
-    params.append('razonsocial', $("#razon-social").value);
-    params.append('direccion', $("#direccion").value);
-    params.append('email', $("#email").value);
-    params.append('telefono', $("#telefono_contacto").value);
+    params.append('idtipodocumento', $("#idtipodocumento").value);  // Tipo de documento
+    params.append('idempresaruc', $("#nro-doc-empresa").value);  // RUC
+    params.append('iddistrito', iddistrito);  // Distrito
+    params.append('razonsocial', $("#proveedor").value);  // Nombre del proveedor
+    params.append('direccion', $("#direccion").value);  // Dirección
+    params.append('email', $("#email").value);  // Email
+    params.append('telefono', $("#telefono_contacto").value);  // Teléfono
 
     const options = {
       method: 'POST',
@@ -123,32 +135,42 @@ document.addEventListener("DOMContentLoaded", () => {
     return data;
   }
 
-  // Función para registrar el cliente
-  async function registrarCliente(idempresa) {
-    let idpersona = $("#nor-doc-persona");
-    idpersona = null;
-    const params = new FormData();
-    params.append('operation', 'addcliente');
-    params.append('idpersona', idpersona); // Asegúrate de que este campo tenga el valor correcto
-    params.append('idempresa', idempresa); // Usa el ID de la empresa que acabas de registrar
-    params.append('tipo_cliente', 'Empresa');
+  // Función para registrar el proveedor
+  async function registrarProveedorFormulario(event) {
+    event.preventDefault();
 
-    const options = {
-      method: 'POST',
-      body: params
-    };
-
-    try {
-      const response = await fetch(`../../controller/cliente.controller.php`, options);
-      const data = await response.json();
-      console.log(data);
-      return data;
-
-    } catch (error) {
-      console.error("Error al registrar el cliente:", error);
+    if (await showConfirm("¿Desea registrar el proveedor?", "Proveedores")) {
+      // Primero, registra el proveedor y espera a que se complete
+      const empresaResponse = await registrarProveedor();
+      console.log(empresaResponse);
+      const id = empresaResponse.idempresa;
+      console.log(id);
+      if (id != 0) {
+        showToast("Proveedor registrado con éxito", "success", "SUCCESS");
+        $("#registrar-empresa").reset();  // Resetear el formulario
+      } else {
+        showToast("No se pudo registrar el proveedor", "error", "ERROR");
+      }
+    } else {
+      console.log("Registro cancelado");
     }
   }
 
+  // Evento para registrar el proveedor
+  $("#registrar-empresa").addEventListener("submit", registrarProveedorFormulario);
+
+  // Evento para limpiar el formulario si el RUC es inválido
+  $("#nro-doc-empresa").addEventListener('input', async () => {
+    if ($("#nro-doc-empresa").value.length !== 11) {
+      $("#proveedor").value = '';
+      $("#direccion").value = '';
+      $("#iddistrito").value = '';
+      $("#email").value = '';
+      $("#telefono_contacto").value = '';
+    }
+  });
+
+  // Función para mostrar los distritos
   const searchDist = async (distrito) => {
     let searchData = new FormData();
     searchData.append('operation', 'searchDistrito');
@@ -156,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const option = {
       method: 'POST',
       body: searchData
-    }
+    };
     try {
       const response = await fetch(`../../controller/distrito.controller.php`, option);
       const data = await response.json();
@@ -197,41 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
     nomdistrito = $("#iddistrito").value.trim();
     await mostraResultados();
     console.log(nomdistrito);
-    // const data = await mostraResultados
-    // console.log(data);
-  });
-
-  // Evento para registrar la empresa o persona
-  $("#registrar-empresa").addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    if (await showConfirm("¿Desea registrar la empresa y el cliente?", "Clientes")) {
-      // Primero, registra la empresa y espera a que se complete
-      const empresaResponse = await registrarEmpresa();
-      console.log(empresaResponse);
-      const id = empresaResponse.idempresa;
-      console.log(id);
-      if (id != 0) {
-        const data = await registrarCliente(id);
-        console.log(data);
-        $("#registrar-empresa").reset();
-        showToast("Cliente registrado con éxito", "success", "SUCCESS");
-      } else {
-        showToast("No se pudo registrar la empresa", "error", "ERROR");
-      }
-    } else {
-      console.log("Registro cancelado");
-    }
-  });
-
-  $("#nro-doc-empresa").addEventListener('input', async () => {
-    if ($("#nro-doc-empresa").value.length !== 11) {
-      $("#razon-social").value = '';
-      $("#direccion").value = '';
-      $("#iddistrito").value = '';
-      $("#email").value = '';
-      $("#telefono_contacto").value = '';
-    }
   });
 
 });

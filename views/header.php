@@ -52,6 +52,7 @@ $host = "http://localhost/distribumax";
 <meta name="description" content="" />
 <meta name="author" content="" />
 <title>Distribumax</title>
+<link rel="icon" type="image/png" href="<?= $host ?>/img/logo2.png" />
 
 <link href="<?= $host ?>/css/styles.css" rel="stylesheet" />
 <link href="<?= $host ?>/css/list.css" rel="stylesheet" />

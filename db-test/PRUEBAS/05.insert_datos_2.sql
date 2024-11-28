@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 
 
 INSERT INTO tipos_promociones (tipopromocion, descripcion)
@@ -39,6 +39,9 @@ select * from usuarios;
 SELECT * FROM despacho_ventas;
 SELECT * FROM ventas;
 select * from despachos;
+
+select * from pedidos;
+SELECT * from tipo_comprobante;
 
 SELECT CURDATE();
 

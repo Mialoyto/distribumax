@@ -57,12 +57,12 @@
         <table id="table-clientes" class="table table-striped" style="width: 100%;">
           <thead>
             <tr>
-              <th class="text-start">ID cliente</th>
+              <th>Documento</th>
               <th>Tipo de Cliente</th>
               <th>Cliente</th>
-              <th class="text-end">Fecha de Creación</th>
+              <th >Fecha de Creación</th>
               <th>Estado</th>
-              <th>Acciones</th>
+              <th class="text-center">Acciones</th>
             </tr>
           </thead>
           <tbody>

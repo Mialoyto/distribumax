@@ -34,12 +34,13 @@ class Usuario extends Conexion
     {
         $idusuario = null;
         try {
-            $tsql = "CALL sp_registrar_usuario (?, ?, ?, ?)";
+            $tsql = "CALL sp_registrar_usuario (?, ?, ?, ?,?)";
             $query = $this->pdo->prepare($tsql);
             $query->execute(
                 array(
                     $params["idpersona"],
-                    $params[" idperfil"],
+                    $params["idperfil"],
+                    $params["perfil"],
                     $params["nombre_usuario"],
                     password_hash($params["password_usuario"], PASSWORD_BCRYPT)
                 )
@@ -107,17 +108,18 @@ class Usuario extends Conexion
             return [];
         }
     }
-    
-    public function updatepassword($params=[]){
-        try{
-            $status=-1;
-            $query=$this->pdo->prepare("CALL sp_actualizar_contraseña (?,?)");
-            $status=$query->execute(array(
+
+    public function updatepassword($params = [])
+    {
+        try {
+            $status = -1;
+            $query = $this->pdo->prepare("CALL sp_actualizar_contraseña (?,?)");
+            $status = $query->execute(array(
                 $params['idusuario'],
                 password_hash($params["password_usuario"], PASSWORD_BCRYPT)
             ));
             return $status;
-        }catch(Exception $e){
+        } catch (Exception $e) {
             die($e->getMessage());
         }
     }

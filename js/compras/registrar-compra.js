@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const proveedor = document.querySelector("#searchProveedor");
   const producto = document.querySelector("#searchProducto");
+  const listProduct = document.querySelector("#listProduct");
   let inputProveedor;
 
   async function getProveedor(proveedor) {
@@ -68,6 +69,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const inputProducto = producto.value.trim();
     const data = await getProductosProveedor(id, inputProducto)
     console.log(data)
+    const existe = data.length;
+    if (existe) {
+      listProduct.innerHTML = '';
+      data.forEach(producto => {
+        // console.log(producto)
+        const li = document.createElement("li")
+        li.classList.add('list-group-item', 'list-group-item-action')
+        li.textContent = producto.producto
+        listProduct.appendChild(li)
+        // listProduct.innerHTML= '';
+      });
+    } else {
+      listProduct.innerHTML = '';
+      const li = document.createElement("li")
+      li.classList.add('list-group-item', 'list-group-item-action')
+      li.innerHTML = '<strong>Producto no encontrado</strong>'
+      listProduct.appendChild(li)
+    }
 
   }
 

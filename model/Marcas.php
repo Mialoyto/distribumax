@@ -38,15 +38,18 @@ class Marca extends Conexion
         }
     }
 
-    public function getMarca($params = []): array
+    public function getMarcaById($params = []): array
     {
         try {
-            $sql = "CALL sp_getMarcas(?)";
+            $sql = "CALL sp_getMarca(?)";
             $query = $this->pdo->prepare($sql);
-            $query->execute(array(
-                $params['id']
-            ));
-            return $query->fetchAll(PDO::FETCH_ASSOC);
+            $query->execute(
+                array(
+                    $params['idmarca']
+                )
+            );
+            $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
         } catch (Exception $e) {
             die($e->getMessage());
         }
@@ -54,7 +57,7 @@ class Marca extends Conexion
 
     public function updateMarca($params = []): array
     {
-        try{
+        try {
             $tsql = "CALL sp_actualizar_marca(?,?)";
             $query = $this->pdo->prepare($tsql);
             $query->execute(
@@ -65,14 +68,14 @@ class Marca extends Conexion
             );
             $response = $query->fetchAll(PDO::FETCH_ASSOC);
             return $response;
-        } catch(Exception $e){
+        } catch (Exception $e) {
             die($e->getMessage());
         }
     }
 
     public function updateEstado($params = [])
     {
-        try{
+        try {
             $sql = "CALL sp_update_estado_marca(?,?)";
             $query = $this->pdo->prepare($sql);
             $query->execute(
@@ -83,7 +86,7 @@ class Marca extends Conexion
             );
             $response = $query->fetchAll(PDO::FETCH_ASSOC);
             return $response;
-        } catch(Exception $e){
+        } catch (Exception $e) {
             die($e->getMessage());
         }
     }

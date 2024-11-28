@@ -28,22 +28,25 @@ if (isset($_POST['operation'])) {
             break;
     }
 }
+
 if (isset($_GET['operation'])) {
     switch ($_GET['operation']) {
-        case 'getMarcas':
-            $dataEnviar = [
-                'id' => $_GET['id']
-            ];
-            $datosRecibidos = $marca->getMarca($dataEnviar);
-            echo json_encode(['marcas' => $datosRecibidos]);
-            break;
         case 'getAll':
             $response = $marca->getAll();
             echo json_encode($response);
             break;
+        
+        case 'getMarcaById':
+            $datos = [
+                'idmarca' => $_GET['idmarca']
+            ];
+            $response = $marca->getMarcaById($datos);
+            echo json_encode($response);
+            break;
+
         case 'updateMarca':
             $idmarca = $_GET['idmarca'];
-            $nombremarca = $_GET['marca'];
+            $marca = $_GET['marca'];
 
             if (empty($idmarca) || empty($marca)){
                 echo json_encode(['status' => 'error', 'message' => 'Faltan datos']);
@@ -72,3 +75,4 @@ if (isset($_GET['operation'])) {
             break;
     }
 }
+

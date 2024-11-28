@@ -1,13 +1,9 @@
--- Active: 1731562917822@@127.0.0.1@3306@distribumax
+-- Active: 1732798376350@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
-
-select * from marcas;
 CREATE DATABASE distribumax;
-
 USE distribumax;
 -- -----------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS departamentos;
-
 CREATE TABLE departamentos (
     iddepartamento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     departamento VARCHAR(250) NOT NULL,
@@ -19,7 +15,6 @@ CREATE TABLE departamentos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS provincias;
-
 CREATE TABLE provincias (
     idprovincia INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     iddepartamento INT NOT NULL,
@@ -32,7 +27,6 @@ CREATE TABLE provincias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS distritos;
-
 CREATE TABLE distritos (
     iddistrito INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idprovincia INT NOT NULL,
@@ -45,7 +39,6 @@ CREATE TABLE distritos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS categorias;
-
 CREATE TABLE categorias (
     idcategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     categoria VARCHAR(150) NOT NULL,
@@ -57,7 +50,6 @@ CREATE TABLE categorias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS subcategorias;
-
 CREATE TABLE subcategorias (
     idsubcategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idcategoria INT NOT NULL,
@@ -71,7 +63,6 @@ CREATE TABLE subcategorias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS tipo_comprobante_pago;
-
 CREATE TABLE tipo_comprobante_pago (
     idtipocomprobante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     comprobantepago VARCHAR(150) NOT NULL,
@@ -84,7 +75,6 @@ CREATE TABLE tipo_comprobante_pago (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS metodos_pago;
-
 CREATE TABLE metodos_pago (
     idmetodopago INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     metodopago VARCHAR(150) NOT NULL,
@@ -96,7 +86,6 @@ CREATE TABLE metodos_pago (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS accesos;
-
 CREATE TABLE accesos (
     idacceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     modulo VARCHAR(100) NOT NULL,
@@ -108,7 +97,6 @@ CREATE TABLE accesos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS tipo_documento;
-
 CREATE TABLE tipo_documento (
     idtipodocumento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     documento CHAR(6) NOT NULL,
@@ -121,7 +109,6 @@ CREATE TABLE tipo_documento (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS personas;
-
 CREATE TABLE personas (
     idtipodocumento INT NOT NULL,
     idpersonanrodoc CHAR(11) NOT NULL PRIMARY KEY,
@@ -143,7 +130,6 @@ CREATE TABLE personas (
 
 /* modificaciones en la base tabla tipo doc por defecto la empresas se registraran con ruc */
 DROP TABLES IF EXISTS empresas;
-
 CREATE TABLE empresas (
     idtipodocumento INT NOT NULL,
     idempresaruc BIGINT NOT NULL PRIMARY KEY,
@@ -173,7 +159,6 @@ CREATE TABLE perfiles (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS usuarios;
-
 CREATE TABLE usuarios (
     idusuario INT PRIMARY KEY AUTO_INCREMENT,
     idpersona CHAR(11) NOT NULL,
@@ -190,10 +175,7 @@ CREATE TABLE usuarios (
     CONSTRAINT fk_idperfil_usu FOREIGN KEY (idperfil) REFERENCES perfiles (idperfil)
 ) ENGINE = INNODB;
 
-SELECT * FROM usuarios;
-
 DROP TABLES IF EXISTS clientes;
-
 CREATE TABLE clientes (
     idcliente INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idpersona CHAR(11) DEFAULT NULL,
@@ -213,7 +195,6 @@ CREATE TABLE clientes (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS proveedores;
-
 CREATE TABLE proveedores (
     idproveedor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idempresa BIGINT NOT NULL,

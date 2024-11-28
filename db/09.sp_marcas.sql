@@ -1,4 +1,4 @@
--- Active: 1731562917822@@127.0.0.1@3306@distribumax
+-- Active: 1732798376350@@127.0.0.1@3306
 USE distribumax;
 
 -- REGISTRAR MARCAS
@@ -72,22 +72,18 @@ END;
 --     WHERE idmarca = _idmarca;
 -- END;
 
--- DROP PROCEDURE IF EXISTS sp_getMarcas;
-
-CREATE PROCEDURE sp_getMarcas (
-    IN _idproveedor   VARCHAR(100)
-    )
+DROP PROCEDURE IF EXISTS sp_getMarcas;
+CREATE PROCEDURE sp_getMarcas 
+(IN    _idmarca INT)
 BEGIN
 SELECT 
     MAR.idmarca, 
     MAR.marca
 FROM marcas MAR
-    RIGHT JOIN proveedores PRO ON MAR.idproveedor = PRO.idproveedor
-WHERE
-    PRO.idproveedor = _idproveedor
-    AND MAR.estado = 1
-ORDER BY MAR.marca ASC;
+WHERE MAR.idmarca = _idmarca;
 END;
+
+CALL sp_getMarcas(1);
 
 -- LISTAR MARCAS
 -- CREATE VIEW vw_listar_marcas AS
@@ -100,15 +96,21 @@ DROP PROCEDURE IF EXISTS sp_listar_marcas;
 CREATE PROCEDURE sp_listar_marcas()
 BEGIN
     SELECT 
+        MAR.idmarca AS id,
         MAR.marca,  -- Nombre de la marca
         CASE MAR.estado
             WHEN '1' THEN 'Activo'   
             WHEN '0' THEN 'Inactivo'
-        END AS estado_marca        
-    FROM 
-        marcas MAR
-    ORDER BY MAR.marca ASC; 
+        END AS 'estado',
+        CASE MAR.estado 
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS 'status'
+    FROM marcas MAR
+    ORDER BY MAR.marca ASC;
 END;
+
+CALL sp_listar_marcas();
 
 
 
@@ -151,4 +153,17 @@ BEGIN
     SELECT v_estado AS estado, v_mensaje AS mensaje;
 END;
 
-CALL sp_update_estado_marca(3,'0');
+CALL sp_update_estado_marca(3,'1');
+
+DROP PROCEDURE IF EXISTS sp_getMarca;
+CREATE PROCEDURE sp_getMarca
+(IN _idmarca INT)
+BEGIN 
+    SELECT
+        MAR.idmarca,
+        MAR.marca
+    FROM marcas MAR
+    WHERE MAR.idmarca = _idmarca;
+END;
+
+CALL sp_getMarca(1);

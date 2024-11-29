@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const producto = document.querySelector("#searchProducto");
   const listProduct = document.querySelector("#listProduct");
+  const list = document.querySelector('#listProveedor');
   let inputProveedor;
 
   // ? DATOS PARA REGISTRAR COMPRA
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // TODO:renderizar lista de proveedores (OK)
   async function renderListProveedor() {
-    const list = document.querySelector('#listProveedor');
+
     inputProveedor = proveedor.value.trim();
     const data = await getProveedor(inputProveedor);
     list.innerHTML = '';
@@ -47,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const li = document.createElement('li');
         li.classList.add('list-group-item', 'list-group-item-action');
         li.textContent = element.proveedor;
-        li.addEventListener('click', function () {
+        li.addEventListener('mousedown', function () {
           proveedor.setAttribute('id-proveedor', element.idproveedor);
           proveedor.value = element.proveedor;
           list.innerHTML = '';
@@ -84,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
       data.forEach(item => {
         // console.log(producto)
         const li = document.createElement("li")
+        li.classList.remove
         li.classList.add('list-group-item', 'list-group-item-action')
         li.innerHTML =
           `
@@ -176,8 +178,10 @@ document.addEventListener('DOMContentLoaded', function () {
     tbody.appendChild(row);
 
     // eliminar fila de la tabla
-    row.querySelector('.eliminar-fila').addEventListener('click', function () {
-      row.remove();
+    row.querySelector('.eliminar-fila').addEventListener('click', async  function () {
+      if (await showConfirm('¿Desea eliminar este producto de la compra?')) {
+        row.remove();
+      }
     });
     const inputCantidad = row.querySelector('.cantidad');
     const inputPrecio = row.querySelector('.precio');
@@ -200,8 +204,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     inputCantidad.addEventListener('input', calcularTotal);
     inputPrecio.addEventListener('input', calcularTotal);
-
-
   }
 
   // TODO: FUNCION PARA REGISTRAR COMPRA (OK)
@@ -290,38 +292,65 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  function validarTabla() {
+    const rows = document.querySelectorAll('#table-productos tbody tr');
+    if (rows.length === 0) {
+      showToast('Para registrar una compra agregue productos', 'info', 'INFO');
+      return false;
+    }
+    return true;
+
+  }
 
   // TODO: EVENTO PARA REGISTRAR COMPRA
   formCompras.addEventListener('submit', async function (e) {
     e.preventDefault();
-    const tbody = document.querySelector("#table-productos tbody");
-    const row = tbody.querySelectorAll('tr');
-    console.log(row.length ? true : false);
-    if (!row) {
-      showToast('No se han agregado productos a la compra', 'info', 'INFO');
+
+    if (!validarTabla()) {
       return;
     }
 
     if (await showConfirm('¿Desea Registrar esta compra?')) {
-      showToast('Eliminado', 'success', 'INFO');
       const data = await addCompra();
-      if(data.status){
+      if (data.status) {
         const idcompra = data.idcompra;
         const detalle = await addDetalleCompra(idcompra);
-        if(detalle.status){
-          showToast('Compra registrada con exito', 'success', 'INFO');
-          // formCompras.reset();
-          // tbody.innerHTML = '';
-        }else{
+        if (detalle.status) {
+          showToast(`${detalle.message}`, 'success', 'SUCCESS');
+          formCompras.reset();
+          const tbody = document.querySelector("#table-productos tbody");
+          tbody.innerHTML = '';
+          
+        } else {
           showToast('Error al registrar la compra', 'error', 'ERROR');
         }
       }
-      
     }
-
   });
 
 
+  // TODO: EVENTO PARA OCULTAR LAS LISTAS
+  // Agregar eventos para controlar visibilidad
+  producto.addEventListener('focus', () => {
+    listProduct.classList.remove('d-none');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!listProduct.contains(e.target) && e.target !== producto) {
+      listProduct.classList.add('d-none');
+    }
+  });
+
+  // Agregar eventos para controlar visibilidad de proveedores
+  proveedor.addEventListener('focus', () => {
+    list.classList.remove('d-none');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!list.contains(e.target) && e.target !== proveedor) {
+      list.classList.add('d-none');
+    }
+  });
 
 
   // addProductoTabla(1, 'producto', 'unidadMedida');

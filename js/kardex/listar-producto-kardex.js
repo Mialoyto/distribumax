@@ -37,12 +37,13 @@ async function RenderDatatable(data) {
     paging: false,
     data: data,
     columns: [
-      { data: 'lote', width: "15%", className: "text-start", title: "Producto" },
-      { data: 'producto', width: "15%", className: "text-start", title: "Fecha Vencimiento" },
-      { data: 'tipomovimiento', width: "20%", className: "text-start", title: "Lote" },
-      { data: 'motivo', width: "30%", className: "text-start", title: "Cantidad" },
-      { data: 'cantidad', width: "10%", className: "text-start", title: "Tipo Movimiento" },
-      { data: 'stockactual', width: "10%", className: "text-start", title: "Motivo" },
+      // { data: 'lote', width: "30%", className: "text-start", title: "Lote" },
+      { data: 'producto', width: "20%", className: "text-start", title: "Producto" },
+      { data: 'tipomovimiento', width: "15%", className: "text-start", title: "Tipo Movimiento" },
+      { data: 'fechaMovimiento', width: "15%", className: "text-start", title: "Fecha" },
+      { data: 'motivo', width: "20%", className: "text-start", title: "Motivo" },
+      { data: 'cantidad', width: "10%", className: "text-start", title: "Cantidad" },
+      { data: 'stockactual', width: "10%", className: "text-start", title: "Stock actual" },
     ],
     language: {
       emptyTable: "No hay datos disponibles en la tabla",
@@ -61,7 +62,3 @@ async function RenderDatatable(data) {
   });
 }
 
-// Ejemplo de uso:
-// const idproducto = 1;
-// getMovimientoProducto(idproducto)
-//   .then(data => RenderDatatable(data));

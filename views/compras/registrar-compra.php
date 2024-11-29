@@ -173,8 +173,8 @@
         </div>
         <div class="card-footer mt-3">
           <!-- Botones -->
-          <div class="d-flex justify-content-between mt-3">
-            <a href="index.php" class="btn btn-primary mt-3 text-end">Listar Kardex</a>
+          <div class="mt-2 mb-2">
+            <!-- <a href="index.php" class="btn btn-primary mt-3 text-end">Listar Kardex</a> -->
             <div class="d-flex justify-content-end mt-3">
               <button type="submit" class="btn btn-primary me-2">Registrar</button>
               <button type="reset" class="btn btn-secondary" id="btnCancelar">Cancelar</button>

@@ -1,4 +1,4 @@
--- Active: 1728549444267@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- Procedimiento para obtener el último stock
 DROP PROCEDURE IF EXISTS getultimostock;
@@ -181,10 +181,12 @@ BEGIN
     KAR.tipomovimiento,
     KAR.motivo,
     KAR.cantidad,
-    KAR.stockactual
+    KAR.stockactual,
+    KAR.create_at AS fechaMovimiento
 FROM kardex KAR
     INNER JOIN lotes LOT ON KAR.idlote = LOT.idlote
     INNER JOIN productos PRO ON LOT.idproducto = PRO.idproducto
 WHERE KAR.idproducto = _idproducto ORDER BY KAR.idkardex DESC LIMIT 10;
 END;
 -- CALL spu_list_idproducto(8);
+SELECT * FROM kardex WHERE idproducto = 8;

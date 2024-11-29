@@ -139,4 +139,13 @@ class Ventas extends Conexion
 			die($e->getMessage());
 		}
 	}
+	public function ventastotales(){
+		try{
+			$query=$this->pdo->prepare("CALL sp_Ventastotales");
+			$query->execute();
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		}catch(Exception $e){
+			die($e->getMessage());
+		}
+	}
 }

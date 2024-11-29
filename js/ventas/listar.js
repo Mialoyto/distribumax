@@ -239,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Filtrar ventas por fecha cuando se seleccione una nueva fecha
-    $("#filtrar").addEventListener("click", () => {
+    $("#fecha-venta").addEventListener("input", () => {
         const fechaSeleccionada = $("#fecha-venta").value;
        CargarDatos(fechaSeleccionada);
         

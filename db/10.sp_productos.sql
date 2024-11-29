@@ -1,4 +1,4 @@
--- Active: 1732807506399@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -217,6 +217,7 @@ DROP PROCEDURE IF EXISTS sp_obtener_producto;
 CREATE PROCEDURE sp_obtener_producto (IN _idproducto INT)
 BEGIN
     SELECT 
+        pr.idproveedor,
         p.idproducto,
         m.marca,
         m.idmarca,
@@ -225,6 +226,7 @@ BEGIN
         sb.subcategoria,
         sb.idsubcategoria,
         p.nombreproducto,
+        p.cantidad_presentacion,
         p.codigo,
         p.precio_compra,
         p.precio_mayorista,
@@ -242,6 +244,7 @@ BEGIN
        subcategorias sb ON c.idcategoria=sb.idsubcategoria
     JOIN 
         unidades_medidas um ON p.idunidadmedida = um.idunidadmedida
+    JOIN proveedores pr ON p.idproveedor = pr.idproveedor
     WHERE 
         p.idproducto = _idproducto
         AND p.estado = '1';

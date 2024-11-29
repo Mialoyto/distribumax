@@ -79,6 +79,16 @@ if (isset($_GET['operation'])) {
         ];
         echo json_encode($venta->ventasDay($dato));
       break;
+      case'ventastotales':
+        if (isset($_GET['fecha']) && !empty($_GET['fecha'])) {
+          // Si se pasa la fecha, se filtra por fecha
+          $dato = ['fecha' => $_GET['fecha']];
+          echo json_encode($venta->ventasDay($dato)); // Llama a listar ventas por fecha
+        } else {
+          // Si no se pasa fecha, se listan todas las ventas
+          echo json_encode($venta->ventastotales());
+        }
+      break;
   }
 }
 

@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const estadoClass = element.estado_marca === "Activo" ? "text-success" : "text-danger";
                     const icons = element.estado_marca === "Activo" ? "bi bi-toggle2-on fs-7" : "bi bi-toggle2-off fs-7";
                     const bgbtn = element.estado_marca === "Activo" ? "btn-success" : "btn-danger";
-                    
+
                     tableContent += `
                         <tr>
                             <td>${element.marca}</td>
@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             RenderDatatableMarcas();
+
         } catch (error) {
             console.error("Error al cargar las marcas:", error);
         }

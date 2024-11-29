@@ -1,4 +1,4 @@
--- Active: 1732637704938@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
@@ -82,6 +82,7 @@ CREATE TABLE tipo_comprobante_pago (
     CONSTRAINT fk_estado_tip_comp_pag CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
+SELECT *  FROM tipo_comprobante_pago;
 DROP TABLE IF EXISTS metodos_pago;
 
 CREATE TABLE metodos_pago (
@@ -607,6 +608,48 @@ CREATE TABLE comprobantes (
     CONSTRAINT fk_idventa_comp FOREIGN KEY (idventa) REFERENCES ventas (idventa),
     CONSTRAINT fk_estado_comp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
+
+
+CREATE TABLE compras (
+    idcompra  INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idusuario INT NOT NULL,
+    idproveedor INT NOT NULL,
+    idtipocomprobante INT NOT NULL,
+    numcomprobante VARCHAR(100) NOT NULL,
+    fechaemision DATETIME NOT NULL DEFAULT NOW(),
+    create_at   DATETIME NOT NULL DEFAULT NOW(),
+    update_at   DATETIME NULL,
+    estado CHAR(1) NOT NULL DEFAULT "1",
+
+    CONSTRAINT fk_idusuario_compra FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
+    CONSTRAINT fk_idproveedor_compra FOREIGN KEY (idproveedor) REFERENCES proveedores (idproveedor),
+    CONSTRAINT fk_idtipocomprobante_compra FOREIGN KEY (idtipocomprobante) REFERENCES tipo_comprobante_pago (idtipocomprobante),
+    CONSTRAINT fk_estado_compra CHECK (estado IN ("0", "1"))
+    -- CONSTRAINT ck_numero_comprobante_compra UNIQUE (idproveedor AND numcomprobante)
+) ENGINE = INNODB;
+
+CREATE TABLE detalles_compras(
+    iddetallecompra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idcompra INT NOT NULL,
+    idlote INT NOT NULL,
+    idproducto INT NOT NULL,
+    cantidad INT NOT NULL,
+    precio_compra DECIMAL(10, 2) NOT NULL,
+    subtotal DECIMAL(10, 2) NOT NULL,
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    update_at DATETIME NULL,
+    estado CHAR(1) NOT NULL DEFAULT "1",
+
+    CONSTRAINT fk_idcompra_det_compra FOREIGN KEY (idcompra) REFERENCES compras (idcompra),
+    CONSTRAINT fk_nrolote_det_compra FOREIGN KEY (idlote) REFERENCES lotes (idlote),
+    CONSTRAINT fk_idproducto_det_compra FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
+    CONSTRAINT ck_cantidad_det_compra CHECK (cantidad > 0),
+    CONSTRAINT ck_precio_unitario_det_compra CHECK (precio_compra  > 0),
+    CONSTRAINT ck_subtotal_det_compra CHECK (subtotal > 0),
+    CONSTRAINT fk_estado_det_compra CHECK (estado IN ("0", "1"))
+)
+ENGINE = INNODB;
+
 -- ------------------------------------------------------------------------------------------------------
 -- TODO: NUEVAS TABLAS
 -- CREANDO NUEVAS TABLAS PARA QUE FUNCIONE LOS PERMISOS

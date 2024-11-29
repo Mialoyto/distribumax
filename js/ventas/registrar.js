@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Cargar tipos de comprobantes
+
   (() => {
     fetch(`../../controller/comprobante.controller.php?operation=getAll`)
       .then(response => response.json())

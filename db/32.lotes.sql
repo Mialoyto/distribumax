@@ -1,6 +1,6 @@
 -- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
-
+-- TODO: REGISTRAR LOTES (OK)
 DROP PROCEDURE IF EXISTS sp_registrar_lote;
 
 CREATE PROCEDURE sp_registrar_lote(
@@ -28,7 +28,9 @@ BEGIN
     END IF;
 END;
 
--- Trigger para validar y establecer estado inicial
+
+
+-- TODO: TRIGGERS PARA ACTUALIZAR ESTADO DE LOTES Y VALIDAR FECHA DE VENCIMIENTO
 DROP TRIGGER IF EXISTS before_insert_lotes;
 CREATE TRIGGER before_insert_lotes
 BEFORE INSERT ON lotes

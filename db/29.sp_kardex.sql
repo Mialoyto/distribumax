@@ -188,5 +188,3 @@ FROM kardex KAR
 WHERE KAR.idproducto = _idproducto ORDER BY KAR.idkardex DESC LIMIT 10;
 END;
 -- CALL spu_list_idproducto(8);
-
-select * from lotes;

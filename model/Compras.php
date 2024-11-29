@@ -28,4 +28,63 @@ class Compras extends Conexion
       die($e->getMessage());
     }
   }
+
+  public function addCompra($params = [])
+  {
+    try {
+      $tsql = "CALL sp_registrar_compra (?,?,?,?,?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(
+        array(
+          $params['idusuario'],
+          $params['idproveedor'],
+          $params['idcomprobante'],
+          $params['numcomprobante'],
+          $params['fechaemision']
+        )
+      );
+      $response = $query->fetch(PDO::FETCH_ASSOC);
+      return $response['idcompra'];
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+
+
+  public function addDetalleCompra($params = [])
+  {
+    try {
+      $tsql = "CALL sp_registrar_detalle_compra (?,?,?,?,?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(
+        array(
+          $params['idcompra'],
+          $params['idlote'],
+          $params['idproducto'],
+          $params['cantidad'],
+          $params['preciocompra']
+        )
+      );
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 }
+
+// ********** TEST **********
+// TODO: HASTA EL MODELO FUNCIONA CORRECTAMENTE
+/* $prueba = new Compras();
+
+$datos = [
+  'idcompra' => 1,
+  'idlote' => 1,
+  'idproducto' => 1,
+  'cantidad' => 1,
+  'preciocompra' => 1
+];
+
+$response = $prueba->addDetalleCompra($datos);
+echo json_encode($response);
+ */

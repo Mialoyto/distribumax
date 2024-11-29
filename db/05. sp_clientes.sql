@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR CLIENTES
@@ -157,17 +157,25 @@ BEGIN
             WHEN CLI.tipo_cliente = 'Empresa' THEN EMP.razonsocial
         END AS cliente,
         CLI.create_at AS fecha_creacion,
-        CLI.estado AS estado_cliente
+        CLI.estado AS estado_cliente,
+        CASE
+            WHEN CLI.tipo_cliente = 'Persona' THEN CONCAT(DIS.distrito,' |',PROV.provincia)
+            WHEN CLI.tipo_cliente = 'Empresa' THEN CONCAT(DIST.distrito,'| ',PROV.provincia)
+        END AS provincia
+        
     FROM 
         clientes CLI
     LEFT JOIN personas PER ON CLI.idpersona = PER.idpersonanrodoc
     LEFT JOIN empresas EMP ON CLI.idempresa = EMP.idempresaruc
+    LEFT JOIN distritos DIS ON DIS.iddistrito=PER.iddistrito
+    LEFT JOIN provincias PROV ON PROV.idprovincia=DIS.idprovincia
+    LEFT JOIN distritos DIST ON DIST.iddistrito=EMP.iddistrito
     ORDER BY CLI.idcliente DESC;
 END;
 
 /* CALL sp_listar_clientes (); */
 CALL sp_listar_clientes ();
-SELECT * FROM clientes WHERE estado = '0';
+SELECT * FROM empresas WHERE estado = '0';
 
 --  DROP PROCEDURE IF EXISTS sp_listar_clientes;
 
@@ -196,3 +204,37 @@ SELECT * FROM clientes WHERE estado = '0';
 
 -- CALL sp_listar_clientes (  0, 10, '26', 'idcliente', 'DESC' );
 
+
+DROP PROCEDURE IF EXISTS sp_obtener_cliente;
+
+CREATE PROCEDURE sp_obtener_cliente(
+    IN _idcliente INT
+)
+BEGIN
+    SELECT 
+        CLI.idcliente,
+        CLI.tipo_cliente,
+        CASE
+            WHEN CLI.tipo_cliente = 'Persona' THEN PER.idpersonanrodoc
+            WHEN CLI.tipo_cliente = 'Empresa' THEN EMP.idempresaruc
+        END AS nro_doc,
+        CASE
+            WHEN CLI.tipo_cliente = 'Persona' THEN CONCAT(PER.nombres, ' ', PER.appaterno, ' ', PER.apmaterno)
+            WHEN CLI.tipo_cliente = 'Empresa' THEN EMP.razonsocial
+        END AS cliente,
+        CLI.estado AS estado_cliente,
+        CASE
+            WHEN CLI.tipo_cliente = 'Persona' THEN PER.direccion
+            WHEN CLI.tipo_cliente = 'Empresa' THEN EMP.direccion
+        END AS direccion_cliente,
+        CASE
+            WHEN CLI.tipo_cliente = 'Persona' THEN PER.telefono
+            WHEN CLI.tipo_cliente = 'Empresa' THEN EMP.telefono
+        END AS telefono_cliente,
+        EMP.email
+    FROM clientes CLI
+    LEFT JOIN personas PER ON CLI.idpersona = PER.idpersonanrodoc
+    LEFT JOIN empresas EMP ON CLI.idempresa = EMP.idempresaruc
+    WHERE CLI.idcliente = _idcliente
+    AND CLI.estado = '1';
+END;

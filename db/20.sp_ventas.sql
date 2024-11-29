@@ -598,16 +598,44 @@ BEGIN
         PROV.provincia;
 END;
 
-DROP PROCEDURE IF EXISTS sp_VentasPorDia;
-CREATE PROCEDURE sp_VentasPorDia(IN _fecha DATE)
+DROP PROCEDURE IF EXISTS sp_Ventastotales;
+
+CREATE PROCEDURE sp_Ventastotales()
 BEGIN
     SELECT 
         DATE(ve.fecha_venta) AS fecha,
-        COUNT(CASE WHEN ve.estado = '1' THEN 1 END) AS total_ventas_realizadas,
-        SUM(CASE WHEN ve.estado = '1' THEN ve.total_venta ELSE 0 END) AS monto_realizado,
-        COUNT(CASE WHEN ve.estado = '0' THEN 1 END) AS total_ventas_canceladas,
-        SUM(CASE WHEN ve.estado = '0' THEN ve.total_venta ELSE 0 END) AS monto_cancelado
+        COUNT(*) AS total_ventas_realizadas,
+        SUM(ve.total_venta) AS monto_realizado
     FROM ventas ve
-    WHERE DATE(ve.fecha_venta) = _fecha
+    WHERE ve.estado = '1'
     GROUP BY DATE(ve.fecha_venta);
 END;
+
+
+
+-- con filtro
+DROP PROCEDURE IF EXISTS sp_VentasPorDia;
+CREATE PROCEDURE sp_VentasPorDia(IN _fecha DATE)
+BEGIN
+    DECLARE _mensaje VARCHAR(50);
+    DECLARE _total INT;
+
+    -- Contar el número de registros para la fecha especificada
+    SELECT COUNT(*) INTO _total
+    FROM ventas ve
+    WHERE DATE(ve.fecha_venta) = _fecha AND ve.estado = '1';
+
+    -- Verificar si hay registros
+    IF _total = 0 THEN
+        SET _mensaje = 'No hay ventas de esta fecha';
+        SELECT _mensaje AS mensaje;
+    ELSE
+        SELECT 
+            DATE(ve.fecha_venta) AS fecha,
+            COUNT(*) AS total_ventas_realizadas,
+            SUM(ve.total_venta) AS monto_realizado
+        FROM ventas ve
+        WHERE DATE(ve.fecha_venta) = _fecha AND ve.estado = '1'
+        GROUP BY DATE(ve.fecha_venta);
+    END IF;
+END ;

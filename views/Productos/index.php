@@ -56,7 +56,9 @@
         </div>
         <div class="modal-body">
           <form id="formActualizarProducto">
+
             <input type="text" id="idproducto">
+            <input type="text" id="idproveedor">
             <div class="mb-3">
               <label for="marca" class="form-label">Marca</label>
               <select name="" id="idmarca" class="form-select" required>
@@ -66,7 +68,9 @@
             </div>
             <div class="mb-3">
               <label for="categoria" class="form-label">Categoría</label>
-              <input type="text" class="form-control" id="categoria" name="categoria" required>
+              <select name="categoria" id="idcategoria" class="form-select" required>
+                <option value="">Seleccione una categoría</option>
+                <!-- Opciones se llenarán dinámicamente -->
             </div>
             <div class="mb-3">
               <label for="subcategoria" class="form-label">Subcategoría</label>
@@ -82,6 +86,10 @@
             <div class="mb-3">
               <label for="codigo" class="form-label">Código</label>
               <input type="text" class="form-control" id="codigo" name="codigo" required>
+            </div>
+            <div class="mb-3">
+              <label for="codigo" class="form-label">Cantidad Presentación</label>
+              <input type="text" class="form-control" id="cantidad_presentacion" name="codigo" required>
             </div>
             <div class="mb-3">
               <label for="precio_compra" class="form-label">Precio de Compra</label>

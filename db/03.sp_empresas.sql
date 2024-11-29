@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- REGISTRAR EMPRESAS
 
@@ -41,8 +41,7 @@ BEGIN
     WHERE idempresaruc = _idempresaruc;
 END;
 
--- Eliminar
-
+-- Eliminar empresa
 CREATE PROCEDURE sp_estado_empresa(
 	IN  _estado 		CHAR(1),
 	IN  _idempresaruc 	BIGINT 

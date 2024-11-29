@@ -18,7 +18,6 @@ require_once '../../app/config/App.php';
           <!-- Campo para filtrar por fecha con botón -->
           <div class="input-group">
             <input type="date" id="fecha-venta" class="form-control" placeholder="Seleccionar fecha">
-            <button id="filtrar" class="btn btn-primary input-group-text">Filtrar</button>
           </div>
         </div>
 

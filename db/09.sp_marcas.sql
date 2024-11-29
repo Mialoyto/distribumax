@@ -90,7 +90,23 @@ WHERE
 ORDER BY MAR.marca ASC;
 END;
 
-call sp_getMarcas(1);
+
+
+DROP PROCEDURE IF EXISTS sp_getMarcas_Categorias;
+CREATE PROCEDURE sp_getMarcas_Categorias (
+    IN _idmarca   VARCHAR(100)
+    )
+BEGIN
+SELECT 
+    CA.idcategoria,
+    CA.categoria
+FROM marcas MAR
+ RIGHT JOIN categorias CA ON CA.idcategoria=MAR.idcategoria
+
+   WHERE MAR.idmarca=_idmarca
+    AND MAR.estado = 1
+ ORDER BY CA.categoria;
+END;
 -- LISTAR MARCAS
 -- CREATE VIEW vw_listar_marcas AS
 -- SELECT idmarca, marca

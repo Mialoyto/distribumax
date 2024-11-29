@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1726698325558@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- todo reade papeto
@@ -364,7 +364,8 @@ BEGIN
         pe.idpersonanrodoc,
         em.razonsocial,
         em.idempresaruc,
-        p.estado
+        p.estado,
+        ve.condicion
     FROM 
         ventas ve
     INNER JOIN 

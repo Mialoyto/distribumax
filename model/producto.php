@@ -11,7 +11,7 @@ class Productos extends Conexion
     $this->pdo = parent::getConexion();
   }
 
-  public function addProducto($params = []): int|null
+  public function addProducto($params = [])
   {
     $id = null;
     try {
@@ -113,9 +113,10 @@ class Productos extends Conexion
   {
 
     try {
-      $query = $this->pdo->prepare("call sp_registrar_producto(?,?,?,?,?,?,?,?,?,?)");
+      $query = $this->pdo->prepare("call sp_actualizar_producto(?,?,?,?,?,?,?,?,?,?)");
       $query->execute(
-        $params['idmarca'],
+        array(
+          $params['idmarca'],
         $params['idsubcategoria'],
         $params['nombreproducto'],
         $params['idunidadmedida'],
@@ -125,8 +126,12 @@ class Productos extends Conexion
         $params['precio_mayorista'],
         $params['precio_minorista'],
         $params['idproducto']
+        )
       );
-      return $query->fetch(PDO::FETCH_ASSOC);
+      $response =$query->fetchAll(PDO::FETCH_ASSOC);
+
+      return $response;
+      
     } catch (Exception $e) {
       die($e->getMessage());
     }

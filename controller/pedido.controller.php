@@ -25,14 +25,14 @@ switch ($verbo) {
           echo json_encode($pedido->getById($datos));
           break;
 
-        
+
         case 'getAll':
           echo json_encode($pedido->getAll());
-        break;
+          break;
 
         case 'GetPedido':
-          $datosEnviar=[
-            'idpedido'=>$_GET['idpedido']
+          $datosEnviar = [
+            'idpedido' => $_GET['idpedido']
           ];
           echo json_encode($pedido->GetPedido($datosEnviar));
         break;
@@ -55,20 +55,20 @@ switch ($verbo) {
           ];
           $idobtenido = $pedido->agregarPedido($datosEnviar);
           echo json_encode(["idpedido" => $idobtenido]);
-        break;
+          break;
 
         case 'UpdateEstadoPedido':
 
           $idpedido = $_POST['idpedido'];
           $estado = $_POST['estado'];
-          
+
           $datos = [
             'idpedido' => $idpedido,
             'estado'   => $estado
           ];
           $response = $pedido->UpdateEstadoPedido($datos);
           echo json_encode($response);
-        break;
+          break;
       }
     }
     break;

@@ -3,39 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.querySelector(selector);
   }
 
-  async function ObtenerPedidoId(id) {
-    const params = new URLSearchParams();
-    params.append('operation', 'GetPedido');
-    params.append('idpedido', id);
-
-    try {
-      const response = await fetch(`../../controller/pedido.controller.php?${params}`);
-      const data = await response.json();
-      // console.log(data);
-      return data;
-    } catch (error) {
-      console.log("Error al obtener el idpedido", error);
-    }
-
-  }
-
-
-
-
-
-  let dtpedido;
-  // // referencias a los elementos del modal
-  // const modal = $("#edits-pedido");
-  // const inputdocumento = modal.querySelector("#update-nro-doc");//numero del cliente
-  // const inputtipocliente = modal.querySelector("#update-cliente");
-  // const inputnombres = modal.querySelector("#update-nombres");
-  // const inputapepaterno = modal.querySelector("#update-appaterno");
-  // const inputapematerno = modal.querySelector("#update-apmaterno");
-  // const inputrazon = modal.querySelector("#update-razon-social");
-  // const inputdireccion = modal.querySelector("#update-direccion-cliente");
-
-
-
+  // REVIEW 
+  // ?VARIALES GLOBALES
   const modal = $("#edits-pedido");
   const inputdocumento = modal.querySelector("#update-nro-doc");
   const inputtipocliente = modal.querySelector("#update-cliente");
@@ -44,11 +13,35 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputapematerno = modal.querySelector("#update-apmaterno");
   const inputrazon = modal.querySelector("#update-razon-social");
   const inputdireccion = modal.querySelector("#update-direccion-cliente");
+  const detallePedidoTable = $("#update-detalle-pedido");
 
+  // REVIEW
+  // ?VARIABLES DE LA TABLA
+  let dtpedido;
+  let stock;
+
+  // FIXME
+  // ?FUNCIONES PARA OBETENER LOS DATOS DE LOS PEDIDOS
+  async function ObtenerPedidoId(id) {
+    const params = new URLSearchParams();
+    params.append('operation', 'GetPedido');
+    params.append('idpedido', id);
+
+    try {
+      const response = await fetch(`../../controller/pedido.controller.php?${params}`);
+      const data = await response.json();
+      console.log("DATOS DE QUE TRAE ? :", data);
+      return data;
+    } catch (error) {
+      console.log("Error al obtener el idpedido", error);
+    }
+  }
+
+  // FIXME
+  // ?ESTA FUNCIO CARGA LOS DATOS DEL PEDIDO EN EL MODAL
   async function cargarDatosModal(id) {
     try {
       const data = await ObtenerPedidoId(id);
-      console.log(data);
 
       if (data && data.length > 0) {
         console.log("Pedido encontrado", data);
@@ -62,36 +55,73 @@ document.addEventListener("DOMContentLoaded", () => {
         inputdireccion.value = data[0].direccion_cliente;
         $("#addProducto").removeAttribute("disabled");
 
-        // Aquí se agrega la lógica para llenar la tabla con los productos
 
-        // Limpiar la tabla antes de llenarla con nuevos datos
-        const detallePedidoTable = $("#update-detalle-pedido");
-        detallePedidoTable.innerHTML = ""; // Limpiar contenido previo
+        detallePedidoTable.innerHTML = "";
 
         data.forEach(element => {
+          console.log("element", element);
+          const id = element.idproducto;
+          const codigo = element.codigo;
+          const descripcion = element.nombreproducto;
+          const cantidad = element.cantidad_producto;
+          const unidadmedida = element.unidadmedida;
+          const precio_unit = element.precio_unitario;
+          const descuento = element.descuento;
+          const subtotal = (cantidad * precio_unit).toFixed(2);
+          const descuentos = element.descuento;
+          const total = (cantidad * precio_unit).toFixed(2);
+          console.log('id', id);
+          console.log('codigo', codigo);
+          console.log('descripcion', descripcion);
+          console.log('cantidad', cantidad);
+          console.log('unidadmedida', unidadmedida);
+          console.log('precio_unit', precio_unit);
+          console.log('descuento', descuento);
+          console.log('subtotal', subtotal);
+          console.log('descuentos', descuentos);
+          console.log('total', total);
           addProductToTable(
-            element.codigo,
-            element.nombreproducto,
-            element.descripcion,
-            element.unidadmedida,
-            element.precio_venta,
-            element.descuento,
-            element.subtotal
+            id,
+            codigo,
+            descripcion,
+            cantidad,
+            unidadmedida,
+            precio_unit,
+            subtotal,
+            descuento,
+            total
           );
-
         });
-
       }
-
     } catch (error) {
       console.log("No es posible cargar los datos", error);
     }
   }
 
+  // REVIEW
+  // ?FUNCION PARA RENDERIZAR LA TABLA DE PEDIDOS
+  function RenderDatatablePedidos() {
+    if (dtpedido) {
+      dtpedido.destroy();
+    }
 
- 
-
-
+    dtpedido = new DataTable("#table-pedidos", {
+      language: {
+        "sEmptyTable": "No hay datos disponibles en la tabla",
+        "info": "",
+        "sInfoFiltered": "(filtrado de _MAX_ entradas en total)",
+        "sLengthMenu": "Filtrar: _MENU_",
+        "sLoadingRecords": "Cargando...",
+        "sProcessing": "Procesando...",
+        "sSearch": "Buscar:",
+        "sZeroRecords": "No se encontraron resultados",
+        "oAria": {
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+      }
+    });
+  }
 
   async function cargarPedidos() {
     if (dtpedido) {
@@ -212,6 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   }
+  cargarPedidos();
 
   async function updateEstado(id, status) {
     const params = new FormData();
@@ -232,66 +263,45 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("error al actualizar el pedido", error);
     }
   }
- 
-  function RenderDatatablePedidos() {
-    
-    dtpedido = new DataTable("#table-pedidos", {
 
-      language: {
-        "sEmptyTable": "No hay datos disponibles en la tabla",
-        "info": "",
-        "sInfoFiltered": "(filtrado de _MAX_ entradas en total)",
-        "sLengthMenu": "Filtrar: _MENU_",
-        "sLoadingRecords": "Cargando...",
-        "sProcessing": "Procesando...",
-        "sSearch": "Buscar:",
-        "sZeroRecords": "No se encontraron resultados",
-        "oAria": {
-          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-        }
-      }
-    });
-  }
-
- 
- 
-  const buscarProducto = async () => {
+  const buscarProducto = async (producto) => {
     const params = new URLSearchParams();
     params.append("operation", "getProducto");
     params.append("_cliente_id", $("#update-nro-doc").value.trim());
-    params.append("_item", $("#addProducto").value);
+    params.append("_item", producto);
 
     try {
-      const response = await fetch(
-        `../../controller/producto.controller.php?${params}`
-      );
+      const response = await fetch(`../../controller/producto.controller.php?${params}`);
       return response.json();
-      // console.log("linea 125 :", data);
     } catch (e) {
       console.error(e);
     }
   };
 
   // mostrar resultados ✔️
-  const mostraResultados = async () => {
-    const response = await buscarProducto();
+  const mostraResultados = async (producto) => {
+    const response = await buscarProducto(producto);
     $("#datalistProducto").innerHTML = "";
     if (response.length > 0) {
       $("#datalistProducto").style.display = "block";
       // Iterar sobre los resultados y mostrarlos
       response.forEach((item) => {
+        console.log("item", item);
         if (item.descuento === null) {
           const descuento = 0.00;
           item.descuento = parseFloat(descuento);
         }
         const li = document.createElement("li");
+        console.log("stock actual del buscador", stock);
         li.classList.add("list-group-item"); // Clase de Bootstrap para los ítems
         li.innerHTML = `${item.nombreproducto} <span class="badge text-bg-success rounded-pill">${item.unidadmedida}: ${item.stockactual}</span>`;
         li.addEventListener("click", () => {
+          const id = item.idproducto;
           addProductToTable(
             item.idproducto,
             item.codigo,
             item.descripcion,
+            item.cantidad_producto,
             item.unidadmedida,
             item.precio_venta,
             item.descuento,
@@ -304,55 +314,58 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       console.log("datos de los productos", response);
     } else {
-      $("#datalistProducto").style.display = "none";
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+      li.textContent = "No se encontraron resultados";
+      $("#datalistProducto").appendChild(li);
     }
   };
+
+
   $("#addProducto").addEventListener("input", async () => {
-    await mostraResultados();
-    // await buscarProducto();
+    const producto = $("#addProducto").value;
+    await mostraResultados(producto);
     if ($("#addProducto").value === "") {
       $("#datalistProducto").style.display = "none";
     }
   });
 
-  function addProductToTable(id, codigo, descripcion, unidadmedida, precio_venta, descuento, stockactual) {
-    const existId = document.querySelector(`#detalle-pedido tr td[id-data="${id}"]`);
-    console.log("existe el ID en la tabla ?", existId);
+
+  // FIXME
+  function addProductToTable(id, codigo, descripcion, cantidad, unidadmedida, precio_venta, subtotal, descuento, total, stockactual) {
+    const existId = document.querySelector(`#update-detalle-pedido tr td[id-data="${id}"]`);
     if (existId) {
       showToast('El producto ya se encuentra en la tabla', 'info', 'INFO');
       return;
     }
     const row = document.createElement("tr");
     row.innerHTML = `
-          <th scope="row" class"text-nowrap w-auto">${codigo}</th>
-          <td class="text-nowrap w-auto" id-data="${id}">${descripcion}</td>
-          <td class="col-md-1 w-10">
-              <input class="form-control form-control-sm cantidad numeros text-center w-100"  type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
-          </td>
-          <td class="text-nowrap w-auto col-md-1 und-medida">${unidadmedida}</td>
-          <td class="text-nowrap w-auto precio" data="${precio_venta}">
-          
-    
-          S/${precio_venta}
-          </td>
-          <td class="text-nowrap w-auto subtotal"> S/0.00</td>
-          <td class="text-nowrap w-auto">% ${descuento}</td>
-          <td class="text-nowrap w-auto descuento">S/0.00</td>
-          <td class="text-nowrap w-auto total">S/0.00</td>
-          <td class="col-1">
-            <div class="mt-1  d-flex justify-content-evenly">
-              <button type="button" class="btn btn-danger btn-sm w-100 eliminar-fila">
-                <i class="bi bi-x-square"></i>
-              </button>
-            </div>
-          </td>
-        `;
+            <th scope="row" class"text-nowrap w-auto">${codigo}</th>
+            <td class="text-nowrap w-auto" id-data="${id}">${descripcion}</td>
+            <td class="col-md-1 w-10">
+                <input class="form-control form-control-sm cantidad numeros text-center w-100" value="${cantidad}"  type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
+            </td>
+            <td class="text-nowrap w-auto col-md-1 und-medida">${unidadmedida}</td>
+            <td class="text-nowrap w-auto precio" data="${precio_venta}">S/${precio_venta}</td>
+            <td class="text-nowrap w-auto subtotal">${subtotal}</td>
+            <td class="text-nowrap w-auto descuento">${descuento}</td>
+            <td class="text-nowrap w-auto total">${total}</td>
+            <td class="col-1">
+              <div class="mt-1  d-flex justify-content-evenly">
+                <button type="button" class="btn btn-danger btn-sm w-100 eliminar-fila">
+                  <i class="bi bi-x-square"></i>
+                </button>
+              </div>
+            </td>
+          `;
     // Añadir la fila a la tabla
     document.getElementById("update-detalle-pedido").appendChild(row);
 
     // eliminar fila
-    row.querySelector(".eliminar-fila").addEventListener("click", () => {
-      row.remove();
+    row.querySelector(".eliminar-fila").addEventListener("click", async () => {
+      if (await showConfirm("¿Estás seguro de eliminar el producto del pedido?")) {
+        row.remove();
+      }
     });
 
     const cantidadInput = row.querySelector(".cantidad");
@@ -362,7 +375,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cantidadInput.addEventListener("input", () => {
       let cantidad = parseInt(cantidadInput.value);
-      let stock = parseInt(stockactual);
+      const stock = parseInt(stockactual);
+      console.log("stock actual", stock);
+      console.log("ESTE ES EL STOCK ACTUAL : ", stock)
       console.log("cantidad", cantidad);
       console.log("stockactual", stock);
       console.log(cantidad > stock);
@@ -385,6 +400,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
 
   async function addDetallePedidos(idpedido) {
 
@@ -437,5 +453,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   let idpedido = -1;
-  cargarPedidos();
+
+
 });

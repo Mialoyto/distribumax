@@ -65,8 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(`../../controller/pedido.controller.php?${params}`);
-       return response.json();
-       
+      const data = await response.json();
+      console.log(data);
+      return data;
+
     } catch (e) {
       console.error(e);
     }
@@ -129,10 +131,11 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(`../../controller/pedido.controller.php?${params}`);
       const data = await response.json();
+      console.log(data);
 
       tbody.innerHTML = '';
       let total = 0;
-      let subtotal = 0;
+      let subtotalVenta = 0;
       let descuentoTotal = 0;
       const fechaActual = generarFechaActual();
       $("#fecha_venta").value = fechaActual;
@@ -153,7 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const row = document.createElement('tr');
         const cantidad_producto = parseFloat(pedido.cantidad_producto);
         const preciounitario = parseFloat(pedido.precio_unitario);
-        const total_producto = cantidad_producto * preciounitario;
+        let total_producto = (parseFloat(cantidad_producto * preciounitario)-parseFloat(pedido.precio_descuento)).toFixed(2);
+        console.log("cantidad producto", cantidad_producto);
+        console.log("precio unitario", preciounitario);
+        console.log("total producto", total_producto);
 
         row.innerHTML = `
           <td>${pedido.nombreproducto}</td>
@@ -161,21 +167,27 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>${cantidad_producto}</td>
           <td>${preciounitario.toFixed(2)}</td>
           <td>${pedido.precio_descuento}</td>
-          <td>${total_producto.toFixed(2)}</td>
+          <td>${total_producto}</td>
         `;
 
-        total += total_producto
+        total += parseFloat(total_producto); // Sumar el total de la venta
+
+        console.log("total", total);
         descuentoTotal += parseFloat(pedido.precio_descuento);
         tbody.appendChild(row);
       });
 
-      let igv = parseFloat(total * 0.18);
-      subtotal = total - descuentoTotal - igv;
-      const totalVenta = (subtotal) + igv;
+      let totalSinIGV = total - descuentoTotal;
+      const IGV = totalSinIGV * 0.18;
+      subtotalVenta = totalSinIGV - IGV;
+      const totalVenta = subtotalVenta + IGV;
 
-      $("#subtotal").value = subtotal.toFixed(2);
+      console.log("subtotal", subtotalVenta);
+      console.log("totalVenta", totalVenta);
+      console.log("igv", igv);
+      $("#subtotal").value = subtotalVenta.toFixed(2);
       $("#descuento").value = descuentoTotal.toFixed(2);
-      $("#igv").value = igv.toFixed(2);
+      $("#igv").value =IGV.toFixed(2);
       $("#total_venta").value = totalVenta.toFixed(2);
       const tipo_pago = $("#tipo_pago");
 
@@ -200,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const params = new FormData();
     params.append('operation', 'addVentas');
     params.append('idpedido', $("#idpedido").value);
-    params.append('idusuario',$("#idusuario").value);
+    params.append('idusuario', $("#idusuario").value);
     params.append('idtipocomprobante', $("#idtipocomprobante").value);
     params.append('fecha_venta', $("#fecha_venta").value);
     params.append('subtotal', $("#subtotal").value);
@@ -501,16 +513,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (inputPedido.trim().length != 0) {
       mostrarResultados();
-        $("#idtipocomprobante").removeAttribute("disabled")
-        $("#tipo_pago").removeAttribute("disabled")
+      $("#idtipocomprobante").removeAttribute("disabled")
+      $("#tipo_pago").removeAttribute("disabled")
       console.log(data);
     } if (inputPedido.trim().length == 0) {
       limpiarDatosPedido();
-      $("#idtipocomprobante").setAttribute("disabled",true)
-      $("#tipo_pago").setAttribute("disabled",true)
+      $("#idtipocomprobante").setAttribute("disabled", true)
+      $("#tipo_pago").setAttribute("disabled", true)
       $("#datalistIdPedido").style.display = 'none';
 
-      
+
     } else {
       $("#datalistIdPedido").style.display = 'none';
 
@@ -533,7 +545,7 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrar.removeAttribute("style")
       $("#add-metodo").style.display = 'block';
       $("#monto_pago_1").removeAttribute("disabled");
-      
+
     }
   });
 

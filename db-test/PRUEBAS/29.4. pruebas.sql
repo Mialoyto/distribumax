@@ -1,4 +1,4 @@
--- Active: 1732637704938@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 SELECT * FROM DESPACHOS;
 SELECT * FROM DESPACHO_ventas;
@@ -19,6 +19,8 @@ SELECT * FROM subcategorias;
 select * from clientes;
 
 SELECT * FROM unidades_medidas;
+select * from lotes where idproducto = 7;
+SELECT * from kardex;
 
 CALL getSubcategorias (5);
 

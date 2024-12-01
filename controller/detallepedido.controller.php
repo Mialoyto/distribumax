@@ -22,7 +22,8 @@ switch ($verbo) {
                   'idproducto'        => $item['idproducto'],
                   'cantidad_producto' => $item['cantidad_producto'],
                   'unidad_medida'     => $item['unidad_medida'],
-                  'precio_unitario'   => $item['precio_unitario']
+                  'precio_unitario'   => $item['precio_unitario'],
+                  'descuento'         => $item['descuento']
                 ];
 
                 $dato = $detallepedido->addDetallePedido($datosEnviar);

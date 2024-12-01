@@ -314,7 +314,7 @@ CALL sp_cliente_registrar (26558020, NULL, 'Persona');
 CALL sp_cliente_registrar (NULL, 20100055237, 'Empresa');
 
 -- PRROMOCIONES
-CALL sp_tipo_promocion_registrar (
+/* CALL sp_tipo_promocion_registrar (
     'Descuento',
     'Se aplicará un porcentaje de descuento al producto'
 );
@@ -373,7 +373,8 @@ CALL sp_detalle_promociones_registrar (2, 4, 5);
 
 CALL sp_detalle_promociones_registrar (2, 12, 5);
 
-CALL sp_detalle_promociones_registrar (2, 10, 5);
+CALL sp_detalle_promociones_registrar (2, 10, 5); */
+
 CALL sp_registrar_vehiculo (
     1, -- ID del usuario (reemplaza con el ID correcto)
     'Toyota', -- Marca del vehículo

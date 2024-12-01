@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 --  REGISTRAR PEDIDOS
@@ -14,6 +14,7 @@ BEGIN
     ( _idusuario, _idcliente);
     SELECT idpedido FROM pedidos ORDER BY idpedido DESC LIMIT 1;
 END;
+-- CALL sp_pedido_registrar(1, 1);
 
 -- ACTUALIZAR PEDIDOS SOLO LOS DATOS PERO NO EL ESTADO
 
@@ -78,8 +79,6 @@ BEGIN
     SELECT v_estado AS estado, v_mensaje AS mensaje;
 
 END;
-
-
 
 -- NO MOVER NADA DEL PROCEDIMIENTO , FALTA TERMINAR DE IMPLEMENTARLO
 
@@ -155,12 +154,12 @@ LEFT JOIN empresas emp ON emp.idempresaruc=cl.idempresa
 
 END;
 
-
 DROP PROCEDURE IF EXISTS sp_obtener_pedido;
 
 CREATE PROCEDURE sp_obtener_pedido (IN _idpedido VARCHAR(80))
 BEGIN
     SELECT 
+        dp.id_detalle_pedido AS iddetallepedido, 
         cl.idcliente,
         cl.tipo_cliente,
         PER.nombres,
@@ -183,15 +182,17 @@ BEGIN
         pe.idpedido,
         pr.codigo, 
         pr.idproducto, 
-        pr.nombreproducto,
+        CONCAT(pr.nombreproducto,'-',um.unidadmedida,' ',pr.cantidad_presentacion, 'X', pr.peso_unitario) AS nombreproducto,
         dp.cantidad_producto,
-        dp.unidad_medida,
+        um.unidadmedida,
         dp.precio_unitario,
+        dp.precio_descuento AS descuento,
         dp.subtotal,
         pe.estado
     FROM pedidos pe
     INNER JOIN detalle_pedidos dp ON dp.idpedido = pe.idpedido
     LEFT JOIN productos pr ON pr.idproducto = dp.idproducto
+    LEFT JOIN unidades_medidas um ON um.idunidadmedida = pr.idunidadmedida
     LEFT JOIN clientes cl ON cl.idcliente = pe.idcliente
     LEFT JOIN personas PER ON CL.idpersona = PER.idpersonanrodoc
     LEFT JOIN empresas EMP ON CL.idempresa = EMP.idempresaruc
@@ -255,7 +256,7 @@ END;
 
 --     -- Cursor para iterar sobre los productos del pedido
 --     DECLARE cur CURSOR FOR
---     SELECT 
+--     SELECT
 --         pr.idproducto,
 --         dp.cantidad_producto,
 --         lt.idlote
@@ -268,7 +269,7 @@ END;
 --     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
 --     -- Verificar si el cambio es entre 'Pendiente' y 'Cancelado'
---     IF (OLD.estado = 'Pendiente' AND NEW.estado = 'Cancelado') OR 
+--     IF (OLD.estado = 'Pendiente' AND NEW.estado = 'Cancelado') OR
 --        (OLD.estado = 'Cancelado' AND NEW.estado = 'Pendiente') THEN
 --         -- Abrir el cursor
 --         OPEN cur;
@@ -286,7 +287,7 @@ END;
 --             IF NEW.estado = 'Cancelado' THEN
 --                 -- Registrar ingreso en el kardex
 --                 CALL sp_registrarmovimiento_kardex(
---                     NEW.idusuario, 
+--                     NEW.idusuario,
 --                     _idproducto,
 --                     _idlote,
 --                     'Ingreso',
@@ -296,7 +297,7 @@ END;
 --             ELSEIF NEW.estado = 'Pendiente' THEN
 --                 -- Registrar salida en el kardex
 --                 CALL sp_registrarmovimiento_kardex(
---                     NEW.idusuario, 
+--                     NEW.idusuario,
 --                     _idproducto,
 --                     _idlote,
 --                     'Salida',
@@ -311,6 +312,5 @@ END;
 --     END IF;
 
 -- END ;
-
 
 -- CALL sp_update_estado_pedido ('PED-000000006', 'Cancelado');

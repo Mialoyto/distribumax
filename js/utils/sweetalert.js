@@ -28,13 +28,13 @@ function showToast(mensaje = ``, icono = 'success', type = `INFO`, duration = 25
   });
 }
 
-async function showConfirm(pregunta = ``, modulo = ``) {
+async function showConfirm(pregunta = ``, modulo = ``, btnG = 'Guardar', btnC = 'Cancelar') {
   const respuesta = await Swal.fire({
     title: pregunta,
     text: modulo,
     showDenyButton: true,
-    confirmButtonText: 'Guardar',
-    denyButtonText: 'Cancelar',
+    confirmButtonText: btnG,
+    denyButtonText: btnC,
     footer: '<b>Distribumax V.1.0</b>',
   });
   if (respuesta.isConfirmed) {

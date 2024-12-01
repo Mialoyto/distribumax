@@ -229,7 +229,7 @@ CREATE TABLE marcas (
     CONSTRAINT fk_estado_mar CHECK (estado IN ('0', '1'))
 ) ENGINE = INNODB;
 -- BORRAR
-DROP TABLE IF EXISTS tipos_promociones;
+/* DROP TABLE IF EXISTS tipos_promociones;
 
 CREATE TABLE tipos_promociones (
     idtipopromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -240,10 +240,10 @@ CREATE TABLE tipos_promociones (
     estado CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT uk_tipopromocion UNIQUE (tipopromocion),
     CONSTRAINT fk_estado_tip_prom CHECK (estado IN ("0", "1"))
-) ENGINE = INNODB;
+) ENGINE = INNODB; */
 
 -- BORRAR
-DROP TABLE IF EXISTS promociones;
+/* DROP TABLE IF EXISTS promociones;
 
 CREATE TABLE promociones (
     idpromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -259,7 +259,7 @@ CREATE TABLE promociones (
     CONSTRAINT ck_valor_descuento CHECK (valor_descuento > 0),
     CONSTRAINT fk_estado_prom CHECK (estado IN ("0", "1")),
     CONSTRAINT ck_fecha_fin_mayor_inicio CHECK (fechafin > fechainicio)
-) ENGINE = INNODB;
+) ENGINE = INNODB; */
 
 DROP TABLE IF EXISTS unidades_medidas;
 
@@ -313,7 +313,7 @@ CREATE TABLE productos (
 ) ENGINE = INNODB;
 
 -- BORRAR
-DROP TABLE IF EXISTS detalle_promociones;
+/* DROP TABLE IF EXISTS detalle_promociones;
 
 CREATE TABLE detalle_promociones (
     iddetallepromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -326,7 +326,7 @@ CREATE TABLE detalle_promociones (
     CONSTRAINT id_promocion_deta_prom FOREIGN KEY (idpromocion) REFERENCES promociones (idpromocion),
     CONSTRAINT id_producto_deta_prom FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
     CONSTRAINT fk_estado_deta_prom CHECK (estado IN ("0", "1"))
-) ENGINE = INNODB;
+) ENGINE = INNODB; */
 
 DROP TABLE IF EXISTS precios_historicos;
 
@@ -373,7 +373,7 @@ CREATE TABLE detalle_pedidos (
     cantidad_producto INT NOT NULL,
     unidad_medida CHAR(20) NOT NULL, -- unidad, caja,
     precio_unitario DECIMAL(10, 2) NOT NULL,
-    precio_descuento DECIMAL(10, 2) NOT NULL,
+    precio_descuento DECIMAL(10, 2) NULL,
     subtotal DECIMAL(10, 2) NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
@@ -382,7 +382,7 @@ CREATE TABLE detalle_pedidos (
     CONSTRAINT fk_idproducto_det_ped FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
     CONSTRAINT ck_cantidad_producto CHECK (cantidad_producto > 0),
     CONSTRAINT ck_precio_unitario CHECK (precio_unitario > 0),
-    CONSTRAINT ck_precio_descuento CHECK (precio_descuento >= 0),
+    -- CONSTRAINT ck_precio_descuento CHECK (precio_descuento >= 0),
     CONSTRAINT ck_subtotal CHECK (subtotal > 0),
     CONSTRAINT fk_estado_det_ped CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;

@@ -52,15 +52,15 @@ document.addEventListener("DOMContentLoaded", function () {
   async function CargarModal(id) {
     try {
       const data = await GetCliente(id);
-      // console.log(data)
-      // if(data && data.lenght <0){
-      //   console.log(data);
-      //   tipo_cliente.value = data[0].tipo_cliente;
-      //   nro_doc.value = data[0].nro_doc;
-      //   email.value = data[0].email;
-      //   telefono.value = data[0].telefono;
-      //   direccion.value = data[0].direccion;
-      // }
+      console.log(data)
+      if(data && data.lenght <0){
+        console.log(data);
+        tipo_cliente.value = data[0].tipo_cliente;
+        nro_doc.value = data[0].nro_doc;
+        email.value = data[0].email;
+        telefono.value = data[0].telefono;
+        direccion.value = data[0].direccion;
+      }
     } catch (error) {
       console.log("No es posible cargar el modal:", error);
     }
@@ -119,10 +119,14 @@ document.addEventListener("DOMContentLoaded", function () {
           id = e.currentTarget.getAttribute("id-data");
           const status = e.currentTarget.getAttribute("estado-cat");
           console.log("ID:", id, "Status:", status);
-          if (await showConfirm("¿Estás seguro de cambiar el estado de la subcategoría?")) {
+          if (await showConfirm("¿Estás seguro de deshabilitar el cliente?")) {
             const data = await deshabilitarCliente(status,id);
-            console.log("Estado actualizado correctamente:", data);
-            //  RenderDatatableClientes();
+            console.log("Estado actualizado correctamente:", data.row);
+            if(data.row){
+              showToast("Estado actualizado correctamente.", "success", "SUCCESS");
+            }else{
+              showToast("Error al cambiar el estado del cliente.", "error", "ERROR");
+            }
             dtcaclientes.destroy();
         
             CargarDatos();
@@ -156,6 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const response = await fetch(`../../controller/cliente.controller.php`, options);
           const data = await response.json();
           console.log(data);
+          return data;
 
       } catch (error) {
         console.error("Error al deshabilitar el cliente :", error);

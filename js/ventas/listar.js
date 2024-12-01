@@ -30,17 +30,17 @@ document.addEventListener("DOMContentLoaded", () => {
             let estadoClass;
             let icons;
             let bgbtn;
-            switch (element.estado) {
-                case "Enviado":
-                    estadoClass = "text-success";
-                    icons ="bi bi-toggle2-on fs-5"
+            switch (element.condicion) {
+                case "pendiente":
+                    estadoClass = "text-warning";
+                    icons ="bi bi-toggle2-on fs-6"
                     bgbtn="btn-success";
                     break;
               
-                case "Despachado":
+                case "despachado":
                     estadoClass = "text-primary";
-                    icons="bi bi-toggle2-on fs-5";
-                    bgbtn="btn-success";
+                    icons="bi bi-toggle2-on fs-6";
+                    bgbtn="btn-success ";
                     break;
             
                
@@ -62,18 +62,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${documento}</td>
                     <td>${element.fecha_venta}</td>
                     <td><strong class="${estadoClass}">
-                    ${element.estado}
+                    ${element.condicion}
                     </strong></td>
-                    <td>
-                        <button class="btn btn-outline-danger  reporte" 
-                            data-idventa="${element.idventa}"
-                             >
-                            <i class="fas fa-file-alt me-2"></i>
-                        </button>
-                           <a  id-data="${element.idventa}" class="btn ${bgbtn} ms-2 estado" estado-cat="${element.status}">
-                        <i class="${icons}"></i>
-                      </a>
-                    </td>
+                     <td>
+  <div class="d-flex ">
+    <div class="btn-group btn-group-sm" role="group">
+      <button class="btn btn-outline-danger reporte " data-idventa="${element.idventa}">
+        <i class="fas fa-file-alt me-6"></i>
+      </button>
+      <a id-data="${element.idventa}" class="btn ${bgbtn} estado" estado-cat="${element.status}">
+        <i class="${icons}"></i>
+      </a>
+    </div>
+  </div>
+</td>
                 </tr>
             `;
         });
@@ -124,6 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("ID:", id, "Status:", status);
                 if (await showConfirm("¿Estás seguro de cambiar el estado de la venta?")) {
                   const data = await  UpdateEstado(id, status);
+                  dtventa.destroy();
+                   
+                
                   console.log("Estado actualizado correctamente:", data);
       
                 } else {
@@ -239,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Filtrar ventas por fecha cuando se seleccione una nueva fecha
-    $("#filtrar").addEventListener("click", () => {
+    $("#fecha-venta").addEventListener("input", () => {
         const fechaSeleccionada = $("#fecha-venta").value;
        CargarDatos(fechaSeleccionada);
         

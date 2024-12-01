@@ -160,8 +160,8 @@
         </div>
         <div class="card-footer mt-3">
           <!-- Botones -->
-          <div class="d-flex justify-content-between mt-3">
-            <a href="index.php" class="btn btn-primary mt-3 text-end">Listar Kardex</a>
+          <div class="mb-2 mt-2">
+            <!-- <a href="index.php" class="btn btn-primary mt-3 text-end">Listar Kardex</a> -->
             <div class="d-flex justify-content-end mt-3">
               <button type="submit" class="btn btn-primary me-2">Registrar</button>
               <button type="reset" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
@@ -175,12 +175,13 @@
       <table id="table-productos" class="table table-striped" style="width: 100%;">
         <thead>
           <tr>
+            <!-- <th>Lote</th> -->
             <th>Producto</th>
-            <th>Lote</th>
-            <th>Fecha Vencimiento</th>
-            <th>Stock Actual</th>
             <th>Tipo Movimiento</th>
+            <th>Fecha</th>
+            <th>Motivo</th>
             <th>Cantidad</th>
+            <th>Stock Actual</th>
           </tr>
         </thead>
         <tbody>

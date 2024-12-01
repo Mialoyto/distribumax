@@ -83,6 +83,8 @@ BEGIN
         WHERE idcliente=_idcliente;
 END;
 
+call sp_estado_cliente('1',1);
+select * from clientes;
 -- BUSCAR CLIENTE POR DNI O RUC
 DROP PROCEDURE IF EXISTS `sp_buscar_cliente`;
 CREATE PROCEDURE `sp_buscar_cliente` (
@@ -143,6 +145,14 @@ CREATE PROCEDURE sp_listar_clientes()
 BEGIN
     SELECT 
         CLI.idcliente,
+        CASE cli.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS estado,
+        CASE cli.estado
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS `status`,
         CASE
             WHEN CLI.tipo_cliente = 'Persona' THEN CLI.idpersona
             WHEN CLI.tipo_cliente = 'Empresa' THEN CLI.idempresa
@@ -164,7 +174,9 @@ BEGIN
         clientes CLI
     LEFT JOIN personas PER ON CLI.idpersona = PER.idpersonanrodoc
     LEFT JOIN empresas EMP ON CLI.idempresa = EMP.idempresaruc
-    WHERE CLI.estado = '1'
+    LEFT JOIN distritos DIS ON DIS.iddistrito=PER.iddistrito
+    LEFT JOIN provincias PROV ON PROV.idprovincia=DIS.idprovincia
+    LEFT JOIN distritos DIST ON DIST.iddistrito=EMP.iddistrito
     ORDER BY CLI.idcliente DESC;
 END;
 

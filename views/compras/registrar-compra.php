@@ -15,14 +15,74 @@
             Registrar compras
           </div>
           <!-- Button trigger modal -->
-          <a type="button" href="http://localhost/distribumax/views/productos/registrar.php" class="btn btn-primary btn-sm align-items-center">
-          <i class="bi bi-plus-circle fa-lg"></i>
-                  Registrar producto
-          </a>
+          <div>
+            <a type="button" href="http://localhost/distribumax/views/productos/registrar.php" class="btn btn-primary btn-sm align-items-center">
+              <i class="bi bi-plus-circle fa-lg"></i>
+              Registrar producto
+            </a>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary  btn-sm" data-bs-toggle="modal" data-bs-target="#add-lote">
+              <i class="bi bi-bookmark-plus"></i>
+              Registrar lote
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="add-lote"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabindex="-1"
+              aria-labelledby="staticBackdropLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">REGISTRAR LOTE - KARDEX</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form method="" action="#" id="form-registrar-lote" autocomplete="off">
+                      <span class="badge text-bg-light text-uppercase text-end " id="user" data-id="<?= $_SESSION['login']['idusuario'] ?>"></span>
+
+                      <div class="dropdown">
+                        <div class="form-floating mb-3">
+                          <input type="text" id="productoSearch" name="productoSearch" class="form-control" placeholder="Buscar producto..." autocomplete="off" required>
+                          <label for="productoSearch" class="form-label">
+                            <i class="bi bi-search"></i>
+                            Buscar producto
+                          </label>
+                          <ul id="productoList" class="dropdown-menu  w-100" style="max-height: 200px;">
+                            <!-- Opciones de productos se llenan dinámicamente -->
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="numlote" name="numlote" placeholder="numlote" required>
+                        <label for="numlote" class="form-label"><i class="bi bi-tag"></i> Número de Lote</label>
+                      </div>
+
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
+                        <label for="fecha_vencimiento" class="form-label">
+                          <i class="bi bi-calendar4-week"></i>
+                          Fecha de Vencimiento
+                        </label>
+                      </div>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" id="btn-add-lote" class="btn btn-success">Registrar</button>
+                    <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- FIN DEL MODAL -->
+          </div>
         </div>
       </div>
       <!-- formulario de compras -->
-      <form method="POST" action="#" id="form-registrar-kardex" autocomplete="off">
+      <form method="POST" action="#" id="form-registrar-compras" autocomplete="off">
         <div class="card-body">
 
           <span class="badge text-bg-light text-uppercase text-end " id="iduser" data-id="<?= $_SESSION['login']['idusuario'] ?>">
@@ -47,10 +107,8 @@
           <div class="row mb-3">
             <div class="col-md-4 mt-3">
               <div class="form-floating">
-                <select name="loteP" id="loteP" class="form-select" aria-label="Default select example" required>
+                <select name="id-comprobante" id="id-comprobante" class="form-select" aria-label="Default select example" required>
                   <option value="">Seleccione tipo de documento</option>
-                  <option value="">Factura</option>
-                  <option value="">Boleta</option>
                   <!-- render desde la base de datos -->
                 </select>
                 <label for="loteP" class="form-label">Seleccione documento</label>
@@ -59,15 +117,15 @@
             </div>
             <div class="col-md-4 mt-3">
               <div class="form-floating">
-                <input type="number" class="form-control" id="fechaVP" name="fechaVP" placeholder="" maxlength="255" minlength="">
-                <label for="fechaVP" class="form-label">Nro factura</label>
+                <input type="number" class="form-control" id="nro-fac" name="fechaVP" placeholder="" maxlength="255" minlength="">
+                <label for="nro-fac" class="form-label">Nro factura</label>
               </div>
             </div>
             <!-- <span class="badge text-bg-light text-uppercase text-end " id="user" data-id="<?= $_SESSION['login']['idusuario'] ?>"></span> -->
             <div class="col-md-4 mt-3">
               <div class="form-floating">
-                <input type="date" class="form-control" id="fechaVP" name="fechaVP" placeholder="" maxlength="255" minlength="">
-                <label for="fechaVP" class="form-label">Fecha Emisión</label>
+                <input type="date" class="form-control" id="fecha-emision" name="fechaVP" placeholder="" maxlength="255" minlength="">
+                <label for="fecha-emision" class="form-label">Fecha Emisión</label>
               </div>
             </div>
           </div>
@@ -78,8 +136,10 @@
             <h4 class="mb-3">Detalle de compras</h4>
             <div class="col-md-12">
               <div class="form-floating align-items-center">
-                <input type="search" class="form-control" id="searchProducto" name="cantidad" placeholder="cantidad" required>
+                <input type="search" class="form-control" id="searchProducto" name="cantidad" placeholder="cantidad">
                 <label for="cantidad" class="form-label"><i class="bi bi-search fa-lg"></i> Agregar Producto</label>
+                <ul id="listProduct" class="list-group position-absolute w-100" style="z-index: 1000;"></ul>
+
               </div>
             </div>
           </div>
@@ -88,42 +148,21 @@
           <div class="row">
             <div class="container">
               <!-- tabla para mostrar los ultimos Movimientos -->
-              <table id="table-productos" class="table table-striped table-hover" style="width: 100%;">
+              <table id="table-productos" class="table table-striped table-responsive table-hover" style="width: 100%;">
                 <thead>
                   <tr>
+                    <th>Lote</th>
+                    <th>Stock</th>
                     <th>Cantidad</th>
                     <th>Producto</th>
-                    <th>Precio Unitario</th>
+                    <th>Unid. Medida</th>
+                    <th>Precio compra</th>
                     <th>Valor compra</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <!--  <tr>
-                    <td>
-                      <div class="form-floating">
-                        <input type="number" class="form-control" id="cantidad" name="cantidad" placeholder="cantidad" required>
-                        <label for="cantidad" class="form-label">Cantidad</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-floating">
-                        <input type="text" class="form-control" id="producto" name="producto" placeholder="producto" required>
-                        <label for="producto" class="form-label">Producto</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-floating">
-                        <input type="number" class="form-control" id="precio" name="precio" placeholder="precio" required>
-                        <label for="precio" class="form-label">Precio Unitario</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-floating">
-                        <input type="number" class="form-control" id="valor" name="valor" placeholder="valor" readonly>
-                        <label for="valor" class="form-label">Valor compra</label>
-                      </div>
-                    </td>
-                  </tr> -->
+
 
                 </tbody>
               </table>
@@ -134,8 +173,8 @@
         </div>
         <div class="card-footer mt-3">
           <!-- Botones -->
-          <div class="d-flex justify-content-between mt-3">
-            <a href="index.php" class="btn btn-primary mt-3 text-end">Listar Kardex</a>
+          <div class="mt-2 mb-2">
+            <!-- <a href="index.php" class="btn btn-primary mt-3 text-end">Listar Kardex</a> -->
             <div class="d-flex justify-content-end mt-3">
               <button type="submit" class="btn btn-primary me-2">Registrar</button>
               <button type="reset" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
@@ -150,7 +189,7 @@
 <?php require_once '../footer.php'; ?>
 <script src="http://localhost/distribumax/js/compras/registrar-compra.js"></script>
 <!-- <script src="http://localhost/distribumax/js/kardex/listar-producto-kardex.js"></script> -->
-<!-- <script src="http://localhost/distribumax/js/kardex/registrar-lote.js"></script> -->
+<script src="http://localhost/distribumax/js/kardex/registrar-lote.js"></script>
 </body>
 
 </html>

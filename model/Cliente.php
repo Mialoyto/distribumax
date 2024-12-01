@@ -135,4 +135,29 @@ class Cliente extends Conexion
       die($e->getMessage());
     }
   }
+  
+  public function obtenerCliente($params = [])
+  {
+    try {
+      $tsql = "CALL sp_obtener_cliente(?)";
+      $cmd = $this->pdo->prepare($tsql);
+      $cmd->execute(array(
+        $params['idcliente']
+      ));
+      return $cmd->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      die($e->getCode());
+    }
+  }
+
+  public function activos(){
+    try {
+      $tsql = "SELECT * FROM  vw_listar_clientes_activos";
+      $cmd = $this->pdo->prepare($tsql);
+      $cmd->execute();
+      return $cmd->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      die($e->getCode());
+    }
+  }
 }

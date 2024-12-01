@@ -119,6 +119,7 @@ BEGIN
     SELECT 
         MAR.idmarca AS id,
         MAR.marca,  -- Nombre de la marca
+        MAR.idmarca,
         CASE MAR.estado
             WHEN '1' THEN 'Activo'   
             WHEN '0' THEN 'Inactivo'

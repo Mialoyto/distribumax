@@ -70,6 +70,7 @@
         </div>
     </div>
 </main>
+
 <?php require_once '../footer.php'; ?>
 <script src="http://localhost/distribumax/js/marca/listar-marca.js"></script>
 <script src="http://localhost/distribumax/js/marca/editar-marca.js"></script>

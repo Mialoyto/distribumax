@@ -4,27 +4,27 @@ $marca = new Marca();
 header("Content-type: application/json; charset=utf-8");
 
 if (isset($_POST['operation'])) {
-    switch ($_POST['operation']) {
-        case 'addMarca':
-            if (empty($_POST['idproveedor']) || $_POST['idproveedor'] === null) {
-                $datos = [
-                    "idmarca" => -1,
-                    "mensaje" => 'No se ha seleccionado un proveedor'
-                ];
-                echo json_encode($datos);
-                return;
-            } else {
-                $datos = [
-                    'idproveedor'    => $_POST['idproveedor'],
-                    'marca'          => $_POST['marca'],
-                    'idcategoria'    => $_POST['idcategoria']
-                ];
-                $response = $marca->addMarca($datos);
-                echo json_encode($response);
-            }
+  switch ($_POST['operation']) {
+    case 'addMarca':
+      if (empty($_POST['idproveedor']) || $_POST['idproveedor'] === null) {
+        $datos = [
+          "idmarca" => -1,
+          "mensaje" => 'No se ha seleccionado un proveedor'
+        ];
+        echo json_encode($datos);
+        return;
+      } else {
+        $datos = [
+          'idproveedor'    => $_POST['idproveedor'],
+          'marca'          => $_POST['marca'],
+          'idcategoria'    => $_POST['idcategoria']
+        ];
+        $response = $marca->addMarca($datos);
+        echo json_encode($response);
+      }
 
-            break;
-    }
+      break;
+  }
 }
 
 if (isset($_GET['operation'])) {

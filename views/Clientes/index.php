@@ -22,7 +22,7 @@
               <th>Tipo de Cliente</th>
               <th>Cliente</th>
               <th>Estado</th>
-              <th>Acciones</th>
+              <th class="text-center">Acciones</th>
             </tr>
           </thead>
           <tbody>

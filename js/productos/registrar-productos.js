@@ -15,7 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
     params.append('idproveedor', proveedor);
     try {
       const response = await fetch(`../../controller/proveedor.controller.php?${params}`);
-      return response.json();
+      const data = await response.json();
+      console.log(data)
+      return data;
 
     } catch (e) {
       console.error(e);

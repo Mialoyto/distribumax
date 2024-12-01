@@ -29,21 +29,22 @@ switch ($verbo) {
                     session_destroy(); // destruye la sesion actual y sus variables
                     header("Location:http://localhost/distribumax/index.php");
                     break;
-                    case 'getAll':
-                        // Llama a la función getAll() y devuelve el resultado
-                        $result = $usuario->getAll();
-                        echo json_encode($result);
-                        break;
+                case 'getAll':
+                    // Llama a la función getAll() y devuelve el resultado
+                    $result = $usuario->getAll();
+                    echo json_encode($result);
+                    break;
             }
         }
         break;
-case 'POST':
+    case 'POST':
         if (isset($_POST['operation'])) {
             switch ($_POST['operation']) {
                 case 'addUsuario':
                     $datosEnviar = [
                         "idpersona" => $_POST["idpersona"],
-                        " idperfil" => $_POST[" idperfil"],
+                        "idperfil" => $_POST["idperfil"],
+                        "perfil" => $_POST["perfil"],
                         "nombre_usuario" => $_POST["nombre_usuario"],
                         "password_usuario" => $_POST["password_usuario"]
                     ];
@@ -80,9 +81,9 @@ case 'POST':
                             $login['nombres']   = $row[0]['nombres'];
                             $login['perfil']    = $row[0]['perfil'];
 
-                        // Los accesos se obtienen desde una consulta
-                        $accesos = $usuario->obtenerPermisos(["idperfil" => $row[0]['idperfil']]);
-                        $login["accesos"] = $accesos;
+                            // Los accesos se obtienen desde una consulta
+                            $accesos = $usuario->obtenerPermisos(["idperfil" => $row[0]['idperfil']]);
+                            $login["accesos"] = $accesos;
                         } else {
                             $login['status'] = 'Contraseña incorrecta';
                         }
@@ -91,12 +92,12 @@ case 'POST':
                     echo json_encode($login);
                     break;
                 case 'updatepassword':
-                    $datosEnviar=[
-                        'idusuario'=>$_POST['idusuario'],
-                        'password_usuario'=>$_POST['password_usuario']
+                    $datosEnviar = [
+                        'idusuario' => $_POST['idusuario'],
+                        'password_usuario' => $_POST['password_usuario']
                     ];
                     echo json_encode($usuario->updatepassword($datosEnviar));
-                break;
+                    break;
             }
         }
         break;

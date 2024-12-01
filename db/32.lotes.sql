@@ -1,6 +1,6 @@
 -- Active: 1728548966539@@127.0.0.1@3306@distribumax
 USE distribumax;
-
+-- TODO: REGISTRAR LOTES (OK)
 DROP PROCEDURE IF EXISTS sp_registrar_lote;
 
 CREATE PROCEDURE sp_registrar_lote(
@@ -28,7 +28,9 @@ BEGIN
     END IF;
 END;
 
--- Trigger para validar y establecer estado inicial
+
+
+-- TODO: TRIGGERS PARA ACTUALIZAR ESTADO DE LOTES Y VALIDAR FECHA DE VENCIMIENTO
 DROP TRIGGER IF EXISTS before_insert_lotes;
 CREATE TRIGGER before_insert_lotes
 BEFORE INSERT ON lotes
@@ -203,3 +205,27 @@ BEGIN
     CLOSE lotes_cursor;
 END;
 
+DROP PROCEDURE IF EXISTS  sp_productos_por_agotarse_o_vencimiento;
+
+CREATE PROCEDURE sp_productos_por_agotarse_o_vencimiento()
+BEGIN
+    SELECT 
+        l.fecha_vencimiento,
+        p.nombreproducto,
+        l.estado,
+        l.stockactual
+    FROM 
+        lotes l
+    INNER JOIN 
+        productos p ON p.idproducto = l.idproducto
+    WHERE 
+        l.estado = 'Por Agotarse'
+        OR l.estado='Agotado'
+        OR l.fecha_vencimiento = (
+            SELECT MIN(fecha_vencimiento)
+            FROM lotes
+            WHERE fecha_vencimiento > NOW()
+        )
+    ORDER BY 
+        l.fecha_vencimiento ASC;
+END ;

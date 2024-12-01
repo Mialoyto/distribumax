@@ -52,7 +52,8 @@ if (isset($_POST['operation'])) {
     case 'updateProducto':
       $datosEnviar=[
         'idmarca'=>$_POST['idmarca'],
-        '_ombreproducto'=>$_POST['nombreproducto'],
+        'idsubcategoria'=>$_POST['idsubcategoria'],
+        'nombreproducto'=>$_POST['nombreproducto'],
         'idunidadmedida'=>$_POST['idunidadmedida'],
         'cantidad_presentacion'=>$_POST['cantidad_presentacion'],
         'codigo'=>$_POST['codigo'],

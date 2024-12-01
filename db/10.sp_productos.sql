@@ -46,10 +46,12 @@ VALUES
         );
         SELECT LAST_INSERT_ID() AS idproducto;
 END;
--- call sp_registrar_producto(1, 1, 1, 'Producto 1', 1, 1, '1', 1, 1, 2, 3);
 
 -- ACTUALIZA PRODUCTOS
-DROP PROCEDURE IF EXISTS sp_actualziar_producto;
+
+
+DROP PROCEDURE IF EXISTS sp_actualizar_producto;
+
 CREATE PROCEDURE sp_actualizar_producto (
     IN _idmarca INT,
     IN _idsubcategoria INT,
@@ -63,22 +65,55 @@ CREATE PROCEDURE sp_actualizar_producto (
     IN _idproducto INT
 ) 
 BEGIN
-    UPDATE productos
-    SET
-        idmarca = _idmarca,
-        idsubcategoria = _idsubcategoria,
-        nombreproducto = _nombreproducto,
-        idunidadmedida = _idunidadmedida,
-        cantidad_presentacion = _cantidad_presentacion,
-        codigo = _codigo,
-        precio_compra = _precio_compra,
-        precio_mayorista = _precio_mayorista,
-        precio_minorista = _precio_minorista,
-        update_at = NOW()
-    WHERE
-        idproducto = _idproducto;
+    -- Declaración de variables
+    DECLARE v_codigo CHAR(30);
+    DECLARE v_idproducto INT;
+    DECLARE v_mensaje VARCHAR(100);
+    DECLARE v_status BIT;
+
+    -- Verificar código duplicado
+    SELECT idproducto, codigo 
+    INTO v_idproducto, v_codigo
+    FROM productos
+    WHERE codigo = _codigo 
+    AND idproducto != _idproducto 
+    LIMIT 1;
+
+    -- Validar duplicidad y actualizar
+    IF v_codigo IS NOT NULL THEN 
+        SET v_mensaje = "Este código ya está registrado en otro producto";
+        SET v_status = 0;
+    ELSE 
+        UPDATE productos
+        SET
+            idmarca = _idmarca,
+            idsubcategoria = _idsubcategoria,
+            nombreproducto = _nombreproducto,
+            idunidadmedida = _idunidadmedida,
+            cantidad_presentacion = _cantidad_presentacion,
+            codigo = _codigo,
+            precio_compra = _precio_compra,
+            precio_mayorista = _precio_mayorista,
+            precio_minorista = _precio_minorista,
+            update_at = NOW()
+        WHERE
+            idproducto = _idproducto;
+            
+        SET v_mensaje = "Producto actualizado correctamente";
+        SET v_status = 1;
+    END IF;
+
+    -- Retornar resultado
+    SELECT v_status AS 'status', v_mensaje AS mensaje;
 END;
 
+
+
+
+
+
+
+select * from productos;
 
 DROP PROCEDURE IF EXISTS sp_estado_producto;
 
@@ -104,6 +139,7 @@ call sp_estado_producto('0',1);
 select * from productos;
 -- PRUEBA DE BUSQUEDA de productos
 DROP PROCEDURE IF EXISTS sp_buscar_productos;
+
 CREATE PROCEDURE sp_buscar_productos(
     IN _nombreproducto VARCHAR (250)) 
 BEGIN
@@ -113,10 +149,11 @@ SELECT
     UME.unidadmedida
 FROM
     productos PRO
-    INNER JOIN unidades_medidas UME ON UME.idunidadmedida = PRO.idunidadmedida
+    LEFT JOIN unidades_medidas UME ON UME.idunidadmedida = PRO.idunidadmedida
 WHERE
-    ( nombreproducto LIKE CONCAT ('%', _nombreproducto, '%'))
+    (PRO.nombreproducto LIKE CONCAT ('%', _nombreproducto, '%'))
     AND PRO.estado = '1'
+    AND _nombreproducto <> ''
 GROUP BY
     PRO.idproducto
 ORDER BY
@@ -124,7 +161,7 @@ ORDER BY
     LIMIT 10;
 END;
 
--- CALL sp_buscar_productos ('cas');
+CALL sp_buscar_productos('');
 
 -- buscar productos por codigo
 DROP PROCEDURE IF EXISTS spu_buscar_lote;
@@ -216,6 +253,7 @@ DROP PROCEDURE IF EXISTS sp_obtener_producto;
 CREATE PROCEDURE sp_obtener_producto (IN _idproducto INT)
 BEGIN
     SELECT 
+        pr.idproveedor,
         p.idproducto,
         m.marca,
         m.idmarca,
@@ -224,6 +262,7 @@ BEGIN
         sb.subcategoria,
         sb.idsubcategoria,
         p.nombreproducto,
+        p.cantidad_presentacion,
         p.codigo,
         p.precio_compra,
         p.precio_mayorista,
@@ -241,6 +280,7 @@ BEGIN
        subcategorias sb ON c.idcategoria=sb.idsubcategoria
     JOIN 
         unidades_medidas um ON p.idunidadmedida = um.idunidadmedida
+    JOIN proveedores pr ON p.idproveedor = pr.idproveedor
     WHERE 
         p.idproducto = _idproducto
         AND p.estado = '1';

@@ -1,4 +1,4 @@
--- Active: 1732637704938@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- TODO: PROCEDIMIENTO PARA REGISTRAR UN DESPACHO;
@@ -42,12 +42,24 @@ CREATE TRIGGER trg_actualizar_estado_venta
 AFTER INSERT ON despacho_ventas
 FOR EACH ROW
 BEGIN
+-- Primero actualiza el estado de la venta a "despachado"
     UPDATE ventas
     SET condicion = 'despachado'
     WHERE idventa = NEW.idventa
     AND condicion <> 'despachado';  
+
+-- Luego actualiza el estado del pedido a "Entregado"
+    UPDATE pedidos
+    SET estado = 'Entregado'
+    WHERE idpedido = (
+        SELECT idpedido 
+        FROM ventas 
+        WHERE idventa = NEW.idventa
+    )
+    AND estado <> 'Entregado';
 END;
 
+SELECT * from ventas;
 -- actualizar el estado del pedido de enviado a entregado cuando se registre el despacho
 DROP TRIGGER IF EXISTS  trg_actualizar_estado_pedido_despacho;
 

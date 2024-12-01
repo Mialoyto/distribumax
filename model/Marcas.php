@@ -104,4 +104,18 @@ class Marca extends Conexion
             die($e->getMessage());
         }
     }
+
+    public function getmarcas_categorias($params = [])
+    {
+        try{
+            $sql = "CALL sp_getMarcas_Categorias(?)";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(array(
+                $params['idmarca']
+            ));
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }

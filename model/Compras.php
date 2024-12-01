@@ -71,6 +71,35 @@ class Compras extends Conexion
       die($e->getMessage());
     }
   }
+
+  public function getAll(){
+    try {
+      $tsql = "CALL sp_listar_compras ()";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute();
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+  public function updateEstado($params=[]){
+    try {
+      $status = -1;
+      $tsql = "CALL sp_update_estadocompras(?,?)";
+      $query = $this->pdo->prepare($tsql);
+      $status=$query->execute(
+        array(
+  
+          $params['estado'],
+          $params['idcompra']
+        )
+      );
+      return $status;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 }
 
 // ********** TEST **********

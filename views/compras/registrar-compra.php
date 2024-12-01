@@ -174,10 +174,17 @@
         <div class="card-footer mt-3">
           <!-- Botones -->
           <div class="mt-2 mb-2">
+
             <!-- <a href="index.php" class="btn btn-primary mt-3 text-end">Listar Kardex</a> -->
-            <div class="d-flex justify-content-end mt-3">
-              <button type="submit" class="btn btn-primary me-2">Registrar</button>
-              <button type="reset" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+            <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-start mt-3">
+                <a class="btn btn-primary" href="listar-compras.php">Listar Compra</a>
+              </div>
+              <!-- Botones -->
+              <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-success me-2 transition">Registrar Compra </button>
+                <button type="reset" class="btn btn-outline-danger" id="btnCancelar">Cancelar</button>
+              </div>
             </div>
           </div>
         </div>

@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       // Agregar evento change para cargar categorías cuando se seleccione una marca
-      selectMarca.addEventListener('change', function() {
+      selectMarca.addEventListener('change', function () {
         idmarca = this.value;
         console.log("Marca seleccionada:", idmarca);
         ObtenerCategorias(idmarca);
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       // Agregar evento change para cargar subcategorías cuando se seleccione una categoría
-      selectCategoria.addEventListener('change', function() {
+      selectCategoria.addEventListener('change', function () {
         idsubcategoria = this.value;
         console.log("Categoría seleccionada:", idsubcategoria);
         obtenerSubcategorias(idsubcategoria);
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       // Agregar evento change para manejar la selección de unidad de medida
-      selectUnidad.addEventListener('change', function() {
+      selectUnidad.addEventListener('change', function () {
         idunidadmedida = this.value;
         console.log("Unidad de medida seleccionada:", idunidadmedida);
       });
@@ -289,6 +289,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  $("#formActualizarProducto").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = await UpdateProduct();
+    console.log(data);
+
+    if (data && data.length > 0 && data[0].status === 1) {
+      showToast(data[0].mensaje, 'success', 'SUCCESS');
+      // $("#edit-producto").close();
+      dtproductos.destroy();
+      CargarDatos();
+    } else {
+      showToast(data[0].mensaje, 'warning', 'WARNING');
+    }
+
+  });
+
   // Función para inicializar DataTable
   function RenderDatatable() {
     dtproductos = new DataTable("#table-productos", {
@@ -302,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "sProcessing": "Procesando...",
         "sSearch": "Buscar:",
         "sZeroRecords": "No se encontraron resultados",
-       
+
         "oAria": {
           "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
           "sSortDescending": ": Activar para ordenar la columna de manera descendente"
@@ -312,44 +329,40 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function UpdateProduct() {
-    idmarca=inputmarca.value;
-    idsubcategoria=inputsubcategoria.value;
-    idunidadmedida=inputunidadmedida.value;
+    idmarca = inputmarca.value;
+    idsubcategoria = inputsubcategoria.value;
+    idunidadmedida = inputunidadmedida.value;
     const params = new FormData();
-    params.append("operation", "updateProducto");  
+    params.append("operation", "updateProducto");
     params.append("idmarca", idmarca);
     params.append("idsubcategoria", idsubcategoria);
     params.append("nombreproducto", inputproducto.value);
     params.append("idunidadmedida", idunidadmedida);
-    params.append("cantidad_presentacion", inputpresentacion.value); 
+    params.append("cantidad_presentacion", inputpresentacion.value);
     params.append("codigo", inputcodigo.value);
     params.append("precio_compra", inputprecio_compra.value);
     params.append("precio_mayorista", inputprecio_mayorista.value);
     params.append("precio_minorista", inputprecio_minorista.value);
     params.append("idproducto", idproducto.value);
 
-      params.forEach((value, key)=>{
-        console.log(key,value)
+    params.forEach((value, key) => {
+      console.log(key, value)
 
-      });
+    });
     try {
       const response = await fetch(`../../controller/producto.controller.php`, {
         method: "POST",
         body: params
       });
-      const data = await response.text();
-      console.log(data);
+      const data = await response.json();
+      // console.log(data);
       return data;
     } catch (error) {
       console.error("Error al actualizar el producto:", error);
     }
   }
 
-  $("#formActualizarProducto").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    
-    
-  });
+  
 
   CargarDatos();
 });

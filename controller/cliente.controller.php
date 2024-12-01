@@ -47,13 +47,18 @@ if (isset($_GET['operation'])) {
 
       // Convertir la respuesta a JSON y enviarla
       echo json_encode($response);
-      break;
-      case 'obtenerCliente':
+    break;
+    case 'obtenerCliente':
         $datos = [
           'idcliente' => $_GET['idcliente']
         ];
         echo json_encode($cliente->obtenerCliente($datos));
-        break;
+    break;
+    case 'activos':
+      echo json_encode($cliente->activos());
+    break;
+      
+      
   }
 }
 

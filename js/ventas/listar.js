@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let bgbtn;
             switch (element.condicion) {
                 case "pendiente":
-                    estadoClass = "text-success";
+                    estadoClass = "text-warning";
                     icons ="bi bi-toggle2-on fs-6"
                     bgbtn="btn-success";
                     break;
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 case "despachado":
                     estadoClass = "text-primary";
                     icons="bi bi-toggle2-on fs-6";
-                    bgbtn="btn-success";
+                    bgbtn="btn-success ";
                     break;
             
                
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
                      <td>
   <div class="d-flex ">
     <div class="btn-group btn-group-sm" role="group">
-      <button class="btn btn-outline-danger reporte" data-idventa="${element.idventa}">
+      <button class="btn btn-outline-danger reporte " data-idventa="${element.idventa}">
         <i class="fas fa-file-alt me-6"></i>
       </button>
       <a id-data="${element.idventa}" class="btn ${bgbtn} estado" estado-cat="${element.status}">
@@ -126,6 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("ID:", id, "Status:", status);
                 if (await showConfirm("¿Estás seguro de cambiar el estado de la venta?")) {
                   const data = await  UpdateEstado(id, status);
+                  dtventa.destroy();
+                   
+                
                   console.log("Estado actualizado correctamente:", data);
       
                 } else {

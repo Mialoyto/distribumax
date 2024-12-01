@@ -238,3 +238,10 @@ BEGIN
     WHERE CLI.idcliente = _idcliente
     AND CLI.estado = '1';
 END;
+
+
+
+ CREATE VIEW vw_listar_clientes_activos AS
+ SELECT  count(*) AS cli_activos FROM clientes WHERE estado=1;
+ 
+

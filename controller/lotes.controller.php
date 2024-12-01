@@ -27,7 +27,10 @@ if(isset($_GET['operation'])){
             ];
             $datos = $lote->searchLote($datos);
             echo json_encode($datos);
-            break;
+        break;
+        case 'Agotados_vencidos':
+            $datos = $lote->Agotados_vencidos();
+            echo json_encode($datos);
     }
 }
 

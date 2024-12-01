@@ -75,6 +75,18 @@ class Lotes extends Conexion
       die($e->getMessage());
     }
   }
+
+  public function Agotados_vencidos(){
+    try {
+      $tsql = 'CALL sp_productos_por_agotarse_o_vencimiento()';
+      $query = $this->pdo->prepare($tsql);
+      $query->execute();
+      $datos = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $datos;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 }
 
 /* $lote = new Lotes();

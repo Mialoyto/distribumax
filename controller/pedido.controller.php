@@ -36,6 +36,12 @@ switch ($verbo) {
           ];
           echo json_encode($pedido->GetPedido($datosEnviar));
         break;
+        case 'pediosDay':
+          echo json_encode($pedido->pediosDay());
+        break;
+        case 'pedidosProvincia':
+          echo json_encode($pedido->pedidosForProvincia());
+        break;
       }
     }
     break;

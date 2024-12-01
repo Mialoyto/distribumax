@@ -1,4 +1,4 @@
--- Active: 1732807506399@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- TODO: PROCEDIMIENTO PARA REGISTRAR UN DESPACHO;

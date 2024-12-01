@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- todo reade papeto
@@ -190,12 +190,14 @@ END;
 
 
 -- TRIGGER PARA ACTUALIZAR EL ESTADO DEL PEDIDO
+DROP TRIGGER IF EXISTS trg_actualizar_estado_pedido;
 CREATE TRIGGER trg_actualizar_estado_pedido
 AFTER INSERT ON ventas
 FOR EACH ROW
 BEGIN
     UPDATE pedidos
-    SET estado = 'Enviado'
+    SET estado = 'Enviado',
+       create_at=now()
     WHERE idpedido = NEW.idpedido 
       AND estado <> 'Enviado';  
 END;
@@ -567,6 +569,7 @@ BEGIN
     INNER JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
     INNER JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
     WHERE VE.condicion = 'pendiente'
+      AND  VE.estado='1'
     GROUP BY 
         PROV.provincia
     HAVING 
@@ -591,6 +594,7 @@ BEGIN
     INNER JOIN distritos DIS ON DIS.iddistrito = COALESCE(PERS.iddistrito, EMP.iddistrito)
     INNER JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
     WHERE VE.condicion = 'pendiente'
+    AND  VE.estado='1'
     GROUP BY 
         PROV.provincia
     HAVING 

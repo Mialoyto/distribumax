@@ -117,4 +117,15 @@ class Cliente extends Conexion
       die($e->getCode());
     }
   }
+
+  public function activos(){
+    try {
+      $tsql = "SELECT * FROM  vw_listar_clientes_activos";
+      $cmd = $this->pdo->prepare($tsql);
+      $cmd->execute();
+      return $cmd->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      die($e->getCode());
+    }
+  }
 }

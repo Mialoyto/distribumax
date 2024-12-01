@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -49,6 +49,7 @@ END;
 
 -- ACTUALIZA PRODUCTOS
 DROP PROCEDURE IF EXISTS sp_actualziar_producto;
+
 CREATE PROCEDURE sp_actualizar_producto (
     IN _idmarca INT,
     IN _idsubcategoria INT,
@@ -78,7 +79,6 @@ BEGIN
         idproducto = _idproducto;
 END;
 
-
 DROP PROCEDURE IF EXISTS sp_estado_producto;
 
 CREATE PROCEDURE sp_estado_producto (
@@ -98,9 +98,9 @@ BEGIN
     
 END;
 
+CALL sp_estado_producto ('0', 1);
 
-call sp_estado_producto('0',1);
-select * from productos;
+SELECT * FROM productos;
 -- PRUEBA DE BUSQUEDA de productos
 DROP PROCEDURE IF EXISTS sp_buscar_productos;
 
@@ -125,10 +125,11 @@ ORDER BY
     LIMIT 10;
 END;
 
-CALL sp_buscar_productos('');
+CALL sp_buscar_productos ('');
 
 -- buscar productos por codigo
 DROP PROCEDURE IF EXISTS spu_buscar_lote;
+
 CREATE PROCEDURE spu_buscar_lote(
     IN _idproducto INT)
 BEGIN
@@ -148,11 +149,13 @@ ORDER BY
     numlote DESC
 LIMIT 10;    
 END;
-call spu_buscar_lote(7);
+
+CALL spu_buscar_lote (7);
 -- select * from kardex WHERE idproducto = 7;
 
 -- BUSCAR PRODUCTOS
 DROP PROCEDURE IF EXISTS sp_get_codigo_producto;
+
 CREATE PROCEDURE sp_get_codigo_producto(
     IN _codigo CHAR(30)
 )
@@ -168,11 +171,13 @@ BEGIN
         AND PRO.estado = '1';
 END;
 
-CALL sp_get_codigo_producto('AJI-SZ-001');
+CALL sp_get_codigo_producto ('AJI-SZ-001');
 -- LISTAR PRODUCTOS
 
+SELECT * FROM detalle_pedidos;
 
 DROP PROCEDURE IF EXISTS sp_listar_productos;
+
 CREATE PROCEDURE sp_listar_productos()
 BEGIN
     SELECT 
@@ -197,8 +202,10 @@ BEGIN
         categorias c ON m.idcategoria = c.idcategoria;
    -- Solo productos activos
 END;
-select * from productos;
-call sp_listar_productos();
+
+SELECT * FROM productos;
+
+CALL sp_listar_productos ();
 
 -- CREATE PROCEDURE sp_eliminar_producto(IN _idproducto INT)
 -- BEGIN
@@ -210,7 +217,6 @@ call sp_listar_productos();
 --     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El producto no existe';
 --     END IF;
 -- END;
-
 
 DROP PROCEDURE IF EXISTS sp_obtener_producto;
 
@@ -250,6 +256,8 @@ BEGIN
         AND p.estado = '1';
 END;
 
-call sp_obtener_producto(2);
-select * from productos;
-select * from unidades_medidas
+CALL sp_obtener_producto (2);
+
+SELECT * FROM productos;
+
+SELECT * FROM unidades_medidas

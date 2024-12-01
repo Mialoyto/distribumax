@@ -116,8 +116,7 @@
                                           <th>Cantidad</th>
                                           <th>Unidad Medida</th>
                                           <th>Precio Unitario</th>
-                                          <th>Subtotal</th>
-                                          <th>% Descuento</th>
+                                          <th>Subtotal</th>Ww
                                           <th>Monto Descuento</th>
                                           <th>Total</th>
                                           <th>Acciones</th>
@@ -148,4 +147,4 @@
 </main>
 <?php require_once '../footer.php'; ?>
 <script type="module" src="http://localhost/distribumax/js/pedidos/listar.js"></script>
-<script type="module" src="http://localhost/distribumax/js/pedidos/update-pedido.js"></script>
+<script type="module" src="http://localhost/distribumax/js/pedidos/update-detalle-pedido.js"></script>A

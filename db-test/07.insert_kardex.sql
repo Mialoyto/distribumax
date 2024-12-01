@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 CALL sp_registrar_lote(1, 'LOT001', '2025-01-17');
 CALL sp_registrar_lote(1, 'LOT002', '2025-01-17');
@@ -41,7 +41,8 @@ SELECT
     KAR.tipomovimiento,
     KAR.motivo,
     KAR.cantidad,
-    KAR.stockactual
+    KAR.stockactual,
+    LOT.estado
 FROM kardex KAR
     INNER JOIN lotes LOT ON KAR.idlote = LOT.idlote
     INNER JOIN productos PRO ON LOT.idproducto = PRO.idproducto
@@ -52,8 +53,8 @@ select * from kardex;
 SELECT * FROM LOTES;
 SELECT * FROM PRODUCTOS;
 -- SE HIZO UN PEDIDO DE 150 UNIDADES DEL PRODUCTO 7 Y EL STOCK ACTUAL DEBE DE SER 299
-CALL spu_buscar_lote(7);
+-- CALL spu_buscar_lote(7);
 -- select * from lotes where idproducto = 7;
-CALL sp_registrar_salida_pedido(1, 7, 1, 'Venta por pedido');
+-- CALL sp_registrar_salida_pedido(1, 7, 1, 'Venta por pedido');
 
 SELECT * from categorias;

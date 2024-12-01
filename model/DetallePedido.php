@@ -14,14 +14,15 @@ class DetallePedido extends Conexion
   {
     $id = -1;
     try {
-      $sql = "CALL sp_detalle_pedido(?,?,?,?,?)";
+      $sql = "CALL sp_detalle_pedido(?,?,?,?,?,?)";
       $query = $this->pdo->prepare($sql);
       $query->execute(array(
         $params['idpedido'],
         $params['idproducto'],
         $params['cantidad_producto'],
         $params['unidad_medida'],
-        $params['precio_unitario']
+        $params['precio_unitario'],
+        $params['descuento']
       ));
       $id = $query->fetch(PDO::FETCH_ASSOC);
       return $id['iddetallepedido'];

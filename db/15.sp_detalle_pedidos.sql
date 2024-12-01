@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR DETALLE PEDIDOS
@@ -9,7 +9,8 @@ CREATE PROCEDURE sp_detalle_pedido(
     IN _idproducto          INT,
     IN _cantidad_producto   INT,
     IN _unidad_medida       CHAR(20),
-    IN _precio_unitario     DECIMAL(10, 2)
+    IN _precio_unitario     DECIMAL(10, 2),
+    IN _descuento           DECIMAL(10, 2)
 )
 BEGIN
     DECLARE _subtotal               DECIMAL(10, 2);
@@ -17,16 +18,21 @@ BEGIN
     DECLARE v_descuento             DECIMAL(10, 2) DEFAULT 0.00;
     DECLARE v_subtotal              DECIMAL(10, 2) DEFAULT 0.00;
 
-    SELECT IFNULL(descuento, 0) INTO v_descuento_unitario
+    IF _descuento > 0 then
+        SET v_descuento = _descuento;
+    ELSE 
+        SET v_descuento = 0.00;
+    END IF;
+
+
+/*     SELECT IFNULL(descuento, 0) INTO v_descuento_unitario
     FROM detalle_promociones
     WHERE idproducto = _idproducto
     LIMIT 1;
-    SET v_descuento = (_cantidad_producto * _precio_unitario) * (v_descuento_unitario /100);
+    SET v_descuento = (_cantidad_producto * _precio_unitario) * (v_descuento_unitario /100); */
 
 SET
-    _subtotal = (
-        _cantidad_producto * _precio_unitario
-    ) - v_descuento;
+    _subtotal = (_cantidad_producto * _precio_unitario) - _descuento;
 
 INSERT INTO
     detalle_pedidos (
@@ -52,6 +58,9 @@ SELECT LAST_INSERT_ID() AS iddetallepedido;
 
 END;
 
+-- CALL sp_detalle_pedido('PED-000000005', 1, 10, 'Unidad', 10.00, 0.00);
+-- SELECT * FROM pedidos;
+-- select * from detalle_pedidos;
 -- ACTUALIZAR EL STOCK
 
 DROP TRIGGER IF EXISTS trg_registrar_salida_pedido;
@@ -121,7 +130,6 @@ BEGIN
         PRO.idproducto,
         PRO.codigo,
         PRO.nombreproducto,
-        CONVERT(DET.descuento, DECIMAL(10, 2)) AS descuento,
         UNDM.unidadmedida,
         CONCAT(
             PRO.nombreproducto, ' ',        
@@ -137,7 +145,6 @@ BEGIN
         -- Sumar el stock actual del último movimiento de cada lote
         SUM(CONVERT(LOTES.stockactual , UNSIGNED INT)) AS stockactual
     FROM productos PRO
-        INNER JOIN detalle_promociones DET ON PRO.idproducto = DET.idproducto
         INNER JOIN unidades_medidas UNDM ON PRO.idunidadmedida = UNDM.idunidadmedida
         INNER JOIN clientes CLI ON CLI.idempresa = _cliente_id OR CLI.idpersona = _cliente_id
         INNER JOIN lotes LOTES ON LOTES.idproducto = PRO.idproducto
@@ -146,18 +153,16 @@ BEGIN
         AND PRO.estado = '1' 
         AND LOTES.estado != 'Vencido'
     GROUP BY 
-        PRO.idproducto, PRO.codigo, PRO.nombreproducto, DET.descuento, UNDM.unidadmedida
+        PRO.idproducto, PRO.codigo, PRO.nombreproducto, UNDM.unidadmedida
     HAVING 
         stockactual > 0;  -- Solo mostrar productos con stock actual positivo
 END;
 
-CALL ObtenerPrecioProducto ('26558000', 'casino');
+-- CALL ObtenerPrecioProducto ('26558000', 'casino');
 
-SELECT * FROM lotes;
-
-SELECT * FROM productos;
 
 DROP PROCEDURE IF EXISTS sp_producto_proveedor;
+
 CREATE PROCEDURE sp_producto_proveedor(
     IN _idproveedor INT,
     IN _producto VARCHAR(255)
@@ -180,7 +185,8 @@ BEGIN
         PRO.nombreproducto LIKE CONCAT('%', _producto, '%')
         AND PROV.idproveedor = _idproveedor;
 END;
-call sp_producto_proveedor(2, 'a');
+
+-- CALL sp_producto_proveedor (2, 'a');
 
 -- select * from productos where idproveedor = 2;
 

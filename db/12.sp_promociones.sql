@@ -1,6 +1,6 @@
--- Active: 1728671418404@@127.0.0.1@3306@distribumax
+/* -- Active: 1728671418404@@127.0.0.1@3306@distribumax
 USE distribumax;
-
+-- ! ELIMINAR ESTE ARCHIVO NO SE REQUIERE PARA EL PROYECTO
 -- REGISDTRAR PROMOCIONES
 DROP PROCEDURE IF EXISTS sp_promocion_registrar;
 
@@ -101,4 +101,4 @@ BEGIN
         p.fechainicio DESC;
 END ;
 
-CALL sp_listar_promociones;
+CALL sp_listar_promociones; */

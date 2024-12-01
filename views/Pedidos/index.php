@@ -103,7 +103,6 @@
                   <th scope="col">Unidad Medida</th>
                   <th scope="col">Precio Unitario</th>
                   <th scope="col">Subtotal</th>
-                  <th scope="col span-2">% Descuento</th>
                   <th scope="col span-2">Monto Descuento</th>
                   <th scope="col">Total</th>
                   <th scope="col">Acciones</th>

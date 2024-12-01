@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TABLAS NECESARIAS PARA REGISTRAR PERSONAS
 -- TIPO DE DOCUMENTOS
@@ -88,29 +88,17 @@ CALL sp_registrar_categoria ('Harina');
 CALL sp_registrar_categoria ('Salsas');
 /*  REGISTRAR SUBCATERIAS */
 -- ajinomoto
-
 CALL sp_registrar_subcategoria (1, 'Sazonadores en polvo');
-
 CALL sp_registrar_subcategoria (2, 'Sopas instantáneas');
-
 -- alicorp
-
 CALL sp_registrar_subcategoria (3, 'Aceite de oliva');
-
 CALL sp_registrar_subcategoria (3, 'Aceite vegetal');
-
 CALL sp_registrar_subcategoria (4, 'Galletas');
-
 CALL sp_registrar_subcategoria (5, 'atún');
-
 -- softys
 CALL sp_registrar_subcategoria (6, 'Papel higiénico');
-
 CALL sp_registrar_subcategoria (6, 'Toallas higiénicas');
-
 CALL sp_registrar_subcategoria (6, 'Pañales');
-
-
 
 /* REGISTRAR MARCAS */
 -- Registrar las marcas

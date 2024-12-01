@@ -623,7 +623,7 @@ CREATE TABLE detalles_compras (
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT '1',
-    CONSTRAINT fk_idcompra_det_compraS FOREIGN KEY (idcompra) REFERENCES compras (idcompra),
+    CONSTRAINT fk_idcompra_det_compras FOREIGN KEY (idcompra) REFERENCES compras (idcompra),
     CONSTRAINT fk_nrolote_det_compra FOREIGN KEY (idlote) REFERENCES lotes (idlote),
     CONSTRAINT fk_idproducto_det_compra FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
     CONSTRAINT ck_cantidad_det_compra CHECK (cantidad > 0),

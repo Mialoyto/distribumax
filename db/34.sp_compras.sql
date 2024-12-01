@@ -1,4 +1,4 @@
--- Active: 1732807506399@@127.0.0.1@3306@distribumax
+-- Active: 1732798376350@@127.0.0.1@3306@distribumax
 -- TODO: OBTENER PRODUCTOS POR PROVEEDOR (OK)
 -- * IMPORTANT: NO MODIFICAR ESTE PROCEDIMIENTO
 DROP PROCEDURE IF EXISTS sp_get_productos_proveedor;
@@ -110,6 +110,6 @@ BEGIN
 
 END;
 
-CALL sp_registrar_detalle_compra(1,1,1,9,1);
+-- CALL sp_registrar_detalle_compra(1,1,1,9,1);
 
 

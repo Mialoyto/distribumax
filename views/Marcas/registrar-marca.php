@@ -204,7 +204,7 @@ require_once '../header.php';
 
 <?php require_once '../footer.php'; ?>
 <script src="http://localhost/distribumax/js/categorias/registrar-categoria.js"></script>
-<script src="http://localhost/distribumax/js/marca/registrar.js"></script>
+<script src="http://localhost/distribumax/js/marca/registrar-marca.js"></script>
 <script src="http://localhost/distribumax/js/utils/utils.js"></script>
 <!-- <script src="http://localhost/distribumax/js/marca/listar.js"></script> -->
 <script src="http://localhost/distribumax/js/subcategorias/registrar-subcategoria.js"></script>

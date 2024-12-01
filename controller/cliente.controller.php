@@ -57,6 +57,10 @@ if (isset($_GET['operation'])) {
       echo json_encode($response);
       break;
 
+    case 'activos':
+      echo json_encode($cliente->activos());
+      break;
+
     case 'updateEstado':
       $idCliente = $_GET['idcliente'];
       $estado = $_GET['estado'];

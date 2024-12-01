@@ -142,30 +142,30 @@ document.addEventListener("DOMContentLoaded", function () {
     RenderDatatableClientes();
   }
 
-  async function deshabilitarCliente(estado, idCliente) {
+  // async function deshabilitarCliente(estado, idCliente) {
   
  
-        const params = new FormData();
-        params.append("operation", "activeCliente");
-        params.append("estado", estado);
-        params.append("idcliente", idCliente);
+  //       const params = new FormData();
+  //       params.append("operation", "activeCliente");
+  //       params.append("estado", estado);
+  //       params.append("idcliente", idCliente);
 
-        const options = {
-          method: "POST",
-          body: params
-        }
+  //       const options = {
+  //         method: "POST",
+  //         body: params
+  //       }
 
-        try{
+  //       try{
 
-          const response = await fetch(`../../controller/cliente.controller.php`, options);
-          const data = await response.json();
-          console.log(data);
-          return data;
+  //         const response = await fetch(`../../controller/cliente.controller.php`, options);
+  //         const data = await response.json();
+  //         console.log(data);
+  //         return data;
 
-      } catch (error) {
-        console.error("Error al deshabilitar el cliente :", error);
-      }
-  }
+  //     } catch (error) {
+  //       console.error("Error al deshabilitar el cliente :", error);
+  //     }
+  // }
   
   CargarDatos();
 

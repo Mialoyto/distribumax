@@ -1,4 +1,4 @@
--- Active: 1732807506399@@127.0.0.1@3306@distribumax
+-- Active: 1732798376350@@127.0.0.1@3306@distribumax
 
 
 INSERT INTO tipos_promociones (tipopromocion, descripcion)
@@ -9,6 +9,7 @@ VALUES ('Porcentaje', 'Se aplica un porcentaje de descuento por und.');
 SELECT * FROM tipos_promociones;
 SELECT * FROM promociones;
 SELECT * FROM detalle_promociones;
+SELECT * FROM proveedores;
 -- Registrando 2 metodos de pago
  -- Segundo método de pago
 

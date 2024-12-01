@@ -92,7 +92,7 @@ class Cliente extends Conexion
           $params['estado']
         )
       );
-      $resultado = $query->rowCount();
+      $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
       return $resultado;
     } catch (Exception $e) {
       die($e->getMessage());

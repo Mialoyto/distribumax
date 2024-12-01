@@ -53,13 +53,13 @@ if (isset($_GET['operation'])) {
       case 'updateProveedor':
         $idproveedor = $_GET['idproveedor'];
         $idempresa = $_GET['idempresa'];
-        $proveedor = $_GET['proveedor'];
+        $proveedorV = $_GET['proveedor'];
         $contacto_principal = $_GET['contacto_principal'];
         $telefono_contacto = $_GET['telefono_contacto'];
         $direccion = $_GET['direccion'];
         $email = $_GET['email'];
 
-        if(empty($idproveedor) || empty($idempresa) || empty($proveedor) || empty($contacto_principal || empty($telefono_contacto) || empty($direccion) || empty($email))){
+        if(empty($idproveedor) || empty($idempresa) || empty($proveedorV) || empty($contacto_principal || empty($telefono_contacto) || empty($direccion) || empty($email))){
           echo json_encode(['status' => 'error', 'message' => 'Faltan datos']);
           return;
         } else if(!is_numeric($idproveedor)){
@@ -69,7 +69,7 @@ if (isset($_GET['operation'])) {
           $datos = [
             'idproveedor'         => $idproveedor,
             'idempresa'           => $idempresa,
-            'proveedor'           => $proveedor,
+            'proveedor'           => $proveedorV,
             'contacto_principal'  => $contacto_principal,
             'telefono_contacto'   => $telefono_contacto,
             'direccion'           => $direccion,

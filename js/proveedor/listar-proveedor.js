@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await getProveedor(id); // Función que obtiene datos del proveedor
       if (data && data.length > 0) {
         const proveedor = data[0];
-        inputProveedor.setAttribute("id-proveedo¿", proveedor.idproveedor);
+        inputProveedor.setAttribute("id-proveedor", proveedor.idproveedor);
         inputEmpresa.value = proveedor.idempresa;
         inputProveedor.value = proveedor.proveedor;
         inputContacto.value = proveedor.contacto_principal;
@@ -124,6 +124,32 @@ document.addEventListener("DOMContentLoaded", () => {
             await cargarDatosModal(id);
           });
         });
+
+        //NOTE - EVENTO PARA ACTUALIZAR EL PROVEEDOR
+        // ? EVENTO PARA ACTUALIZAR EL PROVEEDOR
+        modal.addEventListener("submit", async (e) =>{
+          e.preventDefault();
+          idproveedor = inputProveedor.getAttribute("id-proveedor");
+          const empresa = inputEmpresa.value.trim();
+          const proveedor = inputProveedor.value.trim();
+          const contacto = inputContacto.value.trim();
+          const telefono = inputTelefono.value.trim();
+          const correo = inputCorreo.value.trim();
+          const direccion = inputDireccion.value.trim();
+
+          console.log("idproveedor : ", idproveedor);
+          console.log("idempresa : ", empresa);
+          console.log("proveedor : ", proveedor);
+          console.log("contacto : ", contacto);
+          console.log("telefono : ", telefono);
+          console.log("correo : ", correo);
+          console.log("direccion : ", direccion);
+          //NOTE - ESTA FUNCION SE ENCUENTRA EN EL ARCHIVO editar-proveedor.js
+          await formUpdateProveedor(idproveedor, empresa, proveedor, contacto, telefono, correo, direccion);
+          //RENDERIZAR LA TABLA DE PROVEEDORES
+          await CargarProveedores();
+        })
+
 
         const statusButtons = document.querySelectorAll(".estado");
         statusButtons.forEach((btn) => {

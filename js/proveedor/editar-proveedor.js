@@ -1,7 +1,7 @@
 //FUNCION PARA OBTENER EL PROVEEDOR POR ID
 async function getProveedor(id) {
   const params = new URLSearchParams();
-  params.append("operation", "getProveedor");
+  params.append("operation", "getProveedores");
   params.append("idproveedor", id);
 
   try{
@@ -28,6 +28,7 @@ async function updateProveedor(idproveedor, idempresa, proveedor, contacto_princ
   try{
     const response = await fetch(`../../controller/proveedor.controller.php?${params}`);
     const data = await response.json();
+    console.log("Datos obtenidos: ", data);
     return data;
   } catch(error){
     console.error("Error al actualizar el proveedor: ", error);

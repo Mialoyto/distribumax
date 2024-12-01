@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   <a id-data="${element.idcliente}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit-cliente">
                     <i class="bi bi-pencil-square fs-5"></i>
                   </a>
-                  <a id-data="${element.idcliente}" class="btn ${bgbtn} ms-2 estado" status="${element.estado}">
+                  <a id-data="${element.idcliente}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">
                     <i class="${icons}"></i>
                   </a>
                 </div>
@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (await showConfirm("¿Estás seguro de cambiar el estado del cliente?")) {
           const data = await updateEstado(id, status);
           const estado = data[0].estado;
+          console.log(data);
           if (estado) {
             showToast(`${data[0].mensaje}`, "success", "SUCCESS");
             CargarClientes();

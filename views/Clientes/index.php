@@ -89,6 +89,6 @@
 <!-- Archivo JavaScript que controla la funcionalidad de listado y exportación de clientes -->
 <script src="http://localhost/distribumax/js/clientes/listar-clientes.js"></script>
 <script src="http://localhost/distribumax/js/clientes/editar-clientes.js"></script>
-<script src="http://localhost/distribumax/js/clientes/disabled-clientes.js"></script>
+<script src="http://localhost/distribumax/js/clientes/disabled-cliente.js"></script>
 </body>
 </html>

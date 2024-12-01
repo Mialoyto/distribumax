@@ -1,6 +1,6 @@
-USE distribumax;
+/* USE distribumax;
+-- ! ELIMINAR ESTE ARCHIVO NO SE REQUIERE PARA EL PROYECTO
 -- REGISTRAR DETALLE PROMOCIONES
-
 CREATE PROCEDURE sp_detalle_promociones_registrar(
     IN _idpromocion INT,
     IN _idproducto INT,
@@ -11,4 +11,4 @@ BEGIN
     (idpromocion, idproducto, descuento)
     VALUES
     (_idpromocion, _idproducto, _descuento);
-END;
+END; */

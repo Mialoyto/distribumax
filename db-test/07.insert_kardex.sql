@@ -53,8 +53,8 @@ select * from kardex;
 SELECT * FROM LOTES;
 SELECT * FROM PRODUCTOS;
 -- SE HIZO UN PEDIDO DE 150 UNIDADES DEL PRODUCTO 7 Y EL STOCK ACTUAL DEBE DE SER 299
-CALL spu_buscar_lote(7);
+-- CALL spu_buscar_lote(7);
 -- select * from lotes where idproducto = 7;
-CALL sp_registrar_salida_pedido(1, 7, 1, 'Venta por pedido');
+-- CALL sp_registrar_salida_pedido(1, 7, 1, 'Venta por pedido');
 
 SELECT * from categorias;

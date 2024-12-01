@@ -105,12 +105,9 @@ BEGIN
         _cantidad,
         'Ingreso por compra'
     );
-
-    
-
 END;
 
-CALL sp_registrar_detalle_compra(1,1,1,9,1);
+-- CALL sp_registrar_detalle_compra(1,1,1,9,1);
 
 
 CREATE PROCEDURE sp_update_estadocompras(

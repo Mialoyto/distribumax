@@ -4,13 +4,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     return document.querySelector(object);
   }
   // Función de debounce
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
+  /*   function debounce(func, wait) {
+      let timeout;
+      return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    } */
 
   // funcion para traer datos del cliente empresa o persona
   async function dataCliente() {
@@ -111,7 +111,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-
   // EVENTOS
   $("#nro-doc").addEventListener("input", async () => {
 
@@ -198,7 +197,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             item.descripcion,
             item.unidadmedida,
             item.precio_venta,
-            item.descuento,
             item.stockactual
           );
           $("#datalistProducto").style.display = "none"; // Ocultar la lista cuando se selecciona un producto
@@ -221,7 +219,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Función para añadir un producto a la tabla seleccionada
-  function addProductToTable(id, codigo, descripcion, unidadmedida, precio_venta, descuento, stockactual) {
+  function addProductToTable(id, codigo, descripcion, unidadmedida, precio_venta, stockactual) {
     const existId = document.querySelector(`#detalle-pedido tr td[id-data="${id}"]`);
     console.log("existe el ID en la tabla ?", existId);
     if (existId) {
@@ -233,18 +231,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       <th scope="row" class"text-nowrap w-auto">${codigo}</th>
       <td class="text-nowrap w-auto" id-data="${id}">${descripcion}</td>
       <td class="col-md-1 w-10">
-          <input class="form-control form-control-sm cantidad numeros text-center w-100"  type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
+          <input class="form-control form-control-sm cantidad numeros text-center w-100"  type="number" type="number"  name="cantidad" placeholder="0">
       </td>
       <td class="text-nowrap w-auto col-md-1 und-medida">${unidadmedida}</td>
-      <td class="text-nowrap w-auto precio" data="${precio_venta}">
-      
-
-      S/${precio_venta}
-      </td>
+      <td class="text-nowrap w-auto precio" data="${precio_venta}">S/${precio_venta}</td>
       <td class="text-nowrap w-auto subtotal"> S/0.00</td>
-      <td class="text-nowrap w-auto">% ${descuento}</td>
-      <td class="text-nowrap w-auto descuento">S/0.00</td>
-      <td class="text-nowrap w-auto total">S/0.00</td>
+      <td class="text-nowrap w-auto">
+          <input class="form-control form-control-sm numeros text-center w-100 descuento"  type="number"  name="descuento"  placeholder="0.00" readonly>
+      </td>
+      <td class="text-nowrap w-auto total">0.00</td>
       <td class="col-1">
         <div class="mt-1  d-flex justify-content-evenly">
           <button type="button" class="btn btn-danger btn-sm w-100 eliminar-fila">
@@ -266,30 +261,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     const descuentoCell = row.querySelector(".descuento");
     const totalCell = row.querySelector(".total");
 
-    cantidadInput.addEventListener("input", () => {
+    descuentoCell.addEventListener("click", async () => {
+      if (await showConfirm('¿Desea aplicar un descuento al producto?', '', 'Sí', 'No')) {
+        descuentoCell.removeAttribute("readonly");
+        descuentoCell.focus();
+      }
+    });
+
+
+    function calcularTotal() {
       let cantidad = parseInt(cantidadInput.value);
       let stock = parseInt(stockactual);
-      console.log("cantidad", cantidad);
-      console.log("stockactual", stock);
-      console.log(cantidad > stock);
-
+      let descuento = parseFloat(descuentoCell.value);
+      const inputDescuento = descuento ? parseFloat(descuento) : 0.00;
       if (cantidad > stock) {
         showToast(`La cantidad no puede ser mayor que el stock disponible (${stock})`, 'info', 'INFO');
         cantidadInput.value = stock; // Ajustar al stock máximo disponible
         cantidad = stock; // Actualizamos la cantidad
-        console.log("cantidad", parseInt(cantidad));
       }
-      if (cantidad <= 0 || cantidad == "") {
+      if (cantidad < 1 || cantidad == "") {
         showToast('La cantidad no puede ser menor a 1', 'info', 'INFO');
+      } if (cantidad === '' || inputDescuento === '' || inputDescuento < 0) {
+        showToast('La cantidad o el descuento no pueden ser menor a 0', 'info', 'INFO');
+        totalCell.textContent = `S/0.00`;
+        return;
       } else {
-        const subtotal = (cantidad * parseFloat(precio_venta)).toFixed(2);
-        const descuentos = (subtotal * (parseFloat(descuento) / 100)).toFixed(2);
-        const totales = ((cantidad * (parseFloat(precio_venta))) - descuentos).toFixed(2);
+        const subtotal = parseFloat((cantidad * parseFloat(precio_venta))).toFixed(2);
+        const descuentos = inputDescuento.toFixed(2);
+        const totales = ((cantidad * (precio_venta)) - descuentos).toFixed(2);
         totalCell.textContent = `S/${totales}`;
         descuentoCell.textContent = `S/${descuentos}`;
         subtotalCell.textContent = `S/${subtotal}`;
       }
-    });
+    }
+    cantidadInput.addEventListener('input', calcularTotal);
+    descuentoCell.addEventListener('input', calcularTotal);
   }
 
   async function addDetallePedidos(idpedido) {
@@ -300,16 +306,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     let cantidad;
     let undMedida;
     let precioUnitario;
+    let descuento;
     rows.forEach((row) => {
       idproducto = row.querySelector("td[id-data]").getAttribute("id-data");
       cantidad = row.querySelector(".cantidad").value;
       undMedida = row.querySelector(".und-medida").textContent;
       precioUnitario = row.querySelector(".precio").getAttribute("data");
+      descuento = row.querySelector(".descuento").value;
       productos.push({
         idproducto,
         cantidad,
         undMedida,
         precioUnitario,
+        descuento
       });
     });
 
@@ -321,9 +330,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       params.append(`productos[${index}][cantidad_producto]`, parseInt(producto.cantidad));
       params.append(`productos[${index}][unidad_medida]`, producto.undMedida);
       params.append(`productos[${index}][precio_unitario]`, producto.precioUnitario);
+      params.append(`productos[${index}][descuento]`, producto.descuento);
     });
-    console.log("productos", productos);
-    console.log(idpedido);
+
+    params.forEach((value, key) => {
+      console.log(key, value);
+    });
 
     const options = {
       method: "POST",
@@ -343,6 +355,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  async function validarDetalle() {
+    const rows = document.querySelectorAll("#detalle-pedido tr");
+    if (rows.length === 0) {
+      showToast('Debes agregar al menos un producto antes de registrar el pedido', 'warning');
+      return false;
+    }
+    let cantidadInvalida = false;
+    rows.forEach((row) => {
+      const cantidad = parseInt(row.querySelector(".cantidad").value.trim());
+      console.log(cantidad);
+      if (cantidad == "" || cantidad < 1 || isNaN(cantidad)) {
+        cantidadInvalida = true;
+      }
+    });
+    if (cantidadInvalida) {
+      showToast('Todos los productos deben tener una cantidad mayor a 0', 'info', 'INFO');
+      return false;
+    }
+
+    let descuentoInvalido = false;
+    rows.forEach((row) => {
+      const descuento = parseFloat(row.querySelector(".descuento").value.trim());
+      console.log(descuento);
+      if (descuento < 0 || isNaN(descuento)) {
+        descuentoInvalido = true;
+      }
+    });
+    if (descuentoInvalido) {
+      showToast('Todos los productos deben tener un descuento mayor o igual a 0', 'info', 'INFO');
+      return false;
+    }
+
+    return true;
+  }
+
 
 
   // EVENTO PARA MANDAR LOS DATOS A LA BASE DE DATOS
@@ -351,39 +398,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     let response01;
     let response02;
-    const rows = document.querySelectorAll("#detalle-pedido tr");
-    if (rows.length === 0) {
-      showToast('Debes agregar al menos un producto antes de registrar el pedido', 'warning',);
-      return;
-    }
-    let cantidadInvalida = false;
-    rows.forEach((row) => {
-      const cantidad = parseInt(row.querySelector(".cantidad").value.trim());
-      if (cantidad == "" || parseInt(cantidad) < 1 || isNaN(cantidad)) {
-        cantidadInvalida = true;
-      }
-    });
-    if (cantidadInvalida) {
-      showToast('Todos los productos deben tener una cantidad mayor a 0', 'warning', 'WARNING');
-      return;
-    }
 
-    if (await showConfirm('¿Desea registrar el pedido?', 'Pedido')) {
-      response01 = await getIdPedido();
-      idpedido = response01.idpedido;
-      console.log(idpedido);
-      if (idpedido == -1) {
-        alert("No se guardo los datos")
-      } else {
-        response02 = await addDetallePedidos(idpedido)
-        console.log(response02.id)
-        if (response02.id == -1) {
-          showToast('Hubo un error al registrar el pedido', 'error', 'ERROR');
+    const data  = await validarDetalle();
+    console.log(data);
+    if (!data) {
+      return;
+    } else {
+
+      if (await showConfirm('¿Desea registrar el pedido?', 'Pedido')) {
+        response01 = await getIdPedido();
+        idpedido = response01.idpedido;
+        console.log(idpedido);
+        if (idpedido == -1) {
+          alert("No se guardo los datos")
         } else {
-          showToast(`Pedido registrado con éxito\n ID: ${idpedido}`, 'success', 'SUCCESS');
-          $("#registrar-pedido").reset();
-          $("#addProducto").setAttribute("disabled", true);
-          $("#detalle-pedido").innerHTML = "";
+          response02 = await addDetallePedidos(idpedido)
+          console.log(response02.id)
+          if (response02.id == -1) {
+            showToast('Hubo un error al registrar el pedido', 'error', 'ERROR');
+          } else {
+            showToast(`Pedido registrado con éxito\n ID: ${idpedido}`, 'success', 'SUCCESS');
+            $("#registrar-pedido").reset();
+            $("#addProducto").setAttribute("disabled", true);
+            $("#detalle-pedido").innerHTML = "";
+          }
         }
       }
     }

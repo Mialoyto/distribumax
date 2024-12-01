@@ -117,7 +117,7 @@ class Cliente extends Conexion
       die($e->getCode());
     }
   }
-
+// aqui sale una 
   public function activos(){
     try {
       $tsql = "SELECT * FROM  vw_listar_clientes_activos";

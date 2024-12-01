@@ -93,7 +93,7 @@ BEGIN
     FROM pedidos P
     INNER JOIN clientes C ON C.idcliente = P.idcliente
     WHERE (C.idpersona = _nro_documento OR C.idempresa = _nro_documento)
-      AND P.estado = 'Pendiente';
+    AND P.estado = 'Pendiente';
 
     -- Si tiene pedidos pendientes, retornar el mensaje
     IF _tiene_pedidos > 0 THEN

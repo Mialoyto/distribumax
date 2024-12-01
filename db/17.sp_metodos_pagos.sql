@@ -32,3 +32,13 @@ BEGIN
 	SELECT * FROM metodos_pago;
 END;
 
+
+CREATE PROCEDURE sp_obtenerMetodopago(IN _idventa INT)
+BEGIN 	
+	  SELECT 
+        mp.metodopago,
+        dmp.monto 
+    FROM metodos_pago mp 
+    INNER JOIN detalle_meto_Pago dmp ON dmp.idmetodopago = mp.idmetodopago
+    WHERE dmp.idventa = _idventa;
+END ;

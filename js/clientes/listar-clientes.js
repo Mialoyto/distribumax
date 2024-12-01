@@ -1,19 +1,47 @@
 document.addEventListener("DOMContentLoaded", function () {
-  function $(object = "") {
-    return document.querySelector(object);
-  }
-  let dtcliente;
+  function $(object = null) { return document.querySelector(object); }
+  let dtcaclientes;
+  // document.getElementById("exportExcel").addEventListener("click", function () {
+  //   const table = $('#table-clientes').DataTable();
+  //   const data = table.rows({ search: 'applied' }).data().toArray();
 
-  const formUpdateCliente = document.querySelector("#edit-cliente");
+  //   // Enviar datos al servidor
+  //   fetch('../../reports-excel/Clientes/exportar_excel.php', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({ data: data })
+  //   })
+  //     .then(response => response.blob())
+  //     .then(blob => {
+  //       const url = window.URL.createObjectURL(blob);
+  //       const a = document.createElement('a');
+  //       a.style.display = 'none';
+  //       a.href = url;
+  //       a.download = 'clientes.xlsx';
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       window.URL.revokeObjectURL(url);
+  //     })
+  //     .catch(error => console.error('Error al exportar a Excel:', error));
+  // });
 
-  async function CargarClientes() {
-    if (dtcliente) {
-      dtcliente.destroy();
-      dtcliente = null;
-    }
+  
+  // const modal= document.querySelector("#edit-cliente");
+  // // const tipo_cliente = modal.querySelector("#tipo_cliente");
+  // const nro_doc = modal.querySelector("#nro_doc");
+  // const email = modal.querySelector("#email");
+  // const telefono = modal.querySelector("#telefono");
+  // const direccion = modal.querySelector("#direccion");
+
+  async function GetCliente(id) {
+    const params = new URLSearchParams();
+    params.append('operation', 'obtenerCliente');
+    params.append('idcliente', id);
 
     try {
-      const response = await fetch(`../../controller/cliente.controller.php?operation=getAll`);
+      const response = await fetch(`../../controller/cliente.controller.php?${params}`);
       const data = await response.json();
       console.log(data);
       return data;
@@ -84,7 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     
     const btnDisabled = document.querySelectorAll(".estado");
-
     btnDisabled.forEach((btn) => {
       btn.addEventListener("click", async (e) => {
         try {
@@ -93,19 +120,21 @@ document.addEventListener("DOMContentLoaded", function () {
           const status = e.currentTarget.getAttribute("estado-cat");
           console.log("ID:", id, "Status:", status);
           if (await showConfirm("¿Estás seguro de deshabilitar el cliente?")) {
-            const data = await deshabilitarCliente(status,id);
-            console.log("Estado actualizado correctamente:", data.row);
-            if(data.row){
-              showToast("Estado actualizado correctamente.", "success", "SUCCESS");
+            const data = await updateEstado(id,status);
+            console.log("Estado actualizado correctamente:", data);
+            if(data[0].estado){
+              showToast(`${data[0].mensaje}`, "success", "SUCCESS");
             }else{
-              showToast("Error al cambiar el estado del cliente.", "error", "ERROR");
+              showToast(`${data[0].mensaje}`, "error", "ERROR");
             }
             dtcaclientes.destroy();
         
             CargarDatos();
           } else {
-            showToast(`${data[0].mensaje}`, "error", "ERROR");
+            console.error("El atributo id-data o status es null o undefined.");
           }
+        } catch (error) {
+          console.error("Error al cambiar el estado de la subcategoría:", error);
         }
       });
     });
@@ -141,34 +170,23 @@ document.addEventListener("DOMContentLoaded", function () {
   CargarDatos();
 
   function RenderDatatableClientes() {
-    if (dtcliente) {
-      dtcliente.destroy();
-      dtcliente = null;
-    }
-
-    // Inicializar DataTable
-    dtcliente = new DataTable("#table-clientes", {
-      columnDefs: [
-        { width: "10%", targets: 0 },
-        { width: "10%", targets: 1 },
-        { width: "10%", targets: 2 },
-        { width: "10%", targets: 3 },
-        { width: "10%", targets: 4 },
-      ],
+    
+    dtcaclientes = new DataTable("#table-clientes", {
       language: {
-        sEmptyTable: "No hay datos disponibles en la tabla",
-        info: "",
-        sInfoFiltered: "(filtrado de _MAX_ entradas en total)",
-        sLengthMenu: "Filtrar: _MENU_",
-        sLoadingRecords: "Cargando...",
-        sProcessing: "Procesando...",
-        sSearch: "Buscar:",
-        sZeroRecords: "No se encontraron resultados",
-        oAria: {
-          sSortAscending: ": Activar para ordenar la columna de manera ascendente",
-          sSortDescending: ": Activar para ordenar la columna de manera descendente",
-        },
-      },
+        "sEmptyTable": "No hay datos disponibles en la tabla",
+        "info": "",
+        "sInfoFiltered": "(filtrado de MAX entradas en total)",
+        "sLengthMenu": "Filtrar: MENU",
+        "sLoadingRecords": "Cargando...",
+        "sProcessing": "Procesando...",
+        "sSearch": "Buscar:",
+        "sZeroRecords": "No se encontraron resultados",
+        "oAria": {
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+      }
     });
   }
+ 
 });

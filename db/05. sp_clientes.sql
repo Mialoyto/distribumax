@@ -141,6 +141,7 @@ CALL sp_buscar_cliente('73217990');
 
 -- LISTAR CLIENTES
 DROP PROCEDURE IF EXISTS sp_listar_clientes;
+
 CREATE PROCEDURE sp_listar_clientes()
 BEGIN
     SELECT 
@@ -152,24 +153,23 @@ BEGIN
         CASE cli.estado
             WHEN '1' THEN '0'
             WHEN '0' THEN '1'
-        END AS `status`,
+        END AS status,
         CASE
             WHEN CLI.tipo_cliente = 'Persona' THEN CLI.idpersona
             WHEN CLI.tipo_cliente = 'Empresa' THEN CLI.idempresa
         END AS nro_doc,
-        CLI.tipo_cliente
-        -- CASE
-        --     WHEN CLI.tipo_cliente = 'Persona' THEN CONCAT(PER.nombres, ' ', PER.appaterno, ' ', PER.apmaterno)
-        --     WHEN CLI.tipo_cliente = 'Empresa' THEN EMP.razonsocial
-        -- END AS cliente,
-        -- CASE CLI.estado
-        -- WHEN '1' THEN 'Activo'
-        -- WHEN '0' THEN 'Inactivo'
-        -- END AS estado,
-        -- CASE CLI.estado
-        --     WHEN '1' THEN '0'
-        --     WHEN '0' THEN '1'
-        -- END AS status
+        CLI.tipo_cliente,
+        CASE
+            WHEN CLI.tipo_cliente = 'Persona' THEN CONCAT(PER.nombres, ' ', PER.appaterno, ' ', PER.apmaterno)
+            WHEN CLI.tipo_cliente = 'Empresa' THEN EMP.razonsocial
+        END AS cliente,
+        CLI.create_at AS fecha_creacion,
+        CLI.estado AS estado_cliente,
+        CASE
+            WHEN CLI.tipo_cliente = 'Persona' THEN CONCAT(DIS.distrito,' |',PROV.provincia)
+            WHEN CLI.tipo_cliente = 'Empresa' THEN CONCAT(DIST.distrito,'| ',PROV.provincia)
+        END AS provincia
+        
     FROM 
         clientes CLI
     LEFT JOIN personas PER ON CLI.idpersona = PER.idpersonanrodoc

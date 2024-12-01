@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded',()=>{
           $("#totalClientesActivos").textContent=data[0].cli_activos;
             console.log(data);
           
-        
+        return data;
     }
     cargarclientes();
 

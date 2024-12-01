@@ -19,5 +19,10 @@ if(isset($_GET['operation'])){
         case 'getAll':
             echo json_encode($metodo->getAll());
         break;
+        case 'sp_obtenerMetodopago':
+            $datos=[
+                'idventa'=>$_GET['idventa']
+            ];
+            echo json_encode($metodo->obtenerMetodopago($datos));
     }
 }

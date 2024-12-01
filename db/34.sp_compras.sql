@@ -1,4 +1,4 @@
--- Active: 1732807506399@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 -- TODO: OBTENER PRODUCTOS POR PROVEEDOR (OK)
 -- * IMPORTANT: NO MODIFICAR ESTE PROCEDIMIENTO
 DROP PROCEDURE IF EXISTS sp_get_productos_proveedor;
@@ -113,3 +113,14 @@ END;
 CALL sp_registrar_detalle_compra(1,1,1,9,1);
 
 
+CREATE PROCEDURE sp_update_estadocompras(
+    IN _estado CHAR(1),
+    IN _idcompra INT
+   
+)
+BEGIN
+    UPDATE compras
+    SET estado = _estado,
+        update_at= NOW()
+    WHERE idcompra = _idcompra;
+END;

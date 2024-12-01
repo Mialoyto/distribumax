@@ -218,74 +218,69 @@ END;
 -- END;
 
 -- GENERAR REPORTE
-DROP PROCEDURE IF EXISTS  `sp_generar_reporte`;
 
-CREATE PROCEDURE `sp_generar_reporte` ( 
+
+CREATE PROCEDURE sp_generar_reporte (
     IN _idventa INT
 )
 BEGIN
-    SELECT   ve.idventa,
+    -- Primera consulta: Detalles de la venta y productos
+    SELECT 
+        ve.idventa,
         ve.fecha_venta,
         ve.numero_comprobante,
-        p.idpedido,
-        tp.comprobantepago,
-        pr.codigo,
         ve.igv,
         ve.total_venta,
         ve.subtotal AS sub_venta,
-
-        -- Tipo de cliente
-        cli.tipo_cliente AS cliente,
-
-        -- Documento del cliente dependiendo del tipo
+        tcp.comprobantepago,
+        dp.precio_descuento,
+        dp.cantidad_producto,
+        dp.precio_unitario,
+        dp.subtotal,
+        pr.codigo,
+        vh.marca_vehiculo,
+        vh.placa,
+        vh.modelo,
+        -- Agregar los vehículos concatenados en una sola columna
+        
+        CONCAT(pr.nombreproducto, ' ', dp.unidad_medida, ' ', pr.cantidad_presentacion, 'X', pr.peso_unitario) AS nombreproducto,
+        cli.tipo_cliente,
+        -- Cliente
         CASE 
             WHEN cli.tipo_cliente = 'empresa' THEN em.idempresaruc
             WHEN cli.tipo_cliente = 'persona' THEN pe.idpersonanrodoc
             ELSE 'Sin documento'
         END AS documento_cliente,
-
-        -- Nombre del cliente con mayúsculas
         CASE 
             WHEN cli.tipo_cliente = 'empresa' THEN UPPER(em.razonsocial)
             WHEN cli.tipo_cliente = 'persona' THEN UPPER(CONCAT(pe.appaterno, ' ', pe.apmaterno, ' ', pe.nombres))
             ELSE 'SIN DATOS'
         END AS nombre_cliente,
-
         CASE 
             WHEN cli.tipo_cliente = 'empresa' THEN em.direccion
             WHEN cli.tipo_cliente = 'persona' THEN pe.direccion
-        END AS direccion,    
-
-        -- Detalle del producto
-        pr.nombreproducto,
-        dp.precio_unitario,
-        dp.cantidad_producto,
-
-        -- Modificación en la unidad de medida
-        CASE 
-            WHEN dp.unidad_medida = 'caja' THEN 'cj'
-            WHEN dp.unidad_medida = 'bolsa' THEN 'bl'
-            WHEN dp.unidad_medida = 'unidad' THEN 'un'
-            WHEN dp.unidad_medida = 'paquete' THEN 'pq'
-            ELSE dp.unidad_medida  -- En caso de que haya una unidad no reconocida
-        END AS unidad_medida,
-
-        dp.precio_descuento,
-        dp.subtotal
+        END AS direccion,
+        
+        dis.distrito,
+        pro.provincia
 
     FROM ventas ve
-        INNER JOIN pedidos p ON p.idpedido = ve.idpedido
-        INNER JOIN detalle_pedidos dp ON p.idpedido = dp.idpedido
-        INNER JOIN productos pr ON pr.idproducto = dp.idproducto
-        INNER JOIN clientes cli ON cli.idcliente = p.idcliente
-        LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
-        LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
-        LEFT JOIN tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
-
+    INNER JOIN pedidos p ON p.idpedido = ve.idpedido
+    INNER JOIN detalle_pedidos dp ON dp.idpedido = p.idpedido
+    INNER JOIN productos pr ON pr.idproducto = dp.idproducto
+    INNER JOIN clientes cli ON cli.idcliente = p.idcliente
+    LEFT JOIN personas pe ON pe.idpersonanrodoc = cli.idpersona
+    LEFT JOIN empresas em ON em.idempresaruc = cli.idempresa
+    LEFT JOIN distritos dis ON (pe.iddistrito = dis.iddistrito OR em.iddistrito = dis.iddistrito)
+    LEFT JOIN provincias pro ON dis.idprovincia = pro.idprovincia
+    LEFT JOIN tipo_comprobante_pago tcp ON tcp.idtipocomprobante = ve.idtipocomprobante
+    LEFT JOIN despacho_ventas dv ON dv.idventa = ve.idventa
+    LEFT JOIN despachos d ON d.iddespacho = dv.iddespacho
+    LEFT JOIN vehiculos vh ON vh.idvehiculo = d.idvehiculo
     WHERE ve.idventa = _idventa
-    AND (p.estado = 'Enviado' OR p.estado = 'Entregado');
-   
-END;
+    AND ve.condicion = 'despachado'
+    group by pr.nombreproducto;
+END ;
 
 
 

@@ -30,17 +30,20 @@ document.addEventListener("DOMContentLoaded", () => {
             let estadoClass;
             let icons;
             let bgbtn;
+            let reporte="btn-outline-danger";
+            let btnDisabled;
             switch (element.condicion) {
                 case "pendiente":
                     estadoClass = "text-warning";
                     icons ="bi bi-toggle2-on fs-6"
                     bgbtn="btn-success";
+                    reporte="disabled";
                     break;
               
                 case "despachado":
                     estadoClass = "text-primary";
                     icons="bi bi-toggle2-on fs-6";
-                    bgbtn="btn-success ";
+                    bgbtn="btn-success";
                     break;
             
                
@@ -67,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
                      <td>
   <div class="d-flex ">
     <div class="btn-group btn-group-sm" role="group">
-      <button class="btn btn-outline-danger reporte " data-idventa="${element.idventa}">
+      <button class="btn btn-outline-danger reporte ${reporte} " data-idventa="${element.idventa}">
         <i class="fas fa-file-alt me-6"></i>
       </button>
       <a id-data="${element.idventa}" class="btn ${bgbtn} estado" estado-cat="${element.status}">

@@ -48,6 +48,25 @@ if (isset($_GET['operation'])) {
       // Convertir la respuesta a JSON y enviarla
       echo json_encode($response);
       break;
+
+    case 'getClienteById':
+      $datos = [
+        'idcliente' => $_GET['idcliente']
+      ];
+      $response = $cliente->getClienteById($datos);
+      echo json_encode($response);
+      break;
+
+    case 'updateEstado':
+      $idCliente = $_GET['idcliente'];
+      $estado = $_GET['estado'];
+      $datos = [
+        'idcliente' => $idCliente,
+        'estado' => $estado
+      ];
+      $response = $cliente->updateEstado($datos);
+      echo json_encode($response);
+      break;
   }
 }
 
@@ -73,14 +92,6 @@ if (isset($_POST['operation'])) {
       } else {
         echo json_encode(['error' => 'Datos inválidos']);
       }
-      break;
-    case 'activeCliente':
-      $datosEnviar = [
-        'estado'    => $_POST['estado'],
-        'idcliente' => $_POST['idcliente']
-      ];
-      $datosRecibidos = $cliente->activeCliente($datosEnviar);
-      echo json_encode(['row' => $datosRecibidos]);
       break;
   }
 }

@@ -1,4 +1,4 @@
--- Active: 1732637704938@@127.0.0.1@3306@distribumax
+-- Active: 1732798376350@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;

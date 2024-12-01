@@ -1,3 +1,4 @@
+-- Active: 1732798376350@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR CLIENTES
@@ -24,28 +25,29 @@ BEGIN
 END ;
 
 -- ACTUALIZAR CLIENTES
+DROP PROCEDURE IF EXISTS sp_actualizar_cliente;
 CREATE PROCEDURE sp_actualizar_cliente(
-IN _idpersona       INT,
-IN _idempresa       BIGINT,
-IN _tipo_cliente    CHAR(10),
-IN _idcliente 		INT
+IN _idcliente            INT,
+IN _idpersonanrodoc      INT,
+IN _idempresa            BIGINT,
+IN _tipo_cliente         CHAR(10)
 )
 BEGIN
     IF _tipo_cliente = 'Persona'THEN
-        IF _idpersona IS NOT NULL AND _idempresa IS NULL THEN
+        IF _idpersonanrodoc IS NOT NULL AND _idempresa IS NULL THEN
             UPDATE clientes 
             SET 
-            idpersona = _idpersona,
+            idpersonanrodoc = _idpersonanrodoc,
             idempresa = NULL,
             tipo_cliente = _tipo_cliente,
             update_at = now()
             WHERE idcliente = _idcliente;
         END IF;
     ELSEIF _tipo_cliente = 'Empresa'THEN
-        IF _idempresa IS NOT NULL AND _idpersona IS NULL THEN
+        IF _idempresa IS NOT NULL AND _idpersonanrodoc IS NULL THEN
             UPDATE clientes 
             SET 
-            idpersona = NULL,
+            idpersonanrodoc = NULL,
             idempresa = _idempresa,
             tipo_cliente = _tipo_cliente,
             update_at = now()
@@ -54,14 +56,20 @@ BEGIN
     END IF;
     UPDATE clientes
         SET 
-            idpersona = _idpersona,
+            idpersonanrodoc = _idpersonanrodoc,
             idempresa = _idempresa,
             tipo_cliente = _tipo_cliente,
             update_at = NOW()
         WHERE idcliente = _idcliente;
+
+        IF ROW_COUNT() > 0 THEN
+            SELECT 1 AS estado, 'Cliente actualizado exitosamente' AS mensaje;
+        ELSE
+            SELECT 0 AS estado, 'No se encontró el cliente con el ID proporcionado' AS mensaje;
+        END IF;
 END;
 
--- ELIMINAR CLIENTE
+
 
 DROP PROCEDURE IF EXISTS sp_estado_cliente;
 
@@ -131,7 +139,6 @@ CALL sp_buscar_cliente('73217990');
 
 -- LISTAR CLIENTES
 DROP PROCEDURE IF EXISTS sp_listar_clientes;
-
 CREATE PROCEDURE sp_listar_clientes()
 BEGIN
     SELECT 
@@ -145,8 +152,14 @@ BEGIN
             WHEN CLI.tipo_cliente = 'Persona' THEN CONCAT(PER.nombres, ' ', PER.appaterno, ' ', PER.apmaterno)
             WHEN CLI.tipo_cliente = 'Empresa' THEN EMP.razonsocial
         END AS cliente,
-        CLI.create_at AS fecha_creacion,
-        CLI.estado AS estado_cliente
+        CASE CLI.estado
+        WHEN '1' THEN 'Activo'
+        WHEN '0' THEN 'Inactivo'
+        END AS estado,
+        CASE CLI.estado
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS status
     FROM 
         clientes CLI
     LEFT JOIN personas PER ON CLI.idpersona = PER.idpersonanrodoc
@@ -155,34 +168,59 @@ BEGIN
     ORDER BY CLI.idcliente DESC;
 END;
 
-/* CALL sp_listar_clientes (); */
 CALL sp_listar_clientes ();
-SELECT * FROM clientes WHERE estado = '0';
 
---  DROP PROCEDURE IF EXISTS sp_listar_clientes;
+DROP PROCEDURE IF EXISTS sp_getClienteById;
+CREATE PROCEDURE sp_getClienteById
+(IN _idcliente INT)
+BEGIN
+SELECT
+    CLI.idcliente,
+    CLI.tipo_cliente,
+    CLI.idpersona,
+    CLI.idempresa
+FROM clientes CLI
+WHERE CLI.idcliente = _idcliente;
+END;
 
--- CREATE PROCEDURE `sp_listar_clientes`(
---     IN p_start INT,
---     IN p_length INT,
---     IN p_search VARCHAR(255),
---     IN p_orderColumn VARCHAR(50),
---     IN p_orderDir VARCHAR(4)
--- )
--- BEGIN
---     SET @sql = CONCAT(
---         'SELECT DISTINCT c.idcliente, c.idpersona,c.idempresa, c.tipo_cliente, c.create_at, c.estado
---                         FROM clientes c
---                         WHERE c.estado = 1 AND (c.idcliente LIKE ? OR c.idpersona LIKE ? OR c.idempresa LIKE ?)
---                         ORDER BY ', p_orderColumn, ' ', p_orderDir, ' 
---                         LIMIT ?, ?');
 
---     PREPARE stmt FROM @sql;
---     SET @search_param = CONCAT('%', p_search, '%');
---     EXECUTE stmt USING @search_param, @search_param, p_start, p_length;
---     DEALLOCATE PREPARE stmt;
--- END;
+DROP PROCEDURE IF EXISTS sp_update_estado_cliente;
+CREATE PROCEDURE sp_update_estado_cliente(
+    IN _idcliente INT,
+    IN _estado CHAR(1)
+)
+BEGIN
+    DECLARE v_mensaje VARCHAR(100);
+    DECLARE v_estado INT;
+    IF _estado = '0' THEN
+        UPDATE clientes
+        SET estado = _estado
+        WHERE idcliente = _idcliente;
+        IF ROW_COUNT() > 0 THEN
+            SET v_estado = 1;
+            SET v_mensaje = 'Cliente desactivado exitosamente';
+        ELSE
+            SET v_estado = 0;
+            SET v_mensaje = 'No se encontró el cliente con el ID proporcionado';
+        END IF;
 
--- DELIMITER;
+    ELSEIF _estado = '1' THEN
+        UPDATE clientes
+        SET estado = _estado
+        WHERE idcliente = _idcliente;
+        IF ROW_COUNT() > 0 THEN
+            SET v_estado = 1;
+            SET v_mensaje = 'Cliente activado exitosamente';
+        ELSE
+            SET v_estado = 0;
+            SET v_mensaje = 'No se encontró el cliente con el ID proporcionado';
+        END IF;
 
--- CALL sp_listar_clientes (  0, 10, '26', 'idcliente', 'DESC' );
-
+    ELSE
+        SET v_estado = 0;
+        SET v_mensaje = 'El estado proporcionado no es válido';
+    END IF;
+    SELECT v_estado AS estado, v_mensaje AS mensaje;
+END;
+select * from clientes;
+CALL sp_update_estado_cliente(1, '0');

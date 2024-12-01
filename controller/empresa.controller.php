@@ -11,6 +11,14 @@ if (isset($_GET['operation'])) {
       echo json_encode($empresa->getAll());
       break;
 
+    case 'getEmpresaById':
+      $datos = [
+        'idempresaruc' => $_GET['idempresaruc']
+      ];
+      $response = $empresa->getEmpresaById($datos);
+      echo json_encode($response);
+      break;
+
     case 'search':
       // Preparar el RUC que viene en la solicitud
       $dato = [
@@ -19,6 +27,43 @@ if (isset($_GET['operation'])) {
       $entidades = $empresa->search($dato);
 
       echo json_encode($entidades);
+      break;
+
+    
+    case 'updateEstado':
+      $datos = [
+        
+        'idempresaruc' => $_GET['idempresaruc'],
+        'estado' => $_GET['estado']
+        ];
+        $response = $empresa->updateEstado($datos);
+        echo json_encode($response);
+        break;
+  
+    case 'updateEmpresa':
+      $idempresaruc = $_GET['idempresaruc'];
+      $razonsocial = $_GET['razonsocial'];
+      $direccion = $_GET['direccion'];
+      $email = $_GET['email'];
+      $telefono = $_GET['telefono'];
+
+      if(empty($idempresaruc || empty($razonsocial) || empty($direccion) || empty($email) || empty($telefono))){
+        echo json_encode(['status' => 'error','message' => 'Faltan datos']);
+        return;
+      } else if(!is_numeric($idempresaruc)){
+        echo json_encode(['status' => 'error','message' => 'El id de la empresa debe ser un número']);
+        return;
+      } else{
+        $datos = [
+          'idempresauc' => $idempresaruc,
+          'razonsocial' => $razonsocial,
+          'direccion'   => $direccion,
+          'email'       => $email,
+          'telefono'    => $telefono
+        ];
+        $response = $empresa->updateEmpresa($datos);
+        echo json_encode($response);
+      }
       break;
   }
 }
@@ -43,37 +88,5 @@ if (isset($_POST['operation'])) {
       $resultado = ['idempresa' => $id];
       echo json_encode($resultado);
       break;
-    case 'upEstado':
-      $datos = [
-        'estado' => $_POST['estado'],
-        'idempresaruc' => $_POST['idempresaruc']
-      ];
-      echo json_encode($empresa->upEstado($datos));
-      break;
-
-    case 'upEmpresa':
-      $datos = [
-
-        'iddistrito'   => $_POST['iddistrito'],
-        'razonsocial'  => $_POST['razonsocial'],
-        'direccion'    => $_POST['direccion'],
-        'email'        => $_POST['email'],
-        'telefono'     => $_POST['telefono'],
-        'idempresaruc' => $_POST['idempresaruc']
-      ];
-
-
-      echo json_encode($empresa->UpEmpresa($datos));
-      break;
-    case 'getByID':
-      echo json_encode($empresa->getByID(['idempresaruc' => $_POST['idempresaruc']]));
-      break;
-    case 'delete':
-        $datos = [
-          'idempresaruc' => $_POST['idempresaruc']
-        ];
-        echo json_encode($empresa->delete($datos));
-        break;
-      
   }
 }

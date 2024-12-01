@@ -1,6 +1,4 @@
 <?php
-
-
 require_once '../model/Marcas.php';
 $marca = new Marca();
 header("Content-type: application/json; charset=utf-8");
@@ -35,7 +33,14 @@ if (isset($_GET['operation'])) {
             $response = $marca->getAll();
             echo json_encode($response);
             break;
-        
+        case 'getMarcas':
+            $datosEnviar = [
+                'id' => $_GET['id']
+            ];
+            $datosRecibidos = $marca->getMarca($datosEnviar);
+            echo json_encode(['marcas' => $datosRecibidos]);
+            break;
+
         case 'getMarcaById':
             $datos = [
                 'idmarca' => $_GET['idmarca']
@@ -46,18 +51,18 @@ if (isset($_GET['operation'])) {
 
         case 'updateMarca':
             $idmarca = $_GET['idmarca'];
-            $marca = $_GET['marca'];
+            $nombremarca = $_GET['marca'];
 
-            if (empty($idmarca) || empty($marca)){
+            if (empty($idmarca) || empty($marca)) {
                 echo json_encode(['status' => 'error', 'message' => 'Faltan datos']);
                 return;
-            } else if(!is_numeric($idmarca)){
+            } else if (!is_numeric($idmarca)) {
                 echo json_encode(['status' => 'error', 'message' => 'El id de la marca debe ser un número']);
                 return;
-            } else{
+            } else {
                 $datos = [
                     'idmarca' => $idmarca,
-                    'marca'   => $marca
+                    'marca'   => $nombremarca
                 ];
                 $response = $marca->updateMarca($datos);
                 echo json_encode($response);
@@ -75,4 +80,3 @@ if (isset($_GET['operation'])) {
             break;
     }
 }
-

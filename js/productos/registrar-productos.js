@@ -28,7 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     params.append('id', id);
     try {
       const response = await fetch(`../../controller/marca.controller.php?${params}`);
-      return await response.json();
+      const data = await response.json();
+      console.log(data);
+      return data;
 
 
     } catch (e) {
@@ -111,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // renderizar option de marcas
   async function renderOption() {
+    console.log('id :', id)
     const data = await getMarcas(id);
     console.log(data.marcas);
     optMarca.innerHTML = '<option value="">Seleccione una marca</option>';

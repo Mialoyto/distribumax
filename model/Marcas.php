@@ -41,7 +41,7 @@ class Marca extends Conexion
     public function getMarcaById($params = []): array
     {
         try {
-            $sql = "CALL sp_getMarca(?)";
+            $sql = "CALL sp_getMarcasEdit(?)";
             $query = $this->pdo->prepare($sql);
             $query->execute(
                 array(
@@ -87,6 +87,20 @@ class Marca extends Conexion
             $response = $query->fetchAll(PDO::FETCH_ASSOC);
             return $response;
         } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function getMarca($params = []): array
+    {
+        try{
+            $sql = "CALL sp_getMarcas(?)";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(array(
+                $params['id']
+            ));
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
             die($e->getMessage());
         }
     }

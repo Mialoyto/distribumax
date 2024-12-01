@@ -149,7 +149,8 @@ BEGIN
 FROM pedidos pe 
 INNER JOIN clientes cl ON cl.idcliente = pe.idcliente
 LEFT JOIN personas per ON per.idpersonanrodoc=cl.idpersona
-LEFT JOIN empresas emp ON emp.idempresaruc=cl.idempresa;
+LEFT JOIN empresas emp ON emp.idempresaruc=cl.idempresa
+ ORDER BY pe.idpedido DESC;
 
 END;
 
@@ -200,14 +201,47 @@ BEGIN
     LEFT JOIN departamentos DEP ON DEP.iddepartamento = PRO.iddepartamento
     WHERE pe.idpedido = _idpedido
       AND pe.estado = 'pendiente';
+     
 END;
 
-CALL sp_obtener_pedido ('PED-000000001');
+CREATE PROCEDURE sp_contar_pedidos()
+BEGIN
+    SELECT 
+        SUM(CASE WHEN estado = 'Enviado' THEN 1 ELSE 0 END) AS enviados,
+        SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END) AS pendientes,
+        SUM(CASE WHEN estado='Cancelado'  THEN 1 ELSE 0 END)AS cancelados
+    FROM pedidos
+    WHERE DATE(fecha_pedido) = CURDATE();
+END ;
 
-SELECT * FROM detalle_pedidos;
 
-SELECT * FROM productos;
 
+CREATE PROCEDURE sp_listado_pedidos_provincias()
+BEGIN
+SELECT 
+	d.distrito,
+    pr.provincia,
+    -- YEARWEEK(p.fecha_pedido, 1) AS semana,
+    COUNT(p.idpedido) AS total_pedidos
+FROM 
+    pedidos p
+INNER JOIN 
+    clientes c ON p.idcliente = c.idcliente
+LEFT JOIN 
+    personas pe ON c.idpersona = pe.idpersonanrodoc
+LEFT JOIN 
+    empresas e ON c.idempresa = e.idempresaruc
+INNER JOIN 
+    distritos d ON (pe.iddistrito = d.iddistrito OR e.iddistrito = d.iddistrito)
+INNER JOIN 
+    provincias pr ON d.idprovincia = pr.idprovincia
+    WHERE p.estado='Entregado'
+GROUP BY 
+    pr.provincia, YEARWEEK(p.fecha_pedido, 1)
+ORDER BY 
+    total_pedidos DESC
+LIMIT 8;
+END;
 -- //?todo piola hola que hace
 -- DROP TRIGGER IF EXISTS trg_actualizar_kardex_pedido
 

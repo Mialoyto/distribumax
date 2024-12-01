@@ -205,3 +205,27 @@ BEGIN
     CLOSE lotes_cursor;
 END;
 
+DROP PROCEDURE IF EXISTS  sp_productos_por_agotarse_o_vencimiento;
+
+CREATE PROCEDURE sp_productos_por_agotarse_o_vencimiento()
+BEGIN
+    SELECT 
+        l.fecha_vencimiento,
+        p.nombreproducto,
+        l.estado,
+        l.stockactual
+    FROM 
+        lotes l
+    INNER JOIN 
+        productos p ON p.idproducto = l.idproducto
+    WHERE 
+        l.estado = 'Por Agotarse'
+        OR l.estado='Agotado'
+        OR l.fecha_vencimiento = (
+            SELECT MIN(fecha_vencimiento)
+            FROM lotes
+            WHERE fecha_vencimiento > NOW()
+        )
+    ORDER BY 
+        l.fecha_vencimiento ASC;
+END ;

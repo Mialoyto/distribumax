@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       // Agregar evento change para cargar categorías cuando se seleccione una marca
-      selectMarca.addEventListener('change', function() {
+      selectMarca.addEventListener('change', function () {
         idmarca = this.value;
         console.log("Marca seleccionada:", idmarca);
         ObtenerCategorias(idmarca);
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       // Agregar evento change para cargar subcategorías cuando se seleccione una categoría
-      selectCategoria.addEventListener('change', function() {
+      selectCategoria.addEventListener('change', function () {
         idsubcategoria = this.value;
         console.log("Categoría seleccionada:", idsubcategoria);
         obtenerSubcategorias(idsubcategoria);
@@ -167,9 +167,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const selectUnidad = document.querySelector('#idunidadmedida');
       selectUnidad.innerHTML = ''; // Limpiar opciones anteriores
       data.forEach(element => {
+        console.log(element);
         const tagoption = document.createElement('option');
         tagoption.value = element.idunidadmedida;
-        tagoption.textContent = element.unidad;
+        tagoption.textContent = element.unidadmedida;
         if (element.idunidadmedida == selectedUnidadId) {
           tagoption.selected = true;
         }
@@ -177,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       // Agregar evento change para manejar la selección de unidad de medida
-      selectUnidad.addEventListener('change', function() {
+      selectUnidad.addEventListener('change', function () {
         idunidadmedida = this.value;
         console.log("Unidad de medida seleccionada:", idunidadmedida);
       });
@@ -186,6 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error al obtener las unidades de medida:", error);
     }
   }
+  obtenerUnidades();
 
   async function CargarDatos() {
     const Tablaproductos = $("#table-productos tbody");
@@ -199,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (data.length > 0) {
         data.forEach(element => {
           const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-7" : "bi bi-toggle2-off fs-7";
           const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
           const editDisabled = element.estado === "Inactivo" ? "disabled" : "";
           Tablaproductos.innerHTML += `
@@ -210,15 +212,16 @@ document.addEventListener("DOMContentLoaded", function () {
                       <td>${element.codigo}</td>
                       <td><strong class="${estadoClass}">${element.estado}</strong></td>
                       <td>
-                           <div class="d-flex justify-content-center">
-                      <a  id-data="${element.idproducto}" class="btn btn-warning ${editDisabled}" data-bs-toggle="modal" data-bs-target=".edit-categoria">
-                        <i class="bi bi-pencil-square fs-5"></i>
-                      </a>     
-                      <a  id-data="${element.idproducto}" class="btn ${bgbtn} ms-2 estado" estado-cat="${element.status}">
-                        <i class="${icons}"></i>
-                      </a>
-
-                      </div>
+                            <div class="d-flex justify-content-center">
+  <div class="btn-group btn-group-sm" role="group">
+    <a id-data="${element.idproducto}" class="btn btn-warning ${editDisabled}" data-bs-toggle="modal" data-bs-target=".edit-categoria">
+      <i class="bi bi-pencil-square fs-7"></i>
+    </a>
+    <a id-data="${element.idproducto}" class="btn ${bgbtn} estado" estado-cat="${element.status}">
+      <i class="${icons}"></i>
+    </a>
+  </div>
+</div>
                       </td>
                   </tr>
                   `;
@@ -286,6 +289,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  $("#formActualizarProducto").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = await UpdateProduct();
+    console.log(data);
+
+    if (data && data.length > 0 && data[0].status === 1) {
+      showToast(data[0].mensaje, 'success', 'SUCCESS');
+      // $("#edit-producto").close();
+      dtproductos.destroy();
+      CargarDatos();
+    } else {
+      showToast(data[0].mensaje, 'warning', 'WARNING');
+    }
+
+  });
+
   // Función para inicializar DataTable
   function RenderDatatable() {
     dtproductos = new DataTable("#table-productos", {
@@ -299,12 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "sProcessing": "Procesando...",
         "sSearch": "Buscar:",
         "sZeroRecords": "No se encontraron resultados",
-        "oPaginate": {
-          "sFirst": "Primero",
-          "sLast": "Último",
-          "sNext": "Siguiente",
-          "sPrevious": "Anterior"
-        },
+
         "oAria": {
           "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
           "sSortDescending": ": Activar para ordenar la columna de manera descendente"
@@ -314,40 +329,40 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function UpdateProduct() {
+    idmarca = inputmarca.value;
+    idsubcategoria = inputsubcategoria.value;
+    idunidadmedida = inputunidadmedida.value;
     const params = new FormData();
-    params.append("operation", "updateProducto");  
+    params.append("operation", "updateProducto");
     params.append("idmarca", idmarca);
     params.append("idsubcategoria", idsubcategoria);
     params.append("nombreproducto", inputproducto.value);
     params.append("idunidadmedida", idunidadmedida);
-    params.append("cantidad_presentacion", inputpresentacion.value); 
+    params.append("cantidad_presentacion", inputpresentacion.value);
     params.append("codigo", inputcodigo.value);
     params.append("precio_compra", inputprecio_compra.value);
     params.append("precio_mayorista", inputprecio_mayorista.value);
     params.append("precio_minorista", inputprecio_minorista.value);
     params.append("idproducto", idproducto.value);
+
+    params.forEach((value, key) => {
+      console.log(key, value)
+
+    });
     try {
       const response = await fetch(`../../controller/producto.controller.php`, {
         method: "POST",
         body: params
       });
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (error) {
       console.error("Error al actualizar el producto:", error);
     }
   }
 
-  $("#formActualizarProducto").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const data = await UpdateProduct();
-    if (data && data.ok) {
-      dtproductos.destroy();
-      CargarDatos();
-      modal.querySelector('.btn-close').click();
-    }
-  });
+  
 
   CargarDatos();
 });

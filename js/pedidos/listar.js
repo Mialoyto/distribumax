@@ -162,7 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
               break;
             case "Entregado":
               estadoClass = "text-primary";
-              bgbtn = "btn-success";
+              editButtonClass = "btn-warning disabled";
+              bgbtn = "btn-success ";
+              
               break;
             case "Pendiente":
               estadoClass = "text-warning";
@@ -181,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <td>${element.create_at}</td>
               <td><strong class="${estadoClass}">${element.estado}</strong></td>
               <td>
-                <div class="d-flex justify-content-center">
+                <div class="d-flex ">
                   <a id-data="${element.idpedido}" class="btn ${editButtonClass}" data-bs-toggle="modal" data-bs-target="#edits-pedido" ${editButtonDisabled}>
                     <i class="bi bi-pencil-square fs-5"></i>
                   </a>
@@ -210,23 +212,17 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
               const id = e.currentTarget.getAttribute("id-data");
               const currentStatus = e.currentTarget.getAttribute("status");
-
-              // Verificar si se permite cambiar el estado
-              if (currentStatus === "Cancelado" || currentStatus === "Enviado") {
-                showToast("No se puede cambiar el estado desde Cancelado o Enviado", "warning", "AVISO");
-                return;
-              }
-
-              let newStatus = "Cancelado"; // El único estado al que puede cambiar
-
-              console.log(`Estado actual: ${currentStatus}`);
-              console.log(`Nuevo estado: ${newStatus}`);
+              let newStatus = "Cancelado"; // El único estado al que puede cambia
 
               if (await showConfirm("¿Estás seguro de cambiar el estado del Pedido?")) {
                 const data = await updateEstado(id, newStatus);
+            
                 if (data[0].estado > 0) {
+            
                   showToast(`${data[0].mensaje}`, "success", "SUCCESS");
-                  await CargarProveedores();
+                  // await CargarProveedores();
+                   
+                 
                 } else {
                   showToast(`${data[0].mensaje}`, "error", "ERROR");
                 }
@@ -236,9 +232,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           });
         });
+        RenderDatatablePedidos();
       }
 
-      RenderDatatablePedidos();
+      
     } catch (error) {
       console.log("Error al cargar los pedidos", error);
     }

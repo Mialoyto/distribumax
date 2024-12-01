@@ -1,4 +1,4 @@
--- Active: 1732807506399@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
@@ -609,6 +609,7 @@ CREATE TABLE comprobantes (
     CONSTRAINT fk_estado_comp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
+DROP PROCEDURE IF EXISTS compras;
 
 CREATE TABLE compras (
     idcompra  INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -620,7 +621,6 @@ CREATE TABLE compras (
     create_at   DATETIME NOT NULL DEFAULT NOW(),
     update_at   DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
-
     CONSTRAINT fk_idusuario_compra FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_idproveedor_compra FOREIGN KEY (idproveedor) REFERENCES proveedores (idproveedor),
     CONSTRAINT fk_idtipocomprobante_compra FOREIGN KEY (idtipocomprobante) REFERENCES tipo_comprobante_pago (idtipocomprobante),
@@ -628,7 +628,8 @@ CREATE TABLE compras (
     -- CONSTRAINT ck_numero_comprobante_compra UNIQUE (idproveedor AND numcomprobante)
 ) ENGINE = INNODB;
 
-CREATE TABLE detalles_compras(
+DROP PROCEDURE IF EXISTS detalles_compras;
+CREATE TABLE detalles_compras (
     iddetallecompra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idcompra INT NOT NULL,
     idlote INT NOT NULL,
@@ -638,17 +639,16 @@ CREATE TABLE detalles_compras(
     subtotal DECIMAL(10, 2) NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1",
-
-    CONSTRAINT fk_idcompra_det_compra FOREIGN KEY (idcompra) REFERENCES compras (idcompra),
+    estado CHAR(1) NOT NULL DEFAULT '1',
+    CONSTRAINT fk_idcompra_det_compraS FOREIGN KEY (idcompra) REFERENCES compras (idcompra),
     CONSTRAINT fk_nrolote_det_compra FOREIGN KEY (idlote) REFERENCES lotes (idlote),
     CONSTRAINT fk_idproducto_det_compra FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
     CONSTRAINT ck_cantidad_det_compra CHECK (cantidad > 0),
-    CONSTRAINT ck_precio_unitario_det_compra CHECK (precio_compra  > 0),
+    CONSTRAINT ck_precio_unitario_det_compra CHECK (precio_compra > 0),
     CONSTRAINT ck_subtotal_det_compra CHECK (subtotal > 0),
-    CONSTRAINT fk_estado_det_compra CHECK (estado IN ("0", "1"))
-)
-ENGINE = INNODB;
+    CONSTRAINT ck_estado_det_compra CHECK (estado IN ('0', '1'))
+) ENGINE=INNODB;
+
 
 -- ------------------------------------------------------------------------------------------------------
 -- TODO: NUEVAS TABLAS

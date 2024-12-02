@@ -1,8 +1,8 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1732798376350@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR CLIENTES
-CREATE PROCEDURE `sp_cliente_registrar`(
+CREATE PROCEDURE sp_cliente_registrar(
     IN _idpersona     CHAR(11),
     IN _idempresa     BIGINT,
     IN _tipo_cliente  CHAR(10)
@@ -79,8 +79,8 @@ END;
 call sp_estado_cliente('1',1);
 select * from clientes;
 -- BUSCAR CLIENTE POR DNI O RUC
-DROP PROCEDURE IF EXISTS `sp_buscar_cliente`;
-CREATE PROCEDURE `sp_buscar_cliente` (
+DROP PROCEDURE IF EXISTS sp_buscar_cliente;
+CREATE PROCEDURE sp_buscar_cliente (
     IN _nro_documento CHAR(12)
 )
 BEGIN
@@ -93,7 +93,7 @@ BEGIN
     FROM pedidos P
     INNER JOIN clientes C ON C.idcliente = P.idcliente
     WHERE (C.idpersona = _nro_documento OR C.idempresa = _nro_documento)
-      AND P.estado = 'Pendiente';
+    AND P.estado = 'Pendiente';
 
     -- Si tiene pedidos pendientes, retornar el mensaje
     IF _tiene_pedidos > 0 THEN
@@ -146,7 +146,7 @@ BEGIN
         CASE cli.estado
             WHEN '1' THEN '0'
             WHEN '0' THEN '1'
-        END AS `status`,
+        END AS status,
         CASE
             WHEN CLI.tipo_cliente = 'Persona' THEN CLI.idpersona
             WHEN CLI.tipo_cliente = 'Empresa' THEN CLI.idempresa
@@ -179,7 +179,7 @@ SELECT * FROM empresas WHERE estado = '0';
 
 --  DROP PROCEDURE IF EXISTS sp_listar_clientes;
 
--- CREATE PROCEDURE `sp_listar_clientes`(
+-- CREATE PROCEDURE sp_listar_clientes(
 --     IN p_start INT,
 --     IN p_length INT,
 --     IN p_search VARCHAR(255),
@@ -243,5 +243,6 @@ END;
 
  CREATE VIEW vw_listar_clientes_activos AS
  SELECT  count(*) AS cli_activos FROM clientes WHERE estado=1;
- 
 
+USE distribumax;
+ SELECT * FROM vw_listar_clientes_activos;

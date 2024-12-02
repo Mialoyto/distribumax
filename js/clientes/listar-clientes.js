@@ -120,12 +120,12 @@ document.addEventListener("DOMContentLoaded", function () {
           const status = e.currentTarget.getAttribute("estado-cat");
           console.log("ID:", id, "Status:", status);
           if (await showConfirm("¿Estás seguro de deshabilitar el cliente?")) {
-            const data = await deshabilitarCliente(status,id);
-            console.log("Estado actualizado correctamente:", data.row);
-            if(data.row){
-              showToast("Estado actualizado correctamente.", "success", "SUCCESS");
+            const data = await updateEstado(id,status);
+            console.log("Estado actualizado correctamente:", data);
+            if(data[0].estado){
+              showToast(`${data[0].mensaje}`, "success", "SUCCESS");
             }else{
-              showToast("Error al cambiar el estado del cliente.", "error", "ERROR");
+              showToast(`${data[0].mensaje}`, "error", "ERROR");
             }
             dtcaclientes.destroy();
         
@@ -142,30 +142,30 @@ document.addEventListener("DOMContentLoaded", function () {
     RenderDatatableClientes();
   }
 
-  async function deshabilitarCliente(estado, idCliente) {
+  // async function deshabilitarCliente(estado, idCliente) {
   
  
-        const params = new FormData();
-        params.append("operation", "activeCliente");
-        params.append("estado", estado);
-        params.append("idcliente", idCliente);
+  //       const params = new FormData();
+  //       params.append("operation", "activeCliente");
+  //       params.append("estado", estado);
+  //       params.append("idcliente", idCliente);
 
-        const options = {
-          method: "POST",
-          body: params
-        }
+  //       const options = {
+  //         method: "POST",
+  //         body: params
+  //       }
 
-        try{
+  //       try{
 
-          const response = await fetch(`../../controller/cliente.controller.php`, options);
-          const data = await response.json();
-          console.log(data);
-          return data;
+  //         const response = await fetch(`../../controller/cliente.controller.php`, options);
+  //         const data = await response.json();
+  //         console.log(data);
+  //         return data;
 
-      } catch (error) {
-        console.error("Error al deshabilitar el cliente :", error);
-      }
-  }
+  //     } catch (error) {
+  //       console.error("Error al deshabilitar el cliente :", error);
+  //     }
+  // }
   
   CargarDatos();
 
@@ -175,8 +175,8 @@ document.addEventListener("DOMContentLoaded", function () {
       language: {
         "sEmptyTable": "No hay datos disponibles en la tabla",
         "info": "",
-        "sInfoFiltered": "(filtrado de _MAX_ entradas en total)",
-        "sLengthMenu": "Filtrar: _MENU_",
+        "sInfoFiltered": "(filtrado de MAX entradas en total)",
+        "sLengthMenu": "Filtrar: MENU",
         "sLoadingRecords": "Cargando...",
         "sProcessing": "Procesando...",
         "sSearch": "Buscar:",

@@ -57,14 +57,13 @@ class Proveedor extends Conexion
         try {
             $query = $this->pdo->prepare("CALL sp_actualizar_proovedor (?,?,?,?,?,?,?)");
             $query->execute(array(
-
+                $params['idproveedor'],
                 $params['idempresa'],
                 $params['proveedor'],
                 $params['contacto_principal'],
                 $params['telefono_contacto'],
                 $params['direccion'],
-                $params['email'],
-                $params['idproveedor']
+                $params['email']
             ));
             return $query->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {

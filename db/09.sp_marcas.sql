@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1732798376350@@127.0.0.1@3306
 USE distribumax;
 
 -- REGISTRAR MARCAS
@@ -51,12 +51,15 @@ BEGIN
     UPDATE marcas
     SET marca = _marca
     WHERE idmarca = _idmarca;
+
     IF ROW_COUNT() > 0 THEN
-        SELECT 'Marca actualizada exitosamente' AS mensaje;  -- Confirmación de actualización
+        SELECT 1 AS estado, 'Marca actualizada exitosamente' AS mensaje;
     ELSE
-        SELECT 'No se encontró la marca con el ID proporcionado' AS mensaje;  -- Error si no se encuentra la marca
+        SELECT 0 AS estado, 'No se encontró la marca con el ID proporcionado' AS mensaje;
     END IF;
 END;
+
+CALL sp_actualizar_marca(1,'Ajinos');
 
 
 -- -- ELIMINAR MARCAS
@@ -72,41 +75,37 @@ END;
 --     WHERE idmarca = _idmarca;
 -- END;
 
-DROP PROCEDURE IF EXISTS sp_getMarcas;
-
-CREATE PROCEDURE sp_getMarcas (
-    IN _idproveedor   VARCHAR(100)
-    )
+DROP PROCEDURE IF EXISTS sp_getMarcasEdit;
+CREATE PROCEDURE sp_getMarcasEdit 
+(IN    _idmarca INT)
 BEGIN
 SELECT 
     MAR.idmarca, 
     MAR.marca
 FROM marcas MAR
+WHERE MAR.idmarca = _idmarca;
+END;
+
+-- CALL sp_getMarcas(1);
+
+DROP PROCEDURE IF EXISTS sp_getMarcas;
+CREATE PROCEDURE sp_getMarcas
+(
+    IN _idproveedor         VARCHAR(100)
+)
+BEGIN
+SELECT 
+    MAR.idmarca,
+    MAR.marca
+FROM marcas MAR
     RIGHT JOIN proveedores PRO ON MAR.idproveedor = PRO.idproveedor
-    
-WHERE
+WHERE 
     PRO.idproveedor = _idproveedor
     AND MAR.estado = 1
 ORDER BY MAR.marca ASC;
 END;
 
-
-
-DROP PROCEDURE IF EXISTS sp_getMarcas_Categorias;
-CREATE PROCEDURE sp_getMarcas_Categorias (
-    IN _idmarca   VARCHAR(100)
-    )
-BEGIN
-SELECT 
-    CA.idcategoria,
-    CA.categoria
-FROM marcas MAR
- RIGHT JOIN categorias CA ON CA.idcategoria=MAR.idcategoria
-
-   WHERE MAR.idmarca=_idmarca
-    AND MAR.estado = 1
- ORDER BY CA.categoria;
-END;
+call sp_getMarcas(1);
 -- LISTAR MARCAS
 -- CREATE VIEW vw_listar_marcas AS
 -- SELECT idmarca, marca
@@ -118,16 +117,22 @@ DROP PROCEDURE IF EXISTS sp_listar_marcas;
 CREATE PROCEDURE sp_listar_marcas()
 BEGIN
     SELECT 
+        MAR.idmarca AS id,
         MAR.marca,  -- Nombre de la marca
         MAR.idmarca,
         CASE MAR.estado
             WHEN '1' THEN 'Activo'   
             WHEN '0' THEN 'Inactivo'
-        END AS estado_marca        
-    FROM 
-        marcas MAR
-    ORDER BY MAR.marca ASC; 
+        END AS 'estado',
+        CASE MAR.estado 
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS 'status'
+    FROM marcas MAR
+    ORDER BY MAR.marca ASC;
 END;
+
+CALL sp_listar_marcas();
 
 
 
@@ -170,5 +175,17 @@ BEGIN
     SELECT v_estado AS estado, v_mensaje AS mensaje;
 END;
 
-CALL sp_update_estado_marca(3,'0');
+CALL sp_update_estado_marca(3,'1');
 
+DROP PROCEDURE IF EXISTS sp_getMarca;
+CREATE PROCEDURE sp_getMarca
+(IN _idmarca INT)
+BEGIN 
+    SELECT
+        MAR.idmarca,
+        MAR.marca
+    FROM marcas MAR
+    WHERE MAR.idmarca = _idmarca;
+END;
+
+CALL sp_getMarca(1);

@@ -115,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // renderizar option de marcas
   async function renderOption() {
+    console.log('id :', id)
     const data = await getMarcas(id);
     console.log(data.marcas);
     optMarca.innerHTML = '<option value="">Seleccione una marca</option>';

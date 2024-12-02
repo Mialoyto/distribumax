@@ -47,56 +47,60 @@ class Empresas extends Conexion
 
       return $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
-      die($e->getCode());
+      die($e->getMessage());
     }
   }
 
-  public function UpEmpresa($params = [])
+  // public function UpEmpresa($params = [])
+  // {
+  //   try {
+  //     $status = false;
+  //     $query = $this->pdo->prepare("CALL sp_actualizar_empresa  (?,?,?,?,?,?) ");
+  //     $status = $query->execute(array(
+
+  //       $params['iddistrito'],
+  //       $params['razonsocial'],
+  //       $params['direccion'],
+  //       $params['email'],
+  //       $params['telefono'],
+  //       $params['idempresaruc']
+
+  //     ));
+
+  //     return $status;
+  //   } catch (Exception $e) {
+  //     die($e->getCode());
+  //   }
+  // }
+
+  public function getEmpresaById($params = []):array
   {
     try {
-      $status = false;
-      $query = $this->pdo->prepare("CALL sp_actualizar_empresa  (?,?,?,?,?,?) ");
-      $status = $query->execute(array(
-
-        $params['iddistrito'],
-        $params['razonsocial'],
-        $params['direccion'],
-        $params['email'],
-        $params['telefono'],
-        $params['idempresaruc']
-
-      ));
-
-      return $status;
-    } catch (Exception $e) {
-      die($e->getCode());
-    }
-  }
-
-  public function getByID($params = [])
-  {
-    try {
-      $sql = "SELECT * FROM empresas WHERE idempresaruc = ?";
+      $sql = "CALL sp_getEmpresasEdit(?)";
       $query = $this->pdo->prepare($sql);
-
-      // Usar el valor del array $params directamente
-      $query->execute([$params['idempresaruc']]);
-
-      return $query->fetch(PDO::FETCH_ASSOC); // Se asume que obtendrás un solo resultado
+      $query->execute(
+        array(
+          $params['idempresaruc']
+        )
+        );
+        $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $resultado;
     } catch (Exception $e) {
       die($e->getMessage());
     }
   }
-  public function upEstado($params = [])
+  public function updateEstado($params = [])
   {
     try {
       $query = $this->pdo->prepare("CALL sp_estado_empresa (?,?)");
       $query->execute(array(
-        $params['estado'],
-        $params['idempresaruc']
-      ));
-      return $query;
-    } catch (Exception $e) {
+        $params['idempresaruc'],
+        $params['estado']
+      )
+    );
+    $response = $query->fetchAll(PDO::FETCH_ASSOC);
+    return $response;   
+  } catch (Exception $e) {
       die($e->getMessage());
     }
   }
@@ -117,17 +121,26 @@ class Empresas extends Conexion
     }
   }
 
-  public function delete($params = [])
-{
-    try {
-        $sql = "DELETE FROM empresas WHERE idempresaruc = ?";
-        $query = $this->pdo->prepare($sql);
-        $query->execute([$params['idempresaruc']]);
-        return ['success' => true];
-    } catch (Exception $e) {
-        return ['error' => $e->getMessage()];
+  public function updateEmpresa($params = []):array
+  {
+    try{
+      $tsql = "CALL sp_actualizar_empresa(?,?,?,?,?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(
+        array(
+          $params['idempresaruc'],
+          $params['razonsocial'],
+          $params['direccion'],
+          $params['email'],
+          $params['telefono']
+        )
+        );
+        $response = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $response;
+    } catch(Exception $e){
+      die($e->getMessage());
     }
-}
+  }
 
   
 }

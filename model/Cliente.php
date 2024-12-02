@@ -64,8 +64,40 @@ class Cliente extends Conexion
     }
   }
 
+  public function getClienteById($params = []): array
+  {
+    try {
+      $tsql = "CALL sp_getClienteById(?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(
+        array(
+          $params['idcliente']
+        )
+      );
+      $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $resultado;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 
-
+  public function updateEstado($params = [])
+  {
+    try {
+      $tsql = "CALL sp_update_estado_cliente(?, ?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(
+        array(
+          $params['idcliente'],
+          $params['estado']
+        )
+      );
+      $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $resultado;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 
 
 
@@ -117,7 +149,7 @@ class Cliente extends Conexion
       die($e->getCode());
     }
   }
-
+// aqui sale una 
   public function activos(){
     try {
       $tsql = "SELECT * FROM  vw_listar_clientes_activos";

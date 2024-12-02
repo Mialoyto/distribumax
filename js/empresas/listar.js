@@ -1,148 +1,191 @@
-document.addEventListener("DOMContentLoaded", function() {
-    function $(selector) { return document.querySelector(selector); }
-    let dtempresas;
+document.addEventListener("DOMContentLoaded", async () => {
+    function $(object = "") {
+        return document.querySelector(object);
+    }
+    let dtEmpresa;
 
-    async function CargarDatosEmpresas() {
-        const TablaEmpresas = $("#table-empresas tbody");
+    const formUpdateEmpresa = document.querySelector("#edit-empresa");
+
+    async function CargarEmpresa() {
+        if (dtEmpresa) {
+            dtEmpresa.destroy();
+        }
+
+        dtEmpresa = null;
 
         try {
             const response = await fetch(`../../controller/empresa.controller.php?operation=getAll`);
-            if (!response.ok) {
-                throw new Error('Error en la respuesta de la API');
-            }
             const data = await response.json();
-
-            // Verificar que el dato contenga una lista
-            if (!Array.isArray(data)) {
-                throw new Error('Los datos no son un arreglo');
+            console.log(data);
+            const TablaEmpresa = $("#table-empresas tbody");
+            if (!TablaEmpresa) {
+                console.error("Error: No se encontró el elemento #table-empresa tbody");
+                return;
             }
 
-            TablaEmpresas.innerHTML = ''; // Limpiar tabla
-            data.forEach(element => {
-                const row = document.createElement('tr');
+            let tableContent = "";
+            if (data.length === 0) {
+                tableContent = `<tr><td colspan="6" class="text-center">No hay datos disponibles</td></tr>`;
+            } else {
+                data.forEach((element) => {
+                    console.log(element);
+                    const estadoClass =
+                    element.estado === "Activo" ? "text-success" : "text-danger";
+                  const icons =
+                    element.estado === "Activo"
+                      ? "bi bi-toggle2-on fs-5"
+                      : "bi bi-toggle2-off fs-5";
+                  const bgbtn =
+                    element.estado === "Activo" ? "btn-success" : "btn-danger";
+        
+                  element.estado === "Activo" ? "text-success" : "text-danger";
 
-                row.innerHTML = `
-                    <td>${element.razonsocial || 'N/A'}</td>
-                    <td class="text-start">${element.direccion || 'N/A'}</td>
-                    <td>${element.email || 'N/A'}</td>
-                    <td>${element.telefono || 'N/A'}</td>
-                    <td>
-                        <a href="#" class="btn btn-warning" onclick="editEmpresa(${element.idempresaruc})" aria-label="Editar empresa">
-                            <i class="bi bi-pencil-fill"></i>
-                        </a>
-                        <a href="#" class="btn btn-danger" onclick="deleteEmpresa(${element.idempresaruc})" aria-label="Eliminar empresa">
-                            <i class="bi bi-trash-fill"></i>
-                        </a>
-                    </td>
-                `;
-                TablaEmpresas.appendChild(row);
-            });
+                    tableContent += `
+                        <tr>
+                            <td>${element.razonsocial}</td>
+                            <td>${element.direccion}</td>
+                            <td>${element.email}</td>
+                            <td>${element.telefono}</td>
+                            <td>
+                                <strong class="${estadoClass}">
+                                    ${element.estado}
+                                </strong>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <a id-data="${element.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit-empresa">
+                                        <i class="bi bi-pencil-square fs-5"></i>
+                                    </a>
+                                    <a id-data="${element.id}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">
+                                        <i class="${icons}"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+                TablaEmpresa.innerHTML = tableContent;
+                asignarEventos();
 
-            if (dtempresas) {
-                dtempresas.destroy();
+                if(dtEmpresa) {
+                    dtEmpresa.destroy();
+                }   
+            RenderDataTableEmpresas();
             }
-            RenderDatatableEmpresas();
         } catch (error) {
-            console.error('Error al cargar los datos de las empresas:', error);
-            alert('Ocurrió un error al cargar los datos de las empresas.'); // Mensaje de error al usuario
+            console.error("Error al cargar las empresas:", error);
+            const TablaEmpresa = $("#table-empresas tbody");
+            if (TablaEmpresa) {
+                TablaEmpresa.innerHTML = `<tr><td colspan="6" class="text-center">Error al cargar los datos</td></tr>`;
+            }
         }
     }
 
-    function RenderDatatableEmpresas() {
-        dtempresas = new DataTable("#table-empresas", {
-            columnDefs: [
-                { width: "15%", targets: 0 }, 
-                { width: "15%", targets: 1 }, 
-                { width: "25%", targets: 2 },
-                { width: "25%", targets: 3 },
-                { width: "20%", targets: 4 }
-            ],
-            language: {
-                "sEmptyTable": "No hay datos disponibles en la tabla",
-                "info": "",
-                "sInfoFiltered": "(filtrado de _MAX_ entradas en total)",
-                "sLengthMenu": "Filtrar: _MENU_",
-                "sLoadingRecords": "Cargando...",
-                "sProcessing": "Procesando...",
-                "sSearch": "Buscar:",
-                "sZeroRecords": "No se encontraron resultados",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+    CargarEmpresa();
+
+    function asignarEventos() {
+        let id;
+        const btnEdit = document.querySelectorAll(".btn-warning");
+        const idempresaruc = document.querySelector("#id-empresa-ruc");
+        const btnDisabled = document.querySelectorAll(".estado");
+
+        btnEdit.forEach((btn) => {
+            btn.addEventListener("click", async (e) => {
+                id = e.currentTarget.getAttribute("id-data");
+                idempresaruc.setAttribute("id-empresa-ruc", id);
+                await cargarDatosModal(id);
+            });
+        });
+
+
+        formUpdateEmpresa.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            try {
+                const id = idempresaruc.getAttribute("id-emp");
+                const razonSocial = idempresaruc.value.trim();
+                idempresaruc.classList.remove("is-invalid");
+
+                const direccion = document.querySelector("#editDireccion").value.trim();
+                document.querySelector("#editDireccion").classList.remove("is-invalid");
+
+                const email = document.querySelector("#editEmail").value.trim();
+                document.querySelector("#editEmail").classList.remove("is-invalid");
+
+                const telefono = document.querySelector("#editTelefono").value.trim();
+                document.querySelector("#editTelefono").classList.remove("is-invalid");
+
+                const spanError = formUpdateEmpresa.querySelector(".text-danger");
+                if (spanError) {
+                    spanError.remove();
                 }
+
+                if (await showConfirm("¿Estás seguro de actualizar la empresa?")) {
+                    const data = await updateEmpresa(id, razonSocial, direccion, email, telefono);
+                    const estado = data[0].estado;
+                    if (estado) {
+                        showToast(`${data[0].mensaje}`, "success", "SUCCESS");
+                        await CargarEmpresa();
+                    } else {
+                        idempresaruc.classList.add("is-invalid");
+                        const span = document.createElement("span");
+                        span.classList.add("text-danger");
+                        span.innerHTML = `${data[0].mensaje}`;
+                        idempresaruc.insertAdjacentElement("afterend", span);
+                    }
+                }
+            } catch (error) {
+                console.error("Error al actualizar la empresa:", error);
             }
+        });
+        
+        btnDisabled.forEach((btn) => {
+            btn.addEventListener("click", async (e) => {
+                id = e.currentTarget.getAttribute("id-data");
+                const status = e.currentTarget.getAttribute("status");
+                console.log("ID:", id, "Status:", status);
+                if (await showConfirm("¿Estás seguro de cambiar el estado de la empresa?")) {
+                    const data = await updateEstado(id, status);
+                    const estado = data[0].estado;
+                    if (estado) {
+                        showToast(`${data[0].mensaje}`, "success", "SUCCESS");
+                        CargarEmpresa();
+                    } else {
+                        console.error("Error al cambiar el estado de la empresa");
+                    }
+                }
+            });
         });
     }
 
-    // Función para abrir el modal y cargar los datos de la empresa para edición
-    window.editEmpresa = function(idempresaruc) {
-        fetch(`../../controller/empresa.controller.php?operation=getByID`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ idempresaruc })
-        })
-            .then(response => response.json())
-            .then(data => {
-                $("#editEmpresaId").value = data.idempresaruc;
-                $("#editEmpresaRazonSocial").value = data.razonsocial;
-                $("#editEmpresaDireccion").value = data.direccion;
-                $("#editEmpresaEmail").value = data.email;
-                $("#editEmpresaTelefono").value = data.telefono;
-
-                // Abrir el modal de edición
-                new bootstrap.Modal(document.getElementById('editEmpresaModal')).show();
-            })
-            .catch(error => console.error("Error al cargar la empresa:", error));
-    };
-
-    // Manejar la actualización de la empresa
-    $("#editEmpresaForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        
-        const formData = new FormData(this);
-        formData.append("operation", "upEmpresa");
-
-        fetch('../../controller/empresa.controller.php', {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("Empresa actualizada correctamente");
-                CargarDatosEmpresas();
-                bootstrap.Modal.getInstance(document.getElementById('editEmpresaModal')).hide();
-            } else {
-                alert("Error al actualizar la empresa");
-            }
-        })
-        .catch(error => console.error("Error al actualizar la empresa:", error));
-    });
-
-    // Función para eliminar la empresa
-    window.deleteEmpresa = function(idempresaruc) {
-        if (confirm("¿Estás seguro de eliminar esta empresa?")) {
-            fetch(`../../controller/empresa.controller.php?operation=delete&idempresaruc=${idempresaruc}`, {
-                method: "POST"
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Empresa eliminada correctamente");
-                    CargarDatosEmpresas();
-                } else {
-                    alert("Error al eliminar la empresa");
-                }
-            })
-            .catch(error => console.error("Error al eliminar la empresa:", error));
+    function RenderDataTableEmpresas() {
+        if (dtEmpresa) {
+            dtEmpresa.destroy();
+            dtEmpresa = null;
         }
-    };
 
-    CargarDatosEmpresas();
+        dtEmpresa = new DataTable("#table-empresas", {
+            columnDefs: [
+                { width: "20%", targets: 0 },
+                { width: "20%", targets: 1 },
+                { width: "20%", targets: 2 },
+                { width: "20%", targets: 3 },
+                { width: "20%", targets: 4 },
+                { width: "20%", targets: 5 },
+            ],
+            language: {
+                sEmptyTable: "No hay datos disponibles en la tabla",
+                info: "",
+                sInfoFiltered: "(filtrado de _MAX_ entradas en total)",
+                sLengthMenu: "Filtrar: _MENU_",
+                sLoadingRecords: "Cargando...",
+                sProcessing: "Procesando...",
+                sSearch: "Buscar:",
+                sZeroRecords: "No se encontraron resultados",
+                oAria: {
+                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
+                },
+            },
+        });
+    }
 });

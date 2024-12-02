@@ -1,6 +1,4 @@
 <?php
-
-
 require_once '../model/Marcas.php';
 $marca = new Marca();
 header("Content-type: application/json; charset=utf-8");
@@ -28,55 +26,57 @@ if (isset($_POST['operation'])) {
       break;
   }
 }
+
 if (isset($_GET['operation'])) {
-  switch ($_GET['operation']) {
-    case 'getMarcas':
-      $dataEnviar = [
-        'id' => $_GET['id']
-      ];
-      $datosRecibidos = $marca->getMarca($dataEnviar);
-      echo json_encode(['marcas' => $datosRecibidos]);
-      break;
-    case 'getAll':
-      $response = $marca->getAll();
-      echo json_encode($response);
-      break;
-    case 'updateMarca':
-      $idmarca = $_GET['idmarca'];
-      $nombremarca = $_GET['marca'];
+    switch ($_GET['operation']) {
+        case 'getAll':
+            $response = $marca->getAll();
+            echo json_encode($response);
+            break;
+        case 'getMarcas':
+            $datosEnviar = [
+                'id' => $_GET['id']
+            ];
+            $datosRecibidos = $marca->getMarca($datosEnviar);
+            echo json_encode(['marcas' => $datosRecibidos]);
+            break;
 
-      if (empty($idmarca) || empty($marca)) {
-        echo json_encode(['status' => 'error', 'message' => 'Faltan datos']);
-        return;
-      } else if (!is_numeric($idmarca)) {
-        echo json_encode(['status' => 'error', 'message' => 'El id de la marca debe ser un número']);
-        return;
-      } else {
-        $datos = [
-          'idmarca' => $idmarca,
-          'marca'   => $marca
-        ];
-        $response = $marca->updateMarca($datos);
-        echo json_encode($response);
-      }
-      break;
-    case 'updateEstado':
-      $idmarca = $_GET['idmarca'];
-      $estado = $_GET['estado'];
-      $datos = [
-        'idmarca' => $idmarca,
-        'estado'  => $estado
-      ];
-      $response = $marca->updateEstado($datos);
-      echo json_encode($response);
-      break;
+        case 'getMarcaById':
+            $datos = [
+                'idmarca' => $_GET['idmarca']
+            ];
+            $response = $marca->getMarcaById($datos);
+            echo json_encode($response);
+            break;
 
-      case'getmarcas_categorias':
-        $datos=[
-          'idmarca'=>$_GET['idmarca']
-          
-        ];
-        echo json_encode($marca->getmarcas_categorias($datos));
-      break;
-  }
+        case 'updateMarca':
+            $idmarca = $_GET['idmarca'];
+            $nombremarca = $_GET['marca'];
+
+            if (empty($idmarca) || empty($marca)) {
+                echo json_encode(['status' => 'error', 'message' => 'Faltan datos']);
+                return;
+            } else if (!is_numeric($idmarca)) {
+                echo json_encode(['status' => 'error', 'message' => 'El id de la marca debe ser un número']);
+                return;
+            } else {
+                $datos = [
+                    'idmarca' => $idmarca,
+                    'marca'   => $nombremarca
+                ];
+                $response = $marca->updateMarca($datos);
+                echo json_encode($response);
+            }
+            break;
+        case 'updateEstado':
+            $idmarca = $_GET['idmarca'];
+            $estado = $_GET['estado'];
+            $datos = [
+                'idmarca' => $idmarca,
+                'estado'  => $estado
+            ];
+            $response = $marca->updateEstado($datos);
+            echo json_encode($response);
+            break;
+    }
 }

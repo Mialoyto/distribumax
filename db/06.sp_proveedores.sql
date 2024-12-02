@@ -1,4 +1,4 @@
--- Active: 1731562917822@@127.0.0.1@3306@distribumax
+-- Active: 1732798376350@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROOVEDORES
@@ -16,23 +16,24 @@ BEGIN
     VALUES (_idempresa,_proveedor,_contacto_principal,_telefono_contacto,_direccion, _email);
 END;
 
--- ACTUALIZAR PROVEEDORES
--- DROP PROCEDURE IF EXISTS sp_getProveedor;
--- CREATE PROCEDURE sp_getProveedor(
---     IN _idproveedor           INT
--- )
--- BEGIN
---     SELECT
---         idproveedor,
---         idempresa,
---         proveedor,
---         contacto_principal,
---         telefono_contacto,
---         direccion,
---         email
---     FROM proveedores
---     WHERE idproveedor = _idproveedor;
--- END;
+DROP PROCEDURE IF EXISTS sp_getProveedor;
+CREATE PROCEDURE sp_getProveedor(
+    IN _idproveedor           INT
+)
+BEGIN
+    SELECT
+        idproveedor,
+        idempresa,
+        proveedor,
+        contacto_principal,
+        telefono_contacto,
+        direccion,
+        email
+    FROM proveedores
+    WHERE idproveedor = _idproveedor;
+END;
+
+call `sp_getProveedor`(1);
 
 -- DESACTIVAR PROOVEDOR
 DROP PROCEDURE IF EXISTS sp_estado_proveedor;
@@ -153,8 +154,8 @@ END;
 
 SELECT * FROM proveedores;
 -- HE CREADO UN NUEVO PROCEDIMIENTO PARA ACTUALIZAR PROVEEDOR
-DROP PROCEDURE IF EXISTS sp_actualizar_proveedor;
-CREATE PROCEDURE sp_actualizar_proveedor(
+DROP PROCEDURE IF EXISTS sp_actualizar_proovedor;
+CREATE PROCEDURE sp_actualizar_proovedor(
     IN _idproveedor             INT,
     IN _idempresa               BIGINT(20),
     IN _proveedor               VARCHAR(100),
@@ -201,12 +202,11 @@ BEGIN
     SELECT v_mensaje AS mensaje, v_idproveedor AS idproveedor, v_estado AS estado;
 END;
 
-select * from proveedores;
-CALL sp_actualizar_proveedor(
+CALL sp_actualizar_proovedor(
     1,
     20100085063,
-    'Ajinomoto',
-    'Juan Pérez',
+    'Elite',
+    'Loyola',
     '987654321',
     'Calle San Martin',
     'juan@xyz.com'

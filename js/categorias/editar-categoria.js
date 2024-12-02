@@ -1,4 +1,3 @@
-
 async function GetCategoriaById(id) {
   const params = new URLSearchParams();
   params.append("operation", 'getCategoriaById');

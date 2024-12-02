@@ -220,6 +220,8 @@ END;
 -- GENERAR REPORTE
 
 
+DROP PROCEDURE IF EXISTS sp_generar_reporte;
+
 CREATE PROCEDURE sp_generar_reporte (
     IN _idventa INT
 )
@@ -241,10 +243,13 @@ BEGIN
         vh.marca_vehiculo,
         vh.placa,
         vh.modelo,
-        -- Agregar los vehículos concatenados en una sola columna
+        per.perfil,
+        us.idusuario,
         
+        -- Concatenación para descripción detallada del producto
         CONCAT(pr.nombreproducto, ' ', dp.unidad_medida, ' ', pr.cantidad_presentacion, 'X', pr.peso_unitario) AS nombreproducto,
         cli.tipo_cliente,
+        
         -- Cliente
         CASE 
             WHEN cli.tipo_cliente = 'empresa' THEN em.idempresaruc
@@ -261,8 +266,13 @@ BEGIN
             WHEN cli.tipo_cliente = 'persona' THEN pe.direccion
         END AS direccion,
         
+        -- Datos de ubicación
         dis.distrito,
-        pro.provincia
+        pro.provincia,
+        
+        -- Información del chofer (persona asociada al chofer)
+        CONCAT(pchofer.appaterno, ' ', pchofer.apmaterno, ' ', pchofer.nombres) AS chofer,
+        pchofer.idpersonanrodoc AS documento_chofer
 
     FROM ventas ve
     INNER JOIN pedidos p ON p.idpedido = ve.idpedido
@@ -277,9 +287,13 @@ BEGIN
     LEFT JOIN despacho_ventas dv ON dv.idventa = ve.idventa
     LEFT JOIN despachos d ON d.iddespacho = dv.iddespacho
     LEFT JOIN vehiculos vh ON vh.idvehiculo = d.idvehiculo
+    LEFT JOIN usuarios us ON us.idusuario = vh.idusuario
+    LEFT JOIN perfiles per ON per.idperfil = us.idperfil
+    LEFT JOIN personas pchofer ON pchofer.idpersonanrodoc = us.idpersona -- Relación del chofer con personas
     WHERE ve.idventa = _idventa
     AND ve.condicion = 'despachado'
-    group by pr.nombreproducto;
+    AND per.perfil = 'Chofer'
+    GROUP BY pr.nombreproducto;
 END ;
 
 

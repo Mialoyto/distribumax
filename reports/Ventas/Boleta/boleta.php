@@ -2,14 +2,14 @@
 // Incluir el autoloader de Composer
 require_once '../../../vendor/autoload.php';
 
-require_once '../../..//model/ventas.php';
-
+require_once '../../../model/ventas.php';
+require_once '../../../model/metodoP.php';
 // Instanciar la clase Ventas
 $venta = new Ventas();
-
+$metodo=new MetodoPago();
 // Obtener los datos de la venta con el idventa pasado por GET
 $ventas = $venta->reporteVenta(['idventa' => $_GET['idventa']]);
-
+$metodos=$metodo->obtenerMetodopago(['idventa' => $_GET['idventa']]);
 // Crear una instancia de Dompdf
 use Dompdf\Dompdf;
 use Dompdf\Options;

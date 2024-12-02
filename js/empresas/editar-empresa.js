@@ -13,45 +13,7 @@ async function getEmpresaById(id) {
     }
 }
 
-async function cargarDatosModal(id) {
-    try {
-        const modal = document.querySelector("#edit-empresa");
-        const inputRazonSocial = modal.querySelector("#id-empresa-ruc");
-        const inputDireccion = modal.querySelector("#id-direccion");
-        const inputEmail = modal.querySelector("#id-email");
-        const inputTelefono = modal.querySelector("#id-telefono");
-        const btn = modal.querySelector(".btn-success");
-        inputRazonSocial.classList.remove("is-invalid");
-        inputDireccion.classList.remove("is-invalid");
-        inputEmail.classList.remove("is-invalid");
-        inputTelefono.classList.remove("is-invalid");
-        const spanError = modal.querySelector(".text-danger");
-        if (spanError) {
-            spanError.remove();
-        }
-        btn.setAttribute("disabled", "true");
-        inputRazonSocial.value = "Cargando...";
-        inputDireccion.value = "Cargando...";
-        inputEmail.value = "Cargando...";
-        inputTelefono.value = "Cargando...";
-
-        const data = await getEmpresaById(id);
-        console.log("Datos para el modal:", data);
-        if (data && data.length > 0) {
-            inputRazonSocial.value = data[0].razonsocial;
-            inputDireccion.value = data[0].direccion;
-            inputEmail.value = data[0].email;
-            inputTelefono.value = data[0].telefono;
-
-            btn.removeAttribute("disabled");
-        } else {
-            console.log("No hay datos disponibles para esta empresa");
-        }
-    } catch (error) {
-        console.error("Error al cargar los datos en el modal:", error);
-    }
-}
-
+//FUNCION PARA CARGAR LOS DATOS Y ENVIARLO A LA BASE DE DATOS
 async function updateEmpresa(id, razonSocial, direccion, email, telefono) {
     const params = new URLSearchParams();
     params.append("operation", "updateEmpresa");
@@ -68,5 +30,39 @@ async function updateEmpresa(id, razonSocial, direccion, email, telefono) {
         return data;
     } catch (error) {
         console.error("Error al actualizar la empresa:", error);
+    }
+}
+
+async function formUpdateEmpresa(id, razonSocial, direccion, email, telefono) {
+    const danger = document.querySelectorAll(".text-danger");
+    danger.forEach((element) =>{
+        element.remove();
+    });
+    const invalid = document.querySelectorAll(".is-invalid");
+    invalid.forEach((element) =>{
+        element.classList.remove("is-invalid");
+    });
+    if(await showConfirm("¿Desea actualizar la empresa?", "EMPRESAS")){
+        const data = await updateEmpresa(
+            id,
+            razonSocial,
+            direccion,
+            email,
+            telefono
+        );
+        console.log(data);
+
+        const STATUS = data[0].estado;
+        if(!STATUS){
+            inputEmail.classList.add("is-invalid");
+            const span = document.createElement("span");
+            span.classList.add("text-danger");
+            span.innerHTML = `${data[0].mensaje}`;
+            inputEmail.insertAdjacentElement("afterend", span);
+        }else{
+            showToast(`${data[0].mensaje}`, "success", "SUCCESS");
+        }
+    }else{
+        return;
     }
 }

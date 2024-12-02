@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
           const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
           const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
+          const isDisabled = element.estado === "Inactivo" || element.status === 0 ? "disabled" : "";
           // CONTENIDO DE LA TABLA
           tableContent += `
               <tr>
@@ -110,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   </td>
                   <td>
                       <div class="d-flex justify-content-center">
-                          <a id-data="${element.idvehiculo}" class="btn btn-warning" data-bs-toggle="modal"  data-bs-target=".edit-vehiculo">
+                          <a id-data="${element.idvehiculo}" class="btn btn-warning ${isDisabled}" data-bs-toggle="modal"  data-bs-target=".edit-vehiculo">
                               <i class="bi bi-pencil-square fs-5"></i>
                       </a>
                       <a id-data="${element.idvehiculo}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">

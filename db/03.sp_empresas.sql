@@ -29,22 +29,42 @@ CREATE PROCEDURE sp_actualizar_empresa(
     IN _telefono         CHAR(9)
 )
 BEGIN
-    UPDATE empresas
-    SET 
-        razonsocial = _razonsocial,
-        direccion = _direccion,
-        email = _email,
-        telefono = _telefono
-    WHERE idempresaruc = _idempresaruc;
+    DECLARE v_mensaje VARCHAR(100);
+    DECLARE v_estado INT;
+    DECLARE v_razonsocial VARCHAR(100);
 
-    IF ROW_COUNT() > 0 THEN
-        SELECT 1 AS estado, 'Empresa actualizada correctamente' AS mensaje;
+    -- VERIFICAR SI LA EMPRESA CON EL MISMO NOMBRE YA EXISTE
+    SELECT razonsocial INTO v_razonsocial
+    FROM empresas
+    WHERE razonsocial = _razonsocial AND idempresaruc != _idempresaruc;
+
+    -- Si la empresa ya existe, enviamos un mensaje de error
+    IF v_razonsocial IS NOT NULL THEN
+        SET v_mensaje = 'La empresa ya existe';
+        SET v_estado = 0;
     ELSE
-        SELECT 0 AS estado, 'No se encontró la empresa con el ID proporcionado' AS mensaje;
+        -- Si no existe, actualizamos los datos de la empresa
+        UPDATE empresas
+        SET
+            razonsocial = _razonsocial,
+            direccion = _direccion,
+            email = _email,
+            telefono = _telefono,
+            update_at = NOW()  -- Actualizamos la fecha y hora de la última actualización
+        WHERE idempresaruc = _idempresaruc;
+
+        SET v_mensaje = 'Empresa actualizada correctamente';
+        SET v_estado = 1;
     END IF;
+
+    -- RETORNAMOS EL MENSAJE Y ESTADO
+    SELECT v_mensaje AS mensaje, _idempresaruc AS idempresaruc, v_estado AS estado;  
 END;
 
--- CALL sp_actualizar_empresa(20508891149,'JRC','Av. San Ignacio #247','jrc@gmail.com','983923290');
+
+
+SELECT * FROM empresas;
+CALL sp_actualizar_empresa(20100085063,'JRC','Av. San Ignacio #247','jrc@gmail.com','983923290');
 
 
 DROP PROCEDURE IF EXISTS sp_getEmpresasEdit;

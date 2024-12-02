@@ -84,11 +84,16 @@ class Empresas extends Conexion
         )
         );
         $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
-        return $resultado;
-    } catch (Exception $e) {
-      die($e->getMessage());
-    }
+        if(count($resultado) > 0){
+          return $resultado;
+        }else{
+          return [];
+        }
+  }catch(Exception $e){
+    die($e->getMessage());
   }
+}
+
   public function updateEstado($params = [])
   {
     try {
@@ -133,10 +138,8 @@ class Empresas extends Conexion
           $params['direccion'],
           $params['email'],
           $params['telefono']
-        )
-        );
-        $response = $query->fetchAll(PDO::FETCH_ASSOC);
-        return $response;
+        ));
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     } catch(Exception $e){
       die($e->getMessage());
     }

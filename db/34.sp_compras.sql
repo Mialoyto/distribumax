@@ -109,6 +109,28 @@ END;
 
 -- CALL sp_registrar_detalle_compra(1,1,1,9,1);
 
+DROP PROCEDURE IF EXISTS sp_listar_compras;
+
+CREATE PROCEDURE sp_listar_compras()
+BEGIN
+SELECT 
+c.idcompra,
+c.numcomprobante, 
+c.fechaemision, 
+pr.proveedor,
+CASE c.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS estado,
+        CASE c.estado
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS `status`
+FROM compras c 
+INNER JOIN proveedores pr ON pr.idproveedor=c.idproveedor;
+END ;
+
+
 
 CREATE PROCEDURE sp_update_estadocompras(
     IN _estado CHAR(1),
@@ -120,4 +142,26 @@ BEGIN
     SET estado = _estado,
         update_at= NOW()
     WHERE idcompra = _idcompra;
+END;
+
+
+
+CREATE PROCEDURE sp_reporte_compras(IN _idcompra INT)
+BEGIN	
+	SELECT 
+    c.idcompra,
+    c.numcomprobante,
+    p.proveedor,
+    p.idempresa,
+    lt.numlote,
+	pr.nombreproducto,
+    dc.cantidad,
+    dc.precio_compra,
+	c.fechaemision
+    FROM compras c 
+    INNER JOIN detalles_compras dc ON dc.idcompra=c.idcompra
+    INNER JOIN proveedores p ON p.idproveedor=c.idproveedor
+    LEFT  JOIN productos pr ON pr.idproducto=dc.idproducto
+    LEFT JOIN lotes lt  ON lt.idlote=dc.idlote
+    WHERE c.idcompra=_idcompra;
 END;

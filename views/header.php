@@ -138,7 +138,7 @@ $host = "http://localhost/distribumax";
             ?>
 
 
-            <a class="nav-link" href="<?= $host ?>/views/Pedidos/">
+            <a class="nav-link" href="<?= $host ?>/views/Pedidos/" >
               <div class="sb-nav-link-icon"><i class="bi bi-clipboard-plus fs-4"></i></i></div>
               Pedidos
             </a>

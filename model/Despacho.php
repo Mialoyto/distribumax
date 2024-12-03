@@ -17,12 +17,13 @@ class Despachos  extends Conexion
   {
     $id = -1;
     try {
-      $tsql = "CALL sp_despacho_registrar (?,?,?)";
+      $tsql = "CALL sp_despacho_registrar (?,?,?,?)";
       $query = $this->pdo->prepare($tsql);
       $query->execute(array(
         $params['idvehiculo'],
         $params['idusuario'],
-        $params['fecha_despacho']
+        $params['fecha_despacho'],
+        $params['idjefe_mercaderia']
       ));
       $id = $query->fetch(PDO::FETCH_ASSOC);
       return $id['iddespacho'];
@@ -102,6 +103,23 @@ class Despachos  extends Conexion
       $query->execute(
         array(
           $params['provincia']
+        )
+      );
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+
+  public function buscarJefeMercaderia($params = [])
+  {
+    try {
+      $tsql = "CALL sp_buscar_jefe_mercaderia(?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(
+        array(
+          $params['item']
         )
       );
       $response = $query->fetchAll(PDO::FETCH_ASSOC);

@@ -1,4 +1,4 @@
--- Active: 1732798376350@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
@@ -491,14 +491,17 @@ CREATE TABLE vehiculos (
         'taller',
         'averiado'
     ) NOT NULL DEFAULT 'operativo',
+    disponible VARCHAR(10) NULL DEFAULT 'Disponible',
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idusuario_vehi FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT uk_placa_vehi UNIQUE (placa),
     CONSTRAINT ck_capacidad_veh CHECK (capacidad > 0),
-    CONSTRAINT fk_estado_venta CHECK (estado IN ("0", "1"))
+    CONSTRAINT fk_estado_venta CHECK (estado IN ("0", "1")),
+    CONSTRAINT disponible_check CHECK (disponible IN ('Disponible', 'Ocupado'))
 ) ENGINE = INNODB;
+
 
 DROP TABLE IF EXISTS ventas;
 
@@ -538,7 +541,7 @@ CREATE TABLE despachos (
     idvehiculo INT NOT NULL, -- ? REFERENCIA AL VEHICULO ASOCIADO
     idusuario INT NOT NULL, -- ? PERSONA QUE REGISTRO EL DESPACHO
     fecha_despacho DATE NOT NULL, -- ? FECHA PROGRAMADA PARA LA ENTREGA DEL PEDIDO
-
+    idjefe_mercaderia INT NOT NULL,-- ? Persona asignada como jefe de mercaderia 
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     inactive_at DATETIME NULL,
@@ -546,6 +549,7 @@ CREATE TABLE despachos (
 
     CONSTRAINT fk_idvehiculo_desp FOREIGN KEY (idvehiculo) REFERENCES vehiculos (idvehiculo),
     CONSTRAINT fk_idusuario_desp FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
+    CONSTRAINT fk_idusuario_jefe_mercaderia FOREIGN KEY (idjefe_mercaderia) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_estado_desp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
@@ -665,6 +669,14 @@ CREATE TABLE permisos (
     CONSTRAINT uk_vista_per UNIQUE (idperfil, idvista)
 ) ENGINE = INNODB;
 
+-- CREATE TABLE personas_perfiles (
+--     idpersperfil       INT  AUTO_INCREMENT PRIMARY KEY,
+--     idpersonanrodoc    INT ,
+--     idperfil           INT ,
+--     CONSTRAINT fk_idpersonanrodoc_per FOREIGN KEY (idpersonanrodoc) REFERENCES personas(idpersonanrodoc),
+--     CONSTRAINT fk_idperfil_per FOREIGN KEY (idperfil) REFERENCES perfiles(idperfil)
+-- ) ENGINE=INNODB;
+
 -- INSERSIONES DE DATOS DE LAS TABLAS
 -- INSERTAR DATOS A LA TABLA PERFILES
 INSERT INTO
@@ -672,7 +684,8 @@ INSERT INTO
 VALUES ('Administrador', 'ADM'),
     ('Vendedor', 'VND'),
     ('Almacenador', 'ALM'),
-    ('Chofer', 'CHF');
+    ('Chofer', 'CHF'),
+    ('Jefe de Mercaderia', 'JMF');
 
 -- INSERTAR DATOS A LA TABLA MODULOS
 INSERT INTO

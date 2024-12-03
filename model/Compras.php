@@ -100,6 +100,18 @@ class Compras extends Conexion
       die($e->getMessage());
     }
   }
+  
+  public function reporte($params=[]){
+    try {
+      $tsql = "CALL sp_reporte_compras (?)";
+      $query = $this->pdo->prepare($tsql);
+      $query->execute(array($params['idcompra']));
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 }
 
 // ********** TEST **********

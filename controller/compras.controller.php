@@ -27,6 +27,12 @@ if (isset($_GET['operation'])) {
       case 'getAll':
         echo json_encode($compras->getAll());
       break;
+      case 'reporte':
+        $datosEnviar=[
+          'idcompra'=>$_GET['idcompra']
+        ];
+        echo json_encode($compras->reporte($datosEnviar));
+        break;
   }
 }
 
@@ -138,5 +144,7 @@ if (isset($_POST['operation'])) {
          ];
          echo json_encode($compras->updateEstado($datosEnviar));
         break;
+      
+      
   }
 }

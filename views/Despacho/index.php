@@ -21,7 +21,8 @@ require_once '../header.php';
                             <table id="table-ventas" class="table" style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th>pedido</th>
+                                        <th>Venta</th>
+                                        <th>...</th>
                                         
                                     </tr>
                                 </thead>

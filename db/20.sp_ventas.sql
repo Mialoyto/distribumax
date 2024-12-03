@@ -579,6 +579,7 @@ BEGIN
     INNER JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
     WHERE VE.condicion = 'pendiente'
       AND  VE.estado='1'
+      AND CURDATE() = DATE(VE.fecha_venta)
     GROUP BY 
         PROV.provincia
     HAVING 

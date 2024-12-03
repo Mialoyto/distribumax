@@ -31,7 +31,7 @@ if (isset($_SESSION['login']) && $_SESSION['login']['estado'] == true) {
             justify-content: center;
             align-items: center;
             padding: 15px;
-            background-image: url('img/fondo.jpg'); /* Ruta de la imagen de fondo */
+            /* background-image: url('img/fondo.jpg'); Ruta de la imagen de fondo */
             background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
             background-position: center; /* Centra la imagen de fondo */
             background-repeat: no-repeat; /* Evita que la imagen se repita */

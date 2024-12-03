@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       Tablaventas.innerHTML += `
             <tr>
-                <td>${element.idpedido}</td>
+                <td>${element.idventa}</td>
           
             </tr>
             `;

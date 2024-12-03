@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1732798376350@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- REGISTRAR  ✔️ 
 CREATE PROCEDURE spu_registrar_personas(
@@ -56,19 +56,43 @@ END;
 
 -- ELIMINAR PERSONA ✔️
 
-CREATE PROCEDURE sp_desactivar_persona(
-	IN  _estado				CHAR(1),
-    IN 	_idpersonanrodoc 	CHAR(11)
-)
+DROP PROCEDURE IF EXISTS sp_estado_persona;
+CREATE PROCEDURE sp_estado_persona(
+    IN  _idpersonanrodoc  CHAR(11),
+    IN  _estado            CHAR(1) 
+    )
 BEGIN
-	UPDATE personas
-		SET
-			estado = _estado
-		WHERE idpersonanrodoc = _idpersonanrodoc;
-        
-        select row_count() as filas_afectadas;
+    DECLARE v_mensaje VARCHAR(100);   -- Mensaje de resultado
+    DECLARE v_estado INT;             -- Estado de la operación
+
+    -- Verificar si el estado es '0' (Inactivo)
+    IF _estado = '0' THEN
+        UPDATE personas
+        SET estado = _estado  -- Actualizar el estado a '0'
+        WHERE idpersonanrodoc = _idpersonanrodoc;
+        SET v_estado = 1;              -- Operación exitosa
+        SET v_mensaje = "Persona desactivada correctamente";  -- Mensaje de éxito
+
+    -- Verificar si el estado es '1' (Activo)
+    ELSEIF _estado = '1' THEN
+        UPDATE personas
+        SET estado = _estado  -- Actualizar el estado a '1'
+        WHERE idpersonanrodoc = _idpersonanrodoc;
+        SET v_estado = 1;              -- Operación exitosa
+        SET v_mensaje = 'Persona activada correctamente';  -- Mensaje de éxito
+
+    -- Si el estado es incorrecto
+    ELSE
+        SET v_estado = 0;              -- Operación fallida
+        SET v_mensaje = 'El estado es incorrecto';  -- Mensaje de error
+    END IF;
+
+    -- Seleccionar el resultado
+    SELECT v_estado AS estado, v_mensaje AS mensaje;
 END;
 
+CALL sp_estado_persona('26558000','0');
+SELECT * FROM personas;
 
 -- BUSCAR PERSONA POR DOCUMENTO ✔️
 DROP PROCEDURE IF EXISTS sp_buscarpersonadoc;
@@ -153,19 +177,24 @@ DROP PROCEDURE IF EXISTS sp_listar_personas;
 CREATE PROCEDURE sp_listar_personas()
 BEGIN
     SELECT 
-        td.documento AS tipo_documento,
-        p.idpersonanrodoc AS nro_documento,
-        p.nombres,
-        p.appaterno,
-        p.apmaterno,
-        d.distrito,
-        P.create_at,
-        p.estado
+        td.documento AS tipo_documento,  -- Nombre del tipo de documento
+        p.idpersonanrodoc AS id,         -- ID de la persona
+        p.nombres,                        -- Nombres de la persona
+        p.appaterno,                      -- Apellido paterno
+        p.apmaterno,                      -- Apellido materno
+        d.distrito,                       -- Distrito
+        CASE p.estado                      -- Estado de la persona (Activo/Inactivo)
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS 'estado',
+        CASE p.estado                      -- Cambiar el estado (Activo a Inactivo y viceversa)
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS 'status'
     FROM personas p
     INNER JOIN tipo_documento td ON p.idtipodocumento = td.idtipodocumento
-    INNER JOIN distritos d ON p.iddistrito = d.iddistrito
-    WHERE p.estado = '1' 
-    ORDER BY p.create_at DESC;
+    INNER JOIN distritos d ON p.iddistrito = d.iddistrito 
+    ORDER BY p.create_at DESC;  -- Ordenar por fecha de creación en orden descendente
 END;
 
 call sp_listar_personas();

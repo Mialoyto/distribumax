@@ -34,6 +34,7 @@
 								<th>Capacidad</th>
 								<th>Condicion</th>
 								<th>Estado</th>
+								<th>Disponibilidad</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>

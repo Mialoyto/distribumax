@@ -32,6 +32,15 @@ switch ($verbo) {
                     $send = $persona->search($datosEnviar);
                     echo json_encode($send);
                 break;
+
+                case 'updateEstado':
+                    $datos = [
+                        'idpersonanrodoc' => $_GET['idpersonanrodoc'],
+                        'estado' => $_GET['estado']
+                    ];
+                    $response = $persona->updateEstado($datos);
+                    echo json_encode($response);
+                    break;
             }
         }
         break;

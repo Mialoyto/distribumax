@@ -5,12 +5,10 @@ $agrupados = [];
 foreach ($despachos as $item) {
 	$proveedor = $item['proveedor'];
 
-
 	// Inicializar el proveedor y la marca si no existen
 	if (!isset($agrupados[$proveedor])) {
 		$agrupados[$proveedor] = [];
 	}
-
 
 	// Añadir el producto a la marca
 	$agrupados[$proveedor][] = $item;
@@ -22,7 +20,7 @@ foreach ($despachos as $item) {
 
 <head>
 	<meta charset="UTF-8">
-	<title>Reporte de Despacho</title>
+	<title>Hoja de Carga</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		@page {
@@ -33,6 +31,8 @@ foreach ($despachos as $item) {
 			font-family: Arial, sans-serif;
 			margin: 20px;
 			color: #333;
+		}.parrafo{
+			font-size: 14px;
 		}
 
 		.h1 {
@@ -49,7 +49,8 @@ foreach ($despachos as $item) {
 			/* Tamaño base para toda la tabla */
 		}
 
-		th {
+		/* Estilo específico para las tablas de despacho */
+		#tabla-despacho th {
 			background-color: #f4f4f4;
 			font-weight: bold;
 			text-align: left;
@@ -59,7 +60,7 @@ foreach ($despachos as $item) {
 			/* Tamaño para encabezados */
 		}
 
-		td {
+		#tabla-despacho td {
 			padding: 6px;
 			border: 1px solid #ddd;
 			font-size: 12px;
@@ -67,28 +68,28 @@ foreach ($despachos as $item) {
 		}
 
 		/* Mantener los anchos de columna */
-		th:nth-child(1),
-		td:nth-child(1) {
+		#tabla-despacho th:nth-child(1),
+		#tabla-despacho td:nth-child(1) {
 			width: 15%;
 		}
 
-		th:nth-child(2),
-		td:nth-child(2) {
+		#tabla-despacho th:nth-child(2),
+		#tabla-despacho td:nth-child(2) {
 			width: 45%;
 		}
 
-		th:nth-child(3),
-		td:nth-child(3) {
+		#tabla-despacho th:nth-child(3),
+		#tabla-despacho td:nth-child(3) {
 			width: 20%;
 		}
 
-		th:nth-child(4),
-		td:nth-child(4) {
+		#tabla-despacho th:nth-child(4),
+		#tabla-despacho td:nth-child(4) {
 			width: 10%;
 		}
 
-		th:nth-child(5),
-		td:nth-child(5) {
+		#tabla-despacho th:nth-child(5),
+		#tabla-despacho td:nth-child(5) {
 			width: 10%;
 		}
 
@@ -125,74 +126,100 @@ foreach ($despachos as $item) {
 
 <body>
 	<div class="container">
-		<div class="row align-items-start">
-			<img src="http://localhost/distribumax/img/logo2.png" alt="Logo Empresa" style="width:100px;" class="logo">
-			<h1 class="h1">
-				Reporte de Despacho
-			</h1>
-		</div>
+		<h1>Hoja de carga  </h1> 
+	      <span><?php echo date("Y:m:d");?></span>
+		<img src="http://localhost/distribumax/img/logo2.png" alt="Logo Empresa" style="width:100px;" class="logo">
+		
+	</div>
 
-
-
-		<!-- Información -->
-		<div class="row mb-1">
-			<div class="col-md-12">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
 				<div class="p-3 bg-white rounded shadow-sm">
-					<h5 class="border-bottom pb-2 mb-3">Datos del Vehículo</h5>
-					<div class="d-flex flex-wrap">
-						<div class="me-4">
-							<p class="mb-1"><strong>Conductor:</strong> <?= $despachos[0]['datos'] ?></p>
-						</div>
-						<div class="me-4">
-							<p class="mb-1"><strong>Placa:</strong> <?= $despachos[0]['placa'] ?></p>
-						</div>
-						<div class="me-4">
-							<p class="mb-1"><strong>Modelo:</strong> <?= $despachos[0]['modelo'] ?></p>
-						</div>
-						<div>
-							<p class="mb-0"><strong>Marca:</strong> <?= $despachos[0]['marca_vehiculo'] ?></p>
-						</div>
-					</div>
+					<!-- Información de la hoja de carga -->
+					<table class="table  ">
+						<thead></thead>
+						<tbody>
+							<tr>
+								<!-- Quiero que cada dato este en un columa  -->
+								<td>
+									<p class="mb-1 parrafo"><strong>Programado:</strong> </p>
+									<p><?=$despachos[0]['fecha_venta']?></p>
+								</td>
+								<td>
+									<p class="mb-1"><strong>Despacho:</strong> </p>
+									<p><?= $despachos[0]['fecha_despacho'] ?></p>
+								</td>
+								<td>
+									<p class="mb-1"><strong>Placa:</p>
+									<p></strong> <?= $despachos[0]['placa'] ?></p>
+								</td>
+								<td>
+									<p class="mb-1"><strong>Marca:</p>
+									<p></strong> <?= $despachos[0]['marca_vehiculo'] ?></p>
+								</td>
+
+
+
+
+							</tr>
+							<tr>
+								<td>
+									<p class="mb-1"><strong>Jefe de reparto:</p>
+									<p></strong> <?= $despachos[0]['datos'] ?></p>
+								</td>
+								<td>
+									<p class="mb-1"><strong>DNI:</strong> </p>
+									<p><?= $despachos[0]['idpersonanrodoc'] ?></p>
+								</td>
+								<td>
+									<p class="mb-1"><strong>Placa:</p>
+									</strong> <?= $despachos[0]['placa'] ?>
+								</td>
+								<td>
+									<p class="mb-1"><strong>Encargado de Mercaderia:</strong></p>
+									<p><?= $despachos[0]['encargado_mercaderia'] ?></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
+	</div>
 
-
-		<!-- Tablas por proveedor -->
-		<?php foreach ($agrupados as $proveedor => $marcas): ?>
-			<h6>Proveedor: <?= ($proveedor) ?></h6>
-			<div></div>
-			<table>
-
-				<thead>
+	<!-- Tablas por proveedor -->
+	<?php foreach ($agrupados as $proveedor => $marcas): ?>
+		<h6>Proveedor: <?=$marcas[0]['idempresa']?> - <?= ($proveedor) ?></h6>
+		<div></div>
+		<table id="tabla-despacho">
+			<thead>
+				<tr>
+					<th id="codigo">Código</th>
+					<th id="producto">Producto</th>
+					<th id="marca">Marca</th>
+					<th id="unidad">Unidad M.</th>
+					<th id="cantidad">Cantidad</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($marcas as $producto): ?>
 					<tr>
-						<th>Código</th>
-						<th>Producto</th>
-						<th>Marca</th>
-						<th>Unidad M.</th>
-						<th>Cantidad</th>
+						<td id="codigo"><?= ($producto['codigo']) ?></td>
+						<td id="producto"><?= ($producto['nombreproducto']) ?></td>
+						<td id="marca"><?= ($producto['marca']) ?></td>
+						<td id="unidad"><?= ($producto['unidadmedida']) ?></td>
+						<td id="cantidad"><?= ($producto['total']) ?></td>
 					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ($marcas as $producto): ?>
-						<tr>
-							<td><?= ($producto['codigo']) ?></td>
-							<td><?= ($producto['nombreproducto']) ?></td>
-							<td><?= ($producto['marca']) ?></td>
-							<td><?= ($producto['unidadmedida']) ?></td>
-							<td><?= ($producto['total']) ?></td>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		<?php endforeach; ?>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	<?php endforeach; ?>
 
-
-		<!-- Footer -->
-		<div class="container-fluid fixed-bottom bg-light py-3 border-top">
-			<div class="text-center text-muted">
-				<small>DistribuMax - Todos los derechos reservados.</small>
-			</div>
+	<!-- Footer -->
+	<div class="container-fluid fixed-bottom bg-light py-3 border-top">
+		<div class="text-center text-muted">
+			<small>DistribuMax - Todos los derechos reservados.</small>
 		</div>
 	</div>
 </body>

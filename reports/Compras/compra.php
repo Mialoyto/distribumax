@@ -2,7 +2,7 @@
 // Incluir el autoloader de Composer
 require_once '../../vendor/autoload.php';
 
-require_once '../../model/Despacho.php';
+require_once '../../model/Compras.php';
 
 // Crear una instancia de Dompdf
 use Dompdf\Dompdf;
@@ -10,10 +10,10 @@ use Dompdf\Options;
 
 
 // Instanciar la clase Ventas
-$despacho = new Despachos();
+$compra = new Compras();
 
 // Obtener los datos de la venta con el idventa pasado por GET
-$despachos = $despacho->reporte(['iddespacho' => $_GET['iddespacho']]);
+$compras = $compra->reporte(['idcompra' => $_GET['idcompra']]);
 
 // Configurar Dompdf
 $options = new Options();
@@ -50,7 +50,7 @@ $dompdf->render();
 
 
 // Salida del PDF al navegador
-$dompdf->stream("Hojadespacho.pdf", array("Attachment" => 0));  // 0 para visualizar, 1 para descargar
+$dompdf->stream("Compra.pdf", array("Attachment" => 0));  // 0 para visualizar, 1 para descargar
 
 // Puedes usar el número total de páginas como lo desees, por ejemplo, para agregarlo al pie de página en el HTML
 echo "Número total de páginas: " . $totalPages;

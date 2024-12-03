@@ -17,7 +17,7 @@ require_once '../header.php';
         <div class="card-body">
           <!-- FILA 01 -->
           <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-3 mb-3">
               <div class="form-floating position-relative">
                 <input
                   type="search"
@@ -31,15 +31,6 @@ require_once '../header.php';
                 </ul>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-floating">
-                <input type="date" class="form-control" id="fecha-despacho" name="marca_vehiculo" maxlength="23" minlength="3" required>
-                <label for="marca"><i class="fas fa-car me-2"></i> Fecha Despacho</label>
-              </div>
-            </div>
-          </div>
-          <!-- FILA 02 -->
-          <div class="row">
             <div class="col-md-3 mb-3">
               <div class="form-floating">
                 <input type="text" class="form-control" id="conductor" name="marca_vehiculo" maxlength="23" minlength="3" disabled>
@@ -47,23 +38,53 @@ require_once '../header.php';
               </div>
             </div>
             <div class="col-md-3 mb-3">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="modelo" name="marca_vehiculo" maxlength="23" minlength="3" disabled>
-                <label for="marca"><i class="fas fa-car me-2"></i> Modelo</label>
+              <div class="form-floating position-relative">
+                <input
+                  type="search"
+                  class="form-control"
+                  id="idjefe_mercaderia"
+                  name=""
+                  placeholder="Venta"
+                  required>
+                <label for="idvehiculo" class="form-label"><i class="bi bi-car-front"></i>Buscar Jefe Mercaderia</label>
+                <ul id="list-jefe_mercaderia" class="list-group position-absolute w-100 " style="z-index: 1000; display: none; top: 100%;">
+                </ul>
               </div>
             </div>
             <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="capacidad" name="marca_vehiculo" maxlength="23" minlength="3" disabled>
-                <label for="marca"><i class="fas fa-car me-2"></i> Capacidad</label>
+                <input type="text" class="form-control" id="nombres" maxlength="23" minlength="3" disabled>
+                <label for="marca"><i class="fas fa-car me-2"></i>Nombres</label>
+              </div>
+            </div>
+          </div>
+          <!-- FILA 02 -->
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="placa" maxlength="23" minlength="3" disabled>
+                <label for="marca"><i class="fas fa-car me-2"></i>Placa</label>
               </div>
             </div>
             <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="placa" name="marca_vehiculo" maxlength="23" minlength="3" disabled>
-                <label for="marca"><i class="fas fa-car me-2"></i> Placa</label>
+                <input type="text" class="form-control" id="marca_vehiculo" name="marca_vehiculo" maxlength="23" minlength="3" disabled>
+                <label for="marca"><i class="fas fa-car me-2"></i>Marca</label>
               </div>
             </div>
+            <div class="col-md-3 mb-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="apellidos"  maxlength="23" minlength="3" disabled>
+                <label for=""><i class="fas fa-car me-2"></i>Apellidos</label>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="documento"  maxlength="23" minlength="3" disabled>
+                <label for=""><i class="fas fa-car me-2"></i>Nro Documento</label>
+              </div>
+            </div>
+
           </div>
 
           <hr>
@@ -78,6 +99,14 @@ require_once '../header.php';
                   <option value="">Seleccionar una provincia</option>
                 </select>
                 <label for="provincia" class="form-label">Seleccione provincia</label>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="col-md-6 mb-3">
+                <div class="form-floating">
+                  <input type="date" class="form-control" id="fecha-despacho" name="marca_vehiculo" maxlength="23" minlength="3" required>
+                  <label for="marca"><i class="fas fa-car me-2"></i> Fecha Despacho</label>
+                </div>
               </div>
             </div>
             <!-- </div> -->

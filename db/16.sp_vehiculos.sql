@@ -1,4 +1,4 @@
--- Active: 1732798376350@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- REGISTRAR VEHICULOS
 
@@ -93,6 +93,7 @@ BEGIN
         vh.placa,
         vh.capacidad,
         vh.condicion,
+        vh.disponible,
         CONCAT(pe.appaterno, ' ', pe.nombres) AS datos,
         CASE vh.estado
             WHEN '1' THEN 'Activo'
@@ -138,7 +139,24 @@ CREATE PROCEDURE `sp_buscar_conductor`(
 END;
 
 
-DROP PROCEDURE IF EXISTS `sp_buscar_vehiculos`;
+
+
+-- Trigger para actualizar la disponibilidad de los vehículos
+
+DROP TRIGGER IF EXISTS `tr_actualizar_a_ocupado`;
+CREATE TRIGGER `tr_actualizar_a_ocupado` 
+AFTER INSERT ON `despachos`
+FOR EACH ROW
+BEGIN
+    -- Cambiar el estado del vehículo a 'Ocupado' al asignarlo a un despacho
+    UPDATE vehiculos
+    SET disponible = 'Ocupado'
+    WHERE idvehiculo = NEW.idvehiculo;
+END;
+
+
+DROP PROCEDURE IF EXISTS sp_buscar_vehiculos;
+
 CREATE PROCEDURE `sp_buscar_vehiculos`(	
     IN _item VARCHAR(50)
 )
@@ -162,9 +180,9 @@ BEGIN
         INNER JOIN personas PE ON US.idpersona = PE.idpersonanrodoc
         WHERE PER.nombrecorto = 'CHF'
         AND VH.placa LIKE CONCAT('%', TRIM(_item), '%')
-        AND VH.placa IS NOT NULL;
+        AND VH.disponible = 'Disponible';
     END IF;
-END;
+END ;
 call sp_buscar_vehiculos("");
 
 DROP PROCEDURE IF EXISTS sp_update_estado_vehiculo;

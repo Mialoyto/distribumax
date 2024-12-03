@@ -343,10 +343,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     try {
-      const response = await fetch(
-        `../../controller/detallepedido.controller.php`,
-        options
-      );
+      const response = await fetch(`../../controller/detallepedido.controller.php`, options);
       const data = await response.json();
       console.log(data);
       return data;
@@ -399,7 +396,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let response01;
     let response02;
 
-    const data  = await validarDetalle();
+    const data = await validarDetalle();
     console.log(data);
     if (!data) {
       return;

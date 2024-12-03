@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // NOTE - EVENTO PARA ACTUALIZAR LAS EMPRESAS
                 modal.addEventListener("submit", async (e) => {
                     e.preventDefault();
-                    idempresaruc = inputRazonSocial.getAttribute("id-empresa");
+                    idempresaruc =parseInt(inputRazonSocial.getAttribute("id-empresa"));
                     const razonSocial = inputRazonSocial.value.trim();
                     const direccion = inputDireccion.value.trim();
                     const email = inputEmail.value.trim();

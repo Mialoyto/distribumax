@@ -1,4 +1,4 @@
--- Active: 1732798376350@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
@@ -316,7 +316,7 @@ CREATE TABLE productos (
 /* DROP TABLE IF EXISTS detalle_promociones;
 
 CREATE TABLE detalle_promociones (
-    iddetallepromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+iddetallepromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idpromocion INT NOT NULL,
     idproducto INT NOT NULL,
     descuento DECIMAL(8, 2) NOT NULL,
@@ -336,7 +336,7 @@ CREATE TABLE precios_historicos (
     precio_antiguo DECIMAL(10, 2) NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1",
+    estado CHAR(1) NOT NULL DEFAULT "1", 
     CONSTRAINT fk_idproducto_prec_hist FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
     CONSTRAINT ck_precio_antiguo CHECK (precio_antiguo > 0),
     CONSTRAINT fk_estado_prec_hist CHECK (estado IN ("0", "1"))
@@ -364,28 +364,7 @@ CREATE TABLE pedidos (
     )
 ) ENGINE = INNODB;
 
-DROP TABLES IF EXISTS detalle_pedidos;
 
-CREATE TABLE detalle_pedidos (
-    id_detalle_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idpedido CHAR(15) NOT NULL,
-    idproducto INT NOT NULL,
-    cantidad_producto INT NOT NULL,
-    unidad_medida CHAR(20) NOT NULL, -- unidad, caja,
-    precio_unitario DECIMAL(10, 2) NOT NULL,
-    precio_descuento DECIMAL(10, 2) NULL,
-    subtotal DECIMAL(10, 2) NOT NULL,
-    create_at DATETIME NOT NULL DEFAULT NOW(),
-    update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT fk_idpedido_det_ped FOREIGN KEY (idpedido) REFERENCES pedidos (idpedido),
-    CONSTRAINT fk_idproducto_det_ped FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
-    CONSTRAINT ck_cantidad_producto CHECK (cantidad_producto > 0),
-    CONSTRAINT ck_precio_unitario CHECK (precio_unitario > 0),
-    -- CONSTRAINT ck_precio_descuento CHECK (precio_descuento >= 0),
-    CONSTRAINT ck_subtotal CHECK (subtotal > 0),
-    CONSTRAINT fk_estado_det_ped CHECK (estado IN ("0", "1"))
-) ENGINE = INNODB;
 
 -- DROP TABLE IF EXISTS kardex;
 
@@ -444,6 +423,31 @@ CREATE TABLE lotes (
     )
 ) ENGINE = INNODB;
 
+
+DROP TABLES IF EXISTS detalle_pedidos;
+
+CREATE TABLE detalle_pedidos (
+    id_detalle_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idpedido CHAR(15) NULL,
+    idproducto INT NOT NULL,
+    cantidad_producto INT NOT NULL,
+    unidad_medida CHAR(20) NOT NULL, -- unidad, caja,
+    precio_unitario DECIMAL(10, 2) NOT NULL,
+    precio_descuento DECIMAL(10, 2) NULL,
+    subtotal DECIMAL(10, 2) NOT NULL,
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    update_at DATETIME NULL,
+    estado CHAR(1) NOT NULL DEFAULT "1",
+
+    CONSTRAINT fk_idpedido_det_ped FOREIGN KEY (idpedido) REFERENCES pedidos (idpedido),
+    CONSTRAINT fk_idproducto_det_ped FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
+    -- CONSTRAINT fk_idlote_det_pedido FOREIGN KEY (idlote) REFERENCES lotes (idlote),
+    CONSTRAINT ck_cantidad_producto CHECK (cantidad_producto > 0),
+    CONSTRAINT ck_precio_unitario CHECK (precio_unitario > 0),
+    CONSTRAINT ck_subtotal CHECK (subtotal > 0),
+    CONSTRAINT fk_estado_det_ped CHECK (estado IN ("0", "1"))
+) ENGINE = INNODB;
+
 -- ------------------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS kardex;
 
@@ -451,6 +455,7 @@ CREATE TABLE kardex (
     idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idusuario INT NOT NULL,
     idproducto INT NOT NULL,
+    idpedido CHAR(15) NULL,
     idlote INT NULL,
     stockactual INT NULL DEFAULT 0,
     tipomovimiento ENUM('Ingreso', 'Salida') NOT NULL,
@@ -462,6 +467,7 @@ CREATE TABLE kardex (
     CONSTRAINT fk_idusuario_kardex FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_idproducto_kardex FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
     CONSTRAINT fk_idlote_kardex FOREIGN KEY (idlote) REFERENCES lotes (idlote),
+    CONSTRAINT fk_idpedido_kardex FOREIGN KEY (idpedido) REFERENCES pedidos (idpedido),
     CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
     CONSTRAINT ck_cantidad CHECK (cantidad > 0),
     CONSTRAINT fk_estado_kardex CHECK (

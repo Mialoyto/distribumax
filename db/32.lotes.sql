@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TODO: REGISTRAR LOTES (OK)
 DROP PROCEDURE IF EXISTS sp_registrar_lote;
@@ -28,10 +28,9 @@ BEGIN
     END IF;
 END;
 
-
-
 -- TODO: TRIGGERS PARA ACTUALIZAR ESTADO DE LOTES Y VALIDAR FECHA DE VENCIMIENTO
 DROP TRIGGER IF EXISTS before_insert_lotes;
+
 CREATE TRIGGER before_insert_lotes
 BEFORE INSERT ON lotes
 FOR EACH ROW
@@ -62,9 +61,9 @@ BEGIN
 
 END;
 
-
 -- Este trigger se ejecuta después de insertar un registro en la tabla kardex
 DROP TRIGGER IF EXISTS after_insert_kardex;
+
 CREATE TRIGGER after_insert_kardex
 AFTER INSERT ON kardex
 FOR EACH ROW
@@ -127,7 +126,8 @@ CREATE PROCEDURE sp_registrar_salida_pedido (
     IN _idusuario    INT,
     IN _idproducto   INT,
     IN _cantidad     INT,
-    IN _motivo       VARCHAR(255)
+    IN _motivo       VARCHAR(255),
+    IN _idpedido     CHAR(15) -- - //FIXME - NUEVO PARAMET
 )
 BEGIN
     DECLARE v_stock_actual INT;
@@ -136,6 +136,7 @@ BEGIN
     DECLARE v_idlote INT;
     DECLARE v_stock_total INT;
     DECLARE done INT DEFAULT FALSE;
+    DECLARE v_idpedido CHAR(15); -- - //FIXME - NUEVO PARAMETRO
     
     DECLARE lotes_cursor CURSOR FOR
         SELECT idlote, stockactual 
@@ -176,11 +177,12 @@ BEGIN
         ELSE
             SET v_cantidad_descontar = v_stock_actual;
         END IF;
-        
+
         -- Registrar movimiento en kardex
         INSERT INTO kardex (
             idusuario,
             idproducto,
+            idpedido, -- - //FIXME - NUEVO PARAMETRO
             idlote,
             tipomovimiento,
             cantidad,
@@ -188,11 +190,13 @@ BEGIN
         ) VALUES (
             _idusuario,
             _idproducto,
+            _idpedido, -- - //FIXME - NUEVO PARAMETRO
             v_idlote,
             'Salida',
             v_cantidad_descontar,
             _motivo
         );
+
         
         -- Actualiza la cantidad pendiente
         SET v_cantidad_pendiente = v_cantidad_pendiente - v_cantidad_descontar;
@@ -205,7 +209,7 @@ BEGIN
     CLOSE lotes_cursor;
 END;
 
-DROP PROCEDURE IF EXISTS  sp_productos_por_agotarse_o_vencimiento;
+DROP PROCEDURE IF EXISTS sp_productos_por_agotarse_o_vencimiento;
 
 CREATE PROCEDURE sp_productos_por_agotarse_o_vencimiento()
 BEGIN

@@ -47,9 +47,8 @@ VALUES
         SELECT LAST_INSERT_ID() AS idproducto;
 END;
 
+
 -- ACTUALIZA PRODUCTOS
-
-
 DROP PROCEDURE IF EXISTS sp_actualizar_producto;
 
 CREATE PROCEDURE sp_actualizar_producto (
@@ -108,13 +107,6 @@ BEGIN
 END;
 
 
-
-
-
-
-
-select * from productos;
-
 DROP PROCEDURE IF EXISTS sp_estado_producto;
 
 CREATE PROCEDURE sp_estado_producto (
@@ -136,7 +128,6 @@ END;
 
 CALL sp_estado_producto ('0', 1);
 
-SELECT * FROM productos;
 -- PRUEBA DE BUSQUEDA de productos
 DROP PROCEDURE IF EXISTS sp_buscar_productos;
 
@@ -242,18 +233,6 @@ END;
 SELECT * FROM productos;
 
 CALL sp_listar_productos ();
-
--- CREATE PROCEDURE sp_eliminar_producto(IN _idproducto INT)
--- BEGIN
---     -- Verifica que el producto existe antes de eliminarlo
---     IF EXISTS (SELECT 1 FROM productos WHERE idproducto = _idproducto) THEN
---     DELETE FROM productos WHERE idproducto = _idproducto;
---     ELSE
---     -- Si el producto no existe, puedes lanzar un mensaje de error o simplemente terminar
---     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El producto no existe';
---     END IF;
--- END;
-
 DROP PROCEDURE IF EXISTS sp_obtener_producto;
 
 CREATE PROCEDURE sp_obtener_producto (IN _idproducto INT)
@@ -291,9 +270,3 @@ BEGIN
         p.idproducto = _idproducto
         AND p.estado = '1';
 END;
-
-CALL sp_obtener_producto (2);
-
-SELECT * FROM productos;
-
-SELECT * FROM unidades_medidas

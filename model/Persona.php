@@ -133,4 +133,19 @@ class Persona extends Conexion
             die($e->getMessage());
         }
     }
+
+    public function updateEstado($params = [])
+    {
+        try{
+            $query = $this->pdo->prepare("CALL sp_estado_persona (?,?)");
+            $query->execute(array(
+                $params['idpersonanrodoc'],
+                $params['estado']
+            ));
+            $response = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $response;
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
 }

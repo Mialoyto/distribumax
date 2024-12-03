@@ -1,6 +1,4 @@
 <?php
-
-
 require_once '../model/Empresa.php';
 $empresa = new Empresas();
 

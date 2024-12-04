@@ -76,8 +76,7 @@ BEGIN
         WHERE idcliente=_idcliente;
 END;
 
-call sp_estado_cliente('1',1);
-select * from clientes;
+
 -- BUSCAR CLIENTE POR DNI O RUC
 DROP PROCEDURE IF EXISTS sp_buscar_cliente;
 CREATE PROCEDURE sp_buscar_cliente (

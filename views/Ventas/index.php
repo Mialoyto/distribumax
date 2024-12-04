@@ -14,12 +14,12 @@ require_once '../../app/config/App.php';
           <i class="fas fa-table me-1"></i>
           Ventas del día
         </div>
-        <div class="col-4 mb-4">
-          <!-- Campo para filtrar por fecha con botón -->
-          <div class="input-group">
-            <input type="date" id="fecha-venta" class="form-control" placeholder="Seleccionar fecha">
-          </div>
-        </div>
+
+        <!-- Campo para filtrar por fecha con botón -->
+
+
+
+
 
         <div class="text-end">
           <a href="<?= $URL . 'reports/Clientes/contenidoPDF.php' ?>" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
@@ -90,9 +90,17 @@ require_once '../../app/config/App.php';
       <!-- Tabla de ventas -->
       <div class="card-body">
         <div class="table-responsive">
+          <!-- Filtro centrado sobre la tabla -->
+          <div class="row mb-3 justify-content-center">
+            <div class="col-md-4">
+              <input type="date" id="fecha-venta" class="form-control" placeholder="Seleccionar fecha">
+            </div>
+          </div>
+
           <table id="table-ventas" class="table" style="width: 100%;">
             <thead>
               <tr>
+                <th>N° Comprobante</th>
                 <th>Pedido</th>
                 <th>Tipo Cliente</th>
                 <th>Cliente</th>
@@ -107,13 +115,13 @@ require_once '../../app/config/App.php';
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div class="card-footer">
+        <a href="registrar.php" class="btn btn-primary">Registrar nueva Venta</a>
+        <a href="listar.php" class="btn btn-success">Historial de Ventas</a>
 
       </div>
-       <div class="card-footer">
-          <a href="registrar.php" class="btn btn-primary">Registrar nueva Venta</a>
-          <a href="listar.php" class="btn btn-success">Historial de Ventas</a>
-
-        </div>
     </div>
 
   </div>

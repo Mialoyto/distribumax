@@ -92,7 +92,31 @@ $host = "http://localhost/distribumax";
     </button>
     <!-- Navbar Search-->
     <!-- Navbar-->
+
+
+    <div class="d-none d-md-inline-block  ms-auto me-0 me-md-3 my-2 my-md-0">
+
+
+      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <!-- Menú de Notificaciones en la Navbar -->
+        <li class="nav-item dropdown nav-item dropdown d-sm-none d-lg-block">
+          <a class="nav-link dropdown-toggle btn btn-danger" id="notificationDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-danger" id="notificationCount">0</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" id="notificationMenu">
+            <li><a class="dropdown-item text-center" href="#">No hay notificaciones</a></li>
+          </ul>
+        </li>
+
+
+      </ul>
+
+    </div>
+
     <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+
+
       <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown d-sm-none d-lg-block">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -103,7 +127,7 @@ $host = "http://localhost/distribumax";
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="#!">Configuracion</a></li>
-            <li><a class="dropdown-item" href="<?=$host?>/views/User/update-password.php">Cambiar Contraseña</a></li>
+            <li><a class="dropdown-item" href="<?= $host ?>/views/User/update-password.php">Cambiar Contraseña</a></li>
             <li><a class="dropdown-item" href="#!">Historial</a></li>
             <li>
               <hr class="dropdown-divider" />
@@ -115,6 +139,7 @@ $host = "http://localhost/distribumax";
           </ul>
         </li>
       </ul>
+
     </div>
   </nav>
   <!-- fin navbar -->
@@ -138,7 +163,7 @@ $host = "http://localhost/distribumax";
             ?>
 
 
-            <a class="nav-link" href="<?= $host ?>/views/Pedidos/" >
+            <a class="nav-link" href="<?= $host ?>/views/Pedidos/">
               <div class="sb-nav-link-icon"><i class="bi bi-clipboard-plus fs-4"></i></i></div>
               Pedidos
             </a>
@@ -185,11 +210,11 @@ $host = "http://localhost/distribumax";
               <div class="sb-nav-link-icon"><i class="bi bi-percent"></i></div>
               Promociones
             </a> -->
-             <!--    <a class="nav-link" href="<?= $host ?>/views/Subcategoria/">
+            <!--    <a class="nav-link" href="<?= $host ?>/views/Subcategoria/">
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Categorias
             </a> -->
-            
+
             <a class="nav-link" href="<?= $host ?>/views/Marcas/registrar-marca.php">
               <div class="sb-nav-link-icon"><i class="bi bi-tag fs-4"></i></div>
               Marcas

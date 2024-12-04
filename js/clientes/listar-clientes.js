@@ -89,9 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <td>
              <div class="d-flex justify-content-center">
   <div class="btn-group btn-group-sm" role="group">
-    <a id-data="${element.idcliente}" class="btn btn-warning ${editDisabled}" data-bs-toggle="modal" data-bs-target=".edit-cliente">
-      <i class="bi bi-pencil-square fs-7"></i>
-    </a>
+   
     <a id-data="${element.idcliente}" class="btn ${bgbtn} estado" estado-cat="${element.status}">
       <i class="${icons}"></i>
     </a>
@@ -122,11 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (await showConfirm("¿Estás seguro de deshabilitar el cliente?")) {
             const data = await updateEstado(id,status);
             console.log("Estado actualizado correctamente:", data);
-            if(data[0].estado){
-              showToast(`${data[0].mensaje}`, "success", "SUCCESS");
-            }else{
-              showToast(`${data[0].mensaje}`, "error", "ERROR");
-            }
+           
             dtcaclientes.destroy();
         
             CargarDatos();
@@ -188,5 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  
  
 });

@@ -1,10 +1,13 @@
 async function updateEstado(id, status) {
   const params = new URLSearchParams();
-  params.append("operation", 'updateEstado');
-  params.append("idcliente", id);
+  params.append("operation", 'activeCliente');
   params.append("estado", status);
+  params.append("idcliente", id);
   try{
-    const response = await fetch(`../../controller/cliente.controller.php?${params}`);
+    const response = await fetch(`../../controller/cliente.controller.php`,{
+      method: 'POST',
+      body: params
+    });
     const data = await response.json();
     console.log("Datos obtenidos: ", data);
     return data;

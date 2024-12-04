@@ -54,12 +54,14 @@ require_once '../header.php';
           <table id="table-ventas" class="table" style="width: 100%;">
             <thead>
               <tr>
+              <th>N° Comprobante</th>
                 <th>Pedido</th>
                 <th>Tipo Cliente</th>
                 <th>Cliente</th>
                 <th>Documento</th>
                 <th>Fecha Venta</th>
                 <th>Estado</th>
+                <th>Condición</th>
                
               </tr>
             </thead>

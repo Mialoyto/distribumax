@@ -74,14 +74,14 @@ END;
 
 -- aun falta el idlote, ya que cuando tiene dos lotes hace
 -- realiza una duplicida.
-DROP PROCEDURE IF EXISTS `sp_estado_venta`;
+DROP PROCEDURE IF EXISTS `sp_condicion_venta`;
 
-CREATE PROCEDURE `sp_estado_venta`(
-    IN _estado CHAR(1),
-    IN _idventa INT
+CREATE PROCEDURE `sp_condicion_venta`(
+    IN _condicion VARCHAR(50),  -- Recibe la nueva condición
+    IN _idventa INT            -- ID de la venta a modificar
 )
 BEGIN
-    -- Declarar las variables necesarias
+    -- Declarar variables necesarias
     DECLARE _idproducto INT;
     DECLARE _idlote INT;
     DECLARE _cantidad INT;
@@ -103,23 +103,23 @@ BEGIN
     LEFT JOIN lotes lt ON lt.idproducto = pr.idproducto
     WHERE p.idpedido = _idpedido;
 
-			-- Declarar un handler para controlar el fin del cursor
-			DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    -- Declarar un handler para controlar el fin del cursor
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
-			-- Asignar el idpedido relacionado con la venta (esto va al principio)
-			SELECT idpedido INTO _idpedido
-			FROM ventas
-			WHERE idventa = _idventa;
+    -- Obtener el idpedido relacionado con la venta
+    SELECT idpedido INTO _idpedido
+    FROM ventas
+    WHERE idventa = _idventa;
 
-			-- Actualizar el estado de la venta
-			UPDATE ventas SET
-					estado = _estado,
-					update_at = NOW()
-			WHERE idventa = _idventa;
+    -- Actualizar la condición de la venta
+    UPDATE ventas SET
+        condicion = _condicion,
+        update_at = NOW()
+    WHERE idventa = _idventa;
 
-    -- Si el estado es "pendiente"
-    IF _estado = '1' THEN
-        -- Actualizar el pedido relacionado a "Enviado"
+    -- Si la nueva condición es "despachado"
+    IF _condicion = 'pendiente' THEN
+        -- Actualizar el estado del pedido relacionado a "Enviado"
         UPDATE pedidos SET
             estado = 'Enviado',
             update_at = NOW()
@@ -152,25 +152,25 @@ BEGIN
         CLOSE cur;
     END IF;
 
-			-- Si el estado es "cancelado"
-			IF _estado = '0' THEN
-					-- Actualizar el pedido relacionado a "Cancelado"
-					UPDATE pedidos SET
-							estado = 'Cancelado',
-							update_at = NOW()
-					WHERE idpedido = _idpedido;
+    -- Si la nueva condición es "cancelado"
+    IF _condicion = 'cancelado' THEN
+        -- Actualizar el estado del pedido relacionado a "Cancelado"
+        UPDATE pedidos SET
+            estado = 'Cancelado',
+            update_at = NOW()
+        WHERE idpedido = _idpedido;
 
-					-- Abrir el cursor
-					OPEN cur;
+        -- Abrir el cursor
+        OPEN cur;
 
-					-- Iterar sobre los productos del pedido
-					read_loop: LOOP
-							FETCH cur INTO _idproducto, _cantidad, _idusuario, _idlote;
+        -- Iterar sobre los productos del pedido
+        read_loop: LOOP
+            FETCH cur INTO _idproducto, _cantidad, _idusuario, _idlote;
 
-							-- Salir del bucle si no hay más filas
-							IF done = 1 THEN
-									LEAVE read_loop;
-							END IF;
+            -- Salir del bucle si no hay más filas
+            IF done = 1 THEN
+                LEAVE read_loop;
+            END IF;
 
             -- Registrar el movimiento en el kardex para ingresar los productos
             CALL sp_registrarmovimiento_kardex(
@@ -183,9 +183,44 @@ BEGIN
             );
         END LOOP;
 
-					-- Cerrar el cursor
-					CLOSE cur;
-			END IF;
+        -- Cerrar el cursor
+        CLOSE cur;
+    END IF;
+END;
+
+
+
+
+-- Nos permite ocultar las ventas ya que han sido realizadas
+DROP PROCEDURE IF EXISTS sp_estado_venta;
+CREATE PROCEDURE sp_estado_venta (
+    IN _estado CHAR(1),
+    IN _idventa INT
+)
+BEGIN
+		DECLARE v_mensaje VARCHAR(50);
+    -- Verificar si la venta tiene la condición 'Despachado'
+    IF (SELECT condicion FROM ventas WHERE idventa = _idventa) = 'Despachado' THEN
+        -- Actualizar el estado de la venta
+        UPDATE ventas 
+        SET estado = _estado,
+            update_at = NOW()
+        WHERE idventa = _idventa;
+
+    END IF;
+END ;
+
+-- TRIGGER PARA ACTUALIZAR EL ESTADO DE LA VENTA CUANDO SE CANCELA
+DROP TRIGGER IF EXISTS after_venta_cancelada;
+CREATE TRIGGER before_venta_cancelada
+BEFORE UPDATE ON ventas
+FOR EACH ROW
+BEGIN
+    -- Verificar si la condición de la venta es 'Cancelado' y la condición anterior no lo era
+    IF NEW.condicion = 'Cancelado' AND OLD.condicion <> 'Cancelado' THEN
+        -- Cambiar el estado a '0' antes de que se haga el UPDATE
+        SET NEW.estado = '0';
+    END IF;
 END;
 
 
@@ -305,7 +340,8 @@ CREATE PROCEDURE `sp_listar_ventas`()
 BEGIN
     SELECT 
         ve.idventa,
-        ve.fecha_venta,
+        ve.numero_comprobante,
+        DATE(ve.fecha_venta)fecha_venta,
         p.idpedido,
         tp.comprobantepago,
         cli.idpersona,
@@ -322,7 +358,16 @@ BEGIN
             WHEN '1' THEN '0'
             WHEN '0' THEN '1'
         END AS `status`,
-        ve.condicion
+        CASE 
+            WHEN ve.condicion = 'Pendiente' THEN 'Pendiente'
+            WHEN ve.condicion = 'Despachado' THEN 'Despachado'
+            -- Puedes agregar más condiciones si es necesario
+        END AS venta_estado,
+        CASE 
+            WHEN ve.condicion = 'Pendiente' THEN 'Cancelado'
+            WHEN ve.condicion = 'Cancelado' THEN 'Pendiente'
+            ELSE ve.condicion  -- Si no es Pendiente ni Cancelado, mantiene el valor actual
+        END AS `status_venta`
     FROM 
         ventas ve
     INNER JOIN 
@@ -340,21 +385,15 @@ BEGIN
     LEFT JOIN 
         tipo_comprobante_pago tp ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE 
-        p.estado = 'Enviado'
-    OR
-        P.estado = 'Entregado'
-
-    OR 
-    ve.condicion ='Pendiente'
-	AND 
-    ve.estado='1'
-    AND   
-      DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
+        (p.estado = 'Enviado' OR p.estado = 'Entregado')
+        AND (ve.condicion = 'Pendiente' OR ve.condicion='Despachado') -- Se filtra por ventas pendientes
+        AND ve.estado = '1'  -- Solo ventas con estado 1
+        AND DATE(ve.fecha_venta) = CURDATE()  -- Filtra las ventas del día actual
     GROUP BY 
         ve.idventa, p.idpedido, cli.idpersona, cli.tipo_cliente
     ORDER BY 
         p.idpedido DESC;
-END ;
+END;
 
 
 -- Todo reade papeto
@@ -363,7 +402,8 @@ CREATE PROCEDURE `sp_listar_fecha`(IN _fecha_venta DATE)
 BEGIN
     SELECT 
         ve.idventa,
-        ve.fecha_venta,
+        ve.numero_comprobante,
+        DATE(ve.fecha_venta)fecha_venta,
         p.idpedido,
         tp.comprobantepago,
         cli.idpersona,
@@ -375,8 +415,20 @@ BEGIN
         pe.idpersonanrodoc,
         em.razonsocial,
         em.idempresaruc,
-        p.estado,
-        ve.condicion
+         CASE ve.estado
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS `status`,
+        CASE 
+            WHEN ve.condicion = 'Pendiente' THEN 'Pendiente'
+            WHEN ve.condicion = 'Despachado' THEN 'Despachado'
+            -- Puedes agregar más condiciones si es necesario
+        END AS venta_estado,
+        CASE 
+            WHEN ve.condicion = 'Pendiente' THEN 'Cancelado'
+            WHEN ve.condicion = 'Cancelado' THEN 'Pendiente'
+            ELSE ve.condicion  -- Si no es Pendiente ni Cancelado, mantiene el valor actual
+        END AS `status_venta`
     FROM 
         ventas ve
     INNER JOIN 
@@ -412,7 +464,8 @@ CREATE PROCEDURE `sp_historial_ventas`()
 BEGIN
     SELECT 
         ve.idventa,
-        ve.fecha_venta,
+        ve.numero_comprobante,
+        DATE(ve.fecha_venta)fecha_venta,
         p.idpedido,
         tp.comprobantepago,
         cli.idpersona,
@@ -428,10 +481,7 @@ BEGIN
             WHEN '1' THEN 'Activo'
             WHEN '0' THEN 'Inactivo'
         END AS estado,
-        CASE ve.estado
-            WHEN '1' THEN '0'
-            WHEN '0' THEN '1'
-        END AS `status`
+        ve.condicion
     FROM 
         ventas ve
     INNER JOIN 
@@ -577,7 +627,7 @@ BEGIN
     INNER JOIN personas PERS ON PERS.idpersonanrodoc = CLI.idpersona
     INNER JOIN distritos DIS ON DIS.iddistrito = PERS.iddistrito
     INNER JOIN provincias PROV ON PROV.idprovincia = DIS.idprovincia
-    WHERE VE.condicion = 'pendiente'
+    WHERE VE.condicion = 'Pendiente'
       AND  VE.estado='1'
       AND CURDATE() = DATE(VE.fecha_venta)
     GROUP BY 
@@ -653,4 +703,15 @@ BEGIN
         WHERE DATE(ve.fecha_venta) = _fecha AND ve.estado = '1'
         GROUP BY DATE(ve.fecha_venta);
     END IF;
+END ;
+
+DROP PROCEDURE IF EXISTS sp_contar_ventas;
+CREATE PROCEDURE sp_contar_ventas()
+BEGIN
+    SELECT 
+        SUM(CASE WHEN condicion = 'despachado' THEN 1 ELSE 0 END) AS despachados,
+        SUM(CASE WHEN condicion = 'Pendiente' THEN 1 ELSE 0 END) AS pendientes,
+        SUM(CASE WHEN condicion='Cancelado'  THEN 1 ELSE 0 END)AS cancelados
+    FROM ventas
+    WHERE DATE(fecha_venta) = CURDATE();
 END ;

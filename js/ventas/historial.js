@@ -16,15 +16,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                     case "Inactivo":
                         estadoClass = "text-danger";
+                    break; 
+                }
+                let statusClass;
+                switch (element.condicion) {
+                    case 'despachado':
+                        statusClass = 'text-primary';
                     break;
-                   
-                   
+                    case 'Cancelado':
+                        statusClass = 'text-danger';
+                    break;
+                    
                 }
                 const clienteNombre = element.tipo_cliente === 'Empresa' ? element.razonsocial : element.datos;
                 const documento = element.tipo_cliente === 'Empresa' ? element.idempresaruc : element.idpersonanrodoc;
                 Tablaventas.innerHTML += `
                 <tr>
+
+                    <td>${element.numero_comprobante}</td>
                     <td>
+
                         <a href='#' class='text-primary info' 
                             data-bs-toggle="modal" 
                             data-bs-target="#generarReporte" 
@@ -36,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td >${documento}</td>
                     <td>${element.fecha_venta}</td>
                     <td><strong class="${estadoClass}">${element.estado}</strong></td>
+                    <td><strong class="${statusClass}">${element.condicion}</strong></td>
                     <td>
                       
                     </td>
@@ -85,8 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 { width: "16%", targets: 3 }, // Ancho para la columna de Cliente
                 { width: "16%", targets: 4 },
                 { width: "22%", targets: 5 }, // Ancho para la columna de Documento
-                { width: "10%", targets: 6 } // Ancho para la columna de Documento
-            
+                { width: "10%", targets: 6 }, // Ancho para la columna de Documento
+                { width: "10%", targets: 7 },
+                { width: "10%", targets: 8 }
             ],
             language: {
                 lengthMenu: "Mostrar _MENU_ registros por página",

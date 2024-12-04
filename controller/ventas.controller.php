@@ -22,11 +22,18 @@ if (isset($_POST['operation'])) {
       
     case 'upVenta':
       $dato = [
-        'estado' => $_POST['estado'],
+        'condicion' => $_POST['condicion'],
         'idventa' => $_POST['idventa']
       ];
       echo json_encode($venta->upVenta($dato));
       break;
+    case 'UpdateEstado':
+      $dato = [
+        'estado' => $_POST['estado'],
+        'idventa' => $_POST['idventa']
+      ];
+      echo json_encode($venta->UpdateEstado($dato));
+    break;
     
   }
 }
@@ -88,6 +95,9 @@ if (isset($_GET['operation'])) {
           // Si no se pasa fecha, se listan todas las ventas
           echo json_encode($venta->ventastotales());
         }
+      break;
+      case 'conteoVentas':
+        echo json_encode($venta->conteoVentas());
       break;
   }
 }

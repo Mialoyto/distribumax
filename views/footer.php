@@ -9,7 +9,7 @@
 </div>
 </div>
 <script src="<?= $host ?>/js/scripts.js"></script>
-
+<script src="<?= $host ?>/js/notificaciones.js"></script>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 

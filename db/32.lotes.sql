@@ -209,12 +209,15 @@ BEGIN
     CLOSE lotes_cursor;
 END;
 
+
+
 DROP PROCEDURE IF EXISTS sp_productos_por_agotarse_o_vencimiento;
 
 CREATE PROCEDURE sp_productos_por_agotarse_o_vencimiento()
 BEGIN
     SELECT 
         l.fecha_vencimiento,
+        l.numlote,
         p.nombreproducto,
         l.estado,
         l.stockactual
@@ -223,13 +226,14 @@ BEGIN
     INNER JOIN 
         productos p ON p.idproducto = l.idproducto
     WHERE 
-        l.estado = 'Por Agotarse'
-        OR l.estado='Agotado'
-        OR l.fecha_vencimiento = (
-            SELECT MIN(fecha_vencimiento)
-            FROM lotes
-            WHERE fecha_vencimiento > NOW()
-        )
+        -- Lotes por agotarse o agotados
+        l.estado IN ('Por Agotarse', 'Agotado')
+        OR 
+        -- Lotes que vencen dentro de las próximas dos semanas
+        (l.fecha_vencimiento BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 2 WEEK))
+        OR 
+        -- Lotes que vencen muy pronto (considerando unos días antes del rango de 2 semanas)
+        (l.fecha_vencimiento BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW())
     ORDER BY 
         l.fecha_vencimiento ASC;
 END ;

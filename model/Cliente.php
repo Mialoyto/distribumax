@@ -80,27 +80,27 @@ class Cliente extends Conexion
       die($e->getMessage());
     }
   }
+     // ! Esta funcion no es util y no se usa
+  // public function updateEstado($params = [])
+  // {
+  //   try {
+  //     $tsql = "CALL sp_update_estado_cliente(?, ?)";
+  //     $query = $this->pdo->prepare($tsql);
+  //     $query->execute(
+  //       array(
+  //         $params['idcliente'],
+  //         $params['estado']
+  //       )
+  //     );
+  //     $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+  //     return $resultado;
+  //   } catch (Exception $e) {
+  //     die($e->getMessage());
+  //   }
+  // }
 
-  public function updateEstado($params = [])
-  {
-    try {
-      $tsql = "CALL sp_update_estado_cliente(?, ?)";
-      $query = $this->pdo->prepare($tsql);
-      $query->execute(
-        array(
-          $params['idcliente'],
-          $params['estado']
-        )
-      );
-      $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
-      return $resultado;
-    } catch (Exception $e) {
-      die($e->getMessage());
-    }
-  }
 
-
-
+ // ! No toques esto ctmr
   public function activeCliente($params = []): bool
   {
     $resultado = false;  // Valor por defecto en caso de fallo

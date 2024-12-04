@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let dtpedido;
   let stock;
 
-  // FIXME
+  // REVIEW
   // ?FUNCIONES PARA OBETENER LOS DATOS DE LOS PEDIDOS
   async function ObtenerPedidoId(id) {
     const params = new URLSearchParams();
@@ -63,17 +63,17 @@ document.addEventListener("DOMContentLoaded", () => {
           const id = element.idproducto;
           const codigo = element.codigo;
           const descripcion = element.nombreproducto;
-          const cantidad = element.cantidad_producto;
+          const cantidadprod = element.cantidad;
           const unidadmedida = element.unidadmedida;
           const precio_unit = element.precio_unitario;
           const descuento = element.descuento;
-          const subtotal = (cantidad * precio_unit).toFixed(2);
+          const subtotal = (cantidadprod * precio_unit).toFixed(2);
           const descuentos = element.descuento;
-          const total = (cantidad * precio_unit).toFixed(2);
+          const total = (cantidadprod * precio_unit).toFixed(2);
           console.log('id', id);
           console.log('codigo', codigo);
           console.log('descripcion', descripcion);
-          console.log('cantidad', cantidad);
+          console.log('cantidad', cantidadprod);
           console.log('unidadmedida', unidadmedida);
           console.log('precio_unit', precio_unit);
           console.log('descuento', descuento);
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
             id,
             codigo,
             descripcion,
-            cantidad,
+            cantidadprod,
             unidadmedida,
             precio_unit,
             subtotal,
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
               estadoClass = "text-primary";
               editButtonClass = "btn-warning disabled";
               bgbtn = "btn-success ";
-              
+
               break;
             case "Pendiente":
               estadoClass = "text-warning";
@@ -216,13 +216,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
               if (await showConfirm("¿Estás seguro de cambiar el estado del Pedido?")) {
                 const data = await updateEstado(id, newStatus);
-            
+
                 if (data[0].estado > 0) {
-            
+
                   showToast(`${data[0].mensaje}`, "success", "SUCCESS");
                   // await CargarProveedores();
-                   
-                 
+
+
                 } else {
                   showToast(`${data[0].mensaje}`, "error", "ERROR");
                 }
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
         RenderDatatablePedidos();
       }
 
-      
+
     } catch (error) {
       console.log("Error al cargar los pedidos", error);
     }
@@ -297,11 +297,12 @@ document.addEventListener("DOMContentLoaded", () => {
         li.innerHTML = `${item.nombreproducto} <span class="badge text-bg-success rounded-pill">${item.unidadmedida}: ${item.stockactual}</span>`;
         li.addEventListener("click", () => {
           const id = item.idproducto;
+          console.log("cantidad", item.cantidad);
           addProductToTable(
             item.idproducto,
             item.codigo,
             item.descripcion,
-            item.cantidad_producto,
+            item.cantidad,
             item.unidadmedida,
             item.precio_venta,
             item.descuento,
@@ -333,15 +334,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // FIXME
   function addProductToTable(id, codigo, descripcion, cantidad, unidadmedida, precio_venta, subtotal, descuento, total, stockactual) {
-    const existId = document.querySelector(`#update-detalle-pedido tr td[id-data="${id}"]`);
+   /*  const existId = document.querySelector(`#update-detalle-pedido tr td[id-data="${id}"]`);
     if (existId) {
       showToast('El producto ya se encuentra en la tabla', 'info', 'INFO');
       return;
-    }
+    } */
+   console.log("cantidad", cantidad);
+   console.log("id", id);
     const row = document.createElement("tr");
     row.innerHTML = `
             <th scope="row" class"text-nowrap w-auto">${codigo}</th>
-            <td class="text-nowrap w-auto" id-data="${id}">${descripcion}</td>
+            <td class="text-nowrap w-auto" id-prod="${id}">${descripcion}</td>
             <td class="col-md-1 w-10">
                 <input class="form-control form-control-sm cantidad numeros text-center w-100" value="${cantidad}"  type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
             </td>

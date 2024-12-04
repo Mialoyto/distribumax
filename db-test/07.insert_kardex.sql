@@ -45,7 +45,7 @@ SELECT
     KAR.stockactual
 FROM kardex KAR
     INNER JOIN lotes LOT ON KAR.idlote = LOT.idlote
-    INNER JOIN productos PRO ON LOT.idproducto = PRO.idproducto;
+    INNER JOIN productos PRO ON LOT.idproducto = PRO.idproducto
 WHERE KAR.idproducto = 7 ORDER BY KAR.idkardex DESC LIMIT 10;
 
 SELECT * FROM lotes WHERE idproducto = 7;

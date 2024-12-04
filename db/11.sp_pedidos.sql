@@ -159,9 +159,9 @@ DROP PROCEDURE IF EXISTS sp_obtener_pedido;
 CREATE PROCEDURE sp_obtener_pedido (IN _idpedido VARCHAR(80))
 BEGIN
     SELECT 
-        dp.id_detalle_pedido AS iddetallepedido, 
-        cl.idcliente,
-        cl.tipo_cliente,
+    -- DATOS DEL CLIENTE
+        CL.idcliente,
+        CL.tipo_cliente,
         PER.nombres,
         PER.appaterno,
         PER.apmaterno,
@@ -171,38 +171,43 @@ BEGIN
         DIS.distrito,
         PER.telefono,
         CASE 
-            WHEN cl.tipo_cliente = "Empresa" THEN EMP.idempresaruc
-            WHEN cl.tipo_cliente = "Persona" THEN PER.idpersonanrodoc
+            WHEN CL.tipo_cliente = "Empresa" THEN EMP.idempresaruc
+            WHEN CL.tipo_cliente = "Persona" THEN PER.idpersonanrodoc
         END AS documento,
         CASE 
             WHEN CL.idpersona IS NOT NULL THEN PER.direccion
             WHEN CL.idempresa IS NOT NULL THEN EMP.direccion
         END AS direccion_cliente,
         CL.estado,
+        -- DATOS DEL DEL DETALLE DEL PEDIDO
         pe.idpedido,
-        pr.codigo, 
-        pr.idproducto, 
-        CONCAT(pr.nombreproducto,'-',um.unidadmedida,' ',pr.cantidad_presentacion, 'X', pr.peso_unitario) AS nombreproducto,
-        dp.cantidad_producto,
+		dp.id_detalle_pedido AS iddetallepedido, 
+        PROD.idproducto, 
+        KAR.idlote,
+        PROD.codigo, 
+        CONCAT(PROD.nombreproducto,'-',um.unidadmedida,' ',PROD.cantidad_presentacion, 'X', PROD.peso_unitario) AS nombreproducto,
+        KAR.cantidad,
         um.unidadmedida,
-        dp.precio_unitario,
-        dp.precio_descuento AS descuento,
-        dp.subtotal,
-        pe.estado
-    FROM pedidos pe
-    INNER JOIN detalle_pedidos dp ON dp.idpedido = pe.idpedido
-    LEFT JOIN productos pr ON pr.idproducto = dp.idproducto
-    LEFT JOIN unidades_medidas um ON um.idunidadmedida = pr.idunidadmedida
-    LEFT JOIN clientes cl ON cl.idcliente = pe.idcliente
-    LEFT JOIN personas PER ON CL.idpersona = PER.idpersonanrodoc
-    LEFT JOIN empresas EMP ON CL.idempresa = EMP.idempresaruc
-    LEFT JOIN distritos DIS ON DIS.iddistrito = PER.iddistrito
-    LEFT JOIN provincias PRO ON PRO.idprovincia = DIS.idprovincia
-    LEFT JOIN departamentos DEP ON DEP.iddepartamento = PRO.iddepartamento
-    WHERE pe.idpedido = _idpedido
-      AND pe.estado = 'pendiente';
-     
+        DP.precio_unitario,
+        DP.precio_descuento AS descuento,
+        DP.subtotal,
+        PE.estado
+    FROM pedidos PE
+		INNER JOIN detalle_pedidos DP 	ON DP.idpedido = PE.idpedido
+		LEFT JOIN productos PROD 		ON PROD.idproducto = DP.idproducto
+		LEFT JOIN unidades_medidas um 	ON um.idunidadmedida = PROD.idunidadmedida
+		LEFT JOIN clientes CL 			ON CL.idcliente = PE.idcliente
+		LEFT JOIN personas PER 			ON CL.idpersona = PER.idpersonanrodoc
+		LEFT JOIN empresas EMP 			ON CL.idempresa = EMP.idempresaruc
+		LEFT JOIN distritos DIS 		ON DIS.iddistrito = PER.iddistrito
+		LEFT JOIN provincias PRO 		ON PRO.idprovincia = DIS.idprovincia
+		LEFT JOIN departamentos DEP 	ON DEP.iddepartamento = PRO.iddepartamento
+        LEFT JOIN kardex KAR 			ON KAR.idpedido = PE.idpedido
+    WHERE PE.idpedido = _idpedido
+    AND PE.estado = 'pendiente';
 END;
+
+CALL sp_obtener_pedido('PED-000000002');
 
 CREATE PROCEDURE sp_contar_pedidos()
 BEGIN

@@ -30,37 +30,38 @@ class Pedidos extends Conexion
     return $id;
   }
 
-  public function searchPedido($params=[]){
-    try{
-      $sql="CALL sp_buscar_pedido(?)";
-      $query=$this->pdo->prepare($sql);
+  public function searchPedido($params = [])
+  {
+    try {
+      $sql = "CALL sp_buscar_pedido(?)";
+      $query = $this->pdo->prepare($sql);
       $query->execute(array(
         $params['_idpedido']
       ));
-      
+
       return $query->fetchAll(PDO::FETCH_ASSOC);
-    }catch(Exception $e){
+    } catch (Exception $e) {
       die($e->getMessage());
     }
   }
 
-  public function getById($params=[]){
-    try{
-      $sql="CALL sp_getById_pedido(?)";
-      $query=$this->pdo->prepare($sql);
+  public function getById($params = [])
+  {
+    try {
+      $sql = "CALL sp_getById_pedido(?)";
+      $query = $this->pdo->prepare($sql);
       $query->execute(array(
         $params['idpedido']
       ));
       return $query->fetchAll(PDO::FETCH_ASSOC);
-    }catch(Exception $e){
+    } catch (Exception $e) {
       die($e->getMessage());
-
     }
   }
 
   public function UpdateEstadoPedido($params = [])
   {
-    try{
+    try {
       $sql = "CALL sp_update_estado_pedido(?,?)";
       $query = $this->pdo->prepare($sql);
       $query->execute(
@@ -68,49 +69,53 @@ class Pedidos extends Conexion
           $params['idpedido'],
           $params['estado']
         )
-        );
-        $response = $query->fetchAll(PDO::FETCH_ASSOC);
-        return $response;
-    } catch(Exception $e){
+      );
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
+    } catch (Exception $e) {
       die($e->getMessage());
     }
   }
-  public function getAll(){
-    try{
-       $query=$this->pdo->prepare("call sp_listar_pedidos");
-       $query->execute();
-       return $query->fetchAll(PDO::FETCH_ASSOC);
-    }catch(Exception $e){
-      die($e->getMessage());
-    }
-  }
-
-  public function GetPedido($params=[]){
-      try{
-          $query=$this->pdo->prepare("call sp_obtener_pedido(?)");
-          $query->execute(array($params['idpedido']));
-          return $query->fetchAll(PDO::FETCH_ASSOC);
-      }catch(Exception $e){
-        die($e->getMessage());
-      }
-  }
-  public function pediosDay(){
-    try{
-      $query=$this->pdo->prepare("call sp_contar_pedidos");
+  public function getAll()
+  {
+    try {
+      $query = $this->pdo->prepare("call sp_listar_pedidos");
       $query->execute();
       return $query->fetchAll(PDO::FETCH_ASSOC);
-    }catch(Exception $e){
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+
+  public function GetPedido($params = [])
+  {
+    try {
+      $query = $this->pdo->prepare("call sp_obtener_pedido(?)");
+      $query->execute(array($params['idpedido']));
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+  public function pediosDay()
+  {
+    try {
+      $query = $this->pdo->prepare("call sp_contar_pedidos");
+      $query->execute();
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
       die($e->getMessage());
     }
   }
 
 
-  public function pedidosForProvincia(){
-    try{
-      $query=$this->pdo->prepare("call sp_listado_pedidos_provincias");
+  public function pedidosForProvincia()
+  {
+    try {
+      $query = $this->pdo->prepare("call sp_listado_pedidos_provincias");
       $query->execute();
       return $query->fetchAll(PDO::FETCH_ASSOC);
-    }catch(Exception $e){
+    } catch (Exception $e) {
       die($e->getMessage());
     }
   }

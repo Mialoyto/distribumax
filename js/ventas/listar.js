@@ -30,20 +30,25 @@ document.addEventListener("DOMContentLoaded", () => {
             let estadoClass;
             let icons;
             let bgbtn;
+            let bgbtndesactivar;
+            let ocultar ;
             let reporte="btn-outline-danger";
             let btnDisabled;
-            switch (element.condicion) {
-                case "pendiente":
+            switch (element.venta_estado) {
+                case "Pendiente":
                     estadoClass = "text-warning";
                     icons ="bi bi-toggle2-on fs-6"
                     bgbtn="btn-success";
                     reporte="disabled";
+                    bgbtndesactivar="btn-outline-primary disabled";
                     break;
               
-                case "despachado":
+                case "Despachado":
                     estadoClass = "text-primary";
                     icons="bi bi-toggle2-on fs-6";
-                    bgbtn="btn-success";
+                    bgbtn="btn-success disabled";
+                    bgbtndesactivar="btn-outline-primary";
+                    
                     break;
             
                
@@ -55,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
           
             Tablaventas.innerHTML += `
                 <tr>
+                    <td>${element.numero_comprobante}</td>
                     <td><a href='#' class='text-primary info' 
                         data-bs-toggle="modal" 
                         data-bs-target="#generarReporte"
@@ -65,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${documento}</td>
                     <td>${element.fecha_venta}</td>
                     <td><strong class="${estadoClass}">
-                    ${element.condicion}
+                    ${element.venta_estado}
                     </strong></td>
                      <td>
   <div class="d-flex ">
@@ -73,7 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
       <button class="btn btn-outline-danger reporte ${reporte} " data-idventa="${element.idventa}">
         <i class="fas fa-file-alt me-6"></i>
       </button>
-      <a id-data="${element.idventa}" class="btn ${bgbtn} estado" estado-cat="${element.status}">
+      <a id-data="${element.idventa}" class="btn ${bgbtn} estado"  estado-cat="${element.status_venta}">
+        <i class="${icons}"></i>
+      </a>
+      <a id-data="${element.idventa}" class="btn ${bgbtndesactivar} desactivar" estado-venta="${element.status}">
         <i class="${icons}"></i>
       </a>
     </div>
@@ -127,11 +136,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 id = e.currentTarget.getAttribute("id-data");
                 const status = e.currentTarget.getAttribute("estado-cat");
                 console.log("ID:", id, "Status:", status);
-                if (await showConfirm("¿Estás seguro de cambiar el estado de la venta?")) {
+                if (await showConfirm("¿Estás seguro de cancelar la venta?")) {
                   const data = await  UpdateEstado(id, status);
+             
                   dtventa.destroy();
-                   
-                
+                CargarDatos();
+                RenderDatatable();
                   console.log("Estado actualizado correctamente:", data);
       
                 } else {
@@ -142,6 +152,31 @@ document.addEventListener("DOMContentLoaded", () => {
               }
             });
           });
+
+
+            const btnDesactivar=document.querySelectorAll(".desactivar");
+            let idventa;
+            btnDesactivar.forEach((btn) => {
+                btn.addEventListener("click", async (e) => {
+                  try {
+                    e.preventDefault();
+                    idventa = e.currentTarget.getAttribute("id-data");
+                    const estado = e.currentTarget.getAttribute("estado-venta");
+                    console.log("ID:", idventa, "Estado:", estado);
+                    if (await showConfirm("¿Estás seguro de cambiar el estado de la venta?")) {
+                      const data = await DesactivarVenta(idventa, estado);
+                      dtventa.destroy();
+                      CargarDatos();
+                      RenderDatatable();
+                      console.log("Venta desactivada correctamente:", data);
+                    } else {
+                      console.error("El atributo id-data o estado es null o undefined.");
+                    }
+                  } catch (error) {
+                    console.error("Error al desactivar la venta:", error);
+                  }
+                });
+            });
     }
       
     (()=>{
@@ -151,13 +186,14 @@ document.addEventListener("DOMContentLoaded", () => {
     async function RenderDatatable() {
         dtventa = new DataTable("#table-ventas", {
             columnDefs: [
-                { width: "10%", targets: 0 },
-                { width: "10%", targets: 1 },
-                { width: "16%", targets: 2 },
-                { width: "16%", targets: 3 },
+                { width: "5%", targets: 0 },
+                { width: "5%", targets: 1 },
+                { width: "10%", targets: 2 },
+                { width: "20%", targets: 3 },
                 { width: "16%", targets: 4 },
                 { width: "10%", targets: 5 },
-                { width: "10%", targets: 6 }
+                { width: "10%", targets: 6 },
+                { width: "10%", targets: 7}
             ],
             language: {
                 lengthMenu: "Mostrar _MENU_ registros por página",
@@ -230,10 +266,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    async function UpdateEstado(idventa, estado) {
+    async function UpdateEstado(idventa, condicion) {
         const params = new FormData();
         params.append('operation', 'upVenta');
-        params.append('estado', estado);
+        params.append('condicion', condicion);
         params.append('idventa', idventa);
 
         const options = {
@@ -244,6 +280,24 @@ document.addEventListener("DOMContentLoaded", () => {
         const response = await fetch(`../../controller/ventas.controller.php`, options);
         const data = await response.json();
         console.log(data);
+    }
+
+    async function DesactivarVenta(idventa,estado_venta){
+        const params = new FormData();
+        params.append('operation', 'UpdateEstado');
+        params.append('estado', estado_venta);
+        params.append('idventa', idventa);
+        try{
+            const response = await fetch(`../../controller/ventas.controller.php`, {
+                method: 'POST',
+                body: params
+            });
+            
+            const data = await response.json();
+            console.log(data);
+        }catch(error){
+            console.error("Error al cambiar el estado de la venta:", error);
+        }
     }
 
     // Filtrar ventas por fecha cuando se seleccione una nueva fecha

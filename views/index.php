@@ -54,12 +54,27 @@
                 <div class="card mb-4">
 
                     <div class="card-body">
-                        <span><strong>Clientes Activos</strong></span>
+                        <span><strong>Ventas del día</strong></span>
                         <i class="fas fa-user me-2"></i>
-                        <div class="row">
 
-                            <h2 id="totalClientesActivos" class="text-center">
-                            </h2>
+                        <div class="row">
+                            <div class="col-4">
+                                <span>Pendientes</span>
+                                <h2 id="ve_pendientes" class="text-right"></h2>
+
+                            </div>
+                            <div class="col-4 text-center">
+                                <span>Despachados</span>
+                                <h2 id="ve_despachados" class="text-center"></h2>
+
+                            </div>
+                            <div class="col-4 text-end">
+                                <span>Cancelados</span>
+                                <h2 id="ve_cancelados" class="text-end"></h2>
+                            
+
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -136,8 +151,8 @@
 
         <div class="row">
             <!-- Tarjeta de Ventas Diarias -->
-            <div class="col-md-6">
-                <div class="card mb-4">
+            <div class="col-md-12">
+                <div class="card mb-4 mt-4">
                     <div class="card-header">
                         <i class="fas fa-chart-bar me-1"></i>
                         Ventas Diarias
@@ -147,7 +162,7 @@
                             <div class="row mb-3">
                                 <div class="input-group col-md-4 mt-2">
                                     <input type="date" id="filter-date-ventas-diarias" class="form-control">
-                            
+
                                 </div>
                             </div>
                         </form>
@@ -157,7 +172,7 @@
             </div>
 
             <!-- Tarjeta de Ventas Mensuales -->
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-chart-line me-1"></i>
@@ -175,7 +190,7 @@
                         <canvas id="monthlySalesLineChart"></canvas>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </main>
@@ -185,7 +200,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        function $(object = null) { return document.querySelector(object); }
+        function $(object = null) {
+            return document.querySelector(object);
+        }
 
         // Gráfico de Barras de Ventas Diarias
         const dailySalesBarCtx = document.getElementById('dailySalesBarChart').getContext('2d');
@@ -193,15 +210,13 @@
             type: 'bar',
             data: {
                 labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], // Días de la semana
-                datasets: [
-                    {
-                        label: 'Ventas del dia en (s/.)',
-                        data: [],
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }
-                ]
+                datasets: [{
+                    label: 'Ventas del dia en (s/.)',
+                    data: [],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
             },
             options: {
                 scales: {
@@ -235,7 +250,7 @@
                     dailySalesBarChart.data.datasets[0].data = ventas; // Ventas diarias
                     dailySalesBarChart.update(); // Actualizar el gráfico
                 } else {
-                    showToast("No se pudo cargar las ventas diarias", "info", "INFO");
+                    // showToast("No se pudo cargar las ventas diarias", "info", "INFO");
                 }
             } catch (error) {
                 console.error("Error al cargar las ventas diarias:", error);

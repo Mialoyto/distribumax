@@ -1,3 +1,7 @@
+
+// ! : NO TOQUES ESTE CODIGO, PORQUE TODO YA ESTA CORRECTO DESDE EL EDITAR
+// ! : Y CAMBIAR SU ESTADO
+
 document.addEventListener("DOMContentLoaded", function () {
   function $(object = null) { return document.querySelector(object); }
   let dtproductos;

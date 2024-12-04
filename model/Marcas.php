@@ -104,7 +104,7 @@ class Marca extends Conexion
             die($e->getMessage());
         }
     }
-
+         // ! No toques esto ctmr
     public function getmarcas_categorias($params = [])
     {
         try{

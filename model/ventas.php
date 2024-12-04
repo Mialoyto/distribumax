@@ -35,14 +35,27 @@ class Ventas extends Conexion
 	{
 		try {
 			$status = false;
-			$sql = "CALL sp_estado_venta (?,?)";
+			$sql = "CALL sp_condicion_venta (?,?)";
 			$query = $this->pdo->prepare($sql);
 			$status = $query->execute(array(
-				$params['estado'],
+				$params['condicion'],
 				$params['idventa']
 			));
 			return $status;
 		} catch (Exception $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function UpdateEstado($params=[]){
+		try{
+			$query=$this->pdo->prepare("CALL sp_estado_venta(?,?)");
+			$query->execute(array(
+				$params['estado'],
+				$params['idventa']
+			));
+			return $query->rowCount();
+		}catch(Exception $e){
 			die($e->getMessage());
 		}
 	}
@@ -148,4 +161,15 @@ class Ventas extends Conexion
 			die($e->getMessage());
 		}
 	}
+	
+	public function conteoVentas(){
+		try{
+			$query=$this->pdo->prepare("CALL sp_contar_ventas");
+			$query->execute();
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		}catch(Exception $e){
+			die($e->getMessage());
+		}
+	}
+
 }

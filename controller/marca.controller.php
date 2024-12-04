@@ -78,5 +78,12 @@ if (isset($_GET['operation'])) {
             $response = $marca->updateEstado($datos);
             echo json_encode($response);
             break;
+            // ! No toques esto ctmr
+            case 'getmarcas_categorias':
+                $datos = [
+                    'idmarca' => $_GET['idmarca']
+                ];  
+                echo json_encode($marca->getmarcas_categorias($datos));
+            break;
     }
 }

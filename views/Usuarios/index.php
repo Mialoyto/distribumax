@@ -2,45 +2,56 @@
 <?php require_once '../../app/config/App.php'; ?>
 
 <main>
-  <div class="card mb-4">
-    <div class="card-header">
-      <i class="fas fa-table me-1"></i>
-      Listado de Usuarios
-      <div class="ms-auto"> <!-- Utilizamos ms-auto para alinear a la derecha -->
-                <div class="text-end">
-                    <a href=<?= $URL . 'reports/Usuarios/contenidoPDF.php' ?> class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
-                        <i class="fas fa-file-pdf me-1"></i> Generar PDF
-                    </a>
-                    <a href="generar-excel.php" class="btn btn-success">
-                        <i class="fas fa-file-excel me-1"></i> Generar Excel
-                    </a>
-                </div>
-            </div>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table id="table-usuarios" class="table" style="width: 100%;">
-          <thead>
-            <tr class="text-center">
-              <th>Nro. Documento</th>
-              <th>Nombre Rol</th>
-              <th>Nombre Usuario</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!--Las filas se llenaràn aquì-->
-          </tbody>
-        </table>
+  <div class="container-fluid px-4">
+    <h1 class="mt-4">Listado de Usuarios</h1>
+    <ol class="breadcrumb mb-4">
+      <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
+    </ol>
+    <!-- Tarjeta de Listado de Usuarios -->
+     <div class="card mb-4">
+      <div class="card-header">
+        <div class="d-flex justify-content-between aling-items-center">
+          <div>
+            <i class="fas fa-table me-1 fa-lg"></i> Listado de Usuarios
+          </div>
+          <div>
+            <a href="<?= $URL . 'reports/Usuarios/contenidoPDF.php' ?>" 
+               type="button" 
+               class="me-2 btn btn-danger" 
+               data-bs-toggle="tooltip" 
+               data-bs-placement="bottom" 
+               data-bs-title="Generar PDF">
+               <i class="bi bi-file-earmark-pdf fs-3"></i>
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="card-footer">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="table-usuarios" class="table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Apellido M.</th>
+                <th>Apellido P.</th>
+                <th>Nombre Rol</th>
+                <th>Nombre Usuario</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Las filas se llenarán aquí dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer">
       <a href="registrar.php" class="btn btn-primary">Registrar Usuario</a>
     </div>
-  </div>
-</main>
+     </div>
 <script src="http://localhost/distribumax/js/usuarios/listar.js"></script>
+<script src="http://localhost/distribumax/js/usuarios/disabled-usuario.js"></script>
 <?php require_once '../footer.php'; ?>
 </body>
 </html>

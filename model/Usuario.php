@@ -123,4 +123,20 @@ class Usuario extends Conexion
             die($e->getMessage());
         }
     }
+
+    public function updateEstado($params = [])
+    {
+        try{
+            $query = $this->pdo->prepare("CALL sp_estado_usuario(?,?)");
+            $query->execute(array(
+                $params['idusuario'],
+                $params['estado']
+            )
+            );
+            $response = $query->fetch(PDO::FETCH_ASSOC);
+            return $response;
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
 }

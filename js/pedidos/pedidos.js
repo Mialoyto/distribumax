@@ -3,14 +3,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   function $(object = null) {
     return document.querySelector(object);
   }
-  // Función de debounce
-  /*   function debounce(func, wait) {
-      let timeout;
-      return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-      };
-    } */
 
   // funcion para traer datos del cliente empresa o persona
   async function dataCliente() {
@@ -261,8 +253,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     const descuentoCell = row.querySelector(".descuento");
     const totalCell = row.querySelector(".total");
 
+    // Variable global para controlar el diálogo por cada celda de descuento
+    const descuentosConfirmados = new Set();
+
     descuentoCell.addEventListener("click", async () => {
-      if (await showConfirm('¿Desea aplicar un descuento al producto?', '', 'Sí', 'No')) {
+      // Obtener un identificador único para esta celda (puede ser el ID del producto o índice de fila)
+      const rowId = descuentoCell.closest('tr').rowIndex;
+
+      // Verificar si ya se mostró el diálogo para esta celda
+      if (!descuentosConfirmados.has(rowId)) {
+        if (await showConfirm('¿Desea aplicar un descuento al producto?', '', 'Sí', 'No')) {
+          // Habilitar edición del descuento
+          descuentoCell.removeAttribute("readonly");
+          descuentoCell.focus();
+
+          // Registrar que ya se mostró el diálogo para esta celda
+          descuentosConfirmados.add(rowId);
+        }
+      } else {
+        // Si ya se mostró el diálogo anteriormente, solo habilitar edición
         descuentoCell.removeAttribute("readonly");
         descuentoCell.focus();
       }
@@ -281,7 +290,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       if (cantidad < 1 || cantidad == "") {
         showToast('La cantidad no puede ser menor a 1', 'info', 'INFO');
-      } if (cantidad === '' || inputDescuento === '' || inputDescuento < 0) {
+      } if (cantidad === '' || inputDescuento < 0) {
         showToast('La cantidad o el descuento no pueden ser menor a 0', 'info', 'INFO');
         totalCell.textContent = `S/0.00`;
         return;
@@ -375,7 +384,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     rows.forEach((row) => {
       const descuento = parseFloat(row.querySelector(".descuento").value.trim());
       console.log(descuento);
-      if (descuento < 0 || isNaN(descuento)) {
+      if (descuento < 0) {
         descuentoInvalido = true;
       }
     });

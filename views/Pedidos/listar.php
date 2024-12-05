@@ -116,10 +116,10 @@
                                           <th>Cantidad</th>
                                           <th>Unidad Medida</th>
                                           <th>Precio Unitario</th>
-                                          <th>Subtotal</th>Ww
+                                          <th>Subtotal</th>
                                           <th>Monto Descuento</th>
                                           <th>Total</th>
-                                          <th>Acciones</th>
+                                          <th class="d-flex justify-content-center">Acciones</th>
                                        </tr>
                                     </thead>
                                     <tbody id="update-detalle-pedido">
@@ -148,3 +148,4 @@
 <?php require_once '../footer.php'; ?>
 <script type="module" src="http://localhost/distribumax/js/pedidos/listar.js"></script>
 <script type="module" src="http://localhost/distribumax/js/pedidos/update-detalle-pedido.js"></script>A
+<script src="http://localhost/distribumax/js/pedidos/cancelar-pedido.js"></script>A

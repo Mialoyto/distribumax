@@ -2,9 +2,8 @@
 require_once '../header.php';
 ?>
 <main>
-    <div class="container-fluid px-4">
-        <h1 class="mt-4">Despacho</h1>
-        <ol class="breadcrumb mb-4">
+    <div class="container-fluid px-4 mt-4">
+     
             <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
         </ol>
         <!-- Modal -->

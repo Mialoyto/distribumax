@@ -69,12 +69,10 @@
         <i class="fas fa-table me-1 fa-lg"></i> Listado de Clientes
         <div class="ms-auto"> <!-- Utilizamos ms-auto para alinear a la derecha -->
           <div class="text-end">
-            <a href="<?= $URL.'reports/Clientes/contenidoPDF.php' ?>" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
-              <i class="fas fa-file-pdf me-1"></i> Generar PDF
+            <a href=<?= $URL . 'reports/Vehiculos/contenidoPDF.php' ?> type="button" class="me-2 btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Generar PDF">
+              <i class="bi bi-file-earmark-pdf fs-6"></i>
             </a>
-            <button class="btn btn-success" id="exportExcel" style="color: white;">
-              <i class="fas fa-file-excel me-1"></i> Generar Excel
-            </button>
+
           </div>
         </div>
       </div>
@@ -108,4 +106,5 @@
 <script src="http://localhost/distribumax/js/clientes/disabled-cliente.js"></script>
 
 </body>
+
 </html>

@@ -12,11 +12,18 @@ if (isset($_POST['operation'])) {
         'status' => false,
         'message' => ''
       ];
+      // Suponiendo que $fecha_venta contiene la fecha de la venta
+      // Ejemplo
+      // $fecha_despacho = date('Y-m-d', strtotime($fecha_venta . ' +1 day'));
+
+   
 
       $idvehiculo = $_POST['idvehiculo'];
       $idusuario = $_POST['idusuario'];
       $fecha_despacho = $_POST['fecha_despacho'];
-      $jefe_mercaderia=$_POST['idjefe_mercaderia'];
+      $jefe_mercaderia = $_POST['idjefe_mercaderia'];
+      $fecha_despacho = date('Y-m-d', strtotime($fecha_despacho));
+      date_default_timezone_set('America/lima');
 
       if (!empty($idvehiculo) && !empty($idusuario) && !empty($fecha_despacho) && !empty($jefe_mercaderia)) {
         if ($fecha_despacho <= date('Y-m-d')) {
@@ -55,8 +62,8 @@ if (isset($_POST['operation'])) {
       break;
     case 'updateEstado':
       $datoEnviar = [
-        'iddespacho' => $_POST['iddespacho'],
-        'estado'    => $_POST['estado']
+        'estado' => $_POST['estado'],
+        'iddespacho'    => $_POST['iddespacho']
       ];
       echo json_encode($despacho->updateEstado($datoEnviar));
       break;
@@ -106,7 +113,7 @@ if (isset($_GET['operation'])) {
       }
 
       break;
-      case 'buscarJefeMercaderia':
+    case 'buscarJefeMercaderia':
       $dato = [
         'item' => $_GET['item']
       ];

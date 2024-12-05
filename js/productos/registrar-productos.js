@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const optMarca = $("#idmarca");
+  const opCategoria = $("#idcategoria");
   const optionsub = $("#idsubcategoria");
   let proveedores;
   let id;
@@ -24,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   // function getMarcas
+
+  let idmarca;
   async function getMarcas(id) {
     const params = new URLSearchParams();
     params.append('operation', 'getMarcas');
@@ -31,7 +34,10 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(`../../controller/marca.controller.php?${params}`);
       const data = await response.json();
-      console.log(data);
+
+      
+
+      
       return data;
 
 
@@ -40,19 +46,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   // obtener categorias
-  async function getCategorias() {
+ 
+  async function getCategorias(id) {
     const params = new URLSearchParams();
-    params.append('operation', 'getCategorias');
+    params.append('operation', 'getmarcas_categorias');
+    params.append('idmarca',id);
     try {
-      const response = await fetch(`../../controller/categoria.controller.php?${params}`);
+      const response = await fetch(`../../controller/marca.controller.php?${params}`);
       const categorias = await response.json();
-      console.log(categorias);
-      categorias.forEach(element => {
-        const tagOption = document.createElement('option');
-        tagOption.value = element.idcategoria;
-        tagOption.innerText = element.categoria;
-        $("#idcategoria").appendChild(tagOption);
+      categorias.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.idcategoria;
+        option.innerText = item.categoria;
+        opCategoria.appendChild(option);
       });
+      
     } catch (e) {
       console.error(e);
     }
@@ -119,14 +127,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = await getMarcas(id);
     console.log(data.marcas);
     optMarca.innerHTML = '<option value="">Seleccione una marca</option>';
+  
     data.marcas.forEach(item => {
       const option = document.createElement('option');
       option.value = item.idmarca;
       option.innerText = item.marca;
       optMarca.appendChild(option);
     });
-    await getCategorias();
+    // await getCategorias(optMarca);
   }
+
+  // async function renderCategoria() {
+  //   console.log('id :', id)
+  //   const data = await getCategorias(id);
+  //   console.log(data);
+  //   opCategoria.innerHTML = '<option value="">Seleccione una Categoria</option>';
+  //   data.forEach(item => {
+  //     const option = document.createElement('option');
+  //     option.value = item.idcategoria;
+  //     option.innerText = item.categoria;
+  //     opCategoria.appendChild(option);
+  //   });
+  //   // await getCategorias(optMarca);
+  // }
+
   // render options de presentaciones / unidades de medida
   async function renderOptions() {
     const data = await getUnidades();
@@ -172,6 +196,15 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(e);
     }
   }
+
+
+  $("#idmarca").addEventListener("change", async () => {
+    const id = $("#idmarca").value;
+    const data = await getCategorias(id);
+    console.log("cateorias", data);
+    optionsub.innerHTML = '<option value="">Seleccione una subcategoria</option>';
+     
+  });
   // evento input para seleccionar categoria y cargar subcategorias
   $("#idcategoria").addEventListener("change", async () => {
     const id = $("#idcategoria").value;

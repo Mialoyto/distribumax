@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // let bgbtn = "";
             data.forEach(element => {
                 const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-                const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-7" : "bi bi-toggle2-off fs-7";
+                const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-6" : "bi bi-toggle2-off fs-6";
                 const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
                 tableContent.innerHTML += `
                     <tr>
@@ -26,11 +26,24 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="d-flex justify-content-center">
                       <div class="btn-group btn-group-sm" role="group">
                                
-    <button class="btn btn-outline-danger reporte" data-idcompra="${element.idcompra}">
-        <i class="fas fa-file-alt me-7"></i>
-    </button>    
-                        <a id-data="${element.idcompra}" class="btn ${bgbtn} estado" estado-cat="${element.status}">
-                          <i class="${icons}"></i>
+                    <button class="btn 
+                    btn-outline-danger reporte" 
+                    data-idcompra="${element.idcompra}"
+                    type="button" class="me-2" 
+                    data-bs-toggle="tooltip" 
+                    data-bs-placement="bottom" 
+                    data-bs-title="Reporte">
+                    <i class="fas fa-file-alt me-6"></i>
+                    </button>    
+                        <a 
+                        id-data="${element.idcompra}" 
+                        class="btn ${bgbtn} estado" 
+                        estado-cat="${element.status}"
+                        type="button"  
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="bottom" 
+                        data-bs-title="Cambiar estado">
+                        <i class="${icons}"></i>
                         </a>
                 
                       </div>
@@ -72,7 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 await GenerarReporte(idpedido); // Llamar a la función MostrarDetalle
               });
             });
-
+              initializeTooltips();
+  
             RenderDatatable();
         } catch (e) {
             console.error(e);

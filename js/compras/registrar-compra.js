@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <td class="col-1"><input type="number" class="form-control cantidad" min="1" required></td>
       <td id-prod=${id} lote="${lote}">${producto}</td>
       <td class="col-1">${unidadMedida}</td>
-      <td class="col-2"><input type="number" class="form-control precio" min="0.01 name="cantidad" required></td>
+      <td class="col-2"><input type="number" class="form-control precio" min="0.01"  step="0.01" name="cantidad" required></td>
       <td class="col-2" class="form-control total">${total}</td>
       <td class="col-1">
         <div class="mt-1 d-flex align-item-center">

@@ -151,7 +151,7 @@
 
         <div class="row">
             <!-- Tarjeta de Ventas Diarias -->
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="card mb-4 mt-4">
                     <div class="card-header">
                         <i class="fas fa-chart-bar me-1"></i>

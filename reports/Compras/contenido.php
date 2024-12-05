@@ -6,102 +6,86 @@
     <title>Reporte de Compra</title>
     <style>
         body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    color: #333;
-}
-
-h1 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 30px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-    font-size: 12px;  /* Tamaño de texto de la tabla */
-}
-
-th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
-
-caption {
-    font-weight: bold;
-    font-size: 18px;
-    text-align: left;
-    margin-bottom: 10px;
-}
-
-.table-header {
-    background-color: #f4f4f4;
-    color: #333;
-}
-
-.total-row {
-    background-color: #f9f9f9;
-    font-weight: bold;
-}
-
-td {
-    vertical-align: middle; /* Alineación vertical de las celdas */
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;  /* Fila con fondo alternado */
-}
-
-tr:hover {
-    background-color: #f1f1f1;  /* Fondo cuando el ratón pasa sobre la fila */
-}
-
+            font-family: 'Verdana', sans-serif;
+            margin: 30px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #444;
+        }
+        .info-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #ddd;
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .total-row {
+            font-weight: bold;
+        }
+        .total-cell {
+            font-size: 16px;
+            background-color: #ddd;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <h1>Reporte de Compra</h1>
-    <p><?= $compras[0]['fechaemision'] ?></p>
+    <div class="info-container">
+        <div class="info-item">Proveedor: <?= $compras[0]['proveedor'] ?></div>
+        <div class="info-item">Empresa: <?= $compras[0]['idempresa'] ?></div>
+        <div class="info-item">Fecha de Emisión: <?= $compras[0]['fechaemision'] ?></div>
+    </div>
     <table>
-        <caption>Detalle de la Compra</caption>
-       
         <thead>
-            <tr class="table-header">
-
-                <th>Comprobante</th>
-                <th>Proveedor</th>
-                <th>Ruc</th>
+            <tr>
                 <th>Lote</th>
                 <th>Producto</th>
                 <th>Cantidad</th>
-                <th>Precio de Compra</th>
-       
+                <th>Precio</th>
+                <th>Subtotal</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($compras as $compra): ?>
-                <tr>
-
-                    <td><?= $compra['numcomprobante'] ?></td>
-                    <td><?= $compra['proveedor'] ?></td>
-                    <td><?= $compra['idempresa'] ?></td>
-                    <td><?= $compra['numlote'] ?></td>
-                    <td><?= $compra['nombreproducto'] ?></td>
-                    <td><?= $compra['cantidad'] ?></td>
-                    <td><?= $compra['precio_compra'] ?></td>
-                </tr>
+            <?php $total = 0; foreach ($compras as $compra): $subtotal = $compra['cantidad'] * $compra['precio_compra']; $total += $subtotal; ?>
+            <tr>
+                <td><?= $compra['numlote'] ?></td>
+                <td><?= $compra['nombreproducto'] ?></td>
+                <td><?= $compra['cantidad'] ?></td>
+                <td><?= number_format($compra['precio_compra'], 2) ?></td>
+                <td><?= number_format($subtotal, 2) ?></td>
+            </tr>
             <?php endforeach; ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="total-row">Total General</td>
+                <td class="total-cell"><?= number_format($total, 2) ?></td>
+            </tr>
+        </tfoot>
     </table>
 </body>
 </html>

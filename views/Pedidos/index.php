@@ -3,20 +3,20 @@
 // Archivo: middleware_pedidos.php
 // echo date("Y:m;D:H:i:s");
 
-// Configurar la zona horaria a la de Perú
+// // Configurar la zona horaria a la de Perú
 // date_default_timezone_set('America/Lima');
 
-// Obtener la hora actual en formato HH:MM (24 horas)
+// // Obtener la hora actual en formato HH:MM (24 horas)
 // $currentTime = date('H:i');
 
-// Bloqueo entre las 17:00 (5:00 PM) y las 17:10 (5:10 PM) del mismo día
-// if ($currentTime >= "17:00" && $currentTime < "18:15") {
-    // Bloquear acceso redirigiendo a una página específica
-    // echo "No es posible acceder a este proceso en este momento.";
-    // header("Location: http://localhost/distribumax/views/Pedidos/listar.php");
-    // exit();
+// // Bloqueo entre las 17:00 (5:00 PM) y las 17:10 (5:10 PM) del mismo día
+// if ($currentTime >= "17:00" || $currentTime < "20:20") {
+//     // Bloquear acceso redirigiendo a una página específica
+//     echo "No es posible acceder a este proceso en este momento.";
+//     header("Location: http://localhost/distribumax/401.php");
+//     exit();
 // } else {
-    // echo "Acceso permitido.";
+//     echo "Acceso permitido.";
 // }
 ?>
 
@@ -157,7 +157,9 @@
 
   </div>
 </main>
+
 <?php require_once '../footer.php'; ?>
+
 <script type="module" src="http://localhost/distribumax/js/pedidos/pedidos.js"></script>
 
 

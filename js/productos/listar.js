@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (data.length > 0) {
         data.forEach(element => {
           const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-7" : "bi bi-toggle2-off fs-7";
+          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-6" : "bi bi-toggle2-off fs-6";
           const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
           const editDisabled = element.estado === "Inactivo" ? "disabled" : "";
           Tablaproductos.innerHTML += `
@@ -216,12 +216,20 @@ document.addEventListener("DOMContentLoaded", function () {
                       <td>${element.codigo}</td>
                       <td><strong class="${estadoClass}">${element.estado}</strong></td>
                       <td>
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex >
   <div class="btn-group btn-group-sm" role="group">
-    <a id-data="${element.idproducto}" class="btn btn-warning ${editDisabled}" data-bs-toggle="modal" data-bs-target=".edit-categoria">
-      <i class="bi bi-pencil-square fs-7"></i>
+    <a id-data="${element.idproducto}" class="btn btn-warning ${editDisabled}" data-bs-toggle="modal" data-bs-target=".edit-categoria"
+      type="button" class="me-2" 
+                           data-bs-toggle="tooltip" 
+                           data-bs-placement="bottom" 
+                           data-bs-title="Editar">
+      <i class="bi bi-pencil-square fs-6"></i>
     </a>
-    <a id-data="${element.idproducto}" class="btn ${bgbtn} estado" estado-cat="${element.status}">
+    <a id-data="${element.idproducto}" class="btn ${bgbtn} estado" estado-cat="${element.status}"
+      type="button" class="me-2" 
+                           data-bs-toggle="tooltip" 
+                           data-bs-placement="bottom" 
+                           data-bs-title="Cambiar estado">
       <i class="${icons}"></i>
     </a>
   </div>
@@ -264,7 +272,7 @@ document.addEventListener("DOMContentLoaded", function () {
             CargarModal(id);
           });
         });
-
+        initializeTooltips();
         RenderDatatable();
       } else {
         Tablaproductos.innerHTML = '<tr><td colspan="5" class="text-center">No hay datos disponibles</td></tr>';

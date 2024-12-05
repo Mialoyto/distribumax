@@ -610,15 +610,18 @@ CREATE TABLE compras (
     idtipocomprobante INT NOT NULL,
     numcomprobante VARCHAR(100) NOT NULL,
     fechaemision DATETIME NOT NULL DEFAULT NOW(),
+    contador INT NOT NULL DEFAULT 0,
     create_at   DATETIME NOT NULL DEFAULT NOW(),
     update_at   DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idusuario_compra FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_idproveedor_compra FOREIGN KEY (idproveedor) REFERENCES proveedores (idproveedor),
     CONSTRAINT fk_idtipocomprobante_compra FOREIGN KEY (idtipocomprobante) REFERENCES tipo_comprobante_pago (idtipocomprobante),
-    CONSTRAINT fk_estado_compra CHECK (estado IN ("0", "1"))
+    CONSTRAINT fk_estado_compra CHECK (estado IN ("0", "1")),
+    CONSTRAINT ck_contador_compra UNIQUE(contador)
     -- CONSTRAINT ck_numero_comprobante_compra UNIQUE (idproveedor AND numcomprobante)
 ) ENGINE = INNODB;
+
 
 DROP PROCEDURE IF EXISTS detalles_compras;
 CREATE TABLE detalles_compras (

@@ -570,6 +570,7 @@ CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
 BEGIN
     SELECT
         VE.idventa,
+        VE.fecha_venta,
         PO.idproducto,
         PRO.idempresa,
         PO.codigo,

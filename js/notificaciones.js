@@ -1,78 +1,106 @@
-document.addEventListener("DOMContentLoaded", () => {
+$(document).ready(function () {
 
-    async function mostrarNotificaciones() {
-        try {
-            const res = await fetch('../controller/notificar.controller.php?operation=getAll');
-            const data = await res.json();
-            console.log(data);
-
-            const notificationMenu = document.getElementById('notificationMenu');
-            const notificationCount = document.getElementById('notificationCount');
-
-            // Limpiar las notificaciones actuales
-            notificationMenu.innerHTML = '';
-
-            // Si hay notificaciones, las mostramos
-            if (data.length > 0) {
-                notificationCount.textContent = data.length; // Actualizar el contador de notificaciones
-                data.forEach(notificacion => {
-                    const item = document.createElement('li');
-                    item.classList.add('dropdown-item', 'd-flex', 'align-items-center');
-
-                    item.innerHTML = `
-                        <div class="dropdown-list-image me-3">
-                            <div class="status-indicator bg-success"></div>
-                        </div>
-                        <div>
-                            <div class="text-truncate leido" data-id="${notificacion.idnotificacion}">${notificacion.mensaje}</div>
-                            <div class="small text-gray-500">${notificacion.fecha}</div>
-                        </div>
-                    `;
-
-                    notificationMenu.appendChild(item);
-                });
-
-                // Manejar el clic en las notificaciones
-                const btnDesactivar = document.querySelectorAll(".leido");
-                btnDesactivar.forEach((btn) => {
-                    btn.addEventListener("click", async (e) => {
-                        try {
-                            e.preventDefault();
-                            const idnotificacion = e.currentTarget.getAttribute("data-id");
-                            await Leido(1, idnotificacion);  // Marca la notificación como leída
-                        } catch (error) {
-                            console.error("Error al marcar la notificación como leída:", error);
-                        }
-                    });
-                });
-
-            } else {
-                notificationCount.textContent = 0;
-                notificationMenu.innerHTML = '<li><a class="dropdown-item text-center" href="#">No hay notificaciones</a></li>';
+    // Función para generar una notificación
+    function GenerarNotificacion() {
+        $.ajax({
+            url: '../controller/notificar.controller.php',
+            type: 'POST',
+            data: { operation: 'generar' },
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                if (response) {
+                    console.log('Notificación generada correctamente');
+                    // Llamar a mostrar notificaciones para actualizar la lista
+                    mostrarNotificaciones();
+                } else {
+                    console.error('Error al generar la notificación:', response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error en la solicitud AJAX:', error);
             }
-        } catch (error) {
-            console.log(error);
-        }
+        });
     }
 
-    // Llamada para cargar las notificaciones cuando la página se carga
+    // Función para mostrar las notificaciones
+    function mostrarNotificaciones() {
+        $.ajax({
+            url: '../controller/notificar.controller.php',
+            type: 'GET',
+            data: { operation: 'getAll' },
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+
+                const $notificationMenu = $('#notificationMenu');
+                const $notificationCount = $('#notificationCount');
+
+                // Limpiar las notificaciones actuales
+                $notificationMenu.empty();
+
+                // Si hay notificaciones, las mostramos
+                if (data.length > 0) {
+                    $notificationCount.text(data.length); // Actualizar el contador de notificaciones
+                    data.forEach(notificacion => {
+                        const item = `
+                            <li class="dropdown-item d-flex align-items-center">
+                                <div class="dropdown-list-image me-3">
+                                    <div class="status-indicator bg-success"></div>
+                                </div>
+                                <div>
+                                    <div class="text-truncate leido" data-id="${notificacion.idnotificacion}">${notificacion.mensaje}</div>
+                                    <div class="small text-gray-500">${notificacion.fecha}</div>
+                                </div>
+                            </li>
+                        `;
+                        $notificationMenu.append(item);
+                    });
+
+                    // Agregar eventos para marcar como leído
+                    $('.leido').on('click', function (e) {
+                        e.preventDefault();
+                        const idnotificacion = $(this).data('id');
+                        console.log('ID de notificación:', idnotificacion);
+                        Leido(1, idnotificacion); // Marcar como leído
+                    });
+                } else {
+                    $notificationCount.text(0);
+                    $notificationMenu.html('<li><a class="dropdown-item text-center" href="#">No hay notificaciones</a></li>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error al obtener notificaciones:', error);
+            }
+        });
+    }
+
+    // Función para marcar una notificación como leída
+    function Leido(estado, idnotificacion) {
+ 
+        $.ajax({
+            url: '../controller/notificar.controller.php',
+            type: 'POST',
+            data: { operation: 'leido', leido: estado, idnotificacion: idnotificacion },
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                if (response) {
+                    console.log('Notificación marcada como leída');
+                    // Actualizar las notificaciones después de marcar como leída
+                    // mostrarNotificaciones();
+                } else {
+                    console.error('Error al marcar como leído:', response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error en la solicitud AJAX:', error);
+            }
+        });
+    }
+
+    // Llamar a generar notificación y mostrar notificaciones al cargar la página
+    GenerarNotificacion();
     mostrarNotificaciones();
-
-    async function Leido(estado, idnotificacion) {
-        const params = new FormData();
-        params.append('operation', 'leido');
-        params.append('leido', estado);
-        params.append('idnotificacion', idnotificacion);
-        try {
-            const res = await fetch('../controller/notificar.controller.php', {
-                method: 'POST',
-                body: params
-            });
-            const data = await res.json();
-            console.log(data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
+  
 });

@@ -1,4 +1,4 @@
--- Active: 1732798376350@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 -- TODO: OBTENER PRODUCTOS POR PROVEEDOR (OK)
 -- * IMPORTANT: NO MODIFICAR ESTE PROCEDIMIENTO
 DROP PROCEDURE IF EXISTS sp_get_productos_proveedor;
@@ -35,20 +35,29 @@ CREATE PROCEDURE sp_registrar_compra (
     IN _idcomprobante INT,
     IN _numcomprobante VARCHAR(100),
     IN _fechaemision DATE
+
 )
 BEGIN
+      DECLARE nuevo_contador INT;
+
+    -- Obtener el valor máximo actual del contador para incrementarlo
+    SELECT IFNULL(MAX(contador), 0) + 1 INTO nuevo_contador FROM compras;
+
+    -- Insertar la nueva compra con el contador actualizado
     INSERT INTO compras(
         idusuario,
         idproveedor,
         idtipocomprobante,
         numcomprobante,
-        fechaemision
+        fechaemision,
+        contador
     ) VALUES (
         _idusuario,
         _idproveedor,
         _idcomprobante,
         _numcomprobante,
-        _fechaemision
+        _fechaemision,
+        nuevo_contador
     );
     SELECT LAST_INSERT_ID() AS idcompra;
 END;
@@ -127,8 +136,10 @@ CASE c.estado
             WHEN '0' THEN '1'
         END AS `status`
 FROM compras c 
-INNER JOIN proveedores pr ON pr.idproveedor=c.idproveedor;
-END ;
+INNER JOIN proveedores pr ON pr.idproveedor=c.idproveedor
+ORDER BY c.idcompra  DESC;
+END;
+
 
 
 

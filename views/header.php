@@ -78,6 +78,8 @@ $host = "http://localhost/distribumax";
   integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
   crossorigin="anonymous"></script>
 
+
+
 </head>
 <!-- fin del header -->
 
@@ -94,12 +96,12 @@ $host = "http://localhost/distribumax";
     <!-- Navbar-->
 
 
-    <div class="d-none d-md-inline-block  ms-auto me-0 me-md-3 my-2 my-md-0">
+    <!-- <div class="d-none d-md-inline-block  ms-auto me-0 me-md-3 my-2 my-md-0">
 
 
       <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <!-- Menú de Notificaciones en la Navbar -->
-        <li class="nav-item dropdown nav-item dropdown d-sm-none d-lg-block">
+        <!- Menú de Notificaciones en la Navbar -->
+        <!-- <li class="nav-item dropdown nav-item dropdown d-sm-none d-lg-block">
           <a class="nav-link dropdown-toggle btn btn-danger" id="notificationDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-bell"></i>
             <span class="badge bg-danger" id="notificationCount">0</span>
@@ -107,12 +109,12 @@ $host = "http://localhost/distribumax";
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" id="notificationMenu">
             <li><a class="dropdown-item text-center" href="#">No hay notificaciones</a></li>
           </ul>
-        </li>
+        </li> -->
 
 
-      </ul>
+      <!-- </ul> -->
 
-    </div>
+    <!-- </div>  -->
 
     <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
 
@@ -126,9 +128,8 @@ $host = "http://localhost/distribumax";
             <?= $_SESSION['login']['appaterno'] ?>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#!">Configuracion</a></li>
+
             <li><a class="dropdown-item" href="<?= $host ?>/views/User/update-password.php">Cambiar Contraseña</a></li>
-            <li><a class="dropdown-item" href="#!">Historial</a></li>
             <li>
               <hr class="dropdown-divider" />
             </li>

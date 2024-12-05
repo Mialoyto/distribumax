@@ -1,8 +1,9 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- todo reade papeto
 DROP PROCEDURE IF EXISTS sp_registrar_venta;
+
 CREATE PROCEDURE sp_registrar_venta(
     IN _idpedido            VARCHAR(15),
     IN _idusuario           INT,
@@ -73,7 +74,7 @@ CREATE PROCEDURE sp_actualizar_venta(
 END;
 
 -- aun falta el idlote, ya que cuando tiene dos lotes hace
--- realiza una duplicida.
+-- -// REVIEW : PROCEDIMIENTO PARA CANCELAR LA VENTA POR COMPLETO
 DROP PROCEDURE IF EXISTS `sp_condicion_venta`;
 
 CREATE PROCEDURE `sp_condicion_venta`(
@@ -188,11 +189,11 @@ BEGIN
     END IF;
 END;
 
-
-
+-- - // REVIEW : FIN DEL PROCEDIMIENTO PARA CANCELAR LA VENTA POR COMPLETO Y EL PEDIDO
 
 -- Nos permite ocultar las ventas ya que han sido realizadas
 DROP PROCEDURE IF EXISTS sp_estado_venta;
+
 CREATE PROCEDURE sp_estado_venta (
     IN _estado CHAR(1),
     IN _idventa INT
@@ -208,10 +209,12 @@ BEGIN
         WHERE idventa = _idventa;
 
     END IF;
-END ;
+
+END;
 
 -- TRIGGER PARA ACTUALIZAR EL ESTADO DE LA VENTA CUANDO SE CANCELA
 DROP TRIGGER IF EXISTS after_venta_cancelada;
+
 CREATE TRIGGER before_venta_cancelada
 BEFORE UPDATE ON ventas
 FOR EACH ROW
@@ -223,9 +226,9 @@ BEGIN
     END IF;
 END;
 
-
 -- TRIGGER PARA ACTUALIZAR EL ESTADO DEL PEDIDO
 DROP TRIGGER IF EXISTS trg_actualizar_estado_pedido;
+
 CREATE TRIGGER trg_actualizar_estado_pedido
 AFTER INSERT ON ventas
 FOR EACH ROW
@@ -236,23 +239,6 @@ BEGIN
     WHERE idpedido = NEW.idpedido 
       AND estado <> 'Enviado';  
 END;
-
-
--- DROP TRIGGER IF EXISTS trg_verificar_fecha_despacho;
--- CREATE TRIGGER trg_verificar_fecha_despacho
--- BEFORE INSERT ON despachos
--- FOR EACH ROW
--- BEGIN
---     DECLARE fecha_actual DATE;
---     SET fecha_actual = CURDATE();
-
---     IF NEW.fecha_despacho < fecha_actual THEN
---         SIGNAL SQLSTATE '45000'
---         SET MESSAGE_TEXT = 'La fecha de despacho no puede ser menor a la fecha actual';
---     END IF;
--- END;
-
--- GENERAR REPORTE
 
 
 DROP PROCEDURE IF EXISTS sp_generar_reporte;
@@ -331,8 +317,6 @@ BEGIN
     GROUP BY pr.nombreproducto;
 END ;
 
-
-
 -- ?todo reade papeto
 DROP PROCEDURE IF EXISTS `sp_listar_ventas`;
 
@@ -395,9 +379,9 @@ BEGIN
         p.idpedido DESC;
 END;
 
-
 -- Todo reade papeto
 DROP PROCEDURE IF EXISTS `sp_listar_fecha`;
+
 CREATE PROCEDURE `sp_listar_fecha`(IN _fecha_venta DATE)
 BEGIN
     SELECT 
@@ -676,11 +660,12 @@ BEGIN
     GROUP BY DATE(ve.fecha_venta);
 END;
 
-
-
 -- con filtro
 DROP PROCEDURE IF EXISTS sp_VentasPorDia;
-CREATE PROCEDURE sp_VentasPorDia(IN _fecha DATE)
+
+CREATE PROCEDURE sp_VentasPorDia(
+    IN _fecha DATE
+    )
 BEGIN
     DECLARE _mensaje VARCHAR(50);
     DECLARE _total INT;
@@ -706,6 +691,7 @@ BEGIN
 END ;
 
 DROP PROCEDURE IF EXISTS sp_contar_ventas;
+
 CREATE PROCEDURE sp_contar_ventas()
 BEGIN
     SELECT 
@@ -715,3 +701,4 @@ BEGIN
     FROM ventas
     WHERE DATE(fecha_venta) = CURDATE();
 END ;
+

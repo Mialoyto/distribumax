@@ -69,13 +69,15 @@ AFTER INSERT ON kardex
 FOR EACH ROW
 BEGIN 
 
-    IF NEW.tipomovimiento = 'Ingreso' THEN
+
+
+    IF NEW.tipomovimiento = 'Ingreso' AND NEW.motivo != 'Cancelación de pedido' THEN
         -- Actualizar stock para ingresos
         UPDATE lotes 
         SET stockactual = stockactual + NEW.cantidad,
             update_at = NOW()
         WHERE idlote = NEW.idlote;
-    ELSE
+    ELSEIF NEW.tipomovimiento = 'Salida' THEN
         -- Actualizar stock para salidas
         UPDATE lotes 
         SET stockactual = stockactual - NEW.cantidad,
@@ -110,9 +112,9 @@ BEGIN
     AND estado != 'Vencido';
 
     -- Calcular y asignar el nuevo stockactual
-    IF NEW.tipomovimiento = 'Ingreso' THEN
+    IF NEW.tipomovimiento = 'Ingreso' AND NEW.motivo != 'Cancelación de pedido' THEN
         SET NEW.stockactual = v_stock_actual + NEW.cantidad;
-    ELSE
+    ELSEIF NEW.tipomovimiento = 'Salida' THEN
         SET NEW.stockactual = v_stock_actual - NEW.cantidad;
     END IF;
 END;

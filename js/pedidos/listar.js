@@ -143,56 +143,90 @@ document.addEventListener("DOMContentLoaded", () => {
           let bgbtn;
           let etadodisabled = "";
           let estadoButtonDisabled = "";
+          let botonesHTML = "";
 
           switch (element.estado) {
             case "Enviado":
               estadoClass = "text-success";
               editButtonClass = "btn-warning disabled";
               editButtonDisabled = "disabled";
-              bgbtn = "btn-success disabled";
+              bgbtn = "btn-danger disabled";
               etadodisabled = "btn-success disabled";
               estadoButtonDisabled = "disabled";
               break;
             case "Cancelado":
+
               estadoClass = "text-danger";
               editButtonClass = "btn-warning disabled";
               editButtonDisabled = "disabled";
               bgbtn = "btn-danger disabled";
               estadoButtonDisabled = "disabled";
+              botonesHTML = `
+              <div class="d-flex align-items-center justify-content-star container-btn">
+                <div class="text-center">
+                <span class="badge bg-danger px-4 py-2"
+                data-bs-toggle="tooltip" 
+                data-bs-placement="top" 
+                data-bs-title="Este pedido esta cancelado"
+                >Cancelado</span>
+                </div>
+              </div>
+              `;
               break;
             case "Entregado":
               estadoClass = "text-primary";
               editButtonClass = "btn-warning disabled";
-              bgbtn = "btn-success ";
+              bgbtn = "btn-danger";
 
               break;
             case "Pendiente":
               estadoClass = "text-warning";
-              bgbtn = "btn-success";
+              bgbtn = "btn-danger";
               break;
           }
 
-          const icons = element.estado === "Enviado" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+          const icons = "bi bi-ban fs-5";
+
+          // HTML para botones normales
+          const botonesNormales = `
+            <div class="d-flex justify-content-star container-btn">
+              <div>
+                <button id-data="${element.idpedido}" 
+                        class="btn ${editButtonClass}" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#edits-pedido" 
+                        ${editButtonDisabled}>
+                  <i class="bi bi-pencil-square fs-5"></i>
+                </button>
+              </div>
+              <div data-bs-toggle="tooltip" 
+                  data-bs-placement="top" 
+                  data-bs-title="Cancelar pedido">
+                <button id-data="${element.idpedido}" 
+                        class="btn ${bgbtn} ms-2 estado" 
+                        status="${element.estado}" 
+                        ${etadodisabled} 
+                        ${estadoButtonDisabled}>
+                  <i class="${icons}"></i>
+                </button>
+              </div>
+            </div>
+          `;
 
           tableContent += `
-            <tr>
-              <td>${element.idpedido}</td>
-              <td>${element.tipo_cliente}</td>
-              <td>${element.documento}</td>
-              <td>${element.cliente}</td>
-              <td>${element.create_at}</td>
-              <td><strong class="${estadoClass}">${element.estado}</strong></td>
-              <td>
-                <div class="d-flex ">
-                  <a id-data="${element.idpedido}" class="btn ${editButtonClass}" data-bs-toggle="modal" data-bs-target="#edits-pedido" ${editButtonDisabled}>
-                    <i class="bi bi-pencil-square fs-5"></i>
-                  </a>
-                  <a id-data="${element.idpedido}" class="btn ${bgbtn} ms-2 estado" status="${element.estado}" ${etadodisabled} ${estadoButtonDisabled}>
-                    <i class="${icons}"></i>
-                  </a>
-                </div>
-              </td>
-            </tr>`;
+      <tr>
+        <td>${element.idpedido}</td>
+        <td>${element.tipo_cliente}</td>
+        <td>${element.documento}</td>
+        <td>${element.cliente}</td>
+        <td>${element.create_at}</td>
+        <td><strong class="${estadoClass}">${element.estado}</strong></td>
+        <td>
+          <div class="botones" id="botones-${element.idpedido}">
+            ${element.estado === "Cancelado" ? botonesHTML : botonesNormales}
+          </div>
+        </td>
+      </tr>`;
         });
 
         Tablapedidos.innerHTML = tableContent;
@@ -206,36 +240,40 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         });
 
+
+        // REVIEW
+        // TODO: ESTE EVENTO CANCELA TODO EL PEDIDO
         const statusButtons = document.querySelectorAll(".estado");
         statusButtons.forEach((btn) => {
           btn.addEventListener("click", async (e) => {
             try {
               const id = e.currentTarget.getAttribute("id-data");
-              const currentStatus = e.currentTarget.getAttribute("status");
-              let newStatus = "Cancelado"; // El único estado al que puede cambia
+              console.log("CODIGO DEL PEDIDO", id);
+              // const currentStatus = e.currentTarget.getAttribute("status");
+              // let newStatus = "Cancelado"; // El único estado al que puede cambia
 
-              if (await showConfirm("¿Estás seguro de cambiar el estado del Pedido?")) {
-                const data = await updateEstado(id, newStatus);
-
-                if (data[0].estado > 0) {
-
-                  showToast(`${data[0].mensaje}`, "success", "SUCCESS");
-                  // await CargarProveedores();
-
-
+              if (await showConfirm("¿Estás seguro de cancelar el pedido?", '', 'Sí,cancelar', 'No')) {
+                if (await cancelarPedidoAll(id)) {
+                  RenderDatatablePedidos();
+                  cargarPedidos();
                 } else {
-                  showToast(`${data[0].mensaje}`, "error", "ERROR");
+                  showToast('No se pudo cancelar el pedido', 'error', 'ERROR');
                 }
+
               }
             } catch (error) {
               console.error("Error al cambiar el estado del pedido:", error);
             }
           });
         });
-        RenderDatatablePedidos();
+
+        // TODO: FIN DEL EVENTO CANCELAR PEDIDO
+        // REVIEW
+        initializeTooltips();
       }
 
 
+      RenderDatatablePedidos();
     } catch (error) {
       console.log("Error al cargar los pedidos", error);
     }
@@ -244,26 +282,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   cargarPedidos();
 
-  async function updateEstado(id, status) {
-    const params = new FormData();
-    params.append('operation', 'UpdateEstadoPedido');
-    params.append('idpedido', id);
-    params.append('estado', status);
 
-    try {
-      const response = await fetch(`../../controller/pedido.controller.php`, {
-        method: 'POST',
-        body: params
-      });
-
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (error) {
-      console.log("error al actualizar el pedido", error);
+  /*   async function updateEstado(id, status) {
+      const params = new FormData();
+      params.append('operation', 'UpdateEstadoPedido');
+      params.append('idpedido', id);
+      params.append('estado', status);
+  
+      try {
+        const response = await fetch(`../../controller/pedido.controller.php`, {
+          method: 'POST',
+          body: params
+        });
+  
+        const data = await response.json();
+        console.log(data);
+        return data;
+      } catch (error) {
+        console.log("error al actualizar el pedido", error);
+      }
     }
-  }
-
+   */
   const buscarProducto = async (producto) => {
     const params = new URLSearchParams();
     params.append("operation", "getProducto");
@@ -334,13 +373,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // FIXME
   function addProductToTable(id, codigo, descripcion, cantidad, unidadmedida, precio_venta, subtotal, descuento, total, stockactual) {
-   /*  const existId = document.querySelector(`#update-detalle-pedido tr td[id-data="${id}"]`);
-    if (existId) {
-      showToast('El producto ya se encuentra en la tabla', 'info', 'INFO');
-      return;
-    } */
-   console.log("cantidad", cantidad);
-   console.log("id", id);
+    /*  const existId = document.querySelector(`#update-detalle-pedido tr td[id-data="${id}"]`);
+     if (existId) {
+       showToast('El producto ya se encuentra en la tabla', 'info', 'INFO');
+       return;
+     } */
+    console.log("cantidad", cantidad);
+    console.log("id", id);
     const row = document.createElement("tr");
     row.innerHTML = `
             <th scope="row" class"text-nowrap w-auto">${codigo}</th>
@@ -403,59 +442,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-
-  async function addDetallePedidos(idpedido) {
-
-    const rows = document.querySelectorAll("#update-detalle-pedido tr");
-    const productos = [];
-    let idproducto;
-    let cantidad;
-    let undMedida;
-    let precioUnitario;
-    rows.forEach((row) => {
-      idproducto = row.querySelector("td[id-data]").getAttribute("id-data");
-      cantidad = row.querySelector(".cantidad").value;
-      undMedida = row.querySelector(".und-medida").textContent;
-      precioUnitario = row.querySelector(".precio").getAttribute("data");
-      productos.push({
-        idproducto,
-        cantidad,
-        undMedida,
-        precioUnitario,
-      });
-    });
-
-    const params = new FormData();
-    params.append("operation", "addDetallePedido");
-    params.append("idpedido", idpedido);
-    productos.forEach((producto, index) => {
-      params.append(`productos[${index}][idproducto]`, producto.idproducto);
-      params.append(`productos[${index}][cantidad_producto]`, parseInt(producto.cantidad));
-      params.append(`productos[${index}][unidad_medida]`, producto.undMedida);
-      params.append(`productos[${index}][precio_unitario]`, producto.precioUnitario);
-    });
-    console.log("productos", productos);
-    console.log(idpedido);
-
-    const options = {
-      method: "POST",
-      body: params,
-    };
-
-    try {
-      const response = await fetch(
-        `../../controller/detallepedido.controller.php`,
-        options
-      );
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (e) {
-      console.error(e);
-    }
-  }
-  let idpedido = -1;
 
 
 });

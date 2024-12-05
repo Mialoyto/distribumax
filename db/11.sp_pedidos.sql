@@ -190,7 +190,7 @@ BEGIN
         um.unidadmedida,
         DP.precio_unitario,
         DP.precio_descuento AS descuento,
-        DP.subtotal,
+        (DP.cantidad_producto * DP.precio_unitario) AS subtotal,
         PE.estado
     FROM pedidos PE
 		INNER JOIN detalle_pedidos DP 	ON DP.idpedido = PE.idpedido
@@ -207,8 +207,6 @@ BEGIN
     AND PE.estado = 'pendiente';
 END;
 
-CALL sp_obtener_pedido('PED-000000002');
-
 CREATE PROCEDURE sp_contar_pedidos()
 BEGIN
     SELECT 
@@ -218,8 +216,6 @@ BEGIN
     FROM pedidos
     WHERE DATE(fecha_pedido) = CURDATE();
 END ;
-
-
 
 CREATE PROCEDURE sp_listado_pedidos_provincias()
 BEGIN
@@ -247,75 +243,151 @@ ORDER BY
     total_pedidos DESC
 LIMIT 8;
 END;
--- //?todo piola hola que hace
--- DROP TRIGGER IF EXISTS trg_actualizar_kardex_pedido
 
--- CREATE TRIGGER trg_actualizar_kardex_pedido
--- AFTER UPDATE ON pedidos
--- FOR EACH ROW
--- BEGIN
---     DECLARE _idproducto INT;
---     DECLARE _idlote INT;
---     DECLARE _cantidad INT;
---     DECLARE done INT DEFAULT 0;
+-- - //REVIEW : OBTENEMOS EL DETALLE DEL PEDIDO
+-- TODO: CREAMOS UNA FUNCION PARA OBTENER EL DETALLE DEL PEDIDO
+DROP PROCEDURE IF EXISTS sp_obtener_detalle_pedido;
 
---     -- Cursor para iterar sobre los productos del pedido
---     DECLARE cur CURSOR FOR
---     SELECT
---         pr.idproducto,
---         dp.cantidad_producto,
---         lt.idlote
---     FROM detalle_pedidos dp
---     LEFT JOIN productos pr ON pr.idproducto = dp.idproducto
---     LEFT JOIN lotes lt ON lt.idproducto = pr.idproducto
---     WHERE dp.idpedido = NEW.idpedido;
+CREATE PROCEDURE sp_obtener_detalle_pedido(
+    IN _idpedido CHAR(15)
+)
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE v_idpedido CHAR(15);
+    DECLARE _id_detalle_pedido INT;
+    DECLARE _idlote INT;
+    DECLARE _cantidad INT;
+    DECLARE _idproducto INT;
 
---     -- Handler para controlar el fin del cursor
---     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    -- Declarar el cursor para iterar sobre los resultados
+    DECLARE cur CURSOR FOR
+    SELECT 
+        PED.idpedido,
+        DEPED.id_detalle_pedido,
+        KAR.idproducto,
+        KAR.idlote,
+        KAR.cantidad
+    FROM kardex KAR
+    INNER JOIN pedidos PED ON PED.idpedido = KAR.idpedido
+    INNER JOIN detalle_pedidos DEPED ON DEPED.idpedido = KAR.idpedido
+    WHERE KAR.idpedido = _idpedido;
 
---     -- Verificar si el cambio es entre 'Pendiente' y 'Cancelado'
---     IF (OLD.estado = 'Pendiente' AND NEW.estado = 'Cancelado') OR
---        (OLD.estado = 'Cancelado' AND NEW.estado = 'Pendiente') THEN
---         -- Abrir el cursor
---         OPEN cur;
+    -- Declarar un handler para controlar el fin del cursor
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
---         -- Iterar sobre los productos del pedido
---         read_loop: LOOP
---             FETCH cur INTO _idproducto, _cantidad, _idlote;
+    -- Abrir el cursor
+    OPEN cur;
 
---             -- Salir del bucle si no hay más filas
---             IF done = 1 THEN
---                 LEAVE read_loop;
---             END IF;
+    -- Iterar sobre los resultados
+    read_loop: LOOP
+        FETCH cur INTO v_idpedido, _id_detalle_pedido, _idproducto, _idlote, _cantidad;
 
---             -- Registrar movimientos en el kardex según la transición
---             IF NEW.estado = 'Cancelado' THEN
---                 -- Registrar ingreso en el kardex
---                 CALL sp_registrarmovimiento_kardex(
---                     NEW.idusuario,
---                     _idproducto,
---                     _idlote,
---                     'Ingreso',
---                     _cantidad,
---                     'Pedido Cancelado'
---                 );
---             ELSEIF NEW.estado = 'Pendiente' THEN
---                 -- Registrar salida en el kardex
---                 CALL sp_registrarmovimiento_kardex(
---                     NEW.idusuario,
---                     _idproducto,
---                     _idlote,
---                     'Salida',
---                     _cantidad,
---                     'Pedido Pendiente'
---                 );
---             END IF;
---         END LOOP;
+        -- Salir del bucle si no hay más filas
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
 
---         -- Cerrar el cursor
---         CLOSE cur;
---     END IF;
+        -- Aquí puedes procesar cada fila, por ejemplo, insertarla en una tabla temporal
+        INSERT INTO temp_detalle_pedido (idpedido, id_detalle_pedido,idproducto, idlote, cantidad)
+        VALUES (v_idpedido, _id_detalle_pedido, _idproducto,_idlote, _cantidad);
+    END LOOP;
 
--- END ;
+    -- Cerrar el cursor
+    CLOSE cur;
+END;
 
--- CALL sp_update_estado_pedido ('PED-000000006', 'Cancelado');
+-- Crear una tabla temporal para almacenar los resultados
+DROP TABLE IF EXISTS temp_detalle_pedido;
+CREATE  TABLE temp_detalle_pedido (
+    idpedido CHAR(15),
+    id_detalle_pedido INT,
+    idproducto INT,
+    idlote INT,
+    cantidad INT
+);
+
+
+-- - //REVIEW : FUNCION PARA CANCELAR PEDIDOS/*  */
+-- TODO: CREAMOS UNA FUNCION PARA CANCELAR EL PEDIDO EN EL LISTADO DE PEDIDOS Y OBTENER EL DETALLE DEL PEDIDO DE LA TABLA TEMPORAL
+-- TODO: Crear una función para cancelar el pedido en el listado de pedidos y devolver los productos al stock actual de lotes
+DROP PROCEDURE IF EXISTS sp_cancelar_pedido;
+
+CREATE PROCEDURE sp_cancelar_pedido(IN _idpedido CHAR(15))
+BEGIN
+    -- Declarar variables
+    DECLARE done INT DEFAULT 0;
+    DECLARE _id_detalle_pedido INT;
+    DECLARE _idproducto INT;
+    DECLARE _idlote INT;
+    DECLARE _cantidad INT;
+    DECLARE v_stock_actual INT;
+    DECLARE v_stock_lote INT;
+    DECLARE v_estado VARCHAR(20);
+    DECLARE v_mensaje VARCHAR(100);
+    DECLARE v_estado_get  BIT;
+
+    -- Declarar el cursor para iterar sobre los resultados
+    DECLARE cur CURSOR FOR
+    SELECT id_detalle_pedido, idproducto, idlote, cantidad
+    FROM temp_detalle_pedido;
+
+    -- Declarar un handler para controlar el fin del cursor
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    SELECT estado INTO v_estado
+    FROM pedidos
+    WHERE idpedido = _idpedido;
+
+    IF(v_estado = 'Cancelado') THEN
+        SET v_mensaje = 'El pedido ya ha sido cancelado';
+        SET v_estado_get = 0;
+    ELSE
+        -- Actualizar el estado del pedido a 'cancelado' en la tabla de pedidos
+        UPDATE pedidos
+        SET estado = 'Cancelado'
+        WHERE idpedido = _idpedido AND estado != 'Cancelado';
+
+    -- Llamar al procedimiento para obtener el detalle del pedido
+    CALL sp_obtener_detalle_pedido(_idpedido);
+
+    -- Abrir el cursor
+    OPEN cur;
+
+    -- Iterar sobre los resultados de la tabla temporal y actualizar el stock de los productos
+    read_loop: LOOP
+        FETCH cur INTO _id_detalle_pedido, _idproducto, _idlote, _cantidad;
+
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+
+        -- Devolver los productos al stock actual de lotes
+        UPDATE lotes
+        SET stockactual = stockactual + _cantidad
+        WHERE idlote = _idlote AND idproducto = _idproducto;
+
+        -- Obtener el stock actual del producto
+        SELECT COALESCE(SUM(LOT.stockactual), 0) INTO v_stock_actual
+        FROM lotes LOT
+        WHERE LOT.idproducto = _idproducto;
+
+        -- SELECT v_stock_actual;
+
+
+        INSERT INTO kardex (idusuario, idproducto, idpedido,idlote,stockactual,tipomovimiento,cantidad,motivo)
+        VALUES (1, _idproducto, _idpedido, _idlote, v_stock_actual, 'Ingreso', _cantidad, 'Cancelación de pedido');
+    
+    END LOOP;
+
+    -- Cerrar el cursor
+    CLOSE cur;
+        SET v_mensaje = 'Pedido cancelado correctamente';
+        SET v_estado_get = 1;
+    END IF;
+    -- Limpiar la tabla temporal
+    DELETE FROM temp_detalle_pedido WHERE idpedido = _idpedido;
+
+    -- Devolver el mensaje
+    SELECT v_mensaje AS mensaje, v_estado_get AS estado;
+END;

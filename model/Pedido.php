@@ -119,4 +119,22 @@ class Pedidos extends Conexion
       die($e->getMessage());
     }
   }
+
+  public function cancelarPedidoAll($params = []):array
+  {
+    try {
+      $sql = "CALL sp_cancelar_pedido(?)";
+      $query = $this->pdo->prepare($sql);
+      $query->execute(
+        array(
+          $params['idpedido']
+        )
+      );
+      $response = $query->fetchAll(PDO::FETCH_ASSOC);
+
+      return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 }

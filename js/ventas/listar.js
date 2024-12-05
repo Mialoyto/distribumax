@@ -73,24 +73,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     ${element.venta_estado}
                     </strong></td>
                      <td>
-                      <div class="d-flex ">
-                        <div class="btn-group btn-group-sm" role="group">
-                          <button class="btn btn-outline-danger reporte ${reporte} " data-idventa="${element.idventa}"
-                           type="button" class="me-2" 
+        
+                       
+                          <a class="btn btn-outline-danger reporte ${reporte} " data-idventa="${element.idventa}"
+                           type="button"  class="me-2" 
                            data-bs-toggle="tooltip" 
                            data-bs-placement="bottom" 
                            data-bs-title="Comprobante">
                             <i class="fas fa-file-alt me-6"></i>
-                          </button>
-                          <a id-data="${element.idventa}" class="btn ${bgbtn} estado"  estado-cat="${element.status_venta}"
-                          type="button" class="me-2" 
+                          </a>
+                            <a id-data="${element.idventa}" class="btn ${bgbtn} estado  "  estado-cat="${element.status_venta}"
+                          type="button"  class="me-2" 
                            data-bs-toggle="tooltip" 
                            data-bs-placement="bottom" 
                            data-bs-title="Cancelar venta">
                             <i class="${icons}"></i>
                           </a>
-                        </div>
-                      </div>
+                    
                     </td>
                 </tr>
             `;

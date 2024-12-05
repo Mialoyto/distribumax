@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   data-bs-toggle="tooltip" 
                   data-bs-placement="bottom" 
                   data-bs-title="Generar PDF">
-                  <i class="fas fa-file-alt me-6"></i>
+                  <i class="fas fa-file-alt me-"></i>
                   </button>
                   <a  id-data="${element.iddespacho}" 
                   class="btn ${bgbtn} ms-2 estado" 
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function RenderDatatable() {
     dtdespacho = new DataTable("#table-despacho", {
       language: {
-        lengthMenu: "Mostrar _MENU_",
+        lengthMenu: "Mostrar _MENU_ ",
         zeroRecords: "No se encontraron registros",
         info: false,
         infoEmpty: false,

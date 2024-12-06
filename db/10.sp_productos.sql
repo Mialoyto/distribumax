@@ -205,14 +205,12 @@ SELECT * FROM detalle_pedidos;
 
 
 DROP PROCEDURE IF EXISTS sp_listar_productos;
-
-
 CREATE PROCEDURE sp_listar_productos()
 BEGIN
     SELECT 
         p.idproducto,
         m.marca,
-        c.categoria,
+        sb.subcategoria,
         p.nombreproducto,
         p.codigo,
         CASE p.estado
@@ -223,19 +221,16 @@ BEGIN
             WHEN '1' THEN '0'
             WHEN '0' THEN '1'
         END AS `status`
-    FROM 
-        productos p
-    JOIN 
-        marcas m ON p.idmarca = m.idmarca
-    JOIN 
-        detalle_cate_marca dcm ON m.idmarca = dcm.idmarca
-    JOIN 
-        categorias c ON dcm.idcategoria = c.idcategoria
+    FROM productos p
+    INNER JOIN marcas m ON p.idmarca = m.idmarca
+    INNER JOIN categorias c ON c.idcategoria = c.idcategoria
+    INNER JOIN subcategorias sb ON sb.idsubcategoria = p.idsubcategoria
     WHERE 
         p.estado = '1'; -- Solo productos activos
 END ;
 
 SELECT * FROM productos;
+SELECT * FROM detalle_cate_marca;
 
 CALL sp_listar_productos ();
 

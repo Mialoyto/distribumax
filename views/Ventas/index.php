@@ -22,11 +22,8 @@ require_once '../../app/config/App.php';
 
 
         <div class="text-end">
-          <a href="<?= $URL . 'reports/Clientes/contenidoPDF.php' ?>" class="me-2" style="background-color: var(--bs-danger); color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none;">
-            <i class="fas fa-file-pdf me-1"></i> Generar PDF
-          </a>
-          <a href="generar-excel.php" class="btn btn-success">
-            <i class="fas fa-file-excel me-1"></i> Generar Excel
+          <a href=<?= $URL . 'reports/Vehiculos/contenidoPDF.php' ?> type="button" class="me-2 btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Generar PDF">
+            <i class="bi bi-file-earmark-pdf fs-6"></i>
           </a>
         </div>
       </div>
@@ -102,7 +99,6 @@ require_once '../../app/config/App.php';
               <tr>
                 <th>N° Comprobante</th>
                 <th>Pedido</th>
-                <th>Tipo Cliente</th>
                 <th>Cliente</th>
                 <th>Documento</th>
                 <th>Fecha Venta</th>
@@ -129,6 +125,7 @@ require_once '../../app/config/App.php';
 
 <?php require_once '../footer.php'; ?>
 <script src="http://localhost/distribumax/js/ventas/listar.js"></script>
+
 </body>
 
 </html>

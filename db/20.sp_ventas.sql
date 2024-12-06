@@ -1,4 +1,4 @@
--- Active: 1732807506399@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- todo reade papeto
@@ -554,6 +554,7 @@ CREATE PROCEDURE sp_getventas(IN _provincia VARCHAR(100))
 BEGIN
     SELECT
         VE.idventa,
+        VE.fecha_venta,
         PO.idproducto,
         PRO.idempresa,
         PO.codigo,
@@ -695,9 +696,9 @@ DROP PROCEDURE IF EXISTS sp_contar_ventas;
 CREATE PROCEDURE sp_contar_ventas()
 BEGIN
     SELECT 
-        SUM(CASE WHEN condicion = 'despachado' THEN 1 ELSE 0 END) AS despachados,
-        SUM(CASE WHEN condicion = 'Pendiente' THEN 1 ELSE 0 END) AS pendientes,
-        SUM(CASE WHEN condicion='Cancelado'  THEN 1 ELSE 0 END)AS cancelados
+        COALESCE(SUM(CASE WHEN condicion = 'despachado' THEN 1 ELSE 0 END),0) AS despachados,
+        COALESCE((CASE WHEN condicion = 'Pendiente' THEN 1 ELSE 0 END),0) AS pendientes,
+        COALESCE(SUM(CASE WHEN condicion='Cancelado'  THEN 1 ELSE 0 END),0) AS cancelados
     FROM ventas
     WHERE DATE(fecha_venta) = CURDATE();
 END ;

@@ -133,14 +133,14 @@ SELECT * FROM vw_listar_categorias;
 
 
  -- No toquen nada de aqui,
-DROP PROCEDURE IF EXISTS sp_getMarcas_Categorias;
+-- DROP PROCEDURE IF EXISTS sp_getMarcas_Categorias;
 
-CREATE PROCEDURE sp_getMarcas_Categorias(IN _idmarca INT )
-BEGIN
-	SELECT c.idcategoria,c.categoria FROM categorias c INNER JOIN marcas m
-    ON m.idmarca=c.idcategoria
-    WHERE m.idmarca=_idmarca;
-END ;
+-- CREATE PROCEDURE sp_getMarcas_Categorias(IN _idmarca INT )
+-- BEGIN
+-- 	SELECT c.idcategoria,c.categoria FROM categorias c INNER JOIN marcas m
+--     ON m.idmarca=c.idcategoria
+--     WHERE m.idmarca=_idmarca;
+-- END ;
 
 
 

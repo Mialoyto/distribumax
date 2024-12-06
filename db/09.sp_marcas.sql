@@ -6,35 +6,29 @@ USE distribumax;
 DROP PROCEDURE IF EXISTS sp_registrar_marca;
 CREATE PROCEDURE sp_registrar_marca(
     IN _idproveedor INT,
-    IN _marca       VARCHAR(150),
-    IN _idcategoria INT
+    IN _marca       VARCHAR(150)
+
 )
 BEGIN
     DECLARE v_marca VARCHAR(150);
-    DECLARE v_idcategoria INT;
     DECLARE v_mensaje VARCHAR(100);
     DECLARE v_idmarca INT;
-    DECLARE v_categoria VARCHAR(150);
 
-    SELECT marca , idcategoria INTO v_marca, v_idcategoria
+
+    SELECT marca  INTO v_marca
     FROM marcas
     WHERE marca = _marca
-    AND idcategoria = _idcategoria
     AND estado ='1';
 
-    SELECT categoria INTO v_categoria
-    FROM categorias
-    WHERE idcategoria = _idcategoria
-    AND estado = '1';
     
-    IF v_marca = _marca AND v_idcategoria = _idcategoria THEN
+    IF v_marca = _marca  THEN
         SET v_idmarca = -1;
-        SET v_mensaje = CONCAT('La marca ',UPPER(_marca),', asociada a la categoria ',v_categoria,' ya se encuentra registrada');
+        SET v_mensaje = CONCAT('La marca ',UPPER(_marca),' ya se encuentra registrada');
     ELSE
-        INSERT INTO marcas (idproveedor,marca,idcategoria) 
-        VALUES (_idproveedor,LOWER(_marca),_idcategoria);
+        INSERT INTO marcas (idproveedor,marca) 
+        VALUES (_idproveedor,LOWER(_marca));
         SET v_idmarca = LAST_INSERT_ID();
-        SET v_mensaje = CONCAT('La marca ',UPPER(_marca),', asociada a la categoria ',v_categoria,' fue registrada correctamente');
+        SET v_mensaje = CONCAT('La marca ',UPPER(_marca),' fue registrada correctamente');
     END IF;
     SELECT v_idmarca AS idmarca , v_mensaje AS mensaje;
 END;
@@ -189,6 +183,34 @@ BEGIN
 END;
 
 CALL sp_getMarca(1);
+
+
+
+DROP PROCEDURE IF EXISTS sp_getMarcas_Categorias;
+
+CREATE PROCEDURE sp_getMarcas_Categorias(IN _idmarca INT )
+BEGIN
+	select c.idcategoria, c.categoria from categorias c
+inner join detalle_cate_marca dc ON dc.idcategoria=c.idcategoria 
+INNER JOIN marcas m ON m.idmarca=dc.idmarca WHERE m.idmarca=_idmarca;
+END ;
+
+
+drop procedure if exists sp_buscar_marca;
+
+CREATE PROCEDURE sp_buscar_marca
+(
+    IN _item VARCHAR(50)
+)
+BEGIN
+    SELECT 
+        idmarca,
+        marca 
+    FROM 
+        marcas 
+    WHERE 
+        marca LIKE CONCAT('%', _item, '%');
+END;
 
 
 

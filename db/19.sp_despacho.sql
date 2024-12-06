@@ -113,11 +113,12 @@ END;
 DROP PROCEDURE IF EXISTS sp_actualizar_estado;
 
 CREATE PROCEDURE sp_actualizar_estado(
-
-    IN  _iddespacho  INT,
-    IN  _estado       CHAR(1)
+     IN  _estado       CHAR(1),
+    IN  _iddespacho  INT
+   
 )BEGIN
-    UPDATE despachos SET estado=_estado
+    UPDATE despachos SET estado=_estado,
+                        update_at=now()
     WHERE iddespacho=_iddespacho;
 END;
 
@@ -244,7 +245,8 @@ BEGIN
     LEFT JOIN  perfiles PER 
     ON PER.idperfil=USU.idperfil
     LEFT JOIN personas PERS
-    ON PERS.idpersonanrodoc=USU.idpersona ;
+    ON PERS.idpersonanrodoc=USU.idpersona 
+    ORDER BY DES.iddespacho DESC;
 END ;
 
 
@@ -265,3 +267,37 @@ BEGIN
     AND  (pe.nombres LIKE CONCAT('%', _item, '%') OR 
                 CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%')); 
 END;
+
+
+
+-- TODO: TRIGGER PARA CAMBIAR SU CONDICIÓN DE VEHÍCULO A DISPONIBLE
+DROP TRIGGER IF EXISTS tr_cambiar_condicion_vehiculo;
+
+CREATE TRIGGER tr_cambiar_condicion_vehiculo
+AFTER UPDATE ON despachos
+FOR EACH ROW
+BEGIN
+    -- Verificar si la condición del vehículo es 'Disponible'
+
+        UPDATE vehiculos
+        SET disponible = 'Disponible'
+        WHERE idvehiculo = NEW.idvehiculo;
+
+END;
+
+
+DROP TRIGGER IF EXISTS tr_cambiar_estado_venta;
+
+CREATE TRIGGER tr_cambiar_estado_venta
+AFTER UPDATE ON despachos
+FOR EACH ROW
+BEGIN
+    -- Actualizar el estado de todas las ventas asociadas al despacho actualizado
+    UPDATE ventas v
+    INNER JOIN despacho_ventas dv ON v.idventa = dv.idventa
+    SET v.estado = '0'
+    WHERE dv.iddespacho = NEW.iddespacho;
+END;
+
+
+

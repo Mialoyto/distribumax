@@ -203,7 +203,9 @@ CALL sp_get_codigo_producto ('AJI-SZ-001');
 
 SELECT * FROM detalle_pedidos;
 
+
 DROP PROCEDURE IF EXISTS sp_listar_productos;
+
 
 CREATE PROCEDURE sp_listar_productos()
 BEGIN
@@ -226,13 +228,19 @@ BEGIN
     JOIN 
         marcas m ON p.idmarca = m.idmarca
     JOIN 
-        categorias c ON m.idcategoria = c.idcategoria;
-   -- Solo productos activos
-END;
+        detalle_cate_marca dcm ON m.idmarca = dcm.idmarca
+    JOIN 
+        categorias c ON dcm.idcategoria = c.idcategoria
+    WHERE 
+        p.estado = '1'; -- Solo productos activos
+END ;
 
 SELECT * FROM productos;
 
 CALL sp_listar_productos ();
+
+
+
 DROP PROCEDURE IF EXISTS sp_obtener_producto;
 
 CREATE PROCEDURE sp_obtener_producto (IN _idproducto INT)
@@ -241,7 +249,6 @@ BEGIN
         pr.idproveedor,
     p.idproducto,
         m.marca,
-        m.idmarca,
         m.idmarca,
         c.categoria,
         sb.subcategoria,
@@ -259,14 +266,16 @@ BEGIN
     JOIN 
         marcas m ON p.idmarca = m.idmarca
     JOIN 
-        categorias c ON m.idcategoria = c.idcategoria
-
+        detalle_cate_marca dcm ON m.idmarca = dcm.idmarca
     JOIN 
-       subcategorias sb ON c.idcategoria=sb.idsubcategoria
+        categorias c ON dcm.idcategoria = c.idcategoria
+    JOIN 
+        subcategorias sb ON sb.idsubcategoria = p.idsubcategoria
     JOIN 
         unidades_medidas um ON p.idunidadmedida = um.idunidadmedida
-    JOIN proveedores pr ON p.idproveedor = pr.idproveedor
+    JOIN 
+        proveedores pr ON p.idproveedor = pr.idproveedor
     WHERE 
         p.idproducto = _idproducto
         AND p.estado = '1';
-END;
+END ;

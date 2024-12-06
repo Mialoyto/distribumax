@@ -1,4 +1,4 @@
--- Active: 1732807506399@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 --  REGISTRAR PEDIDOS
@@ -208,14 +208,12 @@ BEGIN
     AND DP.estado = 1;
 END;
 
--- CALL sp_obtener_pedido('PED-000000001');
-
 CREATE PROCEDURE sp_contar_pedidos()
 BEGIN
     SELECT 
-        SUM(CASE WHEN estado = 'Enviado' THEN 1 ELSE 0 END) AS enviados,
-        SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END) AS pendientes,
-        SUM(CASE WHEN estado='Cancelado'  THEN 1 ELSE 0 END)AS cancelados
+        COALESCE(SUM(CASE WHEN estado = 'Enviado' THEN 1 ELSE 0 END),0) AS enviados,
+        COALESCE(SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END),0) AS pendientes,
+        COALESCE(SUM(CASE WHEN estado='Cancelado'  THEN 1 ELSE 0 END),0) AS cancelados
     FROM pedidos
     WHERE DATE(fecha_pedido) = CURDATE();
 END ;

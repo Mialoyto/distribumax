@@ -68,19 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
           const precio_unit = element.precio_unitario;
           const descuento = element.descuento;
           const subtotal = (cantidadprod * precio_unit).toFixed(2);
-          const descuentos = element.descuento;
-          const total = (cantidadprod * precio_unit).toFixed(2);
-          console.log('id', id);
-          console.log('codigo', codigo);
-          console.log('descripcion', descripcion);
-          console.log('cantidad', cantidadprod);
-          console.log('unidadmedida', unidadmedida);
-          console.log('precio_unit', precio_unit);
-          console.log('descuento', descuento);
-          console.log('subtotal', subtotal);
-          console.log('descuentos', descuentos);
-          console.log('total', total);
-          addProductToTable(
+          const total = ((cantidadprod * precio_unit) - descuento).toFixed(2);
+          const iddetallepedido = element.iddetallepedido;
+          const idpedido = element.idpedido;
+          addProductoPedido(
             id,
             codigo,
             descripcion,
@@ -89,7 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
             precio_unit,
             subtotal,
             descuento,
-            total
+            total,
+            iddetallepedido,
+            idpedido
           );
         });
       }
@@ -319,8 +312,6 @@ document.addEventListener("DOMContentLoaded", () => {
         li.classList.add("list-group-item"); // Clase de Bootstrap para los ítems
         li.innerHTML = `${item.nombreproducto} <span class="badge text-bg-success rounded-pill">${item.unidadmedida}: ${item.stockactual}</span>`;
         li.addEventListener("click", () => {
-          const id = item.idproducto;
-          console.log("cantidad", item.cantidad);
           addProductToTable(
             item.idproducto,
             item.codigo,
@@ -328,8 +319,9 @@ document.addEventListener("DOMContentLoaded", () => {
             item.cantidad,
             item.unidadmedida,
             item.precio_venta,
+            item.subtotal,
             item.descuento,
-            item.stockactual
+            item.total,
           );
           $("#datalistProducto").style.display = "none"; // Ocultar la lista cuando se selecciona un producto
           document.getElementById("addProducto").value = ""; // Limpiar el campo de búsqueda
@@ -355,8 +347,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  // FIXME : CODIGO EN REVISION
-  function addProductToTable(id, codigo, descripcion, cantidad, unidadmedida, precio_venta, subtotal, descuento, total, stockactual) {
+  // FIXME : //TODO:ESTA FUNCION SOLO CARGA LOS PRODUCTOS DEL PEDIDO QUE YA ESTAN REGISTRADOS
+  function addProductoPedido(id, codigo, descripcion, cantidad, unidadmedida, precio_venta, subtotal, descuento, total, iddetallepedido, idpedido) {
 
     // TODO: Crear la fila
     const row = document.createElement("tr");
@@ -373,8 +365,9 @@ document.addEventListener("DOMContentLoaded", () => {
             <td class="text-nowrap w-auto total">${total}</td>
             <td class="col-1">
               <div class="mt-1  d-flex justify-content-evenly">
-                <button type="button" class="btn btn-danger btn-sm w-100 eliminar-fila">
-                  <i class="bi bi-x-square"></i>
+                <button type="button" class="btn btn-danger btn-sm w-100 eliminar-fila"
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Cancelar Item del pedido">
+                  <i class="bi bi-ban"></i>
                 </button>
               </div>
             </td>
@@ -385,42 +378,52 @@ document.addEventListener("DOMContentLoaded", () => {
     //   TODO: 
     row.querySelector(".eliminar-fila").addEventListener("click", async () => {
       if (await showConfirm("¿Estás seguro de eliminar el producto del pedido?")) {
-        row.remove();
+        console.log('iddetallepedido', iddetallepedido);
+        console.log('idpedido', idpedido);
+        if (await cancelarItem(iddetallepedido, idpedido)) {
+          row.remove();
+          console.log("Fila eliminada");
+          // cargarDatosModal(idpedido);
+        }
       }
     });
-
-    const cantidadInput = row.querySelector(".cantidad");
-    const subtotalCell = row.querySelector(".subtotal");
-    const descuentoCell = row.querySelector(".descuento");
-    const totalCell = row.querySelector(".total");
-
-    cantidadInput.addEventListener("input", () => {
-      let cantidad = parseInt(cantidadInput.value);
-      const stock = parseInt(stockactual);
-      console.log("stock actual", stock);
-      console.log("ESTE ES EL STOCK ACTUAL : ", stock)
-      console.log("cantidad", cantidad);
-      console.log("stockactual", stock);
-      console.log(cantidad > stock);
-
-      if (cantidad > stock) {
-        showToast(`La cantidad no puede ser mayor que el stock disponible (${stock})`, 'info', 'INFO');
-        cantidadInput.value = stock; // Ajustar al stock máximo disponible
-        cantidad = stock; // Actualizamos la cantidad
-        console.log("cantidad", parseInt(cantidad));
-      }
-      if (cantidad <= 0 || cantidad == "") {
-        showToast('La cantidad no puede ser menor a 1', 'info', 'INFO');
-      } else {
-        const subtotal = (cantidad * parseFloat(precio_venta)).toFixed(2);
-        const descuentos = (subtotal * (parseFloat(descuento) / 100)).toFixed(2);
-        const totales = ((cantidad * (parseFloat(precio_venta))) - descuentos).toFixed(2);
-        totalCell.textContent = `S/${totales}`;
-        descuentoCell.textContent = `S/${descuentos}`;
-        subtotalCell.textContent = `S/${subtotal}`;
-      }
-    });
+    initializeTooltips();
   }
 
+  // FIXME : FUNCION PARA CANCELAR TODO EL ITEM DEL PEDIDO
+  async function cancelarItem(iddetallepedido, idpedido) {
+    const params = new FormData();
+    params.append('operation', 'cancelarItemPedido');
+    params.append('iddetallepedido', iddetallepedido);
+    params.append('idpedido', idpedido);
+
+    const options = {
+      method: 'POST',
+      body: params
+    }
+    try {
+      const response = await fetch(`../../controller/detallepedido.controller.php`, options);
+      const data = await response.json();
+      console.log("data", data);
+      if (data.success) {
+        // Verificar si no hay filas en la tabla de detalles
+        const detalleTable = document.querySelector("#update-detalle-pedido");
+        if (detalleTable.children.length === 0) {
+          // Obtener y cerrar el modal usando bootstrap
+          const modalElement = document.getElementById("edits-pedido");
+          const modal = bootstrap.Modal.getInstance(modalElement);
+          modal.hide();
+          // Actualizar la tabla principal
+          cargarPedidos();
+        }
+        showToast(`${data.message}`, 'success', 'SUCCESS');
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error:", error);
+      return false;
+    }
+}
 
 });

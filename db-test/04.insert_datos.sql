@@ -102,23 +102,23 @@ CALL sp_registrar_subcategoria (6, 'Pañales');
 
 /* REGISTRAR MARCAS */
 -- Registrar las marcas
-CALL sp_registrar_marca (1, 'Ajinomoto',1);
+CALL sp_registrar_marca (1, 'Ajinomoto');
 
-CALL sp_registrar_marca (1, 'Ajino-men',2);
+CALL sp_registrar_marca (1, 'Ajino-men');
 
-CALL sp_registrar_marca (1, 'Ajino-mix',2);
+CALL sp_registrar_marca (1, 'Ajino-mix');
 
-CALL sp_registrar_marca (2, 'Primor',3);
+CALL sp_registrar_marca (2, 'Primor');
 
-CALL sp_registrar_marca (2, 'Casino',4);
+CALL sp_registrar_marca (2, 'Casino');
 
-CALL sp_registrar_marca (2, 'Glacitas',4);
+CALL sp_registrar_marca (2, 'Glacitas');
 
-CALL sp_registrar_marca (3, 'Elite',6);
+CALL sp_registrar_marca (3, 'Elite');
 
-CALL sp_registrar_marca (3, 'Babysec',6);
+CALL sp_registrar_marca (3, 'Babysec');
 
-CALL sp_registrar_marca (3, 'Ladysoft',6);
+CALL sp_registrar_marca (3, 'Ladysoft');
 
 
 -- INSERT TIPO DE COMPROBANTES DE PAGO

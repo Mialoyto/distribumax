@@ -16,8 +16,8 @@ if (isset($_POST['operation'])) {
       } else {
         $datos = [
           'idproveedor'    => $_POST['idproveedor'],
-          'marca'          => $_POST['marca'],
-          'idcategoria'    => $_POST['idcategoria']
+          'marca'          => $_POST['marca']
+        
         ];
         $response = $marca->addMarca($datos);
         echo json_encode($response);
@@ -84,6 +84,14 @@ if (isset($_GET['operation'])) {
                     'idmarca' => $_GET['idmarca']
                 ];  
                 echo json_encode($marca->getmarcas_categorias($datos));
+            break;
+
+            case 'searchMarcas':
+                $datos = [
+                    'item' => $_GET['item']
+                ];
+                echo json_encode($marca->searchMarcas($datos));
+                break;
             break;
     }
 }

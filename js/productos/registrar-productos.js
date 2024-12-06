@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const optMarca = $("#idmarca");
-  const opCategoria = $("#idcategoria");
+  const inputcategoria = $("#idcategoria");
   const optionsub = $("#idsubcategoria");
   let proveedores;
   let id;
@@ -34,9 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(`../../controller/marca.controller.php?${params}`);
       const data = await response.json();
-
-      
-
       
       return data;
 
@@ -47,24 +44,67 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // obtener categorias
  
-  async function getCategorias(id) {
+  // async function getCategorias(id) {
+  //   const params = new URLSearchParams();
+  //   params.append('operation', 'getmarcas_categorias');
+  //   params.append('idmarca',id);
+  //   try {
+  //     const response = await fetch(`../../controller/marca.controller.php?${params}`);
+  //     const categorias = await response.json();
+  //     console.log(categorias);
+  //     categorias.forEach(item => {
+  //       // opCategoria.innerHTML="";
+  //       opCategoria.innerHTML = '<option value="">Seleccione una categoria</option>';
+  //       const option = document.createElement('option');
+  //       option.value = item.idcategoria;
+  //       option.innerText = item.categoria;
+  //       opCategoria.appendChild(option);
+      
+  //     });
+      
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }
+
+
+  async function ObtenerCategorias(marcaId) {
     const params = new URLSearchParams();
     params.append('operation', 'getmarcas_categorias');
-    params.append('idmarca',id);
+    params.append('idmarca', marcaId);
     try {
       const response = await fetch(`../../controller/marca.controller.php?${params}`);
-      const categorias = await response.json();
-      categorias.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.idcategoria;
-        option.innerText = item.categoria;
-        opCategoria.appendChild(option);
+      const data = await response.json();
+      console.log(data);
+      const selectCategoria = document.querySelector('#idcategoria');
+      selectCategoria.innerHTML="";
+      selectCategoria.innerHTML = '<option value="">Seleccione una categoria</option>';
+      data.forEach(element => {
+        const tagoption = document.createElement('option');
+        tagoption.value = element.idcategoria;
+        tagoption.textContent = element.categoria;
+        if (element.idcategoria == inputcategoria.value) {
+          tagoption.selected = true;
+        }
+        selectCategoria.appendChild(tagoption);
       });
-      
-    } catch (e) {
-      console.error(e);
+
+      // Agregar evento change para cargar subcategorías cuando se seleccione una categoría
+      selectCategoria.addEventListener('change', function () {
+        
+        idsubcategoria = this.value;
+        console.log("Categoría seleccionada:", idsubcategoria);
+        // obtenerSubcategorias(idsubcategoria);
+      });
+
+      // Cargar subcategorías para la categoría seleccionada inicialmente
+      // obtenerSubcategorias(inputcategoria.value);
+
+    } catch (error) {
+      console.error("Error al obtener las categorías:", error);
     }
   }
+
   // obtener subcategorias
   async function getSubcategorias(id) {
     const params = new URLSearchParams();
@@ -134,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
       option.innerText = item.marca;
       optMarca.appendChild(option);
     });
-    // await getCategorias(optMarca);
+    //  await getCategorias(optMarca);
   }
 
   // async function renderCategoria() {
@@ -200,9 +240,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("#idmarca").addEventListener("change", async () => {
     const id = $("#idmarca").value;
-    const data = await getCategorias(id);
+    console.log("id marca", id);
+    const data = await ObtenerCategorias(id);
+    optionsub.innerHTML = ''; 
     console.log("cateorias", data);
-    optionsub.innerHTML = '<option value="">Seleccione una subcategoria</option>';
+     optionsub.innerHTML = '<option value="">Seleccione una subcategoria</option>';
      
   });
   // evento input para seleccionar categoria y cargar subcategorias
@@ -212,6 +254,8 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(id);
     const data = await getSubcategorias(id);
     console.log("subcategorias", data);
+
+    optionsub.innerHTML = '';
     optionsub.innerHTML = '<option value="">Seleccione una subcategoria</option>';
     data.forEach(item => {
       const option = document.createElement('option');

@@ -1,196 +1,156 @@
 <?php require_once 'header.php'; ?>
 
 <main>
-    <div class="container-fluid px-4">
-        <h1 class="mt-4">Dashboard</h1>
-        <ol class="breadcrumb mb-4"></ol>
+    <div class="container-fluid py-4 px-4">
+        <h1 class="text-primary fw-bold text-center mb-4">Dashboard</h1>
 
-        <div class="row">
-            <!-- Tarjeta de Ranking de Provincias -->
-            <div class="col-md-4">
-                <div class="card mb-4">
-
-                    <div class="card-body">
-                        <span><strong>Pedidos del día</strong></span>
-                        <i class="fas fa-clipboard-list me-1"></i>
-                        <div class="row">
-                            <div class="col-4">
-                                <span>Pendientes</span>
-                                <h2 id="pendientes" class="text-right"></h2>
-
+        <!-- Filas de Tarjetas Principales -->
+        <div class="row g-4">
+            <!-- Pedidos del Día -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card text-white bg-primary shadow-sm" style="min-height: 100px;">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title fw-bold mb-0">Pedidos del Día</h5>
+                            <i class="fas fa-clipboard-list fa-3x"></i>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-4 text-start">
+                                <span class="fw-bold">Pendientes</span>
+                                <h4 id="pendientes" class="mt-2">0</h4>
                             </div>
                             <div class="col-4 text-center">
-                                <span>Enviados</span>
-                                <h2 id="enviados" class="text-center"></h2>
-
+                                <span class="fw-bold">Enviados</span>
+                                <h4 id="enviados" class="mt-2">0</h4>
                             </div>
                             <div class="col-4 text-end">
-                                <span>Cancelados</span>
-                                <h2 id="cancelados" class="text-end"></h2>
-
+                                <span class="fw-bold">Cancelados</span>
+                                <h4 id="cancelados" class="mt-2">0</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tarjeta de Total de Clientes Activos -->
-            <div class="col-md-4">
-                <div class="card mb-4">
-
-                    <div class="card-body">
-                        <span><strong>Clientes Activos</strong></span>
-                        <i class="fas fa-user me-2"></i>
-                        <div class="row">
-                            <h2 id="totalClientesActivos" class="text-center">
-                            </h2>
+            <!-- Clientes Activos -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card text-white bg-success shadow-sm" style="min-height: 170px;">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title fw-bold mb-0">Clientes Activos</h5>
+                            <i class="fas fa-users fa-3x"></i>
+                        </div>
+                        <div class="text-center mt-3">
+                            <h4 id="totalClientesActivos" class="mt-2">0</h4>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tarjeta de Ranking de Productos Más Vendidos -->
-            <div class="col-md-4">
-                <div class="card mb-4">
-
-                    <div class="card-body">
-                        <span><strong>Ventas del día</strong></span>
-                        <i class="fas fa-user me-2"></i>
-
-                        <div class="row">
-                            <div class="col-4">
-                                <span>Pendientes</span>
-                                <h2 id="ve_pendientes" class="text-right"></h2>
-
+            <!-- Ventas del Día -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card text-white bg-primary shadow-sm" style="min-height: 100px;">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title fw-bold mb-0">Ventas del Día</h5>
+                            <i class="fas fa-chart-line fa-3x"></i>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-4 text-start">
+                                <span class="fw-bold">Pendientes</span>
+                                <h4 id="ve_pendientes" class="mt-2">0</h4>
                             </div>
                             <div class="col-4 text-center">
-                                <span>Despachados</span>
-                                <h2 id="ve_despachados" class="text-center"></h2>
-
+                                <span class="fw-bold">Despachados</span>
+                                <h4 id="ve_despachados" class="mt-2">0</h4>
                             </div>
                             <div class="col-4 text-end">
-                                <span>Cancelados</span>
-                                <h2 id="ve_cancelados" class="text-end"></h2>
-                            
-
+                                <span class="fw-bold">Cancelados</span>
+                                <h4 id="ve_cancelados" class="mt-2">0</h4>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <!-- Tarjeta de Ventas Anuales -->
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-line me-1"></i>
-                        Provincias con mayor frecunecia de pedidos
+
+
+        <!-- Tablas y gráficos -->
+        <div class="row mt-5 g-4">
+            <!-- Provincias con mayor frecuencia de pedidos -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white fw-bold">
+                        <i class="fas fa-map-marker-alt me-2"></i>Provincias con Mayor Frecuencia de Pedidos
                     </div>
                     <div class="card-body">
-                        <form id="filter-form-ventas-anuales">
-                            <div class="row mb-3">
-                                <div class="table-responsive">
-                                    <table class="table table-sm">
-                                        <thead>
-                                            <tr>
-                                                <th>Distrito</th>
-                                                <th>Provincia</th>
-                                                <th>Pedidos despachados</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="pedidos-body">
-                                            <tr>
-                                            </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
-
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Distrito</th>
+                                        <th>Provincia</th>
+                                        <th>Pedidos Despachados</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pedidos-body">
+                                    <tr>
+                                        <td colspan="3" class="text-center">No hay datos disponibles</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tarjeta de Compras Anuales -->
-            <div class="col-md-6">
-                <div class="card mb-8">
-                    <div class="card-header">
-                        Productos con poco stock y por vencer
+            <!-- Productos con poco stock -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-danger text-white fw-bold">
+                        <i class="fas fa-boxes me-2"></i>Productos con Poco Stock y por Vencer
                     </div>
                     <div class="card-body">
-                        <form id="filter-form-compras-anuales">
-                            <div class="row mb-3">
-                                <div class="table-responsive">
-                                    <table class="table table-sm">
-                                        <thead>
-                                            <tr>
-                                                <th>Producto</th>
-                                                <th>Num lote</th>
-                                                <th>fecha</th>
-                                                <th>Cantidad</th>
-                                                <th>Estado</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="table-body">
-                                            <tr>
-
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
-
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Número de Lote</th>
+                                        <th>Fecha</th>
+                                        <th>Cantidad</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body">
+                                    <tr>
+                                        <td colspan="5" class="text-center">No hay datos disponibles</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <!-- Tarjeta de Ventas Diarias -->
-            <div class="col-md-6">
-                <div class="card mb-4 mt-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-bar me-1"></i>
-                        Ventas Diarias
+        <!-- Gráfico de Ventas Diarias -->
+        <div class="row mt-5">
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white fw-bold">
+                        <i class="fas fa-chart-bar me-2"></i>Monto Total de Ventas Diarias
                     </div>
                     <div class="card-body">
-                        <form id="filter-form-ventas-diarias">
-                            <div class="row mb-3">
-                                <div class="input-group col-md-4 mt-2">
-                                    <input type="date" id="filter-date-ventas-diarias" class="form-control">
-
-                                </div>
-                            </div>
-                        </form>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <label for="filter-date-ventas-diarias" class="fw-bold">Seleccionar Fecha:</label>
+                            <input type="date" id="filter-date-ventas-diarias" class="form-control w-25">
+                        </div>
                         <canvas id="dailySalesBarChart"></canvas>
                     </div>
                 </div>
             </div>
-
-            <!-- Tarjeta de Ventas Mensuales -->
-            <!-- <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-line me-1"></i>
-                        Ventas Mensuales
-                    </div>
-                    <div class="card-body">
-                        <form id="filter-form-ventas-mensuales">
-                            <div class="row mb-3">
-                                <div class="input-group col-md-4 mt-2">
-                                    <input type="month" id="filter-date-ventas-mensuales" class="form-control">
-                                    <button type="button" class="btn btn-primary" id="filtrar-ventas-mensuales">Filtrar</button>
-                                </div>
-                            </div>
-                        </form>
-                        <canvas id="monthlySalesLineChart"></canvas>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
 </main>

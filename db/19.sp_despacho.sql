@@ -286,4 +286,18 @@ BEGIN
 END;
 
 
+DROP TRIGGER IF EXISTS tr_cambiar_estado_venta;
+
+CREATE TRIGGER tr_cambiar_estado_venta
+AFTER UPDATE ON despachos
+FOR EACH ROW
+BEGIN
+    -- Actualizar el estado de todas las ventas asociadas al despacho actualizado
+    UPDATE ventas v
+    INNER JOIN despacho_ventas dv ON v.idventa = dv.idventa
+    SET v.estado = '0'
+    WHERE dv.iddespacho = NEW.iddespacho;
+END;
+
+
 

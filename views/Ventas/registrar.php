@@ -180,15 +180,21 @@ require_once '../header.php';
           </div>
 
           <!-- Botones -->
-          <div class="d-flex justify-content-end mt-4">
-            <button type="submit" id="btnRVenta" class="btn btn-success me-2">Registrar Venta</button>
-            <button type="reset" class="btn btn-outline-danger">Cancelar</button>
-          </div>
+          
 
         </form>
       </div>
+      
       <div class="card-footer">
-        <a href="index.php" class="btn btn-primary">Listar ventas</a>
+        <div class="d-flex justify-content-between mt-2 mb-2">
+          <div>
+            <a href="index.php" class="btn btn-primary ">Listar ventas</a>
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-success" form="form-venta-registrar">Registrar</button>
+            <button type="reset" class="btn btn-outline-danger">Cancelar</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

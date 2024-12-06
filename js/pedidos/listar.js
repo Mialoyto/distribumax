@@ -123,6 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+
+  // REVIEW CARGAR PEDIDOS EN LA TABLA
   async function cargarPedidos() {
     if (dtpedido) {
       dtpedido.destroy();
@@ -280,29 +282,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   }
+
+  // REVIEW LLAMA A LA FUNCION CARGAR PEDIDOS
   cargarPedidos();
 
-
-  /*   async function updateEstado(id, status) {
-      const params = new FormData();
-      params.append('operation', 'UpdateEstadoPedido');
-      params.append('idpedido', id);
-      params.append('estado', status);
-  
-      try {
-        const response = await fetch(`../../controller/pedido.controller.php`, {
-          method: 'POST',
-          body: params
-        });
-  
-        const data = await response.json();
-        console.log(data);
-        return data;
-      } catch (error) {
-        console.log("error al actualizar el pedido", error);
-      }
-    }
-   */
+  // SECTION: NUEVA SECCIÓN
   const buscarProducto = async (producto) => {
     const params = new URLSearchParams();
     params.append("operation", "getProducto");
@@ -371,21 +355,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  // FIXME
+  // FIXME : CODIGO EN REVISION
   function addProductToTable(id, codigo, descripcion, cantidad, unidadmedida, precio_venta, subtotal, descuento, total, stockactual) {
-    /*  const existId = document.querySelector(`#update-detalle-pedido tr td[id-data="${id}"]`);
-     if (existId) {
-       showToast('El producto ya se encuentra en la tabla', 'info', 'INFO');
-       return;
-     } */
-    console.log("cantidad", cantidad);
-    console.log("id", id);
+
+    // TODO: Crear la fila
     const row = document.createElement("tr");
     row.innerHTML = `
             <th scope="row" class"text-nowrap w-auto">${codigo}</th>
             <td class="text-nowrap w-auto" id-prod="${id}">${descripcion}</td>
             <td class="col-md-1 w-10">
-                <input class="form-control form-control-sm cantidad numeros text-center w-100" value="${cantidad}"  type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
+                <input class="form-control form-control-sm cantidad numeros text-center w-100" value="${cantidad}" disabled type="number" type="number" step="1" min="1" pattern="^[0-9]+" name="cantidad"  aria-label=".form-control-sm example" placeholder="0">
             </td>
             <td class="text-nowrap w-auto col-md-1 und-medida">${unidadmedida}</td>
             <td class="text-nowrap w-auto precio" data="${precio_venta}">S/${precio_venta}</td>
@@ -400,10 +379,10 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </td>
           `;
-    // Añadir la fila a la tabla
+    // TODO: Añadir la fila a la tabla
     document.getElementById("update-detalle-pedido").appendChild(row);
 
-    // eliminar fila
+    //   TODO: 
     row.querySelector(".eliminar-fila").addEventListener("click", async () => {
       if (await showConfirm("¿Estás seguro de eliminar el producto del pedido?")) {
         row.remove();

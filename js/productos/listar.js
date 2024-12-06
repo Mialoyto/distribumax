@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams();
     params.append('operation', 'ObtenerProducto');
     params.append('idproducto', id);
-
+    console.log('ESTOY OBTENIEDO EL PRODUCTO');
     try {
       const response = await fetch(`../../controller/producto.controller.php?${params}`);
       const data = await response.json();

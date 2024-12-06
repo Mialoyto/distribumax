@@ -11,6 +11,7 @@
          </div>
          <div class="card-body">
 
+            <!-- REVIEW : //TODO: INCIO DE LA TABLA DONDE SE LISTA LOS PEDIDOS  -->
             <div class="table-responsive">
                <table class="table table-sm" id="table-pedidos">
                   <thead>
@@ -29,8 +30,9 @@
                   </tbody>
                </table>
             </div>
+            <!-- REVIEW : //TODO: FIN DE LA TABLA DONDE SE LISTA LOS PEDIDOS  -->
 
-            <!-- MODAL -->
+            <!-- REVIEW : //TODO: MODAL DONDE CARGA LOS DATOS DE UN PEDIDO -->
             <div class="modal fade" id="edits-pedido"
                data-bs-backdrop="static"
                data-bs-keyboard="false"
@@ -137,7 +139,7 @@
                   </div>
                </div>
             </div>
-            <!-- FIN DEL MODAL -->
+            <!-- REVIEW FIN DEL MODAL -->
          </div>
          <div class="card-footer">
             <a href="../Pedidos/" class="btn btn-primary">Registrar Pedidos</a>

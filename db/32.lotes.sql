@@ -71,7 +71,8 @@ BEGIN
 
 
 
-    IF NEW.tipomovimiento = 'Ingreso' AND NEW.motivo != 'Cancelación de pedido' THEN
+    IF NEW.tipomovimiento = 'Ingreso' AND NEW.motivo != 'Cancelación de pedido'
+    AND NEW.motivo != 'Cancelación de item de pedido' THEN
         -- Actualizar stock para ingresos
         UPDATE lotes 
         SET stockactual = stockactual + NEW.cantidad,
@@ -112,7 +113,8 @@ BEGIN
     AND estado != 'Vencido';
 
     -- Calcular y asignar el nuevo stockactual
-    IF NEW.tipomovimiento = 'Ingreso' AND NEW.motivo != 'Cancelación de pedido' THEN
+    IF NEW.tipomovimiento = 'Ingreso' AND NEW.motivo != 'Cancelación de pedido'  
+    AND NEW.motivo != 'Cancelación de item de pedido' THEN
         SET NEW.stockactual = v_stock_actual + NEW.cantidad;
     ELSEIF NEW.tipomovimiento = 'Salida' THEN
         SET NEW.stockactual = v_stock_actual - NEW.cantidad;

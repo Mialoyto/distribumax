@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -239,7 +239,7 @@ CREATE PROCEDURE sp_obtener_producto (IN _idproducto INT)
 BEGIN
     SELECT 
         pr.idproveedor,
-        p.idproducto,
+    p.idproducto,
         m.marca,
         m.idmarca,
         m.idmarca,

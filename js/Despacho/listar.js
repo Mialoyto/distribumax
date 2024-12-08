@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   function $(object = null) { return document.querySelector(object) }
 
-
+  let dtdespacho;
 
 
   async function CargarDatos() {
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     data.forEach(element => {
       const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-      const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+      const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-6" : "bi bi-toggle2-off fs-6";
       const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
       Tablaventas.innerHTML += `
         <tr>
@@ -34,15 +34,28 @@ document.addEventListener("DOMContentLoaded", () => {
                     </strong>
             </td>
           <td>
-    
-    <button class="btn btn-outline-danger reporte" data-iddespacho="${element.iddespacho}">
-        <i class="fas fa-file-alt me-2"></i>
-    </button>
-      <a  id-data="${element.iddespacho}" class="btn ${bgbtn} ms-2 estado" estado-cat="${element.status}">
-                        <i class="${icons}"></i>
-                      </a>
-
-</td>
+              <div class="d-flex justify-content-center">
+                <div class="btn-group btn-group-sm" role="group">
+                  <button  type="button" 
+                  class="btn btn-outline-danger reporte" 
+                  data-iddespacho="${element.iddespacho}"
+                  data-bs-toggle="tooltip" 
+                  data-bs-placement="bottom" 
+                  data-bs-title="Generar PDF">
+                  <i class="fas fa-file-alt me-"></i>
+                  </button>
+                  <a  id-data="${element.iddespacho}" 
+                  class="btn ${bgbtn} ms-2 estado" 
+                  estado-cat="${element.status}"
+                  type="button" 
+                  data-bs-toggle="tooltip" 
+                  data-bs-placement="bottom" 
+                  data-bs-title="Cambiar estado">
+                  <i class="${icons}"></i>
+                  </a>
+                </div>
+              </div>
+          </td>
 
         </tr>
 `;
@@ -71,8 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
           const status = e.currentTarget.getAttribute("estado-cat");
           console.log("ID:", id, "Status:", status);
           if (await showConfirm("¿Estás seguro de cambiar el estado de la subcategoría?")) {
-            const data = await updateEstado(id, status);
-            console.log("Estado actualizado correctamente:", data);
+            const data = await updateEstado(status, id);
+              console.log(data);
+              dtdespacho.destroy();
+              CargarDatos();
 
           } else {
             console.error("El atributo id-data o status es null o undefined.");
@@ -107,11 +122,11 @@ document.addEventListener("DOMContentLoaded", () => {
         await listarventas(idpedido); // Llamar a la función MostrarDetalle
       });
     });
-
-
+    initializeTooltips();
+     RenderDatatable();
   }
 
-  CargarDatos();
+
 
 
   async function reporte(iddespacho) {
@@ -148,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       Tablaventas.innerHTML += `
             <tr>
-                <td>${element.idpedido}</td>
+                <td>${element.idventa}</td>
           
             </tr>
             `;
@@ -173,4 +188,21 @@ document.addEventListener("DOMContentLoaded", () => {
     return data;
 
   }
+
+  async function RenderDatatable() {
+    dtdespacho = new DataTable("#table-despacho", {
+      language: {
+        lengthMenu: "Mostrar _MENU_ ",
+        zeroRecords: "No se encontraron registros",
+        info: false,
+        infoEmpty: false,
+        search: "Buscar:"
+      },
+      info: false,
+      ordering: false
+    });
+  }
+
+  CargarDatos();
+ 
 })

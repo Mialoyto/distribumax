@@ -231,6 +231,16 @@ CALL spu_registrar_personas (
     '998654321', -- Teléfono
     'Av. Las Acacias 369' -- Dirección
 );
+CALL spu_registrar_personas (
+    1, -- Tipo de documento (dni)
+    '63030043', -- Número de documento
+    96, -- ID del distrito
+    'ALEXSIS', -- Nombres
+    'SOTO', -- Apellido paterno
+    'SARAVA', -- Apellido materno
+    NULL, -- Teléfono (NULL)
+    'Calle Falsa 001' -- Dirección
+);
 
 /**PRUEBAS PROCEDIMIENTOS OK ✔️  USUARIOS**/
 CALL sp_registrar_usuario ( 26558000, 1,'ADM', 'administrador', 'admin' );
@@ -240,7 +250,7 @@ CALL sp_registrar_usuario ( 26558001, 2,'VND', 'usuario', 'admin' );
 CALL sp_registrar_usuario ( 26558003, 3, 'ALM','vendedor', 'admin' );
 
 CALL sp_registrar_usuario ( 26558002, 4,'CHF', 'conductor', 'admin' );
-
+CALL sp_registrar_usuario ( 63030043, 5,'JMF', 'jefe_mercaderia', 'jefe_mercaderia' );
 
 CALL sp_actualizar_usuario (
     'administrador',
@@ -266,6 +276,12 @@ CALL sp_actualizar_usuario (
     '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
     4
 );
+CALL sp_actualizar_usuario (
+    'jfmercaderia',
+    '$2y$10$X7uFYdjQh9TIXC24st9YJePFv3L1N5zsdBc.FEsaQwRklHmiDGfCu',
+    5
+);
+
 
 
 -- -------------------------------------------------
@@ -412,7 +428,7 @@ CALL sp_registrar_vehiculo (
 );
 -- PARA ELIMINAR UN VEHICULO
 -- DELETE FROM vehiculos WHERE idvehiculo = 3;
-SELECT
+/* SELECT
     PER.idpersonanrodoc,
     PER.nombres,
     PER.appaterno,
@@ -423,4 +439,4 @@ INNER JOIN usuarios USU
     ON USU.idpersona = PER.idpersonanrodoc
 INNER JOIN perfiles PE
     ON PE.idperfil = USU.idperfil
-WHERE PE.perfil = 'chofer';
+WHERE PE.perfil = 'chofer'; */

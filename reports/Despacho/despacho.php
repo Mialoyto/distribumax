@@ -8,12 +8,12 @@ require_once '../../model/Despacho.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
+
 // Instanciar la clase Ventas
 $despacho = new Despachos();
 
 // Obtener los datos de la venta con el idventa pasado por GET
-$despachos=$despacho->reporte(['iddespacho'=>$_GET['iddespacho']]);
-
+$despachos = $despacho->reporte(['iddespacho' => $_GET['iddespacho']]);
 
 // Configurar Dompdf
 $options = new Options();
@@ -24,7 +24,6 @@ $options->set('isRemoteEnabled', true); // Habilitar imágenes remotas
 $options->setChroot(__DIR__); // Establecer el directorio raíz para las imágenes
 
 $dompdf = new Dompdf($options);
-
 
 // Iniciar el almacenamiento en búfer
 ob_start();
@@ -44,6 +43,15 @@ $dompdf->setPaper('A4', 'portrait');
 // Renderizar el PDF (esto genera el archivo)
 $dompdf->render();
 
+
+
+// Obtener el número total de páginas
+
+
+
 // Salida del PDF al navegador
 $dompdf->stream("Hojadespacho.pdf", array("Attachment" => 0));  // 0 para visualizar, 1 para descargar
+
+// Puedes usar el número total de páginas como lo desees, por ejemplo, para agregarlo al pie de página en el HTML
+echo "Número total de páginas: " . $totalPages;
 ?>

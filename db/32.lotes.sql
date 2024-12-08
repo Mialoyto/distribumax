@@ -1,4 +1,4 @@
--- Active: 1728548966539@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- TODO: REGISTRAR LOTES (OK)
 DROP PROCEDURE IF EXISTS sp_registrar_lote;
@@ -28,10 +28,9 @@ BEGIN
     END IF;
 END;
 
-
-
 -- TODO: TRIGGERS PARA ACTUALIZAR ESTADO DE LOTES Y VALIDAR FECHA DE VENCIMIENTO
 DROP TRIGGER IF EXISTS before_insert_lotes;
+
 CREATE TRIGGER before_insert_lotes
 BEFORE INSERT ON lotes
 FOR EACH ROW
@@ -62,21 +61,24 @@ BEGIN
 
 END;
 
-
 -- Este trigger se ejecuta después de insertar un registro en la tabla kardex
 DROP TRIGGER IF EXISTS after_insert_kardex;
+
 CREATE TRIGGER after_insert_kardex
 AFTER INSERT ON kardex
 FOR EACH ROW
 BEGIN 
 
-    IF NEW.tipomovimiento = 'Ingreso' THEN
+
+
+    IF NEW.tipomovimiento = 'Ingreso' AND NEW.motivo != 'Cancelación de pedido'
+    AND NEW.motivo != 'Cancelación de item de pedido'  AND NEW.motivo != 'Venta cancelada' THEN
         -- Actualizar stock para ingresos
         UPDATE lotes 
         SET stockactual = stockactual + NEW.cantidad,
             update_at = NOW()
         WHERE idlote = NEW.idlote;
-    ELSE
+    ELSEIF NEW.tipomovimiento = 'Salida' THEN
         -- Actualizar stock para salidas
         UPDATE lotes 
         SET stockactual = stockactual - NEW.cantidad,
@@ -111,9 +113,10 @@ BEGIN
     AND estado != 'Vencido';
 
     -- Calcular y asignar el nuevo stockactual
-    IF NEW.tipomovimiento = 'Ingreso' THEN
+    IF NEW.tipomovimiento = 'Ingreso' AND NEW.motivo != 'Cancelación de pedido'  
+    AND NEW.motivo != 'Cancelación de item de pedido' AND new.motivo != 'Venta cancelada' THEN
         SET NEW.stockactual = v_stock_actual + NEW.cantidad;
-    ELSE
+    ELSEIF NEW.tipomovimiento = 'Salida' THEN
         SET NEW.stockactual = v_stock_actual - NEW.cantidad;
     END IF;
 END;
@@ -127,7 +130,8 @@ CREATE PROCEDURE sp_registrar_salida_pedido (
     IN _idusuario    INT,
     IN _idproducto   INT,
     IN _cantidad     INT,
-    IN _motivo       VARCHAR(255)
+    IN _motivo       VARCHAR(255),
+    IN _idpedido     CHAR(15) -- - //FIXME - NUEVO PARAMET
 )
 BEGIN
     DECLARE v_stock_actual INT;
@@ -136,6 +140,7 @@ BEGIN
     DECLARE v_idlote INT;
     DECLARE v_stock_total INT;
     DECLARE done INT DEFAULT FALSE;
+    DECLARE v_idpedido CHAR(15); -- - //FIXME - NUEVO PARAMETRO
     
     DECLARE lotes_cursor CURSOR FOR
         SELECT idlote, stockactual 
@@ -176,11 +181,12 @@ BEGIN
         ELSE
             SET v_cantidad_descontar = v_stock_actual;
         END IF;
-        
+
         -- Registrar movimiento en kardex
         INSERT INTO kardex (
             idusuario,
             idproducto,
+            idpedido, -- - //FIXME - NUEVO PARAMETRO
             idlote,
             tipomovimiento,
             cantidad,
@@ -188,11 +194,13 @@ BEGIN
         ) VALUES (
             _idusuario,
             _idproducto,
+            _idpedido, -- - //FIXME - NUEVO PARAMETRO
             v_idlote,
             'Salida',
             v_cantidad_descontar,
             _motivo
         );
+
         
         -- Actualiza la cantidad pendiente
         SET v_cantidad_pendiente = v_cantidad_pendiente - v_cantidad_descontar;
@@ -205,12 +213,15 @@ BEGIN
     CLOSE lotes_cursor;
 END;
 
-DROP PROCEDURE IF EXISTS  sp_productos_por_agotarse_o_vencimiento;
+
+
+DROP PROCEDURE IF EXISTS sp_productos_por_agotarse_o_vencimiento;
 
 CREATE PROCEDURE sp_productos_por_agotarse_o_vencimiento()
 BEGIN
     SELECT 
         l.fecha_vencimiento,
+        l.numlote,
         p.nombreproducto,
         l.estado,
         l.stockactual
@@ -219,13 +230,14 @@ BEGIN
     INNER JOIN 
         productos p ON p.idproducto = l.idproducto
     WHERE 
-        l.estado = 'Por Agotarse'
-        OR l.estado='Agotado'
-        OR l.fecha_vencimiento = (
-            SELECT MIN(fecha_vencimiento)
-            FROM lotes
-            WHERE fecha_vencimiento > NOW()
-        )
+        -- Lotes por agotarse o agotados
+        l.estado IN ('Por Agotarse', 'Agotado')
+        OR 
+        -- Lotes que vencen dentro de las próximas dos semanas
+        (l.fecha_vencimiento BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 2 WEEK))
+        OR 
+        -- Lotes que vencen muy pronto (considerando unos días antes del rango de 2 semanas)
+        (l.fecha_vencimiento BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW())
     ORDER BY 
         l.fecha_vencimiento ASC;
 END ;

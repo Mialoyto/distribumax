@@ -34,6 +34,34 @@ switch ($verbo) {
           }
 
           break;
+        case 'cancelarItemPedido':
+          $idDetallePedido = trim($_POST['iddetallepedido']);
+          $idPedido = trim($_POST['idpedido']);
+
+          $datos = [
+            'estado'  => '0',
+            'message' => '',
+            'success' => false
+          ];
+
+          if (empty($idDetallePedido) || empty($idPedido)) {
+            $datos['message'] = 'Faltan datos';
+            return;
+          } else {
+            $datosEnviar = [
+              'iddetallepedido' => $idDetallePedido,
+              'idpedido'        => $idPedido
+            ];
+            $response = $detallepedido->cancelarItemPedido($datosEnviar);
+            if ($response[0]['estado']) {
+              $datos['estado'] = $response[0]['estado'];
+              $datos['message'] = $response[0]['mensaje'];
+              $datos['success'] = true;
+            } else {
+              $datos['message'] = $response[0]['mensaje'];
+            }
+          }
+          echo json_encode($datos);
       }
     }
     break;

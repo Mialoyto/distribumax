@@ -10,11 +10,12 @@ DROP PROCEDURE IF EXISTS sp_despacho_registrar;
 CREATE PROCEDURE sp_despacho_registrar(
     IN _idvehiculo       INT,
     IN _idusuario        INT,
-    IN _fecha_despacho   DATE 
+    IN _fecha_despacho   DATE,
+    IN _idjefe_mercaderia INT
     )
     BEGIN
-    INSERT INTO despachos (idvehiculo, idusuario, fecha_despacho) 
-    VALUES (_idvehiculo, _idusuario, _fecha_despacho);
+    INSERT INTO despachos (idvehiculo, idusuario, fecha_despacho, idjefe_mercaderia) 
+    VALUES (_idvehiculo, _idusuario, _fecha_despacho, _idjefe_mercaderia);
     SELECT LAST_INSERT_ID() AS iddespacho;
 END;
 
@@ -112,11 +113,12 @@ END;
 DROP PROCEDURE IF EXISTS sp_actualizar_estado;
 
 CREATE PROCEDURE sp_actualizar_estado(
-
-    IN  _iddespacho  INT,
-    IN  _estado       CHAR(1)
+     IN  _estado       CHAR(1),
+    IN  _iddespacho  INT
+   
 )BEGIN
-    UPDATE despachos SET estado=_estado
+    UPDATE despachos SET estado=_estado,
+                        update_at=now()
     WHERE iddespacho=_iddespacho;
 END;
 
@@ -146,7 +148,10 @@ DROP PROCEDURE IF EXISTS sp_reporte_despacho_por_proveedor;
 CREATE PROCEDURE sp_reporte_despacho_por_proveedor(IN _iddespacho INT)
 BEGIN
     SELECT 
+        DESPA.fecha_despacho, 
+        DATE(VEN.fecha_venta) AS fecha_venta,
         Prove.proveedor,
+        Prove.idempresa,
         UPPER(MAR.marca) AS marca,
         PRO.codigo,
         PRO.nombreproducto,
@@ -155,10 +160,11 @@ BEGIN
         VH.placa,
         VH.modelo,
         VH.marca_vehiculo,
-        P.nombres,
-        P.appaterno,
         PER.perfil,
-        CONCAT (P.nombres,' ',P.appaterno ) AS datos
+        CONCAT(P.nombres, ' ', P.appaterno) AS datos, -- Persona que registró el despacho
+        P.idpersonanrodoc,
+        CONCAT(Pmer.nombres, ' ', Pmer.appaterno, ' ', Pmer.apmaterno) AS encargado_mercaderia -- Jefe de mercadería
+
     FROM despacho_ventas DESP
     INNER JOIN despachos DESPA ON DESPA.iddespacho = DESP.iddespacho
     INNER JOIN ventas VEN ON DESP.idventa = VEN.idventa
@@ -169,9 +175,11 @@ BEGIN
     LEFT JOIN marcas MAR ON MAR.idmarca = PRO.idmarca
     LEFT JOIN proveedores Prove ON Prove.idproveedor = PRO.idproveedor
     LEFT JOIN vehiculos VH ON VH.idvehiculo = DESPA.idvehiculo
-    LEFT JOIN usuarios USU ON USU.idusuario = DESPA.idusuario
+    LEFT JOIN usuarios USU ON USU.idusuario = DESPA.idusuario -- Usuario que registró el despacho
     LEFT JOIN perfiles PER ON PER.idperfil = USU.idperfil
     LEFT JOIN personas P ON P.idpersonanrodoc = USU.idpersona
+    LEFT JOIN usuarios JMER ON JMER.idusuario = DESPA.idjefe_mercaderia -- Relación con jefe de mercadería
+    LEFT JOIN personas Pmer ON Pmer.idpersonanrodoc = JMER.idpersona -- Datos del jefe de mercadería
     WHERE DESP.iddespacho = _iddespacho
     GROUP BY 
         Prove.proveedor,
@@ -184,12 +192,15 @@ BEGIN
         VH.marca_vehiculo,
         P.nombres,
         P.appaterno,
-        PER.perfil
+        PER.perfil,
+        Pmer.nombres,
+        Pmer.appaterno,
+        Pmer.apmaterno
     ORDER BY 
         Prove.proveedor,
         MAR.marca,
         PRO.nombreproducto;
-END;
+END ;
 
 -- TODO: PROCEDIMIENTO PARA LISTAR LOS DETALLES DE UN DESPACHO
 DROP PROCEDURE IF EXISTS sp_listar_detalle_despacho;
@@ -202,7 +213,8 @@ BEGIN
         VEN.idpedido
     FROM despacho_ventas DES 
         INNER JOIN ventas VEN ON VEN.idventa=DES.idventa
-    WHERE iddespacho=_iddespacho;
+    WHERE iddespacho=_iddespacho
+    GROUP BY VEN.idventa;
 END;
 
 -- TODO: PROCEDIMIENTO PARA LISTAR LOS DESPACHOS
@@ -233,5 +245,59 @@ BEGIN
     LEFT JOIN  perfiles PER 
     ON PER.idperfil=USU.idperfil
     LEFT JOIN personas PERS
-    ON PERS.idpersonanrodoc=USU.idpersona;
+    ON PERS.idpersonanrodoc=USU.idpersona 
+    ORDER BY DES.iddespacho DESC;
 END ;
+
+
+DROP  PROCEDURE IF EXISTS sp_buscar_jefe_mercaderia;
+CREATE PROCEDURE sp_buscar_jefe_mercaderia(IN _item VARCHAR(50))
+BEGIN
+	SELECT 
+		u.idusuario,
+        p.perfil,
+        pe.nombres,
+        CONCAT(pe.appaterno,' ',pe.apmaterno) AS apellidos, 
+        pe.idpersonanrodoc,
+        u.estado
+    FROM usuarios u 
+    inner join perfiles p ON p.idperfil=u.idperfil 
+	INNER JOIN personas pe ON pe.idpersonanrodoc=u.idpersona
+    WHERE p.perfil='Jefe de Mercaderia' AND u.estado='1'
+    AND  (pe.nombres LIKE CONCAT('%', _item, '%') OR 
+                CONCAT(pe.appaterno, ' ', pe.apmaterno) LIKE CONCAT('%', _item, '%')); 
+END;
+
+
+
+-- TODO: TRIGGER PARA CAMBIAR SU CONDICIÓN DE VEHÍCULO A DISPONIBLE
+DROP TRIGGER IF EXISTS tr_cambiar_condicion_vehiculo;
+
+CREATE TRIGGER tr_cambiar_condicion_vehiculo
+AFTER UPDATE ON despachos
+FOR EACH ROW
+BEGIN
+    -- Verificar si la condición del vehículo es 'Disponible'
+
+        UPDATE vehiculos
+        SET disponible = 'Disponible'
+        WHERE idvehiculo = NEW.idvehiculo;
+
+END;
+
+
+DROP TRIGGER IF EXISTS tr_cambiar_estado_venta;
+
+CREATE TRIGGER tr_cambiar_estado_venta
+AFTER UPDATE ON despachos
+FOR EACH ROW
+BEGIN
+    -- Actualizar el estado de todas las ventas asociadas al despacho actualizado
+    UPDATE ventas v
+    INNER JOIN despacho_ventas dv ON v.idventa = dv.idventa
+    SET v.estado = '0'
+    WHERE dv.iddespacho = NEW.iddespacho;
+END;
+
+
+

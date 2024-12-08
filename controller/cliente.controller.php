@@ -60,17 +60,17 @@ if (isset($_GET['operation'])) {
     case 'activos':
       echo json_encode($cliente->activos());
       break;
-
-    case 'updateEstado':
-      $idCliente = $_GET['idcliente'];
-      $estado = $_GET['estado'];
-      $datos = [
-        'idcliente' => $idCliente,
-        'estado' => $estado
-      ];
-      $response = $cliente->updateEstado($datos);
-      echo json_encode($response);
-      break;
+       // ! No se usa y no activen
+    // case 'updateEstado':
+    //   $idCliente = $_GET['idcliente'];
+    //   $estado = $_GET['estado'];
+    //   $datos = [
+    //     'idcliente' => $idCliente,
+    //     'estado' => $estado
+    //   ];
+    //   $response = $cliente->updateEstado($datos);
+    //   echo json_encode($response);
+    //   break;
   }
 }
 
@@ -96,6 +96,16 @@ if (isset($_POST['operation'])) {
       } else {
         echo json_encode(['error' => 'Datos inválidos']);
       }
+      break;
+       // ! No toques esto ctmr
+      case 'activeCliente':
+        $datos = [
+          'estado' => $_POST['estado'],
+          'idcliente' => $_POST['idcliente']
+        ];
+        $response = $cliente->activeCliente($datos);
+        echo json_encode($response);
+        break;
       break;
   }
 }

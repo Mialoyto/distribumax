@@ -11,6 +11,7 @@
          </div>
          <div class="card-body">
 
+            <!-- REVIEW : //TODO: INCIO DE LA TABLA DONDE SE LISTA LOS PEDIDOS  -->
             <div class="table-responsive">
                <table class="table table-sm" id="table-pedidos">
                   <thead>
@@ -29,8 +30,9 @@
                   </tbody>
                </table>
             </div>
+            <!-- REVIEW : //TODO: FIN DE LA TABLA DONDE SE LISTA LOS PEDIDOS  -->
 
-            <!-- MODAL -->
+            <!-- REVIEW : //TODO: MODAL DONDE CARGA LOS DATOS DE UN PEDIDO -->
             <div class="modal fade" id="edits-pedido"
                data-bs-backdrop="static"
                data-bs-keyboard="false"
@@ -116,10 +118,10 @@
                                           <th>Cantidad</th>
                                           <th>Unidad Medida</th>
                                           <th>Precio Unitario</th>
-                                          <th>Subtotal</th>Ww
+                                          <th>Subtotal</th>
                                           <th>Monto Descuento</th>
                                           <th>Total</th>
-                                          <th>Acciones</th>
+                                          <th class="d-flex justify-content-center">Acciones</th>
                                        </tr>
                                     </thead>
                                     <tbody id="update-detalle-pedido">
@@ -137,7 +139,7 @@
                   </div>
                </div>
             </div>
-            <!-- FIN DEL MODAL -->
+            <!-- REVIEW FIN DEL MODAL -->
          </div>
          <div class="card-footer">
             <a href="../Pedidos/" class="btn btn-primary">Registrar Pedidos</a>
@@ -148,3 +150,4 @@
 <?php require_once '../footer.php'; ?>
 <script type="module" src="http://localhost/distribumax/js/pedidos/listar.js"></script>
 <script type="module" src="http://localhost/distribumax/js/pedidos/update-detalle-pedido.js"></script>A
+<script src="http://localhost/distribumax/js/pedidos/cancelar-pedido.js"></script>A

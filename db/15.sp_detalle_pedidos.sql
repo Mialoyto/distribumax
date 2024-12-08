@@ -24,13 +24,6 @@ BEGIN
         SET v_descuento = 0.00;
     END IF;
 
-
-/*     SELECT IFNULL(descuento, 0) INTO v_descuento_unitario
-    FROM detalle_promociones
-    WHERE idproducto = _idproducto
-    LIMIT 1;
-    SET v_descuento = (_cantidad_producto * _precio_unitario) * (v_descuento_unitario /100); */
-
 SET
     _subtotal = (_cantidad_producto * _precio_unitario) - _descuento;
 
@@ -63,14 +56,16 @@ END;
 -- select * from detalle_pedidos;
 -- ACTUALIZAR EL STOCK
 
+-- - // SECTION: ACTUALIZAR EL STOCK
 DROP TRIGGER IF EXISTS trg_registrar_salida_pedido;
 
 CREATE TRIGGER trg_registrar_salida_pedido
-AFTER INSERT ON detalle_pedidos
+BEFORE INSERT ON detalle_pedidos
 FOR EACH ROW
 BEGIN
     DECLARE done INT DEFAULT FALSE;
     DECLARE v_idusuario INT;
+    -- DECLARE v_idpedido CHAR(15); -- - // FIXME: VARIABLE DECLARADA PARA OBTENER EL IDPEDIDO
     
     -- Obtener el idusuario desde la tabla pedidos
     SELECT p.idusuario INTO v_idusuario
@@ -82,7 +77,8 @@ BEGIN
         v_idusuario, 
         NEW.idproducto, 
         NEW.cantidad_producto, 
-        'Venta por pedido'
+        'Venta por pedido',
+        NEW.idpedido
     );
 END;
 
@@ -141,7 +137,6 @@ BEGIN
             WHEN LENGTH(CLI.idempresa) = 11 THEN CONVERT(PRO.precio_mayorista , DECIMAL(10, 2))
             WHEN LENGTH(CLI.idpersona) = 8 THEN CONVERT(PRO.precio_minorista ,DECIMAL(10, 2))
         END AS precio_venta,
-        
         -- Sumar el stock actual del último movimiento de cada lote
         SUM(CONVERT(LOTES.stockactual , UNSIGNED INT)) AS stockactual
     FROM productos PRO
@@ -158,7 +153,7 @@ BEGIN
         stockactual > 0;  -- Solo mostrar productos con stock actual positivo
 END;
 
--- CALL ObtenerPrecioProducto ('26558000', 'casino');
+CALL ObtenerPrecioProducto ('26558000', 'casino');
 
 
 DROP PROCEDURE IF EXISTS sp_producto_proveedor;
@@ -187,6 +182,7 @@ BEGIN
 END;
 
 -- CALL sp_producto_proveedor (2, 'a');
+select * from kardex;
 
 -- select * from productos where idproveedor = 2;
 
@@ -225,5 +221,5 @@ BEGIN
         LEFT JOIN ventas ve                 ON ve.idpedido = p.idpedido
         LEFT JOIN tipo_comprobante_pago tp  ON tp.idtipocomprobante = ve.idtipocomprobante
     WHERE p.idpedido = _idpedido
-      AND ve.idventa IS NULL;
+        AND ve.idventa IS NULL;
 END ;

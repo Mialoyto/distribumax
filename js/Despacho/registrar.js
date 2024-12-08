@@ -5,7 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const placa = $("#idvehiculo");
+  const jefe = $("#idjefe_mercaderia");
   const lista = $("#list-vehiculo");
+  const listaJefe = $("#list-jefe_mercaderia");
   const provincia = $("#provincia");
   const tabla = $("#detalle-despacho tbody");
   const formDespacho = $("#AddDespacho");
@@ -13,6 +15,84 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log(count.length);
   let dtDespacho;
   let idDespacho = -1;
+  // buscamos al jefe de mercaderia
+  async function BuscardJefeMercaderia(idjefe) {
+    const params = new URLSearchParams();
+    params.append("operation", "buscarJefeMercaderia");
+    params.append("item", idjefe)
+    try {
+      const response = await fetch(`../../controller/despacho.controller.php?${params}`);
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.error("Error al obtener el jefe de mercaderia:", e);
+      return null;
+    }
+  }
+
+  async function MostrarJefe(jefe) {
+    const datalist = listaJefe;
+    datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
+    const response = await BuscardJefeMercaderia(jefe);
+    console.log(response);
+    // console.log(response);
+    if (response && response.length > 0) {
+      listaJefe.style.display = "block"; // Muestra la lista
+
+      response.forEach((element) => {
+        const li = document.createElement("li");
+        li.classList.add("list-group-item");
+        li.innerHTML = `${element.nombres}${element.apellidos}`;
+
+        // $("#condutor").setAttribute("id-user", element.idusuario);
+        // Agrega evento para seleccionar el vehículo
+        li.addEventListener("click", async () => {
+          $("#idjefe_mercaderia").setAttribute("id-jefe", element.idusuario);
+          $("#idjefe_mercaderia").value = element.apellidos;
+
+          // Rellena los detalles del vehículo
+          $("#nombres").value = element.nombres;
+          $("#apellidos").value = element.apellidos;
+          $("#documento").value = element.idpersonanrodoc;
+
+          // ? DESPUES DE SELECCIONAR UN VEHICULO CARGA LAS VENTAS DE LA PROVINCIA
+          // Oculta la lista después de seleccionar
+          listaJefe.style.display = "none";
+          listaJefe.innerHTML = ""; // Limpia la lista después de seleccionar
+        });
+        listaJefe.innerHTML = ""; // Limpia la lista antes de mostrar resultados
+        datalist.appendChild(li); // Añade el ítem a la lista
+        // datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
+      });
+    } else {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+      li.innerHTML = `<b>Jefe no encontrado</b>`;
+      datalist.appendChild(li);
+      $("#list-jefe_mercaderia").style.display = "none"; // Oculta la lista si no hay resultados
+    }
+  }
+
+  $("#idjefe_mercaderia").addEventListener("input", async () => {
+    const idjefe = $("#idjefe_mercaderia").value;
+    console.log(idjefe);
+    console.log(idjefe.length);
+    console.log(idjefe ? true : false);
+
+    if (!idjefe) {
+      lista.innerHTML = "";
+      $("#nombres").value = '';
+      $("#apellidos").value = '';
+      $("#documento").value = '';
+      provincia.innerHTML = '';
+      provincia.innerHTML = '<option value="" selected>Seleccione una provincia</option>';
+
+    } else {
+      const nombres = jefe.value.trim();
+      await MostrarJefe(nombres);
+    }
+  });
 
   $("#idvehiculo").addEventListener("input", async () => {
     const idvehiculo = $("#idvehiculo").value;
@@ -84,9 +164,9 @@ document.addEventListener("DOMContentLoaded", () => {
           // Rellena los detalles del vehículo
           $("#conductor").value = element.conductor;
           $("#conductor").setAttribute("id-user", element.idusuario);
-          $("#modelo").value = element.modelo;
-          $("#capacidad").value = element.capacidad;
+          // $("#marca").value = element.marca_vehiculo;
           $("#placa").value = element.placa;
+          $("#marca_vehiculo").value = element.marca_vehiculo;
           // ? DESPUES DE SELECCIONAR UN VEHICULO CARGA LAS VENTAS DE LA PROVINCIA
           await renderSelect();
           // Oculta la lista después de seleccionar
@@ -154,26 +234,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // TODO: RENDERIZAR LAS VENTAS PENDIENTES
   async function renderVentasPendientes(provincia) {
+
+
     const data = await getVentasPendientes(provincia);
     if (data) {
       // LIMPIAR LA TABLA
       tabla.innerHTML = "";
       // RENDERIZAR EN LA TABLA
       data.forEach((element) => {
+        let fechaVentaCompleta = element.fecha_venta; // Ejemplo: "2024-12-03 23:40:00"
+
+        // Convertir la cadena a un objeto Date
+        let fecha = new Date(fechaVentaCompleta);
+
+        // Sumar un día a la fecha
+        // fecha.setDate(fecha.getDate() + 1); // Sumar 1 día
+
+        // Comprobar si el día es sábado (6) o domingo (0)
+        // if (fecha.getDay() === 6) { // Si es sábado
+        //   fecha.setDate(fecha.getDate() + 1); // Pasar al lunes
+        // } else if (fecha.getDay() === 0) { // Si es domingo
+        //   fecha.setDate(fecha.getDate() + 1); // Pasar al lunes
+        // }
+
+        // Formatear la fecha en "yyyy-MM-dd"
+        let fechaFormateada = fecha.toISOString().split('T')[0];
+
+        // Asignar al campo
+        document.getElementById("fecha-despacho").value = fechaFormateada;
+
         const tr = document.createElement("tr");
         tr.innerHTML = `
-        <td id-venta="${element.idventa}" class="ventas" >${element.codigo}</td>
-        <td class="productos" id-producto="${element.idproducto}" >${element.producto}</td>
-        <td>${element.unidadmedida}</td>
-        <td>${element.cantidad_producto}</td>
-        <td>${element.total_venta_producto}</td>
-        `;
+      <td id-venta="${element.idventa}" class="ventas">${element.codigo}</td>
+      <td class="productos" id-producto="${element.idproducto}">${element.producto}</td>
+      <td>${element.unidadmedida}</td>
+      <td>${element.cantidad_producto}</td>
+      <td>${element.total_venta_producto}</td>
+    `;
         tabla.appendChild(tr);
       });
     } else {
       console.log("estoy en la linea 169");
       tableContent = `<tr><td colspan="5">No hay ventas pendientes</td></tr>`;
     }
+
   }
 
   provincia.addEventListener("change", async (e) => {
@@ -249,16 +353,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const idvehiculo = parseInt($("#idvehiculo").getAttribute("id-veh"));
     const iduser = parseInt($("#conductor").getAttribute("id-user"));
+    const jefeM = parseInt($("#idjefe_mercaderia").getAttribute("id-jefe"));
     const fecha = $("#fecha-despacho").value;
+
     console.log("idvehiculo: ", idvehiculo);
     console.log("idusario: ", iduser);
     console.log("fecha: ", fecha);
+    console.log("jefe: ");
 
     const params = new FormData();
     params.append("operation", "addDespacho");
     params.append("idvehiculo", idvehiculo);
     params.append("idusuario", iduser);
     params.append("fecha_despacho", fecha);
+    params.append("idjefe_mercaderia", jefeM);
 
     const options = {
       method: "POST",

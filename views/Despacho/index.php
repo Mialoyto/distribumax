@@ -2,9 +2,8 @@
 require_once '../header.php';
 ?>
 <main>
-    <div class="container-fluid px-4">
-        <h1 class="mt-4">Despacho</h1>
-        <ol class="breadcrumb mb-4">
+    <div class="container-fluid px-4 mt-4">
+     
             <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
         </ol>
         <!-- Modal -->
@@ -21,7 +20,8 @@ require_once '../header.php';
                             <table id="table-ventas" class="table" style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th>pedido</th>
+                                        <th>Venta</th>
+                                        <th>...</th>
                                         
                                     </tr>
                                 </thead>

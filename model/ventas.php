@@ -35,13 +35,27 @@ class Ventas extends Conexion
 	{
 		try {
 			$status = false;
-			$sql = "CALL sp_estado_venta (?,?)";
+			$sql = "CALL sp_condicion_venta (?,?)";
 			$query = $this->pdo->prepare($sql);
 			$status = $query->execute(array(
-				$params['estado'],
+				$params['condicion'],
 				$params['idventa']
 			));
 			return $status;
+		} catch (Exception $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function UpdateEstado($params = [])
+	{
+		try {
+			$query = $this->pdo->prepare("CALL sp_estado_venta(?,?)");
+			$query->execute(array(
+				$params['estado'],
+				$params['idventa']
+			));
+			return $query->rowCount();
 		} catch (Exception $e) {
 			die($e->getMessage());
 		}
@@ -57,7 +71,7 @@ class Ventas extends Conexion
 			die($e->getMessage());
 		}
 	}
-	public function listar_fecha($params=[])
+	public function listar_fecha($params = [])
 	{
 		try {
 			$query = $this->pdo->prepare("CALL sp_listar_fecha(?)");
@@ -67,7 +81,7 @@ class Ventas extends Conexion
 			die($e->getMessage());
 		}
 	}
-  
+
 
 
 	public function historial()
@@ -108,43 +122,77 @@ class Ventas extends Conexion
 		}
 	}
 
-	public function buscarventa($params=[]){
-		try{
-			$query=$this->pdo->prepare("call sp_buscar_venta(?)");
+	public function buscarventa($params = [])
+	{
+		try {
+			$query = $this->pdo->prepare("call sp_buscar_venta(?)");
 			$query->execute(array($params['item']));
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		}catch(Exception $e){
+		} catch (Exception $e) {
 			die($e->getMessage());
 		}
 	}
-	
-	public function getventas($params=[]){
-		try{
-			$query=$this->pdo->prepare("call sp_getventas(?)");
+
+	public function getventas($params = [])
+	{
+		try {
+			$query = $this->pdo->prepare("call sp_getventas(?)");
 			$query->execute(array(
 				$params['provincia']
 			));
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		}catch(Exception $e){
+		} catch (Exception $e) {
 			die($e->getMessage());
 		}
 	}
-	public function  ventasDay($params=[]){
-		try{
-			$query=$this->pdo->prepare("CALL sp_VentasPorDia(?)");
+	public function  ventasDay($params = [])
+	{
+		try {
+			$query = $this->pdo->prepare("CALL sp_VentasPorDia(?)");
 			$query->execute(array($params['fecha']));
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		}catch(Exception $e){	
+		} catch (Exception $e) {
 			die($e->getMessage());
 		}
 	}
-	public function ventastotales(){
-		try{
-			$query=$this->pdo->prepare("CALL sp_Ventastotales");
+	public function ventastotales()
+	{
+		try {
+			$query = $this->pdo->prepare("CALL sp_Ventastotales");
 			$query->execute();
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		}catch(Exception $e){
+		} catch (Exception $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function conteoVentas()
+	{
+		try {
+			$query = $this->pdo->prepare("CALL sp_contar_ventas");
+			$query->execute();
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (Exception $e) {
+			die($e->getMessage());
+		}
+	}
+
+	/* SECTION */
+	// Esta funcion cancela la venta y regresa los productos al lote de donde salieron
+	public function cancelarVenta($params = [])
+	{
+		try {
+			$sql = "CALL sp_condicion_venta (?, ?, ?)";
+			$query = $this->pdo->prepare($sql);
+			$query->execute(array(
+				$params['condicion'],
+				$params['idventa'],
+				$params['idpedido']
+			));
+			$response = $query->fetchAll(PDO::FETCH_ASSOC);
+			return $response;
+		} catch (Exception $e) {
 			die($e->getMessage());
 		}
 	}

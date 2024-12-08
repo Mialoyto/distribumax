@@ -1,3 +1,7 @@
+
+// ! : NO TOQUES ESTE CODIGO, PORQUE TODO YA ESTA CORRECTO DESDE EL EDITAR
+// ! : Y CAMBIAR SU ESTADO
+
 document.addEventListener("DOMContentLoaded", function () {
   function $(object = null) { return document.querySelector(object); }
   let dtproductos;
@@ -16,13 +20,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const idproducto = modal.querySelector("#idproducto");
   const proveedor = document.querySelector("#idproveedor");
 
-  let idmarca, idsubcategoria, idunidadmedida;
+  let idmarca, idsubcategorias, idunidadmedida;
 
   async function Getproducto(id) {
     const params = new URLSearchParams();
     params.append('operation', 'ObtenerProducto');
     params.append('idproducto', id);
-
+    console.log('ESTOY OBTENIEDO EL PRODUCTO');
     try {
       const response = await fetch(`../../controller/producto.controller.php?${params}`);
       const data = await response.json();
@@ -54,6 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Llamar a obtenerMarca y obtenerUnidades después de establecer el atributo id-proveedor
         obtenerMarca(data[0].idmarca);
         obtenerUnidades(data[0].idunidadmedida);
+        obtenerSubcategorias(data[0].idsubcategoria);
+      
       }
     } catch (error) {
       console.log("No es posible cargar el modal:", error);
@@ -70,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch(`../../controller/marca.controller.php?${params}`);
       const data = await response.json();
-      console.log(data);
+   
 
       const selectMarca = document.querySelector('#idmarca');
       selectMarca.innerHTML = ''; // Limpiar opciones anteriores
@@ -99,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+
   async function ObtenerCategorias(marcaId) {
     const params = new URLSearchParams();
     params.append('operation', 'getmarcas_categorias');
@@ -106,7 +113,8 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch(`../../controller/marca.controller.php?${params}`);
       const data = await response.json();
-      console.log(data);
+
+ 
       const selectCategoria = document.querySelector('#idcategoria');
       selectCategoria.innerHTML = ''; // Limpiar opciones anteriores
       data.forEach(element => {
@@ -121,13 +129,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Agregar evento change para cargar subcategorías cuando se seleccione una categoría
       selectCategoria.addEventListener('change', function () {
-        idsubcategoria = this.value;
-        console.log("Categoría seleccionada:", idsubcategoria);
-        obtenerSubcategorias(idsubcategoria);
+        idsubcategorias = this.value;
+        console.log("Categoría seleccionada:", idsubcategorias);
+        obtenerSubcategorias(idsubcategorias);
       });
 
       // Cargar subcategorías para la categoría seleccionada inicialmente
-      obtenerSubcategorias(inputcategoria.value);
+       obtenerSubcategorias(selectCategoria.value);
 
     } catch (error) {
       console.error("Error al obtener las categorías:", error);
@@ -138,32 +146,47 @@ document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams();
     params.append('operation', 'getSubcategorias');
     params.append('idcategoria', categoriaId);
+  
     try {
       const response = await fetch(`../../controller/subcategoria.controller.php?${params}`);
       const data = await response.json();
-      console.log(data);
+  
       const selectSubcategoria = document.querySelector('#idsubcategoria');
       selectSubcategoria.innerHTML = ''; // Limpiar opciones anteriores
+  
       data.forEach(element => {
         const tagoption = document.createElement('option');
         tagoption.value = element.idsubcategoria;
         tagoption.textContent = element.subcategoria;
-        if (element.idsubcategoria == inputsubcategoria.value) {
-          tagoption.selected = true;
+  
+        // Comparar correctamente los valores
+        if (String(element.idsubcategoria) === String(inputsubcategoria.value)) {
+          tagoption.selected = true; // Marcar la opción como seleccionada
         }
+          
         selectSubcategoria.appendChild(tagoption);
       });
 
+      
+      // Agregar evento change para manejar cambios en subcategorías
+      selectSubcategoria.addEventListener('change', function () {
+        idsubcategorias = this.value;
+        console.log("Subcategoría seleccionada:", idsubcategorias);
+      });
+  
     } catch (error) {
       console.error("Error al obtener las subcategorías:", error);
     }
   }
+  
+
+ 
 
   async function obtenerUnidades(selectedUnidadId) {
     try {
       const response = await fetch(`../../controller/unidades.controller.php?operation=getUnidades`);
       const data = await response.json();
-      console.log(data);
+     
       const selectUnidad = document.querySelector('#idunidadmedida');
       selectUnidad.innerHTML = ''; // Limpiar opciones anteriores
       data.forEach(element => {
@@ -201,27 +224,34 @@ document.addEventListener("DOMContentLoaded", function () {
       if (data.length > 0) {
         data.forEach(element => {
           const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-7" : "bi bi-toggle2-off fs-7";
+          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-8" : "bi bi-toggle2-off fs-8";
           const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
           const editDisabled = element.estado === "Inactivo" ? "disabled" : "";
           Tablaproductos.innerHTML += `
                   <tr>
                       <td>${element.marca}</td>
                       <td>${element.categoria}</td>
+                      <td>${element.subcategoria}</td>
                       <td>${element.nombreproducto}</td>
                       <td>${element.codigo}</td>
                       <td><strong class="${estadoClass}">${element.estado}</strong></td>
                       <td>
-                            <div class="d-flex justify-content-center">
-  <div class="btn-group btn-group-sm" role="group">
-    <a id-data="${element.idproducto}" class="btn btn-warning ${editDisabled}" data-bs-toggle="modal" data-bs-target=".edit-categoria">
-      <i class="bi bi-pencil-square fs-7"></i>
+
+    <a id-data="${element.idproducto}" class="btn btn-warning ${editDisabled}" data-bs-toggle="modal" data-bs-target=".edit-categoria"
+      type="button" class="me-2" 
+                           data-bs-toggle="tooltip" 
+                           data-bs-placement="bottom" 
+                           data-bs-title="Editar">
+      <i class="bi bi-pencil-square fs-8"></i>
     </a>
-    <a id-data="${element.idproducto}" class="btn ${bgbtn} estado" estado-cat="${element.status}">
+    <a id-data="${element.idproducto}" class="btn ${bgbtn} estado" estado-cat="${element.status}"
+      type="button" class="me-2" 
+                           data-bs-toggle="tooltip" 
+                           data-bs-placement="bottom" 
+                           data-bs-title="Cambiar estado">
       <i class="${icons}"></i>
     </a>
-  </div>
-</div>
+
                       </td>
                   </tr>
                   `;
@@ -260,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
             CargarModal(id);
           });
         });
-
+        initializeTooltips();
         RenderDatatable();
       } else {
         Tablaproductos.innerHTML = '<tr><td colspan="5" class="text-center">No hay datos disponibles</td></tr>';

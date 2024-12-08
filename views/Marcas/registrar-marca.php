@@ -17,6 +17,10 @@ require_once '../header.php';
           </div>
 
           <div class="btn-group align-items-center" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#marcaAdd">
+              <i class="bi bi-plus-circle"></i>
+              Marca
+            </button>
             <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#categoriaAdd">
               <i class="bi bi-plus-circle"></i>
               Categoría
@@ -33,6 +37,55 @@ require_once '../header.php';
               <i class="bi bi-list-check"></i>
               Listar Subcategorías
             </a>
+          </div>
+
+          <!-- Modal para asginarle una categoria auna marca -->
+          <div class="modal fade" id="marcaAdd"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true">
+            <div class="modal-dialog ">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Registrar Marca</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="" action="#" id="form-registar-detalle" autocomplete="off">
+                  <div class="modal-body">
+                    <div class="form-floating">
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="idmarca"
+                        name=""
+                        placeholder="Marca"
+                        required>
+                      <label for="idproveedor" class="form-label">
+                        <i class="bi bi-search"></i> Buscar marca
+                      </label>
+                      <ul
+                        id="list-marcas"
+                        class="list-group position-absolute w-100 listarDatos"
+                        style="z-index: 1000; display: none;">
+                      </ul>
+                    </div>
+                    <div class="mb-3 me-3">
+                      <span>Agregar categorias </span>
+                      <button type="button" id="btncategoria" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i></button>
+                    </div>
+                    <div id="adcategoria" class="overflow-auto" style="max-height: 35vh;">
+                      <!-- renderizaran mas inputs -->
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Registrar</button>
+                    <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
           <!-- MODAL PARA REGISTRAR CATEGORIA  -->
           <div class="modal fade" id="categoriaAdd"
@@ -121,7 +174,7 @@ require_once '../header.php';
           <form method="POST" action="#" id="form-registrar-marca" autocomplete="off">
             <!-- FILA N°01 -->
             <div class="row mt-3">
-              <div class="col-12">
+              <div class="col-6">
                 <div class="form-floating">
                   <input
                     type="search"
@@ -140,9 +193,6 @@ require_once '../header.php';
                   </ul>
                 </div>
               </div>
-            </div>
-            <!-- FILA N°02 -->
-            <div class="row mt-3">
               <div class="col-6 mb-3">
                 <div class="form-floating">
                   <input
@@ -156,27 +206,8 @@ require_once '../header.php';
                   <label for="marca">Marca</label>
                 </div>
               </div>
-              <div class="col-6 mb-3">
-                <div class="form-floating">
-                  <select name="" id="idcategoria" class="form-select select-categorias" required>
-                    <option value="">Seleccione categoría</option>
-                    <!-- Aquí puedes agregar más opciones de categorías -->
-                  </select>
-                  <label for="idcategoria">Buscar categoría</label>
-                </div>
-              </div>
-              <!-- select de subcategoria -->
-              <!--  <div class="col-4 mb-3">
-              <div class="form-floating">
-                <select name="" id="idsubcategoria" class="form-select">
-                  <option value=""></option>
-                  
-                </select>
-                <label for="idsubcategoria">Buscar categoría</label>
-              </div>
-            </div> -->
-
             </div>
+            <!-- FILA N°02 -->
 
         </div>
         <div class="card-footer">
@@ -203,6 +234,7 @@ require_once '../header.php';
 </main>
 
 <?php require_once '../footer.php'; ?>
+<script src="http://localhost/distribumax/js/marca/registrar-detallemarca.js"></script>
 <script src="http://localhost/distribumax/js/categorias/registrar-categoria.js"></script>
 <script src="http://localhost/distribumax/js/marca/registrar-marca.js"></script>
 <script src="http://localhost/distribumax/js/utils/utils.js"></script>

@@ -121,7 +121,7 @@ CALL sp_detalle_pedido ('PED-000000029', 1, 1, 'Caja', 8.50);
 CALL sp_pedido_registrar(2, 4);
 CALL sp_detalle_pedido ('PED-000000030', 1, 1, 'Caja', 8.50); */
 
-SELECT * FROM kardex
+/* SELECT * FROM kardex
 WHERE idproducto = 7
 ORDER BY idkardex DESC;
 SELECT * FROM lotes
@@ -136,6 +136,6 @@ SELECT
     cantidad,
     stockactual,
     motivo
-FROM kardex WHERE idproducto = 7 ORDER BY idkardex DESC LIMIT 10;
+FROM kardex WHERE idproducto = 7 ORDER BY idkardex DESC LIMIT 10; */
 SELECT * from categorias;
 select * from subcategorias;

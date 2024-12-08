@@ -51,16 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     dtvehiculo = new DataTable("#table-vehiculos", {
-      columnDefs: [
-        { width: "15%", targets: 0 }, // conductor
-        { width: "15%", targets: 1 }, // marca
-        { width: "15%", targets: 2 }, // modelo
-        { width: "5%", targets: 3 }, // placa
-        { width: "10%", targets: 4 }, // capacidad
-        { width: "15%", targets: 5 }, // condicion
-        { width: "5%", targets: 6 }, // estado
-        { width: "10%", targets: 7 } // acciones
-      ],
+      
       language: {
         "sEmptyTable": "No hay datos disponibles en la tabla",
         "info": "",
@@ -90,12 +81,24 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(`../../controller/vehiculo.controller.php?operation=getAll`);
       const data = await response.json();
-
+      let disponible;
+      let classDisponible;
       if (data.length > 0) {
         data.forEach(element => {
+           switch (element.disponible) {
+            case 'Disponible':
+             
+              classDisponible = "text-success";
+              break;
+            case 'Ocupado':
+              classDisponible = "text-warning";
+              break;
+        
+           }
           const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-6" : "bi bi-toggle2-off fs-6";
           const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
+          const isDisabled = element.estado === "Inactivo" || element.status === 0 ? "disabled" : "";
           // CONTENIDO DE LA TABLA
           tableContent += `
               <tr>
@@ -108,15 +111,26 @@ document.addEventListener("DOMContentLoaded", () => {
                   <td class="${estadoClass} fw-bold">
                   ${element.estado}
                   </td>
+                  <td><strong class="${classDisponible}">${element.disponible}</strong></td>
                   <td>
-                      <div class="d-flex justify-content-center">
-                          <a id-data="${element.idvehiculo}" class="btn btn-warning" data-bs-toggle="modal"  data-bs-target=".edit-vehiculo">
-                              <i class="bi bi-pencil-square fs-5"></i>
-                      </a>
-                      <a id-data="${element.idvehiculo}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">
-                              <i class="${icons}"></i>
-                      </a>
-                      </div>
+                      <div class="d-flex">
+                      <div class="btn-group btn-group-sm" role="group">
+    <a id-data="${element.idvehiculo}" 
+       class="btn btn-warning ${isDisabled}" 
+       data-bs-toggle="modal"  
+       data-bs-target=".edit-vehiculo">
+       <i class="bi bi-pencil-square fs-6"></i>
+    </a>
+    <a id-data="${element.idvehiculo}" 
+       class="btn ${bgbtn} ms-2 estado" 
+       status="${element.status}" 
+       data-bs-toggle="modal" 
+       data-bs-target=".edit-vehiculo">
+       <i class="${icons}"></i>
+    </a>
+    </di>
+</div>
+
                   </td>
               </tr>
             `;

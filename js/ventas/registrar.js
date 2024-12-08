@@ -177,10 +177,10 @@ document.addEventListener("DOMContentLoaded", () => {
         tbody.appendChild(row);
       });
 
-      let totalSinIGV = total - descuentoTotal;
+      let totalSinIGV = total;
       const IGV = totalSinIGV * 0.18;
-      subtotalVenta = totalSinIGV - IGV;
-      const totalVenta = subtotalVenta + IGV;
+      subtotalVenta = (totalSinIGV - IGV) + descuentoTotal;
+      const totalVenta = subtotalVenta + IGV - descuentoTotal;
 
       console.log("subtotal", subtotalVenta);
       console.log("totalVenta", totalVenta);

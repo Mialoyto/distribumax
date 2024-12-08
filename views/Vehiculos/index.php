@@ -1,9 +1,7 @@
 <?php require_once '../header.php'; ?>
 <?php require_once '../../app/config/App.php'; ?>
 <main>
-	<div class="container-fluid px-4">
-		<h1 class="mt-4">Vehiculos</h1>
-		<ol class="breadcrumb mb-4">
+	<div class="container-fluid px-4 mt-4" >
 			<!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
 		</ol>
 		<!-- TARJETA -->
@@ -15,7 +13,7 @@
 					</div>
 					<div>
 						<a href=<?= $URL . 'reports/Vehiculos/contenidoPDF.php' ?> type="button" class="me-2 btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Generar PDF">
-							<i class="bi bi-file-earmark-pdf fs-3"></i>
+							<i class="bi bi-file-earmark-pdf fs-6"></i>
 						</a>
 					</div>
 				</div>
@@ -34,6 +32,7 @@
 								<th>Capacidad</th>
 								<th>Condicion</th>
 								<th>Estado</th>
+								<th>Disponibilidad</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>

@@ -32,6 +32,54 @@ switch ($verbo) {
                     $send = $persona->search($datosEnviar);
                     echo json_encode($send);
                 break;
+
+                case 'updateEstado':
+                    $datos = [
+                        'idpersonanrodoc' => $_GET['idpersonanrodoc'],
+                        'estado' => $_GET['estado']
+                    ];
+                    $response = $persona->updateEstado($datos);
+                    echo json_encode($response);
+                    break;
+
+                case 'getPersona':
+                    $datos = [
+                        'idpersonanrodoc' => $_GET['idpersonanrodoc']
+                    ];
+                    $response = $persona->getPersona($datos);
+                    echo json_encode($response);
+                    break;
+
+                case 'updatePersona':
+                    $idpersonanrodoc = $_GET['idpersonanrodoc'];
+                    $idtipodocumento = $_GET['idtipodocumento'];
+                    $nombres      = $_GET['nombres'];
+                    $appaterno    = $_GET['appaterno'];
+                    $apmaterno    = $_GET['apmaterno'];
+                    $telefono     = $_GET['telefono'];
+                    $direccion    = $_GET['direccion'];
+                    $distrito     = $_GET['distrito'];
+
+                    if(empty($idpersonanrodoc) ||empty($idtipodocumento) || empty($nombres) || empty($appaterno) || empty($apmaterno) || empty($telefono) || empty($direccion) || empty($distrito)){
+                        echo json_encode(['estado' => 'error', 'message' => 'Faltan datos']);
+                        return;
+                    } else if (!is_numeric($idpersonanrodoc)) {
+                        echo json_encode(['mensaje' => 'error', 'message' => 'El id del vehiculo debe ser un número']);
+                        return;
+                    } else {
+                        $datos = [
+                            'idpersonanrodoc' => $idpersonanrodoc,
+                            'idtipodocumento' => $idtipodocumento,
+                            'nombres'      => $nombres,
+                            'appaterno'    => $appaterno,
+                            'apmaterno'    => $apmaterno,
+                            'telefono'     => $telefono,
+                            'direccion'    => $direccion,
+                            'distrito'     => $distrito
+                        ];
+                        $response = $persona->updatePersona($datos);
+                        echo json_encode($response);
+                    }
             }
         }
         break;

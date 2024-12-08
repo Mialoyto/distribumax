@@ -1,10 +1,12 @@
--- Active: 1732798376350@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
+
 USE distribumax;
 -- -----------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS departamentos;
+
 CREATE TABLE departamentos (
     iddepartamento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     departamento VARCHAR(250) NOT NULL,
@@ -16,6 +18,7 @@ CREATE TABLE departamentos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS provincias;
+
 CREATE TABLE provincias (
     idprovincia INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     iddepartamento INT NOT NULL,
@@ -28,6 +31,7 @@ CREATE TABLE provincias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS distritos;
+
 CREATE TABLE distritos (
     iddistrito INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idprovincia INT NOT NULL,
@@ -40,6 +44,7 @@ CREATE TABLE distritos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS categorias;
+
 CREATE TABLE categorias (
     idcategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     categoria VARCHAR(150) NOT NULL,
@@ -51,6 +56,7 @@ CREATE TABLE categorias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS subcategorias;
+
 CREATE TABLE subcategorias (
     idsubcategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idcategoria INT NOT NULL,
@@ -64,10 +70,11 @@ CREATE TABLE subcategorias (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS tipo_comprobante_pago;
+
 CREATE TABLE tipo_comprobante_pago (
     idtipocomprobante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     comprobantepago VARCHAR(150) NOT NULL,
-    contador INT  NULL DEFAULT 0,
+    contador INT NULL DEFAULT 0,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
@@ -75,8 +82,10 @@ CREATE TABLE tipo_comprobante_pago (
     CONSTRAINT fk_estado_tip_comp_pag CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-SELECT *  FROM tipo_comprobante_pago;
+SELECT * FROM tipo_comprobante_pago;
+
 DROP TABLE IF EXISTS metodos_pago;
+
 CREATE TABLE metodos_pago (
     idmetodopago INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     metodopago VARCHAR(150) NOT NULL,
@@ -88,6 +97,7 @@ CREATE TABLE metodos_pago (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS accesos;
+
 CREATE TABLE accesos (
     idacceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     modulo VARCHAR(100) NOT NULL,
@@ -99,6 +109,7 @@ CREATE TABLE accesos (
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS tipo_documento;
+
 CREATE TABLE tipo_documento (
     idtipodocumento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     documento CHAR(6) NOT NULL,
@@ -111,6 +122,7 @@ CREATE TABLE tipo_documento (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS personas;
+
 CREATE TABLE personas (
     idtipodocumento INT NOT NULL,
     idpersonanrodoc CHAR(11) NOT NULL PRIMARY KEY,
@@ -132,6 +144,7 @@ CREATE TABLE personas (
 
 /* modificaciones en la base tabla tipo doc por defecto la empresas se registraran con ruc */
 DROP TABLES IF EXISTS empresas;
+
 CREATE TABLE empresas (
     idtipodocumento INT NOT NULL,
     idempresaruc BIGINT NOT NULL PRIMARY KEY,
@@ -161,6 +174,7 @@ CREATE TABLE perfiles (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS usuarios;
+
 CREATE TABLE usuarios (
     idusuario INT PRIMARY KEY AUTO_INCREMENT,
     idpersona CHAR(11) NOT NULL,
@@ -178,6 +192,7 @@ CREATE TABLE usuarios (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS clientes;
+
 CREATE TABLE clientes (
     idcliente INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idpersona CHAR(11) DEFAULT NULL,
@@ -197,6 +212,7 @@ CREATE TABLE clientes (
 ) ENGINE = INNODB;
 
 DROP TABLES IF EXISTS proveedores;
+
 CREATE TABLE proveedores (
     idproveedor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idempresa BIGINT NOT NULL,
@@ -220,45 +236,52 @@ CREATE TABLE marcas (
     idmarca INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idproveedor INT NOT NULL,
     marca VARCHAR(150) NOT NULL,
-    idcategoria INT NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT fk_categorias_marca FOREIGN KEY (idcategoria) REFERENCES categorias (idcategoria),
-    CONSTRAINT uk_marca UNIQUE (marca, idcategoria),
+    CONSTRAINT uk_marca UNIQUE (marca),
     CONSTRAINT fk_estado_mar CHECK (estado IN ('0', '1'))
 ) ENGINE = INNODB;
+ -- Integracion de la tabla detalle_cate_marca
+ DROP TABLE IF EXISTS detalle_cate_marca;
+CREATE TABLE detalle_cate_marca (
+    iddetallecategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idmarca INT NOT NULL,
+    idcategoria INT NOT NULL,
+    CONSTRAINT fk_idmarca_ca FOREIGN KEY (idmarca) REFERENCES marcas (idmarca),
+    CONSTRAINT fk_categoria_ca FOREIGN KEY (idcategoria) REFERENCES categorias (idcategoria)
+) ENGINE = INNODB;
 -- BORRAR
-/* DROP TABLE IF EXISTS tipos_promociones;
 
+/* DROP TABLE IF EXISTS tipos_promociones;
 CREATE TABLE tipos_promociones (
-    idtipopromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    tipopromocion VARCHAR(150) NOT NULL,
-    descripcion VARCHAR(250) NOT NULL,
-    create_at DATETIME NOT NULL DEFAULT NOW(),
-    update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT uk_tipopromocion UNIQUE (tipopromocion),
-    CONSTRAINT fk_estado_tip_prom CHECK (estado IN ("0", "1"))
+idtipopromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+tipopromocion VARCHAR(150) NOT NULL,
+descripcion VARCHAR(250) NOT NULL,
+create_at DATETIME NOT NULL DEFAULT NOW(),
+update_at DATETIME NULL,
+estado CHAR(1) NOT NULL DEFAULT "1",
+CONSTRAINT uk_tipopromocion UNIQUE (tipopromocion),
+CONSTRAINT fk_estado_tip_prom CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB; */
 
 -- BORRAR
-/* DROP TABLE IF EXISTS promociones;
 
+/* DROP TABLE IF EXISTS promociones;
 CREATE TABLE promociones (
-    idpromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idtipopromocion INT NOT NULL,
-    descripcion VARCHAR(250) NOT NULL,
-    fechainicio DATE NOT NULL,
-    fechafin DATE NOT NULL,
-    valor_descuento DECIMAL(8, 2) NOT NULL,
-    create_at DATE NOT NULL DEFAULT NOW(),
-    update_at DATE NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT fk_idtipopromociones FOREIGN KEY (idtipopromocion) REFERENCES tipos_promociones (idtipopromocion),
-    CONSTRAINT ck_valor_descuento CHECK (valor_descuento > 0),
-    CONSTRAINT fk_estado_prom CHECK (estado IN ("0", "1")),
-    CONSTRAINT ck_fecha_fin_mayor_inicio CHECK (fechafin > fechainicio)
+idpromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+idtipopromocion INT NOT NULL,
+descripcion VARCHAR(250) NOT NULL,
+fechainicio DATE NOT NULL,
+fechafin DATE NOT NULL,
+valor_descuento DECIMAL(8, 2) NOT NULL,
+create_at DATE NOT NULL DEFAULT NOW(),
+update_at DATE NULL,
+estado CHAR(1) NOT NULL DEFAULT "1",
+CONSTRAINT fk_idtipopromociones FOREIGN KEY (idtipopromocion) REFERENCES tipos_promociones (idtipopromocion),
+CONSTRAINT ck_valor_descuento CHECK (valor_descuento > 0),
+CONSTRAINT fk_estado_prom CHECK (estado IN ("0", "1")),
+CONSTRAINT ck_fecha_fin_mayor_inicio CHECK (fechafin > fechainicio)
 ) ENGINE = INNODB; */
 
 DROP TABLE IF EXISTS unidades_medidas;
@@ -313,19 +336,19 @@ CREATE TABLE productos (
 ) ENGINE = INNODB;
 
 -- BORRAR
-/* DROP TABLE IF EXISTS detalle_promociones;
 
+/* DROP TABLE IF EXISTS detalle_promociones;
 CREATE TABLE detalle_promociones (
-    iddetallepromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idpromocion INT NOT NULL,
-    idproducto INT NOT NULL,
-    descuento DECIMAL(8, 2) NOT NULL,
-    create_at DATETIME NOT NULL DEFAULT NOW(),
-    update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT id_promocion_deta_prom FOREIGN KEY (idpromocion) REFERENCES promociones (idpromocion),
-    CONSTRAINT id_producto_deta_prom FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
-    CONSTRAINT fk_estado_deta_prom CHECK (estado IN ("0", "1"))
+iddetallepromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+idpromocion INT NOT NULL,
+idproducto INT NOT NULL,
+descuento DECIMAL(8, 2) NOT NULL,
+create_at DATETIME NOT NULL DEFAULT NOW(),
+update_at DATETIME NULL,
+estado CHAR(1) NOT NULL DEFAULT "1",
+CONSTRAINT id_promocion_deta_prom FOREIGN KEY (idpromocion) REFERENCES promociones (idpromocion),
+CONSTRAINT id_producto_deta_prom FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
+CONSTRAINT fk_estado_deta_prom CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB; */
 
 DROP TABLE IF EXISTS precios_historicos;
@@ -362,29 +385,6 @@ CREATE TABLE pedidos (
             'Entregado'
         )
     )
-) ENGINE = INNODB;
-
-DROP TABLES IF EXISTS detalle_pedidos;
-
-CREATE TABLE detalle_pedidos (
-    id_detalle_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idpedido CHAR(15) NOT NULL,
-    idproducto INT NOT NULL,
-    cantidad_producto INT NOT NULL,
-    unidad_medida CHAR(20) NOT NULL, -- unidad, caja,
-    precio_unitario DECIMAL(10, 2) NOT NULL,
-    precio_descuento DECIMAL(10, 2) NULL,
-    subtotal DECIMAL(10, 2) NOT NULL,
-    create_at DATETIME NOT NULL DEFAULT NOW(),
-    update_at DATETIME NULL,
-    estado CHAR(1) NOT NULL DEFAULT "1",
-    CONSTRAINT fk_idpedido_det_ped FOREIGN KEY (idpedido) REFERENCES pedidos (idpedido),
-    CONSTRAINT fk_idproducto_det_ped FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
-    CONSTRAINT ck_cantidad_producto CHECK (cantidad_producto > 0),
-    CONSTRAINT ck_precio_unitario CHECK (precio_unitario > 0),
-    -- CONSTRAINT ck_precio_descuento CHECK (precio_descuento >= 0),
-    CONSTRAINT ck_subtotal CHECK (subtotal > 0),
-    CONSTRAINT fk_estado_det_ped CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
 -- DROP TABLE IF EXISTS kardex;
@@ -444,6 +444,31 @@ CREATE TABLE lotes (
     )
 ) ENGINE = INNODB;
 
+DROP TABLES IF EXISTS detalle_pedidos;
+
+CREATE TABLE detalle_pedidos (
+    id_detalle_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idpedido CHAR(15) NULL,
+    idproducto INT NOT NULL,
+    cantidad_producto INT NOT NULL,
+    unidad_medida CHAR(20) NOT NULL, -- unidad, caja,
+    precio_unitario DECIMAL(10, 2) NOT NULL,
+    precio_descuento DECIMAL(10, 2) NULL,
+    subtotal DECIMAL(10, 2) NOT NULL,
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    update_at DATETIME NULL,
+    estado CHAR(1) NOT NULL DEFAULT "1",
+
+
+    CONSTRAINT fk_idpedido_det_ped FOREIGN KEY (idpedido) REFERENCES pedidos (idpedido),
+    CONSTRAINT fk_idproducto_det_ped FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
+    -- CONSTRAINT fk_idlote_det_pedido FOREIGN KEY (idlote) REFERENCES lotes (idlote),
+    CONSTRAINT ck_cantidad_producto CHECK (cantidad_producto > 0),
+    CONSTRAINT ck_precio_unitario CHECK (precio_unitario > 0),
+    CONSTRAINT ck_subtotal CHECK (subtotal > 0),
+    CONSTRAINT fk_estado_det_ped CHECK (estado IN ("0", "1"))
+) ENGINE = INNODB;
+
 -- ------------------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS kardex;
 
@@ -451,6 +476,7 @@ CREATE TABLE kardex (
     idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idusuario INT NOT NULL,
     idproducto INT NOT NULL,
+    idpedido CHAR(15) NULL,
     idlote INT NULL,
     stockactual INT NULL DEFAULT 0,
     tipomovimiento ENUM('Ingreso', 'Salida') NOT NULL,
@@ -462,6 +488,7 @@ CREATE TABLE kardex (
     CONSTRAINT fk_idusuario_kardex FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_idproducto_kardex FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
     CONSTRAINT fk_idlote_kardex FOREIGN KEY (idlote) REFERENCES lotes (idlote),
+    CONSTRAINT fk_idpedido_kardex FOREIGN KEY (idpedido) REFERENCES pedidos (idpedido),
     CONSTRAINT ck_stockactual CHECK (stockactual >= 0),
     CONSTRAINT ck_cantidad CHECK (cantidad > 0),
     CONSTRAINT fk_estado_kardex CHECK (
@@ -491,20 +518,24 @@ CREATE TABLE vehiculos (
         'taller',
         'averiado'
     ) NOT NULL DEFAULT 'operativo',
+    disponible VARCHAR(10) NULL DEFAULT 'Disponible',
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idusuario_vehi FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT uk_placa_vehi UNIQUE (placa),
     CONSTRAINT ck_capacidad_veh CHECK (capacidad > 0),
-    CONSTRAINT fk_estado_venta CHECK (estado IN ("0", "1"))
+    CONSTRAINT fk_estado_venta CHECK (estado IN ("0", "1")),
+    CONSTRAINT disponible_check CHECK (
+        disponible IN ('Disponible', 'Ocupado')
+    )
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS ventas;
 
 CREATE TABLE ventas (
     idventa INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idusuario INT NOT NULL ,
+    idusuario INT NOT NULL,
     idpedido CHAR(15) NOT NULL,
     idtipocomprobante INT NOT NULL,
     fecha_venta DATETIME NOT NULL DEFAULT NOW(),
@@ -516,19 +547,23 @@ CREATE TABLE ventas (
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1", -- 1: VENTA 	0: CANCELADO
-    condicion VARCHAR(50) NOT NULL DEFAULT 'pendiente',
-    CONSTRAINT fk_idusuario_venta FOREIGN KEY (idusuario)REFERENCES usuarios(idusuario),
+    condicion VARCHAR(50) NOT NULL DEFAULT 'Pendiente',
+    CONSTRAINT fk_idusuario_venta FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_idpedido_venta FOREIGN KEY (idpedido) REFERENCES pedidos (idpedido),
     CONSTRAINT fk_idtipocomprobante_venta FOREIGN KEY (idtipocomprobante) REFERENCES tipo_comprobante_pago (idtipocomprobante),
     CONSTRAINT fk_estado_venta CHECK (estado IN ("0", "1")),
     CONSTRAINT ck_subtotal_venta CHECK (subtotal > 0),
     CONSTRAINT ck_descuento CHECK (descuento >= 0),
     CONSTRAINT ck_igv CHECK (igv >= 0),
-    CONSTRAINT ck_numero_comprobante UNIQUE(numero_comprobante),
+    CONSTRAINT ck_numero_comprobante UNIQUE (numero_comprobante),
     CONSTRAINT ck_totalventa CHECK (total_venta > 0),
     CONSTRAINT uk_idpedido UNIQUE (idpedido),
     CONSTRAINT fk_condicion_venta CHECK (
-        condicion IN ('pendiente', 'despachado')
+        condicion IN (
+            'Pendiente',
+            'Despachado',
+            'Cancelado'
+        )
     )
 ) ENGINE = INNODB;
 
@@ -538,14 +573,14 @@ CREATE TABLE despachos (
     idvehiculo INT NOT NULL, -- ? REFERENCIA AL VEHICULO ASOCIADO
     idusuario INT NOT NULL, -- ? PERSONA QUE REGISTRO EL DESPACHO
     fecha_despacho DATE NOT NULL, -- ? FECHA PROGRAMADA PARA LA ENTREGA DEL PEDIDO
-
+    idjefe_mercaderia INT NOT NULL, -- ? Persona asignada como jefe de mercaderia 
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     inactive_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1", -- 1: pendiente, 0: despachado
-
     CONSTRAINT fk_idvehiculo_desp FOREIGN KEY (idvehiculo) REFERENCES vehiculos (idvehiculo),
     CONSTRAINT fk_idusuario_desp FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
+    CONSTRAINT fk_idusuario_jefe_mercaderia FOREIGN KEY (idjefe_mercaderia) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_estado_desp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
@@ -559,14 +594,14 @@ CREATE TABLE despacho_ventas (
     idproducto INT NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
 
+
     CONSTRAINT fk_despacho_det_desp FOREIGN KEY (iddespacho) REFERENCES despachos (iddespacho),
     CONSTRAINT fk_venta_det_desp_ FOREIGN KEY (idventa) REFERENCES ventas (idventa),
     CONSTRAINT fk_producto_det_desp FOREIGN KEY (idproducto) REFERENCES productos (idproducto)
 ) ENGINE = INNODB;
 
-
-
 DROP TABLE IF EXISTS detalle_meto_Pago;
+
 CREATE TABLE detalle_meto_Pago (
     iddetallemetodo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idventa INT NOT NULL,
@@ -595,23 +630,26 @@ CREATE TABLE comprobantes (
 DROP PROCEDURE IF EXISTS compras;
 
 CREATE TABLE compras (
-    idcompra  INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idcompra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idusuario INT NOT NULL,
     idproveedor INT NOT NULL,
     idtipocomprobante INT NOT NULL,
     numcomprobante VARCHAR(100) NOT NULL,
     fechaemision DATETIME NOT NULL DEFAULT NOW(),
-    create_at   DATETIME NOT NULL DEFAULT NOW(),
-    update_at   DATETIME NULL,
+    contador INT NOT NULL DEFAULT 0,
+    create_at DATETIME NOT NULL DEFAULT NOW(),
+    update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
     CONSTRAINT fk_idusuario_compra FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_idproveedor_compra FOREIGN KEY (idproveedor) REFERENCES proveedores (idproveedor),
     CONSTRAINT fk_idtipocomprobante_compra FOREIGN KEY (idtipocomprobante) REFERENCES tipo_comprobante_pago (idtipocomprobante),
-    CONSTRAINT fk_estado_compra CHECK (estado IN ("0", "1"))
+    CONSTRAINT fk_estado_compra CHECK (estado IN ("0", "1")),
+    CONSTRAINT ck_contador_compra UNIQUE (contador)
     -- CONSTRAINT ck_numero_comprobante_compra UNIQUE (idproveedor AND numcomprobante)
 ) ENGINE = INNODB;
 
 DROP PROCEDURE IF EXISTS detalles_compras;
+
 CREATE TABLE detalles_compras (
     iddetallecompra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idcompra INT NOT NULL,
@@ -630,8 +668,17 @@ CREATE TABLE detalles_compras (
     CONSTRAINT ck_precio_unitario_det_compra CHECK (precio_compra > 0),
     CONSTRAINT ck_subtotal_det_compra CHECK (subtotal > 0),
     CONSTRAINT ck_estado_det_compra CHECK (estado IN ('0', '1'))
-) ENGINE=INNODB;
+) ENGINE = INNODB;
 
+DROP TABLE IF EXISTS notificaciones;
+
+CREATE TABLE notificaciones (
+    idnotificacion INT AUTO_INCREMENT PRIMARY KEY,
+    mensaje TEXT NOT NULL,
+    leido TINYINT(1) DEFAULT 0, -- 0: no leído, 1: leído
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_at DATETIME NULL
+) ENGINE = INNODB;
 
 -- ------------------------------------------------------------------------------------------------------
 -- TODO: NUEVAS TABLAS
@@ -665,6 +712,14 @@ CREATE TABLE permisos (
     CONSTRAINT uk_vista_per UNIQUE (idperfil, idvista)
 ) ENGINE = INNODB;
 
+-- CREATE TABLE personas_perfiles (
+--     idpersperfil       INT  AUTO_INCREMENT PRIMARY KEY,
+--     idpersonanrodoc    INT ,
+--     idperfil           INT ,
+--     CONSTRAINT fk_idpersonanrodoc_per FOREIGN KEY (idpersonanrodoc) REFERENCES personas(idpersonanrodoc),
+--     CONSTRAINT fk_idperfil_per FOREIGN KEY (idperfil) REFERENCES perfiles(idperfil)
+-- ) ENGINE=INNODB;
+
 -- INSERSIONES DE DATOS DE LAS TABLAS
 -- INSERTAR DATOS A LA TABLA PERFILES
 INSERT INTO
@@ -672,7 +727,8 @@ INSERT INTO
 VALUES ('Administrador', 'ADM'),
     ('Vendedor', 'VND'),
     ('Almacenador', 'ALM'),
-    ('Chofer', 'CHF');
+    ('Chofer', 'CHF'),
+    ('Jefe de Mercaderia', 'JMF');
 
 -- INSERTAR DATOS A LA TABLA MODULOS
 INSERT INTO

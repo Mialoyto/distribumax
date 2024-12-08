@@ -91,4 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(e);
         }
     })();
+
+
+    (async()=>{
+        try {
+            const response = await fetch('../controller/ventas.controller.php?operation=conteoVentas');
+            const data = await response.json();
+            console.log(data);
+            $("#ve_pendientes").textContent = data[0].pendientes;
+            $("#ve_despachados").textContent = data[0].despachados;
+            $("#ve_cancelados").textContent = data[0].cancelados;
+           
+          
+        } catch (e) {
+            console.log(e);
+        }
+    })();
 });

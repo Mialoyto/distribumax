@@ -6,6 +6,7 @@ header("Content-Type: application/json; charset=utf-8");
 $verbo = $_SERVER["REQUEST_METHOD"];
 
 switch ($verbo) {
+    // REVIEW: METODO GET
   case 'GET':
     if (isset($_GET['operation'])) {
       switch ($_GET['operation']) {
@@ -35,16 +36,17 @@ switch ($verbo) {
             'idpedido' => $_GET['idpedido']
           ];
           echo json_encode($pedido->GetPedido($datosEnviar));
-        break;
+          break;
         case 'pediosDay':
           echo json_encode($pedido->pediosDay());
-        break;
+          break;
         case 'pedidosProvincia':
           echo json_encode($pedido->pedidosForProvincia());
-        break;
+          break;
       }
     }
     break;
+    // REVIEW: METODO POST
   case 'POST':
     if (isset($_POST['operation'])) {
       switch ($_POST['operation']) {
@@ -61,13 +63,40 @@ switch ($verbo) {
 
           $idpedido = $_POST['idpedido'];
           $estado = $_POST['estado'];
-
+          
           $datos = [
             'idpedido' => $idpedido,
             'estado'   => $estado
           ];
           $response = $pedido->UpdateEstadoPedido($datos);
           echo json_encode($response);
+          break;
+        case 'cancelarPedidoAll':
+          $idpedido = trim($_POST['idpedido']);
+          $datos = [
+            'status' => 'error',
+            'message' => '',
+            'success' => false
+          ];
+
+          if (empty($idpedido)) {
+            $datos['message'] = 'No se ha enviado el id del pedido';
+          } else {
+            $datosEnviar = [
+              'idpedido' => $idpedido
+            ];
+
+            $response = $pedido->cancelarPedidoAll($datosEnviar);
+            if ($response[0]['estado']) {
+              $datos['status'] = 'success';
+              $datos['message'] = $response[0]['mensaje'];
+              $datos['success'] = true;
+            } else {
+              $datos['message'] = $response[0]['mensaje'];
+            }
+          }
+          echo json_encode($datos);
+
           break;
       }
     }

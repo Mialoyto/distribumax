@@ -6,12 +6,53 @@ document.addEventListener("DOMContentLoaded", () => {
   const listProveedor = $("#list-proveedor");
   const idProveedor = $("#idproveedor");
   const formMarca = document.querySelector("#form-registrar-marca");
-  const marca = document.querySelector("#marca");
-  const idselect = document.querySelector("#idcategoria");
+  const idmarca = document.querySelector("#idmarca");
+  const listmarca = $("#list-marcas");
   let proveedores;
 
+  async function getMarcas(marca) {
+    const params = new URLSearchParams();
+    params.append("operation", "searchMarcas");
+    params.append("item", marca);
+    try {
+      const response = await fetch(`../../controller/marca.controller.php?${params}`);
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+ 
+  async function renderDataMarcas() {
+    listmarca.innerHTML = "";
+    if (dataMarca) {
+      listmarca.style.display = "block";
+      console.log(dataMarca);
 
-  // getCategorias();
+      dataMarca.forEach((item) => {
+        const li = document.createElement("li");
+        li.classList.add("list-group-item");
+        li.innerHTML = `${item.marca.toUpperCase()} <span class="badge text-bg-secondary" type="hidden">${item.idmarca}</span>`;
+
+        li.addEventListener("click", () => {
+          listmarca.innerHTML = "";
+          idmarca.setAttribute("data-id", item.idmarca);
+          idmarca.value = item.marca;
+          console.log(dataMarca);
+        });
+        $("#list-marcas").appendChild(li);
+      });
+    } else {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+      li.innerHTML = `<b>Marca no encontrada</b>`;
+      $("#list-marcas").appendChild(li);
+    }
+
+  }
+  
+
 
   // BUSCADOR DE PROVEEDORES
   async function getProveedor(proveedor) {
@@ -53,38 +94,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function validarDatos() {
+  // async function validarDatos() {
 
-    const idProveedorValue = idProveedor.getAttribute("data-id");
-    const marcaValue = marca.value.trim();
-    const categoriaValue = idselect.value;
-    console.log(idProveedorValue);
-    console.log(marcaValue);
-    console.log(categoriaValue);
+  //   const idProveedorValue = idProveedor.getAttribute("data-id");
+  //   const marcaValue = marca.value.trim();
+  //   const categoriaValue = idselect.value;
+  //   console.log(idProveedorValue);
+  //   console.log(marcaValue);
+  //   console.log(categoriaValue);
 
-    if (!idProveedorValue) {
-      showToast("Seleccione un proveedor", "info");
-      return false;
-    }
-    if (!categoriaValue) {
-      showToast("Seleccione una categoria", "info");
-      return false;
-    }
-    return true;
-  }
+  //   if (!idProveedorValue) {
+  //     showToast("Seleccione un proveedor", "info");
+  //     return false;
+  //   }
+  //   if (!categoriaValue) {
+  //     showToast("Seleccione una categoria", "info");
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
 
   async function registrarMarca() {
-    const inputMarca = marca.value.trim();
+    const inputMarca = document.querySelector("#marca").value.trim();
     const params = new FormData();
     params.append("operation", "addMarca");
     params.append("idproveedor", idProveedor.getAttribute("data-id"));
     params.append("marca", inputMarca);
-    params.append("idcategoria", idselect.value);
 
     const options = {
       method: "POST",
-      body: params,
+      body: params
     };
 
     try {
@@ -99,10 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   formMarca.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const data = await validarDatos();
-    if (!data) {
-      return;
-    } else {
+   
       if (await showConfirm("Desea registrar", "Marcas")) {
         const data = await registrarMarca();
         console.log(data[0].idmarca);
@@ -114,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
           showToast(`${data[0].mensaje}`, "error", "ERROR");
         }
       }
-    }
+    
   });
 
 
@@ -133,6 +170,40 @@ document.addEventListener("DOMContentLoaded", () => {
     if (proveedores) {
       renderData();
     }
+  });
+
+  let dataMarca;
+  idmarca.addEventListener("input", async () => {
+    const marca = idmarca.value.trim();
+    console.log(marca);
+    dataMarca = await getMarcas(marca);
+    console.log(dataMarca);
+
+    if (!marca) {
+      listmarca.innerHTML = "";
+      idmarca.removeAttribute("data-id");
+      return;
+    }
+    if (marca) {
+      renderDataMarcas();
+    }
+  });
+
+  formMarca.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (await showConfirm("Desea registrar", "Marcas")) {
+      const data = await registrarMarca();
+      console.log(data[0].idmarca);
+
+      if (data[0].idmarca > 0) {
+        showToast(`${data[0].mensaje}`, "success", "SUCCESS");
+        formMarca.reset();
+      } else {
+        showToast(`${data[0].mensaje}`, "error", "ERROR");
+      }
+    }
+
   });
 
   // const addSubcategoria = document.querySelector("#subcategoria");

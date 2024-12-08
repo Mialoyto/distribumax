@@ -45,33 +45,42 @@ class Persona extends Conexion
         }
     }
     // ACTUALIZAR PERSONA
-    public function updatePersona($params = []): bool
+    public function updatePersona($params = [])
     {
-        $estado = false;
         try {
-            $tsql = "CALL sp_actualizar_persona (?, ?, ?, ?, ?, ?, ?, ?)";
-            $cmd = $this->pdo->prepare($tsql);
-            $estado = $cmd->execute(
+            $query = $this->pdo->prepare("CALL sp_actualizar_persona (?, ?, ?, ?, ?, ?, ?,?)");
+            $query->execute(
                 array(
+                    $params["idpersonanrodoc"],
                     $params["idtipodocumento"],
-                    $params["iddistrito"],
                     $params["nombres"],
                     $params["appaterno"],
                     $params["apmaterno"],
                     $params["telefono"],
                     $params["direccion"],
-                    $params["idpersonanrodoc"]
+                    $params["distrito"],
                 )
             );
-            $estado = $cmd->rowCount() > 0;
-            if ($estado) {
-                return $estado;
-            }
+            $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
         } catch (Exception $e) {
             die($e->getMessage());
         }
-        return $estado;
     }
+    
+    public function getPersona($params = []){
+        try{
+            $query = $this->pdo->prepare("CALL sp_getPersona(?)");
+            $query->execute(array(
+                $params['idpersonanrodoc']
+            ));
+            $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
     // DESACTIVAR PERSONA
     public function inactivePersona($params = [])
     {
@@ -133,4 +142,34 @@ class Persona extends Conexion
             die($e->getMessage());
         }
     }
+
+    public function updateEstado($params = [])
+    {
+        try{
+            $query = $this->pdo->prepare("CALL sp_estado_persona (?,?)");
+            $query->execute(array(
+                $params['idpersonanrodoc'],
+                $params['estado']
+            ));
+            $response = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $response;
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
 }
+
+// $persona = new Persona();
+// $datos = array(
+//     'idpersonanrodoc' => 26558004,
+//     'idtipodocumento' => 1,
+//     'nombres' => 'Juan',
+//     'appaterno' => 'Perez',
+//     'apmaterno' => 'Gomez',
+//     'telefono' => '123456789',
+//     'direccion' => 'Av. Los Alamos',
+//     'distrito' => 'Chincha Alta'
+// );
+
+// $respuesta =  $persona->updatePersona($datos);
+// echo json_encode($respuesta);

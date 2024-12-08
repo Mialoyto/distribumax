@@ -34,6 +34,15 @@ switch ($verbo) {
                     $result = $usuario->getAll();
                     echo json_encode($result);
                     break;
+
+                case 'updateEstado':
+                    $datos = [
+                        'idusuario' => $_GET['idusuario'],
+                        'estado' => $_GET['estado']
+                    ];
+                    $response = $usuario->updateEstado($datos);
+                    echo json_encode($response);
+                    break;
             }
         }
         break;

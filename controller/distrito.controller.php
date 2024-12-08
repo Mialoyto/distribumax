@@ -19,6 +19,11 @@ switch ($verbo) {
                 case 'getAll':
                     echo json_encode($distrito->getAll());
                     break;
+                case 'getbyId':
+                    $datosEnviar = ["iddistrito" => $_GET["iddistrito"]];
+                    $response = $distrito->getbyId($datosEnviar);
+                    echo json_encode($response);
+                    break;
             }
         }
 

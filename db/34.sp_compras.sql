@@ -1,4 +1,4 @@
--- Active: 1732798376350@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 -- TODO: OBTENER PRODUCTOS POR PROVEEDOR (OK)
 -- * IMPORTANT: NO MODIFICAR ESTE PROCEDIMIENTO
 DROP PROCEDURE IF EXISTS sp_get_productos_proveedor;
@@ -35,20 +35,29 @@ CREATE PROCEDURE sp_registrar_compra (
     IN _idcomprobante INT,
     IN _numcomprobante VARCHAR(100),
     IN _fechaemision DATE
+
 )
 BEGIN
+      DECLARE nuevo_contador INT;
+
+    -- Obtener el valor máximo actual del contador para incrementarlo
+    SELECT IFNULL(MAX(contador), 0) + 1 INTO nuevo_contador FROM compras;
+
+    -- Insertar la nueva compra con el contador actualizado
     INSERT INTO compras(
         idusuario,
         idproveedor,
         idtipocomprobante,
         numcomprobante,
-        fechaemision
+        fechaemision,
+        contador
     ) VALUES (
         _idusuario,
         _idproveedor,
         _idcomprobante,
         _numcomprobante,
-        _fechaemision
+        _fechaemision,
+        nuevo_contador
     );
     SELECT LAST_INSERT_ID() AS idcompra;
 END;
@@ -109,6 +118,30 @@ END;
 
 -- CALL sp_registrar_detalle_compra(1,1,1,9,1);
 
+DROP PROCEDURE IF EXISTS sp_listar_compras;
+
+CREATE PROCEDURE sp_listar_compras()
+BEGIN
+SELECT 
+c.idcompra,
+c.numcomprobante, 
+c.fechaemision, 
+pr.proveedor,
+CASE c.estado
+            WHEN '1' THEN 'Activo'
+            WHEN '0' THEN 'Inactivo'
+        END AS estado,
+        CASE c.estado
+            WHEN '1' THEN '0'
+            WHEN '0' THEN '1'
+        END AS `status`
+FROM compras c 
+INNER JOIN proveedores pr ON pr.idproveedor=c.idproveedor
+ORDER BY c.idcompra  DESC;
+END;
+
+
+
 
 CREATE PROCEDURE sp_update_estadocompras(
     IN _estado CHAR(1),
@@ -120,4 +153,26 @@ BEGIN
     SET estado = _estado,
         update_at= NOW()
     WHERE idcompra = _idcompra;
+END;
+
+
+
+CREATE PROCEDURE sp_reporte_compras(IN _idcompra INT)
+BEGIN	
+	SELECT 
+    c.idcompra,
+    c.numcomprobante,
+    p.proveedor,
+    p.idempresa,
+    lt.numlote,
+	pr.nombreproducto,
+    dc.cantidad,
+    dc.precio_compra,
+	c.fechaemision
+    FROM compras c 
+    INNER JOIN detalles_compras dc ON dc.idcompra=c.idcompra
+    INNER JOIN proveedores p ON p.idproveedor=c.idproveedor
+    LEFT  JOIN productos pr ON pr.idproducto=dc.idproducto
+    LEFT JOIN lotes lt  ON lt.idlote=dc.idlote
+    WHERE c.idcompra=_idcompra;
 END;

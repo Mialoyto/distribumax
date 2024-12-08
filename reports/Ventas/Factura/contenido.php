@@ -4,12 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title><?= $ventas[0]['numero_comprobante'] ?></title>
-
     <style>
         body {
-            font-family: 'Courier New', monospace; /* Tipo de letra ideal para tickets */
+            font-family: 'Courier New', monospace;
             margin: 0;
             padding: 0;
             width: 100%;
@@ -27,9 +25,9 @@
         }
 
         .ticket-header {
-           
             margin-bottom: 10px;
             padding-bottom: 10px;
+            border-bottom: 1px dashed #000;
         }
 
         .ticket-header h1 {
@@ -38,8 +36,14 @@
             text-transform: uppercase;
         }
 
+        .ticket-header img {
+            max-width: 80px;
+            margin-bottom: 5px;
+        }
+
         .ticket-header p {
             margin: 3px 0;
+            font-size: 12px;
         }
 
         .ticket-section {
@@ -50,11 +54,6 @@
         .ticket-section p {
             margin: 3px 0;
             font-size: 11px;
-        }
-
-        .ticket-section strong {
-            display: inline-block;
-            width: 80px;
         }
 
         .ticket-table {
@@ -71,9 +70,15 @@
         }
 
         .ticket-table th {
-            background-color: #f9f9f9;
             font-size: 10px;
             text-transform: uppercase;
+            background-color: #f9f9f9;
+        }
+
+        .ticket-table .product-name {
+            border-bottom: none;
+            font-weight: bold;
+            text-align: left;
         }
 
         .ticket-total {
@@ -98,6 +103,18 @@
             margin: 2px 0;
         }
 
+        .payment-section,
+        .delivery-section {
+            text-align: left;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        .payment-section p,
+        .delivery-section p {
+            margin: 2px 0;
+        }
+
         .highlight {
             font-weight: bold;
             text-transform: uppercase;
@@ -109,14 +126,10 @@
     <div class="ticket">
         <!-- Encabezado -->
         <div class="ticket-header">
-        <div class="row align-items-start">
-			<img src="https://i.ibb.co/zrNYCfL/logo2.png" alt="Logo Empresa" style="width:100px;">
-			<h1 class="h1">
-				DISTRIBUMAX
-			</h1>
-		</div>
-            <p><strong><h1><?= $ventas[0]['numero_comprobante'] ?></h1></strong> </p>
-            <p><strong>Fecha:</strong> <?= $ventas[0]['fecha_venta'] ?></p>
+            <img src="<?= $host ?>/img/logo2.png" alt="Logo Empresa">
+            <h1>DistribuMax</h1>
+            <p><strong><?= $ventas[0]['numero_comprobante'] ?></strong></p>
+            <p>Fecha: <?= $ventas[0]['fecha_venta'] ?></p>
         </div>
 
         <!-- Datos del cliente -->
@@ -124,60 +137,58 @@
             <p><strong><?= $ventas[0]['tipo_cliente'] === 'Persona' ? 'Cliente:' : 'Razón Social:' ?></strong> <?= $ventas[0]['nombre_cliente'] ?></p>
             <p><strong><?= $ventas[0]['tipo_cliente'] === 'Persona' ? 'DNI:' : 'RUC:' ?></strong> <?= $ventas[0]['documento_cliente'] ?></p>
             <p><strong>Dirección:</strong> <?= $ventas[0]['direccion'] ?></p>
-       
         </div>
- 
+
+        <!-- Método de pago -->
+        <div class="payment-section">
+        <p><strong>Metodo(s) de pago:</strong></p>
+        <?php foreach ($metodos as $metodo) { ?>
+                   
+                  <p><?=$metodo['metodopago']?> <strong><?=$metodo['monto']?></strong></p> 
+        <?php } ?>
+        </div>
+
         <!-- Detalles de productos -->
         <table class="ticket-table">
             <thead>
-                <tr>
-                    <th></th>
-                
-                   <th></th>
-                    <th></th>
-                    <th></th>
-                  
-                 
-                </tr>
+                <tr></tr>
             </thead>
             <tbody>
-                <?php
-                foreach ($ventas as $producto) {
-                    echo "<tr>
-                            <td>" . $producto['nombreproducto'] . "</td>
-                              <td>" . $producto['codigo']. " </td>
-                              <td>" . $producto['cantidad_producto']. " </td>
-                              <td>" . $producto['precio_unitario']. " </td>
-                               <td>" . $producto['subtotal']. " </td>
-                       
-                          </tr>";
-                }
-                ?>
+                <?php foreach ($ventas as $producto) { ?>
+                    <tr class="product-name">
+                        <!-- Nombre del producto -->
+                        <td colspan="5"><?= $producto['nombreproducto'] ?></td>
+                    </tr>
+                    <tr>
+                        <!-- Código, cantidad, precio y subtotal -->
+                        <td><?= $producto['codigo'] ?></td>
+                        <td><?= $producto['cantidad_producto'] ?></td>
+                        <td><?= $producto['precio_unitario'] ?></td>
+                        <td><?= $producto['subtotal'] ?></td>
+                    </tr>
+                <?php } ?>
             </tbody>
         </table>
 
         <!-- Totales -->
         <div class="ticket-total">
-            <p>Subtotal:</span> S/ <?=$ventas[0]['sub_venta'] ?></p>
-            <p>IGV:</span> S/ <?= $ventas[0]['igv'] ?></p>
-            <p>Total:</span> S/ <?= $ventas[0]['total_venta'] ?></p>
+            <p><strong>Subtotal:</strong> S/ <?= $ventas[0]['sub_venta'] ?></p>
+            <p><strong>IGV (18%):</strong> S/ <?= $ventas[0]['igv'] ?></p>
+            <p><strong>Total:</strong> S/ <?= $ventas[0]['total_venta'] ?></p>
         </div>
-        
 
-        <!-- Footer -->
+        <!-- Datos de entrega -->
+        <div class="delivery-section">
+            <p><strong>Conductor:</strong><?=$ventas[0]['chofer']?></p>
+            <p><strong>Vehículo:</strong> <?= $ventas[0]['marca_vehiculo'] ?></p>
+            <p><strong>Placa:</strong> <?= $ventas[0]['placa'] ?></p>
+        </div>
+
+        <!-- Pie de página -->
         <div class="ticket-footer">
-
-        <div>
-            <h5>Datos entrega</h5>
-            <p>Vendedor:</p>
-            <p>Vehiculo: <?=$ventas[0]['marca_vehiculo']?></p>
-            <p>Placa: <?=$ventas[0]['placa']?></p>
-        </div>
-
             <p>¡Gracias por su compra!</p>
             <p>DistribuMax - Todos los derechos reservados</p>
         </div>
-        
     </div>
 </body>
 

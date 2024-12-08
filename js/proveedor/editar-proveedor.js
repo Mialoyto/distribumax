@@ -35,7 +35,7 @@ async function updateProveedor(idproveedor, idempresa, proveedor, contacto_princ
   }
 }
 
-async function formUpdateProveedor(idproveedor, idempresa, proveedor, contacto_principal,telefono_contacto,direccion, email, inputCorreo) {
+async function formUpdateProveedor(idproveedor, idempresa, proveedor, contacto_principal,telefono_contacto,direccion, email, inputProveedor) {
   const danger = document.querySelectorAll(".text-danger");
   danger.forEach((element) =>{
     element.remove();
@@ -58,11 +58,11 @@ async function formUpdateProveedor(idproveedor, idempresa, proveedor, contacto_p
 
     const STATUS = data[0].estado;
     if(!STATUS){
-      inputCorreo.classList.add("is-invalid");
+      inputProveedor.classList.add("is-invalid");
       const span = document.createElement("span");
       span.classList.add("text-danger");
       span.innerHTML = `${data[0].mensaje}`;
-      inputCorreo.insertAdjacentElement("afterend", span);
+      inputProveedor.insertAdjacentElement("afterend", span);
     }else{
       showToast(`${data[0].mensaje}`, "success", "SUCCESS");
     }

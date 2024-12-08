@@ -12,15 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const response = await fetch(url);
     const data = await response.json();
-
-    //    if(data!=0){
-    // $("#filtrar").removeAttribute("disabled");
-    // $("#fecha-venta").removeAttribute("disabled");
-    //    }else{
-    // $("#fecha-venta").setAttribute("disabled",true);
-    // $("#filtrar").setAttribute("disabled",true)
-    //    }
-    console.log('Datos recibidos:', data);  // Verificar los datos recibidos
     dtventa.destroy();
     Tablaventas.innerHTML = ''; // Limpiar contenido previo
 
@@ -37,8 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
       switch (element.venta_estado) {
         case "Pendiente":
           estadoClass = "text-warning";
-          icons = "bi bi-toggle2-on fs-6"
-          bgbtn = "btn-success";
+          icons = "bi bi-ban fs-6"
+          bgbtn = "btn-danger";
           reporte = "disabled";
 
           break;
@@ -47,11 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
           estadoClass = "text-primary";
           icons = "bi bi-toggle2-on fs-6";
           bgbtn = "btn-success disabled";
-
-
           break;
-
-
       }
 
 
@@ -69,27 +56,29 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${clienteNombre}</td>
                     <td>${documento}</td>
                     <td>${element.fecha_venta}</td>
-                    <td><strong class="${estadoClass}">
-                    ${element.venta_estado}
-                    </strong></td>
-                     <td>
-        
-                       
-                          <a class="btn btn-outline-danger reporte ${reporte} " data-idventa="${element.idventa}"
-                           type="button"  class="me-2" 
-                           data-bs-toggle="tooltip" 
-                           data-bs-placement="bottom" 
-                           data-bs-title="Comprobante">
-                            <i class="fas fa-file-alt me-6"></i>
-                          </a>
-                            <a id-data="${element.idventa}" class="btn ${bgbtn} estado  "  estado-cat="${element.status_venta}"
-                          type="button"  class="me-2" 
-                           data-bs-toggle="tooltip" 
-                           data-bs-placement="bottom" 
-                           data-bs-title="Cancelar venta">
-                            <i class="${icons}"></i>
-                          </a>
-                    
+                    <td><strong class="${estadoClass}">${element.venta_estado}</strong></td>
+                    <td>
+                      <div class="d-flex justify-content-start">
+                        <div>
+                            <a class="btn btn-outline-danger reporte ${reporte} " data-idventa="${element.idventa}"
+                              type="button"  class="me-2" 
+                              data-bs-toggle="tooltip" 
+                              data-bs-placement="bottom" 
+                              data-bs-title="Comprobante">
+                                <i class="fas fa-file-alt me-6"></i>
+                            </a>
+                          </div>
+                          <div>
+                            <a id-data="${element.idventa}" class="btn ${bgbtn} estado ms-2"  estado-cat="${element.status_venta}"
+                              id-ped="${element.idpedido}"
+                              type="button"  class="me-2" 
+                              data-bs-toggle="tooltip" 
+                              data-bs-placement="bottom" 
+                              data-bs-title="Cancelar venta">
+                                <i class="${icons}"></i>
+                            </a>
+                          </div>
+                        </div>
                     </td>
                 </tr>
             `;
@@ -116,19 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // const tagestado = document.querySelectorAll('.estado');
-    // tagestado.forEach(element => {
-    //     element.addEventListener("click", async (event) => {
-    //         event.preventDefault();
-    //         const idventa = element.getAttribute("data-idventa"); // OBTENER idventa
-    //         const estado= $("#estado").value
-    //          UpdateEstado(idventa,estado) // ALMACENAR idventa EN EL MODAL
-    //         console.log("idventa para actualizar: ", idventa);
-    //     });
-    // });
-
-
-
     const btnDisabled = document.querySelectorAll(".estado");
     const clase = document.querySelectorAll(".btn-danger")
     let id;
@@ -136,19 +112,18 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.addEventListener("click", async (e) => {
         try {
           e.preventDefault();
-          id = e.currentTarget.getAttribute("id-data");
-          const status = e.currentTarget.getAttribute("estado-cat");
-          console.log("ID:", id, "Status:", status);
+          const condicion = e.currentTarget.getAttribute("estado-cat");
+          const idventa = e.currentTarget.getAttribute("id-data");
+          const idpedido = e.currentTarget.getAttribute("id-ped");
+          console.log("Condicion:", condicion);
+          console.log("IDVENTA:", idventa, "IDPEDIDO:", idpedido);
           if (await showConfirm("¿Estás seguro de cancelar la venta?")) {
-            const data = await UpdateEstado(id, status);
 
-            dtventa.destroy();
-            CargarDatos();
-            RenderDatatable();
-            console.log("Estado actualizado correctamente:", data);
-
-          } else {
-            console.error("El atributo id-data o status es null o undefined.");
+            if (await cancelarVenta(condicion, idventa, idpedido)) {
+              dtventa.destroy();
+              CargarDatos();
+              RenderDatatable();
+            }
           }
         } catch (error) {
           console.error("Error al cambiar el estado de la subcategoría:", error);
@@ -156,36 +131,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-
-    // const btnDesactivar=document.querySelectorAll(".desactivar");
-    // let idventa;
-    // btnDesactivar.forEach((btn) => {
-    //     btn.addEventListener("click", async (e) => {
-    //       try {
-    //         e.preventDefault();
-    //         idventa = e.currentTarget.getAttribute("id-data");
-    //         const estado = e.currentTarget.getAttribute("estado-venta");
-    //         console.log("ID:", idventa, "Estado:", estado);
-    //         if (await showConfirm("¿Estás seguro de cambiar el estado de la venta?")) {
-    //           const data = await DesactivarVenta(idventa, estado);
-    //           dtventa.destroy();
-    //           CargarDatos();
-    //           RenderDatatable();
-    //           console.log("Venta desactivada correctamente:", data);
-    //         } else {
-    //           console.error("El atributo id-data o estado es null o undefined.");
-    //         }
-    //       } catch (error) {
-    //         console.error("Error al desactivar la venta:", error);
-    //       }
-    //     });
-    // });
     initializeTooltips();
   }
 
   (() => {
     RenderDatatable();
   })();
+
   initializeTooltips();
   async function RenderDatatable() {
     dtventa = new DataTable("#table-ventas", {
@@ -230,7 +182,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${element.nombreproducto}</td>
                 <td>${element.unidad_medida}</td>
                 <td>${element.cantidad_producto}</td>
-               
             </tr>
             `;
 
@@ -270,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function UpdateEstado(idventa, condicion) {
+  /* async function UpdateEstado(idventa, condicion) {
     const params = new FormData();
     params.append('operation', 'upVenta');
     params.append('condicion', condicion);
@@ -284,33 +235,47 @@ document.addEventListener("DOMContentLoaded", () => {
     const response = await fetch(`../../controller/ventas.controller.php`, options);
     const data = await response.json();
     console.log(data);
-  }
-
-  // async function DesactivarVenta(idventa,estado_venta){
-  //     const params = new FormData();
-  //     params.append('operation', 'UpdateEstado');
-  //     params.append('estado', estado_venta);
-  //     params.append('idventa', idventa);
-  //     try{
-  //         const response = await fetch(`../../controller/ventas.controller.php`, {
-  //             method: 'POST',
-  //             body: params
-  //         });
-
-  //         const data = await response.json();
-  //         console.log(data);
-  //     }catch(error){
-  //         console.error("Error al cambiar el estado de la venta:", error);
-  //     }
-  // }
+  } */
 
   // Filtrar ventas por fecha cuando se seleccione una nueva fecha
   $("#fecha-venta").addEventListener("input", () => {
     const fechaSeleccionada = $("#fecha-venta").value;
     CargarDatos(fechaSeleccionada);
-
-
   });
+
+
+  // NOTE ESTA FUNCIÓN DEBE DE CANCELAR LA VENTA
+  async function cancelarVenta(condicion, idventa, idpedido) {
+    const params = new FormData();
+    params.append('operation', 'cancelarVenta');
+    params.append('condicion', condicion);
+    params.append('idventa', idventa);
+    params.append('idpedido', idpedido);
+
+    const options = {
+      method: 'POST',
+      body: params
+    };
+
+    try {
+      const response = await fetch(`../../controller/ventas.controller.php`, options);
+      const data = await response.json();
+      console.log(data);
+      if (data.success) {
+        showToast(`${data.message}`, 'success', 'SUCCESS');
+        return true;
+      } else {
+        showToast(`${data.message}`, 'error', 'ERROR');
+        return false;
+      }
+
+
+    } catch (error) {
+      console.error("Error al cancelar la venta", error);
+    }
+
+
+  }
 
   // Llamar a CargarDatos sin filtro inicialmente
   CargarDatos();

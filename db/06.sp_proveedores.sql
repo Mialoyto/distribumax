@@ -1,4 +1,4 @@
--- Active: 1732798376350@@127.0.0.1@3306@distribumax
+-- Active: 1733577930028@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- REGISTRAR PROOVEDORES
@@ -201,6 +201,24 @@ BEGIN
     -- Devolver el mensaje y el ID del proveedor actualizado
     SELECT v_mensaje AS mensaje, v_idproveedor AS idproveedor, v_estado AS estado;
 END;
+
+CREATE PROCEDURE spu_get_proveedor_by_ruc(
+    IN _idempresa BIGINT
+)
+BEGIN
+    SELECT emp.idtipodocumento,
+    pvr.email,
+    pvr.direccion,
+    pvr.telefono_contacto,
+    pvr.contacto_principal,
+    pvr.proveedor,
+    emp.iddistrito,
+    idempresa
+    FROM proveedores pvr 
+    INNER JOIN empresas emp ON pvr.idempresa = emp.idempresaruc
+    WHERE idempresa = _idempresa;
+END;
+
 
 CALL sp_actualizar_proovedor(
     1,

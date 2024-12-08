@@ -35,6 +35,13 @@ if (isset($_GET['operation'])) {
       $datosRecibidos = $proveedor->getProveedores($datosEnviar);
       echo json_encode($datosRecibidos);
       break;
+    case 'ObtenerProveedorbyRuc':
+      $datosEnviar = [
+        'ruc' => $_GET['ruc']
+      ];
+      $datosRecibidos = $proveedor->ObtenerProveedorbyRuc($datosEnviar);
+      echo json_encode($datosRecibidos);
+      break;
     case 'getProveedor':
       $datosEnviar = [
         'idproveedor' => $_GET['idproveedor']

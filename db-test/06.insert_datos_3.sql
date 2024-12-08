@@ -428,7 +428,7 @@ CALL sp_registrar_vehiculo (
 );
 -- PARA ELIMINAR UN VEHICULO
 -- DELETE FROM vehiculos WHERE idvehiculo = 3;
-SELECT
+/* SELECT
     PER.idpersonanrodoc,
     PER.nombres,
     PER.appaterno,
@@ -439,4 +439,4 @@ INNER JOIN usuarios USU
     ON USU.idpersona = PER.idpersonanrodoc
 INNER JOIN perfiles PE
     ON PE.idperfil = USU.idperfil
-WHERE PE.perfil = 'chofer';
+WHERE PE.perfil = 'chofer'; */

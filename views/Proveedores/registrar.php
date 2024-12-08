@@ -45,14 +45,14 @@
           </div>
 
           <!-- Nombre del Proveedor y Distrito -->
-          <div class="row mb-3">
-            <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-6 mb-3">
               <div class="form-floating">
                 <input type="text" class="form-control" id="proveedor" name="proveedor" minlength="1" maxlength="50" disabled required>
                 <label for="proveedor">Nombre del Proveedor</label>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mb-3">
               <div class="form-floating position-relative">
                 <input type="text" class="form-control" id="iddistrito" placeholder="Distrito" disabled required>
                 <label for="iddistrito">Distrito</label>
@@ -62,14 +62,14 @@
           </div>
 
           <!-- Contacto Principal y Teléfono -->
-          <div class="row mb-3">
-            <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-6 mb-3">
               <div class="form-floating">
                 <input type="text" class="form-control" id="contacto_principal" name="contacto_principal" minlength="1" maxlength="50" disabled required>
                 <label for="contacto_principal">Contacto Principal</label>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mb-3">
               <div class="form-floating">
                 <input type="text" class="form-control" id="telefono-empresa" name="telefono-empresa" pattern="[0-9]+" title="Solo números" maxlength="9" minlength="9" disabled required>
                 <label for="telefono-empresa">Teléfono de Contacto</label>
@@ -78,8 +78,8 @@
           </div>
 
           <!-- Dirección y Correo Electrónico -->
-          <div class="row mb-3">
-            <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-6 mb-3">
               <div class="form-floating">
                 <input type="text" class="form-control" id="direccion" name="direccion" minlength="1" maxlength="100" disabled required>
                 <label for="direccion">Dirección</label>

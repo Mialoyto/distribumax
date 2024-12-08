@@ -659,7 +659,7 @@ BEGIN
     ELSE
         -- Actualizar el estado del pedido a 'cancelado' en la tabla de pedidos
         UPDATE pedidos
-        SET estado = 'Cancelado'
+        SET estado = 'Cancelado',
             update_at=now()
         WHERE idpedido = _idpedido AND estado != 'Cancelado';
 
@@ -685,7 +685,7 @@ BEGIN
 
         -- ACTUALIZAR EL ESTADO DEL DETALLE DEL PEDIDO
         UPDATE detalle_pedidos
-        SET estado = 0
+        SET estado = 0,
             update_at=now() 
         WHERE id_detalle_pedido = _id_detalle_pedido;
     

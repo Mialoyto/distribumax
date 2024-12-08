@@ -574,6 +574,7 @@ CREATE TABLE despachos (
     idusuario INT NOT NULL, -- ? PERSONA QUE REGISTRO EL DESPACHO
     fecha_despacho DATE NOT NULL, -- ? FECHA PROGRAMADA PARA LA ENTREGA DEL PEDIDO
     idjefe_mercaderia INT NOT NULL, -- ? Persona asignada como jefe de mercaderia 
+    idconductor       INT NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     inactive_at DATETIME NULL,
@@ -581,6 +582,7 @@ CREATE TABLE despachos (
     CONSTRAINT fk_idvehiculo_desp FOREIGN KEY (idvehiculo) REFERENCES vehiculos (idvehiculo),
     CONSTRAINT fk_idusuario_desp FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_idusuario_jefe_mercaderia FOREIGN KEY (idjefe_mercaderia) REFERENCES usuarios (idusuario),
+    CONSTRAINT fk_idconductor_despacho FOREIGN KEY (idconductor) REFERENCES usuarios (idusuario),
     CONSTRAINT fk_estado_desp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 

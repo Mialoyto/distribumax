@@ -22,10 +22,11 @@ if (isset($_POST['operation'])) {
       $idusuario = $_POST['idusuario'];
       $fecha_despacho = $_POST['fecha_despacho'];
       $jefe_mercaderia = $_POST['idjefe_mercaderia'];
+      $conductor = $_POST['idconductor'];
       $fecha_despacho = date('Y-m-d', strtotime($fecha_despacho));
       date_default_timezone_set('America/lima');
 
-      if (!empty($idvehiculo) && !empty($idusuario) && !empty($fecha_despacho) && !empty($jefe_mercaderia)) {
+      if (!empty($idvehiculo) && !empty($idusuario) && !empty($fecha_despacho) && !empty($jefe_mercaderia)&& !empty($conductor)) {
         if ($fecha_despacho <= date('Y-m-d')) {
           $datos['message'] = 'La fecha de despacho no puede ser menor o igual a la fecha actual';
           echo json_encode($datos);
@@ -42,7 +43,8 @@ if (isset($_POST['operation'])) {
           'idvehiculo' => $idvehiculo,
           'idusuario' => $idusuario,
           'fecha_despacho' => $fecha_despacho,
-          'idjefe_mercaderia' => $jefe_mercaderia
+          'idjefe_mercaderia' => $jefe_mercaderia,
+          'idconductor' => $conductor
         ];
         $response = $despacho->addDespacho($dataEnviar);
         // echo $response ? true : false;

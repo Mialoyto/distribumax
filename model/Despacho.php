@@ -17,13 +17,14 @@ class Despachos  extends Conexion
   {
     $id = -1;
     try {
-      $tsql = "CALL sp_despacho_registrar (?,?,?,?)";
+      $tsql = "CALL sp_despacho_registrar (?,?,?,?,?)";
       $query = $this->pdo->prepare($tsql);
       $query->execute(array(
         $params['idvehiculo'],
         $params['idusuario'],
         $params['fecha_despacho'],
-        $params['idjefe_mercaderia']
+        $params['idjefe_mercaderia'],
+        $params['idconductor']
       ));
       $id = $query->fetch(PDO::FETCH_ASSOC);
       return $id['iddespacho'];

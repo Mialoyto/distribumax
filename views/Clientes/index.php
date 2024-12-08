@@ -77,13 +77,13 @@
         </div>
       </div>
       <div class="card-body">
-        <table id="table-clientes" class="table table-striped" style="width: 100%;">
+        <table id="table-clientes" class="table table-striped" >
           <thead>
             <tr>
               <th>Documento</th>
               <th>Tipo de Cliente</th>
               <th>Cliente</th>
-              <th>Provincia</th>
+              <th>Provincia/Distrito</th>
               <th>Fecha de Creación</th>
               <th>Estado</th>
               <th class="text-center">Acciones</th>

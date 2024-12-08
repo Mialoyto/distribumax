@@ -492,16 +492,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const validacion = verificarCampos();
     console.log("datos de la validacion", validacion);
-    if (validacion.length != 0) {
-      const resultado = await RegistrarVenta();
-      console.log("id venta", resultado)
-      let idventa = resultado.id;
 
-      if (resultado) {
-        showToast("Venta registrada correctamente", "success", "SUCCESS");
-        await RegistrarDetalleMetodo(idventa);
-        $("#form-venta-registrar").reset();
-        limpiarDatosPedido();
+    if (await showConfirm("¿Desea registrar el vehiculo?", "Registro")) {
+      if (validacion.length != 0) {
+        const resultado = await RegistrarVenta();
+        console.log("id venta", resultado)
+        let idventa = resultado.id;
+
+        if (resultado) {
+          showToast("Venta registrada correctamente", "success", "SUCCESS");
+          await RegistrarDetalleMetodo(idventa);
+          $("#form-venta-registrar").reset();
+          limpiarDatosPedido();
+        }
+      }else{
+        showToast("No se pudo registrar la venta", "error", "ERROR");
       }
     }
   });

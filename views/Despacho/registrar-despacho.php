@@ -138,10 +138,10 @@ require_once '../header.php';
         <div class="card-footer">
           <div class="d-flex justify-content-between mt-2 mb-2">
             <div>
-              <a href="index.php" class="btn btn-secondary">Listar</a>
+              <a href="index.php" class="btn btn-primary ">Listar despacho</a>
             </div>
             <div class="text-end">
-              <button type="submit" class="btn btn-success">Registrar</button>
+              <button type="submit" class="btn btn-success">Registrar </button>
               <button type="reset" class="btn btn-outline-danger">Cancelar</button>
             </div>
           </div>

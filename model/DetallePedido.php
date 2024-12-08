@@ -31,15 +31,22 @@ class DetallePedido extends Conexion
     }
     // return $id;
   }
-}
 
-/* $prueba = new DetallePedido();
-$params = [
-  'idpedido' => 1,
-  'idproducto' => 1,
-  'cantidad' => 1,
-  'unidad_medida' => 'kg',
-  'precio_unitario' => 10.5
-];
-$id = $prueba->addDetallePedido($params);
-echo json_encode(['id' => $id]); */
+  // REVIEW : ESTA FUNCION SE ENCARGA DE CANCELAR EL ITEM DE UN PEDIDO
+
+  public function cancelarItemPedido($params = []): array
+  {
+    try {
+      $sql = "CALL sp_cancelar_item_pedido(?,?)";
+      $query = $this->pdo->prepare($sql);
+      $query->execute(array(
+        $params['iddetallepedido'],
+        $params['idpedido']
+      ));
+      $response =  $query->fetchAll(PDO::FETCH_ASSOC);
+      return $response;
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
+}

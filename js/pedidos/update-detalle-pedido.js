@@ -1,4 +1,4 @@
-// REVIEW
+/* // REVIEW
 // ? ESTA FUNCION ACTUALIZA EL ESTADO DEL PEDIDO
 async function updateEstado(id, status) {
   const params = new FormData();
@@ -153,4 +153,4 @@ function addProductToTable(id, codigo, descripcion, cantidad, unidadmedida, prec
       subtotalCell.textContent = `S/${subtotal}`;
     }
   });
-}
+} */

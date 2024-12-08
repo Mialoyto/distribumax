@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
            }
           const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-6" : "bi bi-toggle2-off fs-6";
           const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
           const isDisabled = element.estado === "Inactivo" || element.status === 0 ? "disabled" : "";
           // CONTENIDO DE LA TABLA
@@ -113,14 +113,24 @@ document.addEventListener("DOMContentLoaded", () => {
                   </td>
                   <td><strong class="${classDisponible}">${element.disponible}</strong></td>
                   <td>
-                      <div class="d-flex ">
-                          <a id-data="${element.idvehiculo}" class="btn btn-warning ${isDisabled}" data-bs-toggle="modal"  data-bs-target=".edit-vehiculo">
-                              <i class="bi bi-pencil-square fs-5"></i>
-                      </a>
-                      <a id-data="${element.idvehiculo}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">
-                              <i class="${icons}"></i>
-                      </a>
-                      </div>
+                      <div class="d-flex">
+                      <div class="btn-group btn-group-sm" role="group">
+    <a id-data="${element.idvehiculo}" 
+       class="btn btn-warning ${isDisabled}" 
+       data-bs-toggle="modal"  
+       data-bs-target=".edit-vehiculo">
+       <i class="bi bi-pencil-square fs-6"></i>
+    </a>
+    <a id-data="${element.idvehiculo}" 
+       class="btn ${bgbtn} ms-2 estado" 
+       status="${element.status}" 
+       data-bs-toggle="modal" 
+       data-bs-target=".edit-vehiculo">
+       <i class="${icons}"></i>
+    </a>
+    </di>
+</div>
+
                   </td>
               </tr>
             `;

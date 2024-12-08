@@ -70,8 +70,8 @@ class Despachos  extends Conexion
       $status = -1;
       $query = $this->pdo->prepare("call sp_actualizar_estado(?,?)");
       $status = $query->execute(array(
-        $params['iddespacho'],
-        $params['estado']
+        $params['estado'],
+        $params['iddespacho']
       ));
       return $status;
     } catch (Exception $e) {

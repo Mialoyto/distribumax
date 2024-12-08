@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (data.length > 0) {
                 data.forEach((element) => {
                     const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-                    const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-5" : "bi bi-toggle2-off fs-5";
+                    const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-6" : "bi bi-toggle2-off fs-6";
                     const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
                     const isDisabled = element.estado === "Inactivo" || element.status === 0 ? "disabled" : "";
 
@@ -94,17 +94,32 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <td class="${estadoClass}" fw-bold>${element.estado}</td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <a id-data="${element.id}" class="btn btn-warning ${isDisabled}" data-bs-toggle="modal" data-bs-target=".edit-empresa">
-                                    <i class="bi bi-pencil-square fs-5"></i>
-                                </a>
-                                    <a id-data="${element.id}" class="btn ${bgbtn} ms-2 estado" status="${element.status}">
-                                        <i class="${icons}"></i>
-                                    </a>
+                        
+                                     <div class="btn-group btn-group-sm" role="group">
+                                        <a id-data="${element.id}" 
+                                        class="btn btn-warning ${isDisabled}" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target=".edit-empresa"
+                                        type="button" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="bottom" 
+                                        data-bs-title="Editar">
+                                        <i class="bi bi-pencil-square fs-6"></i>
+                                        </a>
+                                        <a id-data="${element.id}" class="btn ${bgbtn} ms-2 estado" status="${element.status}"
+                                        type="button" class="me-2" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="bottom" 
+                                        data-bs-title="Cambiar estado">
+                                            <i class="${icons}"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
                     `;
                 });
+                
 
                 TablaEmpresa.innerHTML = tableContent;
 
@@ -119,7 +134,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // NOTE - EVENTO PARA ACTUALIZAR LAS EMPRESAS
                 modal.addEventListener("submit", async (e) => {
                     e.preventDefault();
-                    idempresaruc = inputRazonSocial.getAttribute("id-empresa");
+                    idempresaruc =parseInt(inputRazonSocial.getAttribute("id-empresa"));
                     const razonSocial = inputRazonSocial.value.trim();
                     const direccion = inputDireccion.value.trim();
                     const email = inputEmail.value.trim();

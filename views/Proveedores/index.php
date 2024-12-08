@@ -1,9 +1,8 @@
 <?php require_once '../header.php'; ?>
 <?php require_once '../../app/config/App.php'; ?>
 <main>
-	<div class="container-fluid px-4">
-		<h1 class="mt-4">Proveedores</h1>
-		<ol class="breadcrumb mb-4">
+	<div class="container-fluid px-4 mt-4" >
+	
 			<!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
 		</ol>
 		<!-- TARJETA -->
@@ -20,7 +19,7 @@
 						   data-bs-toggle="tooltip" 
 						   data-bs-placement="bottom" 
 						   data-bs-title="Generar PDF">
-							<i class="bi bi-file-earmark-pdf fs-3"></i>
+							<i class="bi bi-file-earmark-pdf fs-6"></i>
 						</a>
 					</div>
 				</div>
@@ -36,6 +35,7 @@
 								<th>Teléfono</th>
 								<th>Correo</th>
 								<th>Dirección</th>
+								<th>Estado</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>

@@ -63,7 +63,8 @@ CREATE PROCEDURE sp_registrar_salida_pedido (
     IN _idusuario    INT,
     IN _idproducto   INT,
     IN _cantidad     INT,
-    IN _motivo       VARCHAR(255)
+    IN _motivo       VARCHAR(255),
+    IN _idpedido     CHAR(15)  -- - //FIXME: NUEVO PARAMETRO PARA IDENTIFICAR EL PEDIDO
 )
 BEGIN
     DECLARE v_nuevo_stock INT;
@@ -129,6 +130,7 @@ BEGIN
         CALL sp_registrarmovimiento_kardex(
             _idusuario,
             _idproducto, 
+            _idpedido, -- -//FIXME - NUEVO PARAMETRO
             v_LoteID, 
             v_nuevo_stock,
             'Salida', 

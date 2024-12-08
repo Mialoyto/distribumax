@@ -43,27 +43,27 @@ if (isset($_POST['operation'])) {
       break;
 
     case 'UpdateEstado':
-      $datosEnviar=[
-        'estado'=>$_POST['estado'],
-        'idproducto'=>$_POST['idproducto']
+      $datosEnviar = [
+        'estado' => $_POST['estado'],
+        'idproducto' => $_POST['idproducto']
       ];
       echo json_encode($producto->UpdateEstado($datosEnviar));
-    break;
+      break;
     case 'updateProducto':
-      $datosEnviar=[
-        'idmarca'=>$_POST['idmarca'],
-        'idsubcategoria'=>$_POST['idsubcategoria'],
-        'nombreproducto'=>$_POST['nombreproducto'],
-        'idunidadmedida'=>$_POST['idunidadmedida'],
-        'cantidad_presentacion'=>$_POST['cantidad_presentacion'],
-        'codigo'=>$_POST['codigo'],
-        'precio_compra'=>$_POST['precio_compra'],
-        'precio_mayorista'=>$_POST['precio_mayorista'],
-        'precio_minorista'=>$_POST['precio_minorista'],
-        'idproducto'=>$_POST['idproducto'],
+      $datosEnviar = [
+        'idmarca' => $_POST['idmarca'],
+        'idsubcategoria' => $_POST['idsubcategoria'],
+        'nombreproducto' => $_POST['nombreproducto'],
+        'idunidadmedida' => $_POST['idunidadmedida'],
+        'cantidad_presentacion' => $_POST['cantidad_presentacion'],
+        'codigo' => $_POST['codigo'],
+        'precio_compra' => $_POST['precio_compra'],
+        'precio_mayorista' => $_POST['precio_mayorista'],
+        'precio_minorista' => $_POST['precio_minorista'],
+        'idproducto' => $_POST['idproducto'],
       ];
       echo json_encode($producto->updateProducto($datosEnviar));
-    break;
+      break;
   }
 }
 
@@ -96,10 +96,10 @@ if (isset($_GET['operation'])) {
       $datosRecibidos = $producto->getCodigoProducto($datosEnviar);
       echo json_encode($datosRecibidos);
       break;
-      
-      case 'ObtenerProducto':
-        $datos=['idproducto'=>$_GET['idproducto']];
-        echo json_encode($producto->ObtenerProducto($datos));
-       break;
+
+    case 'ObtenerProducto':
+      $datos = ['idproducto' => $_GET['idproducto']];
+      echo json_encode($producto->ObtenerProducto($datos));
+      break;
   }
 }

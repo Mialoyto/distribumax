@@ -12,7 +12,7 @@ SELECT * FROM subcategorias;
 SELECT * FROM productos;
 
 SELECT * FROM proveedores;
-
+SELECT * FROM kardex;
 SELECT * FROM marcas;
 
 SELECT * FROM subcategorias;

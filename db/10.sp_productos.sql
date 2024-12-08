@@ -1,4 +1,4 @@
--- Active: 1726698325558@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -47,9 +47,8 @@ VALUES
         SELECT LAST_INSERT_ID() AS idproducto;
 END;
 
+
 -- ACTUALIZA PRODUCTOS
-
-
 DROP PROCEDURE IF EXISTS sp_actualizar_producto;
 
 CREATE PROCEDURE sp_actualizar_producto (
@@ -108,13 +107,6 @@ BEGIN
 END;
 
 
-
-
-
-
-
-select * from productos;
-
 DROP PROCEDURE IF EXISTS sp_estado_producto;
 
 CREATE PROCEDURE sp_estado_producto (
@@ -136,7 +128,6 @@ END;
 
 CALL sp_estado_producto ('0', 1);
 
-SELECT * FROM productos;
 -- PRUEBA DE BUSQUEDA de productos
 DROP PROCEDURE IF EXISTS sp_buscar_productos;
 
@@ -212,14 +203,14 @@ CALL sp_get_codigo_producto ('AJI-SZ-001');
 
 SELECT * FROM detalle_pedidos;
 
-DROP PROCEDURE IF EXISTS sp_listar_productos;
 
+DROP PROCEDURE IF EXISTS sp_listar_productos;
 CREATE PROCEDURE sp_listar_productos()
 BEGIN
     SELECT 
         p.idproducto,
         m.marca,
-        c.categoria,
+        sb.subcategoria,
         p.nombreproducto,
         p.codigo,
         CASE p.estado
@@ -230,29 +221,20 @@ BEGIN
             WHEN '1' THEN '0'
             WHEN '0' THEN '1'
         END AS `status`
-    FROM 
-        productos p
-    JOIN 
-        marcas m ON p.idmarca = m.idmarca
-    JOIN 
-        categorias c ON m.idcategoria = c.idcategoria;
-   -- Solo productos activos
-END;
+    FROM productos p
+    INNER JOIN marcas m ON p.idmarca = m.idmarca
+    INNER JOIN categorias c ON c.idcategoria = c.idcategoria
+    INNER JOIN subcategorias sb ON sb.idsubcategoria = p.idsubcategoria
+    WHERE 
+        p.estado = '1'; -- Solo productos activos
+END ;
 
 SELECT * FROM productos;
+SELECT * FROM detalle_cate_marca;
 
 CALL sp_listar_productos ();
 
--- CREATE PROCEDURE sp_eliminar_producto(IN _idproducto INT)
--- BEGIN
---     -- Verifica que el producto existe antes de eliminarlo
---     IF EXISTS (SELECT 1 FROM productos WHERE idproducto = _idproducto) THEN
---     DELETE FROM productos WHERE idproducto = _idproducto;
---     ELSE
---     -- Si el producto no existe, puedes lanzar un mensaje de error o simplemente terminar
---     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El producto no existe';
---     END IF;
--- END;
+
 
 DROP PROCEDURE IF EXISTS sp_obtener_producto;
 
@@ -260,9 +242,8 @@ CREATE PROCEDURE sp_obtener_producto (IN _idproducto INT)
 BEGIN
     SELECT 
         pr.idproveedor,
-        p.idproducto,
+    p.idproducto,
         m.marca,
-        m.idmarca,
         m.idmarca,
         c.categoria,
         sb.subcategoria,
@@ -280,20 +261,16 @@ BEGIN
     JOIN 
         marcas m ON p.idmarca = m.idmarca
     JOIN 
-        categorias c ON m.idcategoria = c.idcategoria
-
+        detalle_cate_marca dcm ON m.idmarca = dcm.idmarca
     JOIN 
-       subcategorias sb ON c.idcategoria=sb.idsubcategoria
+        categorias c ON dcm.idcategoria = c.idcategoria
+    JOIN 
+        subcategorias sb ON sb.idsubcategoria = p.idsubcategoria
     JOIN 
         unidades_medidas um ON p.idunidadmedida = um.idunidadmedida
-    JOIN proveedores pr ON p.idproveedor = pr.idproveedor
+    JOIN 
+        proveedores pr ON p.idproveedor = pr.idproveedor
     WHERE 
         p.idproducto = _idproducto
         AND p.estado = '1';
-END;
-
-CALL sp_obtener_producto (2);
-
-SELECT * FROM productos;
-
-SELECT * FROM unidades_medidas
+END ;

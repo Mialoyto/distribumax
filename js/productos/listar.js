@@ -1,3 +1,7 @@
+
+// ! : NO TOQUES ESTE CODIGO, PORQUE TODO YA ESTA CORRECTO DESDE EL EDITAR
+// ! : Y CAMBIAR SU ESTADO
+
 document.addEventListener("DOMContentLoaded", function () {
   function $(object = null) { return document.querySelector(object); }
   let dtproductos;
@@ -22,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams();
     params.append('operation', 'ObtenerProducto');
     params.append('idproducto', id);
-
+    console.log('ESTOY OBTENIEDO EL PRODUCTO');
     try {
       const response = await fetch(`../../controller/producto.controller.php?${params}`);
       const data = await response.json();
@@ -201,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (data.length > 0) {
         data.forEach(element => {
           const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
-          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-7" : "bi bi-toggle2-off fs-7";
+          const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-8" : "bi bi-toggle2-off fs-8";
           const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
           const editDisabled = element.estado === "Inactivo" ? "disabled" : "";
           Tablaproductos.innerHTML += `
@@ -212,16 +216,22 @@ document.addEventListener("DOMContentLoaded", function () {
                       <td>${element.codigo}</td>
                       <td><strong class="${estadoClass}">${element.estado}</strong></td>
                       <td>
-                            <div class="d-flex justify-content-center">
-  <div class="btn-group btn-group-sm" role="group">
-    <a id-data="${element.idproducto}" class="btn btn-warning ${editDisabled}" data-bs-toggle="modal" data-bs-target=".edit-categoria">
-      <i class="bi bi-pencil-square fs-7"></i>
+
+    <a id-data="${element.idproducto}" class="btn btn-warning ${editDisabled}" data-bs-toggle="modal" data-bs-target=".edit-categoria"
+      type="button" class="me-2" 
+                           data-bs-toggle="tooltip" 
+                           data-bs-placement="bottom" 
+                           data-bs-title="Editar">
+      <i class="bi bi-pencil-square fs-8"></i>
     </a>
-    <a id-data="${element.idproducto}" class="btn ${bgbtn} estado" estado-cat="${element.status}">
+    <a id-data="${element.idproducto}" class="btn ${bgbtn} estado" estado-cat="${element.status}"
+      type="button" class="me-2" 
+                           data-bs-toggle="tooltip" 
+                           data-bs-placement="bottom" 
+                           data-bs-title="Cambiar estado">
       <i class="${icons}"></i>
     </a>
-  </div>
-</div>
+
                       </td>
                   </tr>
                   `;
@@ -260,7 +270,7 @@ document.addEventListener("DOMContentLoaded", function () {
             CargarModal(id);
           });
         });
-
+        initializeTooltips();
         RenderDatatable();
       } else {
         Tablaproductos.innerHTML = '<tr><td colspan="5" class="text-center">No hay datos disponibles</td></tr>';

@@ -134,19 +134,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // NOTE - EVENTO PARA ACTUALIZAR LAS EMPRESAS
                 modal.addEventListener("submit", async (e) => {
                     e.preventDefault();
-                    idempresaruc =parseInt(inputRazonSocial.getAttribute("id-empresa"));
+                    idempresaruc = inputRazonSocial.getAttribute("id-empresa");
                     const razonSocial = inputRazonSocial.value.trim();
                     const direccion = inputDireccion.value.trim();
                     const email = inputEmail.value.trim();
                     const telefono = inputTelefono.value.trim();
 
-                    console.log("idempresa: ", idempresaruc);
+                    console.log("idempresaruc: ", idempresaruc);
                     console.log("razon social: ", razonSocial);
                     console.log("direccion: ", direccion);
                     console.log("email", email);
                     console.log("telefono:", telefono);
-
-                    await updateEmpresa(idempresa, razonSocial, direccion, email, telefono);
+                    await updateEmpresa(idempresaruc, razonSocial, direccion, email, telefono);
                     await CargarEmpresa();
                 });
 

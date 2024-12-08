@@ -33,7 +33,7 @@ async function updateEmpresa(id, razonSocial, direccion, email, telefono) {
     }
 }
 
-async function formUpdateEmpresa(id, razonSocial, direccion, email, telefono) {
+async function formUpdateEmpresa(id, razonSocial, direccion, email, telefono,inputRazonSocial) {
     const danger = document.querySelectorAll(".text-danger");
     danger.forEach((element) =>{
         element.remove();
@@ -54,11 +54,11 @@ async function formUpdateEmpresa(id, razonSocial, direccion, email, telefono) {
 
         const STATUS = data[0].estado;
         if(!STATUS){
-            inputEmail.classList.add("is-invalid");
+            inputRazonSocial.classList.add("is-invalid");
             const span = document.createElement("span");
             span.classList.add("text-danger");
             span.innerHTML = `${data[0].mensaje}`;
-            inputEmail.insertAdjacentElement("afterend", span);
+            inputRazonSocial.insertAdjacentElement("afterend", span);
         }else{
             showToast(`${data[0].mensaje}`, "success", "SUCCESS");
         }

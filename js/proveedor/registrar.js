@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     params.append("email", $("#email").value);
 
     try {
-      const response = await fetch("../../controller/proveedor.controller.php", {
+      const response = await fetch(`../../controller/proveedor.controller.php`, {
         method: "POST",
         body: params,
       });
@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("#btn-cliente-empresa").addEventListener("click", async () => {
     const existeProveedor = await verificarProveedor($("#nro-doc-empresa").value.trim());
-    console.log("Existe proveedor:", existeProveedor[0]);
+    console.log("Existe proveedor:", existeProveedor);
     if (existeProveedor[0]) {
       showToast("El proveedor ya está registrado", "info", "INFO");
 
@@ -225,6 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ["#email", "#iddistrito", "#telefono-empresa", "#registrarEmpresa"].forEach((selector) => {
       $(selector).toggleAttribute("disabled", !estado);
     });
+    document.getElementById("contacto_principal").disabled = !estado;
     console.log(`Campos ${estado ? "habilitados" : "deshabilitados"}`);
     limpiarCampos();
   };
@@ -233,6 +234,5 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#telefono-empresa").value = "";
     $("#contacto_principal").value = "";
     $("#iddistrito").value = "";
-    $("contacto_principal").disabled = true;
   };
 });

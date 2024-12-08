@@ -30,6 +30,7 @@
               <tr class="text-center">
                 <th>Marca</th>
                 <th>Categoría</th>
+                <th>Subcategoría</th>
                 <th>Nombre del Producto</th>
                 <th>Código</th>
                 <th>Estado</th>
@@ -64,7 +65,7 @@
 
             <div class="mb-3">
               <label for="marca" class="form-label">Marca</label>
-              <select name="" id="idmarca" class="form-select" required>
+              <select name="" id="idmarca" class="form-select" required disabled>
                 <option value="">Seleccione una Marca</option>
                 <!-- Opciones se llenarán dinámicamente -->
               </select>

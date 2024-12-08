@@ -62,7 +62,7 @@
               <div class="modal-body">
                 <div class="mb-3">
                   <label for="razonsocial" class="form-label">Razón Social</label>
-                  <input type="text" id="editRazonSocial" name="razonsocial" class="form-control" required>
+                  <input type="text" id="editRazonSocial" name="razonsocial" class="form-control" disabled>
                 </div>
 
                 <div class="mb-3">

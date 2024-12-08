@@ -30,6 +30,7 @@ CREATE PROCEDURE sp_actualizar_empresa(
 )
 BEGIN
     DECLARE v_mensaje VARCHAR(100);
+    DECLARE v_idempresaruc BIGINT;
     DECLARE v_estado INT;
     DECLARE v_razonsocial VARCHAR(100);
 
@@ -46,6 +47,7 @@ BEGIN
         -- Si no existe, actualizamos los datos de la empresa
         UPDATE empresas
         SET
+            idempresaruc = _idempresaruc,
             razonsocial = _razonsocial,
             direccion = _direccion,
             email = _email,
@@ -53,6 +55,7 @@ BEGIN
             update_at = NOW()  -- Actualizamos la fecha y hora de la última actualización
         WHERE idempresaruc = _idempresaruc;
 
+        SET v_idempresaruc = _idempresaruc;
         SET v_mensaje = 'Empresa actualizada correctamente';
         SET v_estado = 1;
     END IF;
@@ -61,6 +64,7 @@ BEGIN
     SELECT v_mensaje AS mensaje, _idempresaruc AS idempresaruc, v_estado AS estado;  
 END;
 
+CALL sp_actualizar_empresa(20266352337,'JRC','Av. San Ignacio #247','jrc@gmail.com','983923290');
 
 
 SELECT * FROM empresas;

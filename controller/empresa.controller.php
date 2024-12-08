@@ -1,4 +1,6 @@
 <?php
+
+
 require_once '../model/Empresa.php';
 $empresa = new Empresas();
 
@@ -18,7 +20,6 @@ if (isset($_GET['operation'])) {
       break;
 
     case 'search':
-      // Preparar el RUC que viene en la solicitud
       $dato = [
         'ruc' => $_GET['ruc']
       ];
@@ -45,7 +46,7 @@ if (isset($_GET['operation'])) {
       $email = $_GET['email'];
       $telefono = $_GET['telefono'];
 
-      if(empty($idempresaruc) || empty($razonsocial) || empty($direccion) || empty($email) || empty($telefono)){
+      if(empty($idempresaruc || empty($razonsocial) || empty($direccion) || empty($email) || empty($telefono))){
         echo json_encode(['status' => 'error','message' => 'Faltan datos']);
         return;
       } else if(!is_numeric($idempresaruc)){

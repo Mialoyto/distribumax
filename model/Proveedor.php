@@ -52,6 +52,17 @@ class Proveedor extends Conexion
         }
     }
 
+    public function ObtenerProveedorbyRuc($params = []): array
+    {
+        try{
+            $query = $this->pdo->prepare("CALL spu_get_proveedor_by_ruc(?)");
+            $query->execute(array($params['ruc']));
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
     public function updateProveedor($params = [])
     {
         try {

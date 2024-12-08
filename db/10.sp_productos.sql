@@ -1,4 +1,4 @@
--- Active: 1732807506399@@127.0.0.1@3306@distribumax
+-- Active: 1728956418931@@127.0.0.1@3306@distribumax
 
 USE distribumax;
 
@@ -210,6 +210,7 @@ BEGIN
     SELECT 
         p.idproducto,
         m.marca,
+        c.categoria,
         sb.subcategoria,
         p.nombreproducto,
         p.codigo,
@@ -223,11 +224,11 @@ BEGIN
         END AS `status`
     FROM productos p
     INNER JOIN marcas m ON p.idmarca = m.idmarca
-    INNER JOIN categorias c ON c.idcategoria = c.idcategoria
     INNER JOIN subcategorias sb ON sb.idsubcategoria = p.idsubcategoria
+    INNER JOIN categorias c ON sb.idcategoria = c.idcategoria -- Relación corregida
     WHERE 
         p.estado = '1'; -- Solo productos activos
-END ;
+END;
 
 SELECT * FROM productos;
 SELECT * FROM detalle_cate_marca;
@@ -242,10 +243,11 @@ CREATE PROCEDURE sp_obtener_producto (IN _idproducto INT)
 BEGIN
     SELECT 
         pr.idproveedor,
-    p.idproducto,
+        p.idproducto,
         m.marca,
         m.idmarca,
         c.categoria,
+        c.idcategoria,
         sb.subcategoria,
         sb.idsubcategoria,
         p.nombreproducto,

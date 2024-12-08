@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const idproducto = modal.querySelector("#idproducto");
   const proveedor = document.querySelector("#idproveedor");
 
-  let idmarca, idsubcategoria, idunidadmedida;
+  let idmarca, idsubcategorias, idunidadmedida;
 
   async function Getproducto(id) {
     const params = new URLSearchParams();
@@ -58,6 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Llamar a obtenerMarca y obtenerUnidades después de establecer el atributo id-proveedor
         obtenerMarca(data[0].idmarca);
         obtenerUnidades(data[0].idunidadmedida);
+        obtenerSubcategorias(data[0].idsubcategoria);
+      
       }
     } catch (error) {
       console.log("No es posible cargar el modal:", error);
@@ -74,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch(`../../controller/marca.controller.php?${params}`);
       const data = await response.json();
-      console.log(data);
+   
 
       const selectMarca = document.querySelector('#idmarca');
       selectMarca.innerHTML = ''; // Limpiar opciones anteriores
@@ -103,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+
   async function ObtenerCategorias(marcaId) {
     const params = new URLSearchParams();
     params.append('operation', 'getmarcas_categorias');
@@ -110,7 +113,8 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch(`../../controller/marca.controller.php?${params}`);
       const data = await response.json();
-      console.log(data);
+
+ 
       const selectCategoria = document.querySelector('#idcategoria');
       selectCategoria.innerHTML = ''; // Limpiar opciones anteriores
       data.forEach(element => {
@@ -125,13 +129,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Agregar evento change para cargar subcategorías cuando se seleccione una categoría
       selectCategoria.addEventListener('change', function () {
-        idsubcategoria = this.value;
-        console.log("Categoría seleccionada:", idsubcategoria);
-        obtenerSubcategorias(idsubcategoria);
+        idsubcategorias = this.value;
+        console.log("Categoría seleccionada:", idsubcategorias);
+        obtenerSubcategorias(idsubcategorias);
       });
 
       // Cargar subcategorías para la categoría seleccionada inicialmente
-      obtenerSubcategorias(inputcategoria.value);
+       obtenerSubcategorias(selectCategoria.value);
 
     } catch (error) {
       console.error("Error al obtener las categorías:", error);
@@ -142,32 +146,47 @@ document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams();
     params.append('operation', 'getSubcategorias');
     params.append('idcategoria', categoriaId);
+  
     try {
       const response = await fetch(`../../controller/subcategoria.controller.php?${params}`);
       const data = await response.json();
-      console.log(data);
+  
       const selectSubcategoria = document.querySelector('#idsubcategoria');
       selectSubcategoria.innerHTML = ''; // Limpiar opciones anteriores
+  
       data.forEach(element => {
         const tagoption = document.createElement('option');
         tagoption.value = element.idsubcategoria;
         tagoption.textContent = element.subcategoria;
-        if (element.idsubcategoria == inputsubcategoria.value) {
-          tagoption.selected = true;
+  
+        // Comparar correctamente los valores
+        if (String(element.idsubcategoria) === String(inputsubcategoria.value)) {
+          tagoption.selected = true; // Marcar la opción como seleccionada
         }
+          
         selectSubcategoria.appendChild(tagoption);
       });
 
+      
+      // Agregar evento change para manejar cambios en subcategorías
+      selectSubcategoria.addEventListener('change', function () {
+        idsubcategorias = this.value;
+        console.log("Subcategoría seleccionada:", idsubcategorias);
+      });
+  
     } catch (error) {
       console.error("Error al obtener las subcategorías:", error);
     }
   }
+  
+
+ 
 
   async function obtenerUnidades(selectedUnidadId) {
     try {
       const response = await fetch(`../../controller/unidades.controller.php?operation=getUnidades`);
       const data = await response.json();
-      console.log(data);
+     
       const selectUnidad = document.querySelector('#idunidadmedida');
       selectUnidad.innerHTML = ''; // Limpiar opciones anteriores
       data.forEach(element => {
@@ -212,6 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   <tr>
                       <td>${element.marca}</td>
                       <td>${element.categoria}</td>
+                      <td>${element.subcategoria}</td>
                       <td>${element.nombreproducto}</td>
                       <td>${element.codigo}</td>
                       <td><strong class="${estadoClass}">${element.estado}</strong></td>

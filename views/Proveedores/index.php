@@ -80,7 +80,7 @@
 										</div>
 										<div class="mb-3">
 											<label for="editTelefono" class="form-label">Teléfono</label>
-											<input type="text" id="editTelefono" class="form-control" name="telefono_contacto" required>
+											<input type="number" id="editTelefono" class="form-control" name="telefono_contacto" maxlength="9" required>
 										</div>
 									</div>
 									<div class="modal-footer">

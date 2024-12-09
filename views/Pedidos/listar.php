@@ -1,13 +1,19 @@
 <?php require_once '../header.php'; ?>
 <main>
-   <div class="container-fluid px-4">
+   <div class="container-fluid px-4 mt-4">
       <ol class="breadcrumb mb-4">
          <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
       </ol>
 
-      <div class="card ">
-         <div class="card-header ">
-            <h2 class="card-title">Listar Pedidos</h2>
+      <div class="card mb-4">
+         <div class="card-header">
+         <div class="d-flex justify-content-between align-items-center">
+					<div>
+						<i class="bi bi-clipboard-check fs-3 fw-bold"> Listado de Pedidos</i>
+					</div>
+					<div>
+               </div>
+         </div>
          </div>
          <div class="card-body">
 

@@ -1,12 +1,46 @@
 <?php require_once '../header.php'; ?>
 <?php require_once '../../app/config/App.php'; ?>
+
 <main>
-  <div class="container-fluid px-4">
+  <div class="container-fluid px-4 mt-4">
     <ol class="breadcrumb mb-4">
       <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
     </ol>
 
-    <!-- Modal para actualizar cliente -->
+    <!-- card para listar los clientes -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <i class="bi bi-clipboard-check fs-3 fw-bold">Listado de Clientes</i>
+          </div>
+          <div>
+            <a href="<?= $URL . 'reports/Vehiculos/contenidoPDF.php' ?>" type="button" class="me-2 btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Generar PDF">
+              <i class="bi bi-file-earmark-pdf fs-6"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <table id="table-clientes" class="table table-striped" style="width: 100%;">
+          <thead>
+            <tr>
+              <th>Documento</th>
+              <th>Tipo de Cliente</th>
+              <th>Cliente</th>
+              <th>Provincia</th>
+              <th>Fecha de Creación</th>
+              <th>Estado</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Las filas se llenarán aquí -->
+          </tbody>
+        </table>
+
+            <!-- Modal para actualizar cliente -->
     <div class="modal fade" id="actualizarClienteModal" tabindex="-1" aria-labelledby="actualizarClienteModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -62,42 +96,12 @@
         </div>
       </div>
     </div>
-
-    <!-- card para listar los clientes -->
-    <div class="card mb-4">
-      <div class="card-header d-flex align-items-center">
-        <i class="fas fa-table me-1 fa-lg"></i> Listado de Clientes
-        <div class="ms-auto"> <!-- Utilizamos ms-auto para alinear a la derecha -->
-          <div class="text-end">
-            <a href=<?= $URL . 'reports/Vehiculos/contenidoPDF.php' ?> type="button" class="me-2 btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Generar PDF">
-              <i class="bi bi-file-earmark-pdf fs-6"></i>
-            </a>
-
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <table id="table-clientes" class="table table-striped" style="width: 100%;">
-          <thead>
-            <tr>
-              <th>Documento</th>
-              <th>Tipo de Cliente</th>
-              <th>Cliente</th>
-              <th>Provincia</th>
-              <th>Fecha de Creación</th>
-              <th>Estado</th>
-              <th class="text-center">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Las filas se llenarán aquí -->
-          </tbody>
-        </table>
         <div class="card-footer">
           <a href="registrar-clientes.php" class="btn btn-primary">Registrar Nuevo Cliente</a>
         </div>
       </div>
     </div>
+  </div>
 </main>
 
 <!-- Archivo JavaScript que controla la funcionalidad de listado y exportación de clientes -->
@@ -106,5 +110,4 @@
 <script src="http://localhost/distribumax/js/clientes/disabled-cliente.js"></script>
 
 </body>
-
 </html>

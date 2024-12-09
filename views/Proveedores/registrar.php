@@ -101,7 +101,7 @@
         </form>
       </div>
       <div class="card-footer text-end">
-        <a href=""><i class="bi bi-arrow-left-square fs-3"></i></a>
+        <a href="./index.php"><i class="bi bi-arrow-left-square fs-3"></i></a>
       </div>
     </div>
   </div>

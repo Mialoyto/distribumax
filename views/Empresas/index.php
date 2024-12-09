@@ -13,10 +13,15 @@
       <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <i class="fas fa-table me-1 fa-lg"></i> Listado de Empresas
+            <i class="bi bi-clipboard-check fs-3 fw-bold">Listado de Empresas</i>
           </div>
           <div>
-          <a href=<?= $URL . 'reports/Vehiculos/contenidoPDF.php' ?> type="button" class="me-2 btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Generar PDF">
+            <a href="<?= $URL . 'reports/Empresas/contenidoPDF.php' ?>" 
+            type="button" 
+            class="me-2 btn btn-danger"
+             data-bs-toggle="tooltip" 
+             data-bs-placement="bottom" 
+             data-bs-title="Generar PDF">
               <i class="bi bi-file-earmark-pdf fs-6"></i>
             </a>
           </div>
@@ -77,7 +82,7 @@
 
                 <div class="mb-3">
                   <label for="telefono" class="form-label">Teléfono</label>
-                  <input type="tel" id="editTelefono" name="telefono" class="form-control" required>
+                  <input type="tel" id="editTelefono" name="telefono" class="form-control" maxlength="9" required>
                 </div>
               </div>
 

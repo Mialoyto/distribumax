@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     console.log("direccion: ", direccion);
                     console.log("email", email);
                     console.log("telefono:", telefono);
-                    await updateEmpresa(idempresaruc, razonSocial, direccion, email, telefono);
+                    await formUpdateEmpresa(idempresaruc, razonSocial, direccion, email, telefono);
                     await CargarEmpresa();
                 });
 

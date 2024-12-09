@@ -100,7 +100,7 @@
               <div class="form-floating">
                 <input type="text" class="form-control" id="capacidad" name="capacidad" pattern="[0-9]+" title="Solo números" maxlength="5" required>
                 <label for="capacidad">
-                  <i class="fas fa-users me-2"></i> Capacidad
+                  <i class="fas fa-users me-2"></i> Capacidad kg
                 </label>
               </div>
             </div>

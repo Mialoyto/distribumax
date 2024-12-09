@@ -91,10 +91,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // Manejo del envío del formulario
     $("#form-registrar-Vehiculo").addEventListener("submit", async (event) => {
         event.preventDefault();
-        const resultado = await registrarVehiculo();
-        if (resultado) {
-            showToast("Vehiculo registrado correctamente", "success", "SUCCESS");
-            limpiarFormulario();
+  
+        if (await showConfirm("¿Desea registrar el vehiculo?", "Registro")) {
+            const response = await registrarVehiculo();
+            if (response) {
+                showToast("Vehículo registrado correctamente", "success", "SUCCESS");
+                limpiarFormulario();
+            } else {
+                showToast("No es posible registrarlo", "warning", "WARNING");
+            }
         } else {
             showToast("No es posible registrarlo", "warning", "WARNING");
         }

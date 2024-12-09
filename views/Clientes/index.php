@@ -29,7 +29,7 @@
               <th>Documento</th>
               <th>Tipo de Cliente</th>
               <th>Cliente</th>
-              <th>Provincia</th>
+              <th>Provincia/Distrito</th>
               <th>Fecha de Creación</th>
               <th>Estado</th>
               <th class="text-center">Acciones</th>
@@ -98,40 +98,9 @@
     </div>
 
     <!-- card para listar los clientes -->
-    <div class="card mb-4">
-      <div class="card-header d-flex align-items-center">
-        <i class="fas fa-table me-1 fa-lg"></i> Listado de Clientes
-        <div class="ms-auto"> <!-- Utilizamos ms-auto para alinear a la derecha -->
-          <div class="text-end">
-            <a href=<?= $URL . 'reports/Vehiculos/contenidoPDF.php' ?> type="button" class="me-2 btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Generar PDF">
-              <i class="bi bi-file-earmark-pdf fs-6"></i>
-            </a>
-
+          <div class="card-footer">
+            <a href="registrar-clientes.php" class="btn btn-primary">Registrar Nuevo Cliente</a>
           </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <table id="table-clientes" class="table table-striped" >
-          <thead>
-            <tr>
-              <th>Documento</th>
-              <th>Tipo de Cliente</th>
-              <th>Cliente</th>
-              <th>Provincia/Distrito</th>
-              <th>Fecha de Creación</th>
-              <th>Estado</th>
-              <th class="text-center">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Las filas se llenarán aquí -->
-          </tbody>
-        </table>
-        <div class="card-footer">
-          <a href="registrar-clientes.php" class="btn btn-primary">Registrar Nuevo Cliente</a>
-        </div>
-      </div>
-    </div>
   </div>
 </main>
 

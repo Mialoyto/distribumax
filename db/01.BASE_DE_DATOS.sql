@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 DROP DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
@@ -720,7 +720,7 @@ CREATE TABLE permisos (
 --     CONSTRAINT fk_idperfil_per FOREIGN KEY (idperfil) REFERENCES perfiles(idperfil)
 -- ) ENGINE=INNODB;
 
--- INSERSIONES DE DATOS DE LAS TABLAS
+/* -- INSERSIONES DE DATOS DE LAS TABLAS
 -- INSERTAR DATOS A LA TABLA PERFILES
 INSERT INTO
     perfiles (perfil, nombrecorto)
@@ -1068,4 +1068,85 @@ VALUES (2, 1),
 -- ALMACENADOR
 INSERT INTO permisos (idperfil, idvista) VALUES (3, 6);
 -- CHOFER
-INSERT INTO permisos (idperfil, idvista) VALUES (4, 16);
+INSERT INTO permisos (idperfil, idvista) VALUES (4, 16); */
+
+
+-- INSERSIONES DE DATOS DE LAS TABLAS
+-- INSERTAR DATOS A LA TABLA PERFILES
+INSERT INTO perfiles (perfil, nombrecorto)
+VALUES 
+    ('Administrador', 'ADM'),
+    ('Vendedor', 'VND'),
+    ('Almacenador', 'ALM'),
+    ('Chofer', 'CHF'),
+    ('Jefe de Mercaderia', 'JMF');
+
+-- INSERTAR DATOS A LA TABLA MODULOS
+INSERT INTO modulos (modulo)
+VALUES 
+    ('Pedidos'),
+    ('Categorias'),
+    ('Clientes'),
+    ('Compras'),
+    ('Despacho'),
+    ('Empresas'),
+    ('Kardex'),
+    ('Marcas'),
+    ('Personas'),
+    ('Productos'),
+    ('Proveedores'),
+    ('Roles'),
+    ('Subcategorias'),
+    ('User'),
+    ('Usuarios'),
+    ('Vehiculos'),
+    ('Ventas');
+  
+/*     ('Registrar persona'),
+    ('Registrar Usuario'),
+    ('Promociones'),
+    ('Tipo de Promociones'),git
+    ('Categorias'),
+    ('Despachos'); */
+    select * from perfiles;
+    SELECT * FROM modulos;
+
+-- INSERTAR DATPS A LA TABLA VISTAS
+-- PEDIDOS
+INSERT INTO vistas (idmodulo, ruta, sidebaroption, texto, icono)
+VALUES (NULL, 'Home','S','Dashboard','bi bi-graph-up');
+
+INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
+VALUES (1,'index','S','Pedidos','bi bi-clipboard-plus fs-4');
+-- Registrar Clientes
+INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
+VALUES (3,'registrar-clientes','S','Clientes','bi bi-person-rolodex fa-lg');
+-- Listar pedidos
+INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
+VALUES (3,'listar','S','','');
+
+select * from v
+
+-- AGREGAR DATOS A LA TABLA PERMISOS
+-- ADMINISTRADOR
+INSERT INTO
+    permisos (idperfil, idvista)
+VALUES 
+    (1, NULL),
+    (1, 2);
+
+INSERT INTO permisos (idperfil, idvista)
+VALUES 
+    (1, 3);
+INSERT INTO permisos (idperfil, idvista)
+VALUES 
+    (1, 4);
+
+select * from permisos;
+
+
+SELECT * from modulos;
+SELECT * FROM VISTAS;
+SELECT * from perfiles;
+SELECT * FROM PERMISOS;
+select * from usuarios;

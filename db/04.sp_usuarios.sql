@@ -1,4 +1,4 @@
--- Active: 1732798376350@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- Registrar
 
@@ -37,6 +37,8 @@ SELECT
     INNER JOIN perfiles PERF	ON USU. idperfil = PERF. idperfil
     WHERE USU.nombre_usuario = _nombre_usuario AND USU.estado=1;
 END;
+
+CALL sp_usuario_login('administrador');
 
 CREATE PROCEDURE sp_actualizar_usuario(
    IN     _nombre_usuario		VARCHAR(100),

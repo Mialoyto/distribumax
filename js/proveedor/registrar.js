@@ -235,4 +235,4 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#iddistrito").value = "";
     $("contacto_principal").disabled = true;
   };
-});
+W});

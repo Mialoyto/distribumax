@@ -27,7 +27,7 @@ switch ($verbo) {
                 case 'logout':
                     session_unset(); // libera las variables de sesión pero no destruye la sesion
                     session_destroy(); // destruye la sesion actual y sus variables
-                    header("Location:http://localhost/distribumax/index.php");
+                    header("Location:http://localhost/distribumax/");
                     break;
                 case 'getAll':
                     // Llama a la función getAll() y devuelve el resultado
@@ -69,12 +69,14 @@ switch ($verbo) {
                         "appaterno" => "",
                         "apmaterno" => "",
                         "nombres"   => "",
-                        "perfil"       => "",
+                        "perfil"    => "",
                         "status"    => "",
                         "accesos"   => []
                     ];
                     $dato = ['nombre_usuario' => $_POST['nombre_usuario']];
                     $row = $usuario->login($dato);
+
+                    // echo json_encode($row[0]['idperfil']);
 
                     if (count($row) == 0) {
                         $login['status'] = 'No existe el usuario';
@@ -92,13 +94,15 @@ switch ($verbo) {
 
                             // Los accesos se obtienen desde una consulta
                             $accesos = $usuario->obtenerPermisos(["idperfil" => $row[0]['idperfil']]);
+                            // echo json_encode($accesos);
                             $login["accesos"] = $accesos;
                         } else {
                             $login['status'] = 'Contraseña incorrecta';
                         }
                     }
                     $_SESSION['login'] = $login;
-                    echo json_encode($login);
+                    // echo json_encode($login);
+                    echo json_encode($_SESSION['login']);
                     break;
                 case 'updatepassword':
                     $datosEnviar = [

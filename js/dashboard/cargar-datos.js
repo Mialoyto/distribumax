@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function cargarclientes() {
         const params = new URLSearchParams();
         params.append('operation', 'activos');
-        const response = await fetch(`../controller/cliente.controller.php?${params}`);
+        const response = await fetch(`../../controller/cliente.controller.php?${params}`);
         const data = await response.json();
         $("#totalClientesActivos").textContent = data[0].cli_activos;
         console.log(data);
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     (async () => {
         try {
-            const response = await fetch('../controller/pedido.controller.php?operation=pediosDay');
+            const response = await fetch('../../controller/pedido.controller.php?operation=pediosDay');
             const data = await response.json();
             $("#pendientes").textContent = data[0].pendientes;
             $("#enviados").textContent = data[0].enviados;
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     (async () => {
         try {
-            const response = await fetch('../controller/lotes.controller.php?operation=Agotados_vencidos');
+            const response = await fetch('../../controller/lotes.controller.php?operation=Agotados_vencidos');
             const data = await response.json();
             const table = $("#table-body");
             table.innerHTML = "";
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     (async () => {
         try {
-            const response = await fetch('../controller/pedido.controller.php?operation=pedidosProvincia');
+            const response = await fetch('../../controller/pedido.controller.php?operation=pedidosProvincia');
             const data = await response.json();
             const table = $("#pedidos-body");
             table.innerHTML = "";
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     (async()=>{
         try {
-            const response = await fetch('../controller/ventas.controller.php?operation=conteoVentas');
+            const response = await fetch('../../controller/ventas.controller.php?operation=conteoVentas');
             const data = await response.json();
             console.log(data);
             $("#ve_pendientes").textContent = data[0].pendientes;

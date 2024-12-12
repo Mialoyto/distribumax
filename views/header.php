@@ -1,34 +1,22 @@
 <?php
 session_start();
-if (!isset($_SESSION['login']) || (isset($_SESSION['usuario']) && $_SESSION['usuario']['estado'] == false)) {
-  header("Location:http://localhost/distribumax");
-} else {
-  // Validación de ruta
-  /*   $url = $_SERVER['REQUEST_URI'];
-  $rutaCompleta = explode("/", $url);
-  $rutaCompleta = array_filter($rutaCompleta);
-  $totalElementos = count($rutaCompleta);
-  var_dump($rutaCompleta);
-  echo "<br> ----------------------------------- <br>";
 
-  // Buscaremos la vistaActual n la listaAcceso
-  $vistaActual = $rutaCompleta[$totalElementos];
+if (!isset($_SESSION['login']) || $_SESSION['login']['estado'] == false) {
+  header("Location: http://localhost/distribumax/");
+  exit();
+} else {
+  // // Validación de ruta
+  $url = $_SERVER['REQUEST_URI'];     //LINK - URL
+  $rutaCompleta = explode("/", $url); //NOTE -  URL > array()
+  $rutaCompleta = array_filter($rutaCompleta);
+  // $totalElementos = count($rutaCompleta);
+  $vistaActual = end($rutaCompleta);
   $listaAccesos = $_SESSION['login']['accesos'];
 
 
-  var_dump($vistaActual);
-  echo "<br> ----------------------------------- <br>";
-  var_dump($listaAccesos);
-  echo "<br> ----------------------------------- <br>";
-  var_dump($totalElementos);
-  echo "<br> ----------------------------------- <br>";
-
-
-  // Validar que existan accesos antes de procesar
-
   $encontrado = false;
   $i = 0;
-  while ($i < count($listaAccesos) && !$encontrado) {
+  while (($i < count($listaAccesos)) && !$encontrado) {
     if ($listaAccesos[$i]['ruta'] == $vistaActual) {
       $encontrado = true;
     }
@@ -36,9 +24,9 @@ if (!isset($_SESSION['login']) || (isset($_SESSION['usuario']) && $_SESSION['usu
   }
 
   if (!$encontrado) {
-    header("Location:http://localhost/distribumax/Views/");
+    header("Location: http://localhost/distribumax/views/home/");;
     exit();
-  } */
+  }
 }
 $host = "http://localhost/distribumax";
 ?>
@@ -87,38 +75,13 @@ $host = "http://localhost/distribumax";
 
   <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href=" <?= $host ?>/views">Distribumax</a>
+    <a class="navbar-brand ps-3" href=" <?= $host ?>/views/home/">Distribumax</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
       <i class="fas fa-bars"></i>
     </button>
-    <!-- Navbar Search-->
-    <!-- Navbar-->
-
-
-    <!-- <div class="d-none d-md-inline-block  ms-auto me-0 me-md-3 my-2 my-md-0">
-
-
-      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <!- Menú de Notificaciones en la Navbar -->
-        <!-- <li class="nav-item dropdown nav-item dropdown d-sm-none d-lg-block">
-          <a class="nav-link dropdown-toggle btn btn-danger" id="notificationDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-danger" id="notificationCount">0</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" id="notificationMenu">
-            <li><a class="dropdown-item text-center" href="#">No hay notificaciones</a></li>
-          </ul>
-        </li> -->
-
-
-      <!-- </ul> -->
-
-    <!-- </div>  -->
 
     <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-
-
       <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown d-sm-none d-lg-block">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -147,23 +110,32 @@ $host = "http://localhost/distribumax";
   <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
       <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+
         <div class="sb-sidenav-menu">
           <div class="nav">
+            <a class="nav-link">
+              <div class="sb-nav-link-icon"><i class="bi bi-person-circle fs-4"></i></i></div>
+              <?= $_SESSION['login']['perfil'] ?>
+            </a>
             <div class="sb-sidenav-menu-heading">Modulos</div>
+
             <?php
-            // foreach ($listaAccesos as $acceso) {
-            // var_dump($acceso);
-            // if ($acceso['sidebaroption '] === 'S') {
-            // echo "<a class='nav-link' href='$host/views/{$acceso['modulo']}/{$acceso['ruta']}'>
-            // <div class='sb-nav-link-icon'><i class='{$acceso['icono']}'></i></div>
-            // {$acceso['texto']}
-            // </a>";
-            // }
-            // }
+            foreach ($listaAccesos as $acceso) {
+              // var_dump($acceso);
+              if ($acceso['sidebaroption'] == 'S') {
+                echo "
+                  <a class='nav-link' href='$host/views/{$acceso['modulo']}/{$acceso['ruta']}'>
+                    <div class='sb-nav-link-icon'><i class='{$acceso['icono']} fs-5'></i></div>
+                    {$acceso['texto']}
+                  </a>";
+              }
+            }
 
             ?>
 
 
+
+            <!--
             <a class="nav-link" href="<?= $host ?>/views/Pedidos/">
               <div class="sb-nav-link-icon"><i class="bi bi-clipboard-plus fs-4"></i></i></div>
               Pedidos
@@ -207,14 +179,6 @@ $host = "http://localhost/distribumax";
               Registrar usuario
             </a>
             <div class="sb-sidenav-menu-heading">Módulos reportes</div>
-            <!--  <a class="nav-link" href="<?= $host ?>/views/Promociones/">
-              <div class="sb-nav-link-icon"><i class="bi bi-percent"></i></div>
-              Promociones
-            </a> -->
-            <!--    <a class="nav-link" href="<?= $host ?>/views/Subcategoria/">
-              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-              Categorias
-            </a> -->
 
             <a class="nav-link" href="<?= $host ?>/views/Marcas/registrar-marca.php">
               <div class="sb-nav-link-icon"><i class="bi bi-tag fs-4"></i></div>
@@ -227,7 +191,7 @@ $host = "http://localhost/distribumax";
             <a class="nav-link" href="<?= $host ?>/views/Despacho/">
               <div class="sb-nav-link-icon"><i class="fa-solid fa-truck-ramp-box fa-lg"></i></div>
               Despacho
-            </a>
+            </a> -->
           </div>
         </div>
       </nav>

@@ -12,26 +12,20 @@ document.addEventListener("DOMContentLoaded", () => {
       body: fomrData
     });
     const data = await response.json();
-     
     console.log(data)
-     return data;
+    return data;
   }
 
- 
 
-  $("#form-login").addEventListener("submit",async (event) => {
+
+  $("#form-login").addEventListener("submit", async (event) => {
     event.preventDefault();
-      const data = await Login();
+    const data = await Login();
     if (!data.estado) {
-      // console.log(data);
-      //alert(data.status);
       showToast(data.status, "error", "ERROR");
-      //alert("Usuario o contraseña incorrectos");
-  } else {
-    // alert("Bienvenido");
-
+    } else {
       console.log(data);
-      window.location.href = `http://localhost/distribumax/views`;
-  }
+      window.location.href = `http://localhost/distribumax/views/home/`;
+    }
   });
 });

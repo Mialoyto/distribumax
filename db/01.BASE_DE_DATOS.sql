@@ -700,7 +700,7 @@ CREATE TABLE vistas (
     texto VARCHAR(20) NULL,
     icono VARCHAR(20) NULL,
     CONSTRAINT fk_idmodulo_vis FOREIGN KEY (idmodulo) REFERENCES modulos (idmodulo),
-    CONSTRAINT uk_ruta_vis UNIQUE (ruta),
+    -- CONSTRAINT uk_ruta_vis UNIQUE (ruta),
     CONSTRAINT ck_sidebaroption_vis CHECK (sidebaroption IN ('S', 'N'))
 ) ENGINE = INNODB;
 -- TABLA PERMISOS
@@ -733,341 +733,53 @@ VALUES ('Administrador', 'ADM'),
     ('Jefe de Mercaderia', 'JMF');
 
 -- INSERTAR DATOS A LA TABLA MODULOS
-INSERT INTO
-    modulos (modulo)
-VALUES ('Pedidos'),
-    ('Ventas'),
-    ('Clientes'),
-    ('Empresas'),
-    ('Productos'),
-    ('Kardex'),
-    ('Proveedores'),
-    ('Registrar persona'),
-    ('Registrar Usuario'),
-    ('Promociones'),
-    ('Tipo de Promociones'),
+INSERT INTO modulos (modulo)
+VALUES 
+    ('Pedidos'),
     ('Categorias'),
-    ('Subcategorias'),
+    ('Clientes'),
+    ('Compras'),
+    ('Despacho'),
+    ('Empresas'),
+    ('Kardex'),
     ('Marcas'),
+    ('Personas'),
+    ('Productos'),
+    ('Proveedores'),
+    ('Roles'),
+    ('Subcategorias'),
+    ('User'),
+    ('Usuarios'),
     ('Vehiculos'),
-    ('Despachos');
+    ('Ventas');
+
 
 -- INSERTAR DATPS A LA TABLA VISTAS
 -- PEDIDOS
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        NULL,
-        'Home',
-        'S',
-        'Inicio',
-        'fa-solid fa-wallet'
-    );
+INSERT INTO vistas (idmodulo, ruta, sidebaroption, texto, icono)
+VALUES (NULL, 'home','S','Dashboard','bi bi-graph-up');
 
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        1,
-        '../views/Pedidos/index.php',
-        'S',
-        'Pedidos',
-        'fa-solid fa-wallet'
-    );
+INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
+VALUES (1,'index','S','Pedidos','bi bi-clipboard-plus fs-4');
+-- Registrar Clientes
+INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
+VALUES (3,'registrar-clientes','S','Clientes','bi bi-person-rolodex fa-lg');
+-- Listar pedidos
+INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
+VALUES (3,'index','S','','');
 
--- VENTAS
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        2,
-        '../views/Ventas/index.php',
-        'S',
-        'Ventas',
-        'fa-solid fa-wallet'
-    );
-
--- CLIENTES
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        3,
-        '../views/Clientes/index.php',
-        'S',
-        'Clientes',
-        'fa-solid fa-wallet'
-    );
-
--- EMPRESAS
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        4,
-        '../views/Empresas/index.php',
-        'S',
-        'Empresas',
-        'fa-solid fa-wallet'
-    );
-
--- PRODUCTOS
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        5,
-        '../views/Productos/index.php',
-        'S',
-        'Productos',
-        'fa-solid fa-wallet'
-    );
-
--- KARDEX
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        6,
-        '../views/Kardex/index.php',
-        'S',
-        'Kardex',
-        'fa-solid fa-wallet'
-    );
-
--- PROVEEDORES
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        7,
-        '../views/Proveedores/index.php',
-        'S',
-        'Proveedores',
-        'fa-solid fa-wallet'
-    );
-
--- PERSONAS
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        8,
-        '../views/Personas/index.php',
-        'S',
-        'Personas',
-        'fa-solid fa-wallet'
-    );
-
--- USUARIOS
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        9,
-        '../views/Usuarios/index.php',
-        'S',
-        'Usuarios',
-        'fa-solid fa-wallet'
-    );
-
--- PROMOCIONES
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        10,
-        '../views/Promociones/index.php',
-        'S',
-        'Promociones',
-        'fa-solid fa-wallet'
-    );
-
--- TIPO DE PROMOCIONES
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        11,
-        '../views/Tipo de Promociones/index.php',
-        'S',
-        'Tipo de Promociones',
-        'fa-solid fa-wallet'
-    );
-
--- CATEGORIA
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        12,
-        '../views/Categorias/index.php',
-        'S',
-        'Categorias',
-        'fa-solid fa-wallet'
-    );
-
--- SUBCATEGORIAS
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        13,
-        '../views/Subcategoria/index.php',
-        'S',
-        'Subcategorias',
-        'fa-solid fa-wallet'
-    );
-
--- MARCAS
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        14,
-        '../views/Marcas/index.php',
-        'S',
-        'Marcas',
-        'fa-solid fa-wallet'
-    );
-
--- VEHICULOS
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        15,
-        '../views/Vehiculos/index.php',
-        'S',
-        'Vehiculos',
-        'fa-solid fa-wallet'
-    );
-
--- DESPACHOS
-INSERT INTO
-    vistas (
-        idmodulo,
-        ruta,
-        sidebaroption,
-        texto,
-        icono
-    )
-VALUES (
-        16,
-        '../views/Despacho/index.php',
-        'S',
-        'Despachos',
-        'fa-solid fa-wallet'
-    );
 
 -- AGREGAR DATOS A LA TABLA PERMISOS
 -- ADMINISTRADOR
 INSERT INTO
     permisos (idperfil, idvista)
-VALUES (1, 1),
-    (1, 2),
-    (1, 3),
-    (1, 4),
-    (1, 5),
-    (1, 6),
-    (1, 7),
-    (1, 8),
-    (1, 9),
-    (1, 10),
-    (1, 11),
-    (1, 12),
-    (1, 13),
-    (1, 14),
-    (1, 15),
-    (1, 16);
--- VENDEDOR
-INSERT INTO
-    permisos (idperfil, idvista)
-VALUES (2, 1),
-    (2, 2),
-    (2, 13);
--- ALMACENADOR
-INSERT INTO permisos (idperfil, idvista) VALUES (3, 6);
--- CHOFER
-INSERT INTO permisos (idperfil, idvista) VALUES (4, 16);
+VALUES 
+    (1, 1),
+    (1, 2);
+
+INSERT INTO permisos (idperfil, idvista)
+VALUES 
+    (1, 3);
+INSERT INTO permisos (idperfil, idvista)
+VALUES 
+    (1, 4);

@@ -46,19 +46,11 @@ if (isset($_GET['operation'])) {
       $email = $_GET['email'];
       $telefono = $_GET['telefono'];
 
-      if(empty($idempresaruc || empty($razonsocial) || empty($direccion) || empty($email) || empty($telefono))){
+      if(empty($idempresaruc) || empty($razonsocial) || empty($direccion) || empty($email) || empty($telefono)){
         echo json_encode(['status' => 'error','message' => 'Faltan datos']);
         return;
       } else if (!is_numeric($idempresaruc)) {
-        echo json_encode([
-          'status' => 'error',
-          'message' => 'El id de la empresa debe ser un número',
-          'datos' => [$idempresaruc,
-          $razonsocial,
-          $direccion,
-          $email,
-          $telefono]
-        ]);
+        echo json_encode(['status' => 'error','message' => 'El id de la empresa debe ser un número']);
         return;
       } else {
         $datos = [

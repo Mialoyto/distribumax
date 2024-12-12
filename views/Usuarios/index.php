@@ -2,8 +2,7 @@
 <?php require_once '../../app/config/App.php'; ?>
 
 <main>
-  <div class="container-fluid px-4">
-    <h1 class="mt-4">Listado de Usuarios</h1>
+  <div class="container-fluid px-4 mt-4">
     <ol class="breadcrumb mb-4">
       <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
     </ol>
@@ -12,7 +11,7 @@
       <div class="card-header">
         <div class="d-flex justify-content-between aling-items-center">
           <div>
-            <i class="fas fa-table me-1 fa-lg"></i> Listado de Usuarios
+            <i class="bi bi-clipboard-check fs-3 fw-bold">Listado de Usuarios</i> 
           </div>
           <div>
             <a href="<?= $URL . 'reports/Usuarios/contenidoPDF.php' ?>" 

@@ -3,9 +3,20 @@ require_once '../header.php';
 ?>
 <main>
     <div class="container-fluid px-4 mt-4">
-     
             <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
         </ol>
+
+		<!-- TARJETA -->
+		<div class="card mb-4">
+			<div class="card-header">
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<i class="bi bi-clipboard-check fs-3 fw-bold"> Listado de Despacho</i>
+					</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal -->
         <div class="modal fade" id="generarReporte" tabindex="-1" aria-labelledby="generarReporte" aria-hidden="true">
             <div class="modal-dialog">
@@ -37,14 +48,6 @@ require_once '../header.php';
                 </div>
             </div>
         </div>
-
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Listado despacho
-            </div>
-            <div class="card-body">
-
                 <div class="table-responsive">
                     <table id="table-despacho" class="table" tyle="width: 100%;">
                         <thead>

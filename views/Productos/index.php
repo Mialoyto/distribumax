@@ -7,11 +7,9 @@
 
     <div class="card mb-4">
       <div class="card-header">
-
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <i class="fas fa-table me-1"></i>
-            Listado de Productos
+            <i class="bi bi-clipboard-check fs-3 fw-bold">Listado de Productos</i>
           </div>
           <div>
             <a href="<?= $URL . 'reports/Productos/contenidoPDF.php' ?>" type="button" class="me-2 btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Generar PDF">

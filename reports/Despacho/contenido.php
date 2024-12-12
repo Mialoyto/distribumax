@@ -166,7 +166,7 @@ foreach ($despachos as $item) {
 							<tr>
 								<td>
 									<p class="mb-1"><strong>Jefe de reparto:</p>
-									<p></strong> <?= $despachos[0]['datos'] ?></p>
+									<p></strong> <?= $despachos[0]['conductor'] ?></p>
 								</td>
 								<td>
 									<p class="mb-1"><strong>DNI:</strong> </p>

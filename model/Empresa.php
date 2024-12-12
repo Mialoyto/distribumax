@@ -121,7 +121,7 @@ class Empresas extends Conexion
     }
   }
 
-  public function updateEmpresa($params = []):array
+  public function updateEmpresa($params = [])
   {
     try{
       $tsql = "CALL sp_actualizar_empresa(?,?,?,?,?)";

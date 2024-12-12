@@ -106,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       $("#capacidad").value = '';
       $("#placa").value = '';
       $("#conductor").value = '';
+      // $("idconductor_vehiculo").value = '';
       provincia.innerHTML = '';
       provincia.innerHTML = '<option value="" selected>Seleccione una provincia</option>';
 
@@ -163,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Rellena los detalles del vehículo
           $("#conductor").value = element.conductor;
-          $("#conductor").setAttribute("id-user", element.idusuario);
+          $("#idconductor_vehiculo").value = element.idusuario;
           // $("#marca").value = element.marca_vehiculo;
           $("#placa").value = element.placa;
           $("#marca_vehiculo").value = element.marca_vehiculo;
@@ -352,21 +353,22 @@ document.addEventListener("DOMContentLoaded", () => {
   async function addDespacho() {
 
     const idvehiculo = parseInt($("#idvehiculo").getAttribute("id-veh"));
-    const iduser = parseInt($("#conductor").getAttribute("id-user"));
+    const conductor = parseInt($("#idconductor_vehiculo").value);
     const jefeM = parseInt($("#idjefe_mercaderia").getAttribute("id-jefe"));
     const fecha = $("#fecha-despacho").value;
 
     console.log("idvehiculo: ", idvehiculo);
-    console.log("idusario: ", iduser);
+     console.log("idconductor: ", conductor);
     console.log("fecha: ", fecha);
-    console.log("jefe: ");
+    console.log("jefe: ",jefeM);
 
     const params = new FormData();
     params.append("operation", "addDespacho");
     params.append("idvehiculo", idvehiculo);
-    params.append("idusuario", iduser);
+    params.append("idusuario", $("#idusuario").value);
     params.append("fecha_despacho", fecha);
     params.append("idjefe_mercaderia", jefeM);
+    params.append("idconductor",conductor);
 
     const options = {
       method: "POST",

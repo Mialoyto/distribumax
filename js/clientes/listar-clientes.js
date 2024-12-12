@@ -83,7 +83,8 @@ document.addEventListener("DOMContentLoaded", function () {
           <td>${element.nro_doc}</td>
           <td>${element.tipo_cliente}</td>
           <td>${element.cliente}</td>
-          <td>${element.provincia}</td>
+          <td><strong>${element.provincia}</strong> <br> ${element.distrito}</td>
+          
           <td>${element.fecha_creacion}</td>
           <td><strong class="${estadoClass}">${element.estado}</strong></td>
           <td>
@@ -171,6 +172,16 @@ document.addEventListener("DOMContentLoaded", function () {
   function RenderDatatableClientes() {
     
     dtcaclientes = new DataTable("#table-clientes", {
+      columnDefs: [
+        { width: "0%", targets: 0 },
+        { width: "5%", targets: 1 },
+        { width: "10%", targets: 2 },
+        { width: "20%", targets: 3 },
+        { width: "16%", targets: 4 },
+        { width: "10%", targets: 5 },
+      
+
+      ],
       language: {
         "sEmptyTable": "No hay datos disponibles en la tabla",
         "info": "",
@@ -182,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "sZeroRecords": "No se encontraron resultados",
         "oAria": {
           "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          "sSortDescending": "ON"
         }
       }
     });

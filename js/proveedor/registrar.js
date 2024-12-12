@@ -225,6 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ["#email", "#iddistrito", "#telefono-empresa", "#registrarEmpresa"].forEach((selector) => {
       $(selector).toggleAttribute("disabled", !estado);
     });
+    document.getElementById("contacto_principal").disabled = !estado;
     console.log(`Campos ${estado ? "habilitados" : "deshabilitados"}`);
     limpiarCampos();
   };
@@ -233,6 +234,5 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#telefono-empresa").value = "";
     $("#contacto_principal").value = "";
     $("#iddistrito").value = "";
-    $("contacto_principal").disabled = true;
   };
 W});

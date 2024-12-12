@@ -11,11 +11,12 @@ CREATE PROCEDURE sp_despacho_registrar(
     IN _idvehiculo       INT,
     IN _idusuario        INT,
     IN _fecha_despacho   DATE,
-    IN _idjefe_mercaderia INT
+    IN _idjefe_mercaderia INT,
+    IN _idconductor        INT
     )
     BEGIN
-    INSERT INTO despachos (idvehiculo, idusuario, fecha_despacho, idjefe_mercaderia) 
-    VALUES (_idvehiculo, _idusuario, _fecha_despacho, _idjefe_mercaderia);
+    INSERT INTO despachos (idvehiculo, idusuario, fecha_despacho, idjefe_mercaderia,idconductor) 
+    VALUES (_idvehiculo, _idusuario, _fecha_despacho, _idjefe_mercaderia,_idconductor);
     SELECT LAST_INSERT_ID() AS iddespacho;
 END;
 
@@ -163,7 +164,8 @@ BEGIN
         PER.perfil,
         CONCAT(P.nombres, ' ', P.appaterno) AS datos, -- Persona que registró el despacho
         P.idpersonanrodoc,
-        CONCAT(Pmer.nombres, ' ', Pmer.appaterno, ' ', Pmer.apmaterno) AS encargado_mercaderia -- Jefe de mercadería
+        CONCAT(Pmer.nombres, ' ', Pmer.appaterno, ' ', Pmer.apmaterno) AS encargado_mercaderia, -- Jefe de mercadería
+        CONCAT(Pcond.nombres, ' ', Pcond.appaterno, ' ', Pcond.apmaterno) AS conductor -- Datos del conductor
 
     FROM despacho_ventas DESP
     INNER JOIN despachos DESPA ON DESPA.iddespacho = DESP.iddespacho
@@ -180,6 +182,8 @@ BEGIN
     LEFT JOIN personas P ON P.idpersonanrodoc = USU.idpersona
     LEFT JOIN usuarios JMER ON JMER.idusuario = DESPA.idjefe_mercaderia -- Relación con jefe de mercadería
     LEFT JOIN personas Pmer ON Pmer.idpersonanrodoc = JMER.idpersona -- Datos del jefe de mercadería
+    LEFT JOIN usuarios Cond ON Cond.idusuario=DESPA.idconductor
+    LEFT JOIN personas Pcond ON Pcond.idpersonanrodoc = Cond.idpersona -- Datos del conductor
     WHERE DESP.iddespacho = _iddespacho
     GROUP BY 
         Prove.proveedor,
@@ -195,12 +199,16 @@ BEGIN
         PER.perfil,
         Pmer.nombres,
         Pmer.appaterno,
-        Pmer.apmaterno
+        Pmer.apmaterno,
+        Pcond.nombres,
+        Pcond.appaterno,
+        Pcond.apmaterno
     ORDER BY 
         Prove.proveedor,
         MAR.marca,
         PRO.nombreproducto;
-END ;
+END;
+
 
 -- TODO: PROCEDIMIENTO PARA LISTAR LOS DETALLES DE UN DESPACHO
 DROP PROCEDURE IF EXISTS sp_listar_detalle_despacho;

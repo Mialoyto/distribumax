@@ -127,7 +127,7 @@ BEGIN
 END;
 
 CALL sp_estado_producto ('0', 1);
-
+select * from productos;
 -- PRUEBA DE BUSQUEDA de productos
 DROP PROCEDURE IF EXISTS sp_buscar_productos;
 
@@ -226,8 +226,7 @@ BEGIN
     INNER JOIN marcas m ON p.idmarca = m.idmarca
     INNER JOIN subcategorias sb ON sb.idsubcategoria = p.idsubcategoria
     INNER JOIN categorias c ON sb.idcategoria = c.idcategoria -- Relación corregida
-    WHERE 
-        p.estado = '1'; -- Solo productos activos
+; -- Solo productos activos
 END;
 
 SELECT * FROM productos;

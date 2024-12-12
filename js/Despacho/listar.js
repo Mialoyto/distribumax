@@ -12,11 +12,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // console.log(data);
 
     Tablaventas.innerHTML = ''; // Limpiar contenido previo
-
+    let  bgbtn;
+    let pdf;
     data.forEach(element => {
+
+      switch (element.estado) {
+            case "Activo":
+              bgbtn = "btn-success";
+              break;  
+            case "Inactivo":
+              bgbtn = "btn-danger";
+              pdf = "disabled";
+              break;
+      }
       const estadoClass = element.estado === "Activo" ? "text-success" : "text-danger";
       const icons = element.estado === "Activo" ? "bi bi-toggle2-on fs-6" : "bi bi-toggle2-off fs-6";
-      const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
+      // const bgbtn = element.estado === "Activo" ? "btn-success" : "btn-danger";
       Tablaventas.innerHTML += `
         <tr>
     
@@ -37,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="d-flex justify-content-center">
                 <div class="btn-group btn-group-sm" role="group">
                   <button  type="button" 
-                  class="btn btn-outline-danger reporte" 
+                  class="btn btn-outline-danger reporte ${pdf}" 
                   data-iddespacho="${element.iddespacho}"
                   data-bs-toggle="tooltip" 
                   data-bs-placement="bottom" 

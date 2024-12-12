@@ -1,15 +1,14 @@
 <?php require_once '../header.php'; ?>
 <?php require_once '../../app/config/App.php'; ?>
 <main>
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-4 mt-4">
         <ol class="breadcrumb mb-4">
             <!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
         </ol>
 
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center">
-                <i class="fas fa-table me-1 fa-lg"></i> Listado de compras
-
+                <i class="bi bi-clipboard-check fs-3 fw-bold">Listado de compras</i>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

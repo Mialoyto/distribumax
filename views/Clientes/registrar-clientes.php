@@ -92,7 +92,13 @@ require_once '../header.php';
                     </div>
                     <div class="col-md-3 mb-3">
                       <div class="form-floating">
-                        <input type="tel" class="form-control" placeholder="Teléfono" id="telefono-persona">
+                        <input type="tel" class="form-control" 
+                        placeholder="Teléfono" 
+                        id="telefono-persona" 
+                        maxlength="9" minlength="9"  
+                        pattern="[0-9]+"
+                        title="Solo numeros">
+                        
                         <label for="">Teléfono</label>
                       </div>
                     </div>

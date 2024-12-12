@@ -2,8 +2,8 @@
 require_once '../header.php';
 ?>
 <main>
-  <div class="container-fluid px-4">
-    <h1 class="mt-4">Registrar Nuevo Despacho</h1>
+  <div class="container-fluid px-4 mt-4">
+  
     <!-- Card para el Registro de Vehículo -->
     <div class="card mb-4">
       <!-- // ? CABECERA DE LA TARJETA -->
@@ -14,11 +14,23 @@ require_once '../header.php';
       <!-- // ? CUERPOR DE LA TARJETA -->
       <form action="" method="" id="AddDespacho" autocomplete="off">
         <!-- CUERPO DE LA TARJETA -->
+        <div class="col-4 mt-1">
+          <input type="hidden" id="idusuario" value="<?= $_SESSION['login']['idusuario'] ?>">
+          <span class="badge text-bg-light text-uppercase text-end  " data-id="<?= $_SESSION['login']['idusuario'] ?>">
+            <?= $_SESSION['login']['perfil']  ?> :
+            <?= $_SESSION['login']['nombres']  ?>
+            <?= $_SESSION['login']['appaterno']  ?>
+            <?= $_SESSION['login']['apmaterno']  ?>
+          </span>
+        </div>
         <div class="card-body">
+
           <!-- FILA 01 -->
           <div class="row">
+          
             <div class="col-md-3 mb-3">
               <div class="form-floating position-relative">
+                <input type="hidden" id="idconductor_vehiculo">
                 <input
                   type="search"
                   class="form-control"
@@ -33,6 +45,7 @@ require_once '../header.php';
             </div>
             <div class="col-md-3 mb-3">
               <div class="form-floating">
+                
                 <input type="text" class="form-control" id="conductor" name="marca_vehiculo" maxlength="23" minlength="3" disabled>
                 <label for="marca"><i class="fas fa-car me-2"></i> Conductor</label>
               </div>
@@ -74,13 +87,13 @@ require_once '../header.php';
             </div>
             <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="apellidos"  maxlength="23" minlength="3" disabled>
+                <input type="text" class="form-control" id="apellidos" maxlength="23" minlength="3" disabled>
                 <label for=""><i class="fas fa-car me-2"></i>Apellidos</label>
               </div>
             </div>
             <div class="col-md-3 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="documento"  maxlength="23" minlength="3" disabled>
+                <input type="text" class="form-control" id="documento" maxlength="23" minlength="3" disabled>
                 <label for=""><i class="fas fa-car me-2"></i>Nro Documento</label>
               </div>
             </div>

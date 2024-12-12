@@ -133,7 +133,6 @@ CALL sp_buscar_cliente('73217990');
 
 -- LISTAR CLIENTES
 DROP PROCEDURE IF EXISTS sp_listar_clientes;
-
 CREATE PROCEDURE sp_listar_clientes()
 BEGIN
     SELECT 
@@ -155,12 +154,16 @@ BEGIN
             WHEN CLI.tipo_cliente = 'Persona' THEN CONCAT(PER.nombres, ' ', PER.appaterno, ' ', PER.apmaterno)
             WHEN CLI.tipo_cliente = 'Empresa' THEN EMP.razonsocial
         END AS cliente,
-        CLI.create_at AS fecha_creacion,
+        DATE(CLI.create_at) AS fecha_creacion,
         CLI.estado AS estado_cliente,
         CASE
-            WHEN CLI.tipo_cliente = 'Persona' THEN CONCAT(DIS.distrito,' |',PROV.provincia)
-            WHEN CLI.tipo_cliente = 'Empresa' THEN CONCAT(DIST.distrito,'| ',PROV.provincia)
-        END AS provincia
+            WHEN CLI.tipo_cliente = 'Persona' THEN PROV.provincia
+            WHEN CLI.tipo_cliente = 'Empresa' THEN PROVE.provincia
+        END AS provincia,
+        CASE 
+			WHEN CLI.tipo_cliente = 'Persona' THEN DIS.distrito
+            WHEN CLI.tipo_cliente = 'Empresa' THEN DIST.distrito
+        END AS distrito
         
     FROM 
         clientes CLI
@@ -169,6 +172,7 @@ BEGIN
     LEFT JOIN distritos DIS ON DIS.iddistrito=PER.iddistrito
     LEFT JOIN provincias PROV ON PROV.idprovincia=DIS.idprovincia
     LEFT JOIN distritos DIST ON DIST.iddistrito=EMP.iddistrito
+    LEFT JOIN provincias PROVE ON PROVE.idprovincia=DIST.idprovincia
     ORDER BY CLI.idcliente DESC;
 END;
 

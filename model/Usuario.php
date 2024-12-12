@@ -1,7 +1,5 @@
 <?php
 
-use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Arabic;
-
 require_once 'Conexion.php';
 
 class Usuario extends Conexion

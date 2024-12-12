@@ -13,3 +13,10 @@ ErrorDocument 400 /distribumax/unauthorized.php
 ErrorDocument 401 /distribumax/401.php
 ErrorDocument 403 /distribumax/unauthorized.php
 ErrorDocument 404 /distribumax/404.php
+
+# Redirigir a usuarios no autorizados
+RewriteCond %{REQUEST_URI} ^/distribumax/views/(.*)$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /distribumax/401.php [L]
+

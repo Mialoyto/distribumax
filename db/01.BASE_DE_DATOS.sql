@@ -698,14 +698,14 @@ CREATE TABLE vistas (
     texto VARCHAR(20) NULL,
     icono VARCHAR(20) NULL,
     CONSTRAINT fk_idmodulo_vis FOREIGN KEY (idmodulo) REFERENCES modulos (idmodulo),
-    CONSTRAINT uk_ruta_vis UNIQUE (ruta),
+    -- CONSTRAINT uk_ruta_vis UNIQUE (ruta),
     CONSTRAINT ck_sidebaroption_vis CHECK (sidebaroption IN ('S', 'N'))
 ) ENGINE = INNODB;
 -- TABLA PERMISOS
 CREATE TABLE permisos (
     idpermiso INT AUTO_INCREMENT PRIMARY KEY,
     idperfil INT NOT NULL,
-    idvista INT NOT NULL,
+    idvista INT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     CONSTRAINT fk_idperfil_per FOREIGN KEY (idperfil) REFERENCES perfiles (idperfil),
     CONSTRAINT fk_idvisita_per FOREIGN KEY (idvista) REFERENCES vistas (idvista),
@@ -1114,7 +1114,7 @@ VALUES
 -- INSERTAR DATPS A LA TABLA VISTAS
 -- PEDIDOS
 INSERT INTO vistas (idmodulo, ruta, sidebaroption, texto, icono)
-VALUES (NULL, 'Home','S','Dashboard','bi bi-graph-up');
+VALUES (NULL, 'home','S','Dashboard','bi bi-graph-up');
 
 INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
 VALUES (1,'index','S','Pedidos','bi bi-clipboard-plus fs-4');
@@ -1123,16 +1123,16 @@ INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
 VALUES (3,'registrar-clientes','S','Clientes','bi bi-person-rolodex fa-lg');
 -- Listar pedidos
 INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
-VALUES (3,'listar','S','','');
+VALUES (3,'index','S','','');
 
-select * from v
+
 
 -- AGREGAR DATOS A LA TABLA PERMISOS
 -- ADMINISTRADOR
 INSERT INTO
     permisos (idperfil, idvista)
 VALUES 
-    (1, NULL),
+    (1, 1),
     (1, 2);
 
 INSERT INTO permisos (idperfil, idvista)

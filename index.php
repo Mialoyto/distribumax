@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['login']) && $_SESSION['login']['estado'] == true) {
-    header("Location: http://localhost/distribumax/views/Home/");
+    header("Location: http://localhost/distribumax/views/home/");
 }
 ?>
 

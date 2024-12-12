@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
       body: fomrData
     });
     const data = await response.json();
-
     console.log(data)
     return data;
   }
@@ -23,15 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     const data = await Login();
     if (!data.estado) {
-      // console.log(data);
-      //alert(data.status);
       showToast(data.status, "error", "ERROR");
-      //alert("Usuario o contraseña incorrectos");
     } else {
-      // alert("Bienvenido");
-
       console.log(data);
-      window.location.href = `http://localhost/distribumax/views/Home/`;
+      window.location.href = `http://localhost/distribumax/views/home/`;
     }
   });
 });

@@ -242,8 +242,9 @@ CREATE TABLE marcas (
     CONSTRAINT uk_marca UNIQUE (marca),
     CONSTRAINT fk_estado_mar CHECK (estado IN ('0', '1'))
 ) ENGINE = INNODB;
- -- Integracion de la tabla detalle_cate_marca
- DROP TABLE IF EXISTS detalle_cate_marca;
+-- Integracion de la tabla detalle_cate_marca
+DROP TABLE IF EXISTS detalle_cate_marca;
+
 CREATE TABLE detalle_cate_marca (
     iddetallecategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idmarca INT NOT NULL,
@@ -458,8 +459,6 @@ CREATE TABLE detalle_pedidos (
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     estado CHAR(1) NOT NULL DEFAULT "1",
-
-
     CONSTRAINT fk_idpedido_det_ped FOREIGN KEY (idpedido) REFERENCES pedidos (idpedido),
     CONSTRAINT fk_idproducto_det_ped FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
     -- CONSTRAINT fk_idlote_det_pedido FOREIGN KEY (idlote) REFERENCES lotes (idlote),
@@ -574,7 +573,7 @@ CREATE TABLE despachos (
     idusuario INT NOT NULL, -- ? PERSONA QUE REGISTRO EL DESPACHO
     fecha_despacho DATE NOT NULL, -- ? FECHA PROGRAMADA PARA LA ENTREGA DEL PEDIDO
     idjefe_mercaderia INT NOT NULL, -- ? Persona asignada como jefe de mercaderia 
-    idconductor       INT NOT NULL,
+    idconductor INT NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
     update_at DATETIME NULL,
     inactive_at DATETIME NULL,
@@ -595,8 +594,6 @@ CREATE TABLE despacho_ventas (
     idventa INT NOT NULL,
     idproducto INT NOT NULL,
     create_at DATETIME NOT NULL DEFAULT NOW(),
-
-
     CONSTRAINT fk_despacho_det_desp FOREIGN KEY (iddespacho) REFERENCES despachos (iddespacho),
     CONSTRAINT fk_venta_det_desp_ FOREIGN KEY (idventa) REFERENCES ventas (idventa),
     CONSTRAINT fk_producto_det_desp FOREIGN KEY (idproducto) REFERENCES productos (idproducto)
@@ -683,6 +680,18 @@ CREATE TABLE notificaciones (
 ) ENGINE = INNODB;
 
 -- ------------------------------------------------------------------------------------------------------
+
+-- -//FIXME --!TABLA DE PERMISOS EN PRUEBA
+-- CREATE TABLE acciones (
+--     idaccion INT AUTO_INCREMENT PRIMARY KEY,
+--     accion VARCHAR(30) NOT NULL,
+
+--     create_at DATETIME NOT NULL DEFAULT NOW(),
+--     CONSTRAINT uk_accion_acc UNIQUE (accion)
+-- ) ENGINE = INNODB;
+
+-- -//FIXME --!INSERTAMOS DATOS A LA TABAL
+
 -- TODO: NUEVAS TABLAS
 -- CREANDO NUEVAS TABLAS PARA QUE FUNCIONE LOS PERMISOS
 CREATE TABLE modulos (
@@ -733,9 +742,9 @@ VALUES ('Administrador', 'ADM'),
     ('Jefe de Mercaderia', 'JMF');
 
 -- INSERTAR DATOS A LA TABLA MODULOS
-INSERT INTO modulos (modulo)
-VALUES 
-    ('Pedidos'),
+INSERT INTO
+    modulos (modulo)
+VALUES ('Pedidos'),
     ('Categorias'),
     ('Clientes'),
     ('Compras'),
@@ -753,33 +762,107 @@ VALUES
     ('Vehiculos'),
     ('Ventas');
 
+-- INSERTAR DATOS A LA TABLA VISTAS AL ROL DE ADMINISTRADO
+-- DASHBOARD
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        NULL,
+        'home',
+        'S',
+        'Dashboard',
+        'bi bi-graph-up'
+    );
 
--- INSERTAR DATPS A LA TABLA VISTAS
 -- PEDIDOS
-INSERT INTO vistas (idmodulo, ruta, sidebaroption, texto, icono)
-VALUES (NULL, 'home','S','Dashboard','bi bi-graph-up');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        1,
+        'registrar-pedido',
+        'S',
+        'Pedidos',
+        'bi bi-clipboard-plus fs-4'
+    );
 
-INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
-VALUES (1,'index','S','Pedidos','bi bi-clipboard-plus fs-4');
--- Registrar Clientes
-INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
-VALUES (3,'registrar-clientes','S','Clientes','bi bi-person-rolodex fa-lg');
--- Listar pedidos
-INSERT INTO vistas (idmodulo,ruta,sidebaroption,texto,icono)
-VALUES (3,'index','S','','');
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        1,
+        'listar-pedido',
+        'S',
+        '',
+        ''
+    );
 
+-- CLIENTES
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        3,
+        'registrar-clientes',
+        'S',
+        'Clientes',
+        'bi bi-person-rolodex fa-lg'
+    );
+
+INSERT INTO
+    vistas (
+        idmodulo,
+        ruta,
+        sidebaroption,
+        texto,
+        icono
+    )
+VALUES (
+        3,
+        'listar-clientes',
+        'S',
+        '',
+        ''
+    );
 
 -- AGREGAR DATOS A LA TABLA PERMISOS
 -- ADMINISTRADOR
 INSERT INTO
     permisos (idperfil, idvista)
-VALUES 
-    (1, 1),
-    (1, 2);
-
-INSERT INTO permisos (idperfil, idvista)
-VALUES 
-    (1, 3);
-INSERT INTO permisos (idperfil, idvista)
-VALUES 
-    (1, 4);
+VALUES (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (1, 5);
+-- (1,6),
+-- (1,7),
+-- (1,8),
+-- (1,9),
+-- (1,10),
+-- (1,11),
+-- (1,12),
+-- (1,13),
+-- (1,14),
+-- (1,15),
+-- (1,16);

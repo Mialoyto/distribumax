@@ -143,7 +143,7 @@
           <!-- fin tabla productos -->
           <div class="d-flex justify-content-between">
             <div class="d-flex justify-content-start mt-3">
-              <a  class="btn btn-primary" href="listar.php">Listar pedidos</a>
+              <a  class="btn btn-primary" href="listar-pedido.php">Listar pedidos</a>
             </div>
             <!-- Botones -->
             <div class="d-flex justify-content-end mt-3">

@@ -209,7 +209,7 @@ require_once '../header.php';
         </div>
       </div>
       <div class="card-footer mt-3">
-        <a href="index.php" class="btn btn-primary mt-2 mb-2">Listar clientes</a>
+        <a href="listar-clientes.php" class="btn btn-primary mt-2 mb-2">Listar clientes</a>
       </div>
     </div>
   </div>

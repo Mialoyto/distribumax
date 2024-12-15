@@ -104,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (await showConfirm("¿Desea registrar la subcategoría?", "Subcategoría")) {
       const data = await AddSubcategorias();
+      formAddSubcategoria.reset();
       console.log(data);
     }
 

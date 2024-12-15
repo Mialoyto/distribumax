@@ -11,12 +11,12 @@ try {
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   // Eliminar la base de datos si ya existe
-  $pdo->exec("DROP DATABASE IF EXISTS $dbname");
-  echo "Base de datos '$dbname' eliminada si existía.<br>";
+  // $pdo->exec("DROP DATABASE IF EXISTS $dbname");
+  // echo "Base de datos '$dbname' eliminada si existía.<br>";
 
   // Crear la base de datos
-  $pdo->exec("CREATE DATABASE $dbname");
-  echo "Base de datos '$dbname' creada con éxito.<br>";
+  // $pdo->exec("CREATE DATABASE $dbname");
+  // echo "Base de datos '$dbname' creada con éxito.<br>";
 
   // Seleccionar la base de datos recién creada
   $pdo->exec("USE $dbname");

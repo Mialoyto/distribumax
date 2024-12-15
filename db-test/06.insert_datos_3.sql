@@ -254,31 +254,31 @@ CALL sp_registrar_usuario ( 63030043, 5,'JMF', 'jefe_mercaderia', 'jefe_mercader
 
 CALL sp_actualizar_usuario (
     'administrador',
-    '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
+    '$2y$10$Y46lbl1F2KtFfWAaf5ZGpuPnEBFaepojvuZsynnamwAkzT1GtpD/q',
     1
 );
 
 CALL sp_actualizar_usuario (
     'usuario',
-    '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
+    '$2y$10$Y46lbl1F2KtFfWAaf5ZGpuPnEBFaepojvuZsynnamwAkzT1GtpD/q',
     2
 );
 
 
 CALL sp_actualizar_usuario (
     'vendedor',
-    '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
+    '$2y$10$Y46lbl1F2KtFfWAaf5ZGpuPnEBFaepojvuZsynnamwAkzT1GtpD/q',
     3
 );
 
 CALL sp_actualizar_usuario (
     'conductor',
-    '$2y$10$JB.moLTAzz7XPbbcUMmQQuynsiKidarPMFFcQ1lfTDjIrrYwyphpm',
+    '$2y$10$Y46lbl1F2KtFfWAaf5ZGpuPnEBFaepojvuZsynnamwAkzT1GtpD/q',
     4
 );
 CALL sp_actualizar_usuario (
     'jfmercaderia',
-    '$2y$10$X7uFYdjQh9TIXC24st9YJePFv3L1N5zsdBc.FEsaQwRklHmiDGfCu',
+    '$2y$10$Y46lbl1F2KtFfWAaf5ZGpuPnEBFaepojvuZsynnamwAkzT1GtpD/q',
     5
 );
 
@@ -329,67 +329,6 @@ CALL sp_cliente_registrar (26558020, NULL, 'Persona');
 
 CALL sp_cliente_registrar (NULL, 20100055237, 'Empresa');
 
--- PRROMOCIONES
-/* CALL sp_tipo_promocion_registrar (
-    'Descuento',
-    'Se aplicará un porcentaje de descuento al producto'
-);
-
-CALL sp_tipo_promocion_registrar (
-    'Combo de Productos',
-    'Promoción en la que se venden varios productos juntos a un precio reducido'
-);
-
-CALL sp_tipo_promocion_registrar (
-    '2x1',
-    'Por la compra de un producto, el cliente recibe otro gratis'
-);
-
-CALL sp_tipo_promocion_registrar (
-    'Descuento por Volumen',
-    'Descuento aplicable al comprar una gran cantidad de productos'
-);
-
-CALL sp_tipo_promocion_registrar (
-    'Producto de Regalo',
-    'Por la compra de ciertos productos, se ofrece otro producto de regalo'
-);
-
-CALL sp_tipo_promocion_registrar (
-    'Descuento Estacional',
-    'Promoción aplicable en temporadas específicas, como Navidad o Año Nuevo'
-);
-
-CALL sp_tipo_promocion_registrar (
-    'Premio por Fidelidad',
-    'Descuento especial para clientes habituales o suscriptores de la distribuidora'
-);
-
-CALL sp_promocion_registrar (
-    1,
-    "Descuento en productos seleccionados",
-    '2024-12-20',
-    '2024-12-31',
-    5
-);
-
-CALL sp_promocion_registrar (
-    1,
-    "Descuento en productos en galletas Casino",
-    '2024-12-20',
-    '2024-12-31',
-    5
-);
-
-CALL sp_detalle_promociones_registrar (2, 7, 5);
-
-CALL sp_detalle_promociones_registrar (2, 1, 5);
-
-CALL sp_detalle_promociones_registrar (2, 4, 5);
-
-CALL sp_detalle_promociones_registrar (2, 12, 5);
-
-CALL sp_detalle_promociones_registrar (2, 10, 5); */
 
 CALL sp_registrar_vehiculo (
     1, -- ID del usuario (reemplaza con el ID correcto)
@@ -426,17 +365,4 @@ CALL sp_registrar_vehiculo (
     1087, -- Capacidad en Kg
     'operativo' -- Condición del vehículo ('operativo', 'taller', 'averiado')
 );
--- PARA ELIMINAR UN VEHICULO
--- DELETE FROM vehiculos WHERE idvehiculo = 3;
-/* SELECT
-    PER.idpersonanrodoc,
-    PER.nombres,
-    PER.appaterno,
-    PER.apmaterno,
-    PE.perfil
-FROM personas PER
-INNER JOIN usuarios USU
-    ON USU.idpersona = PER.idpersonanrodoc
-INNER JOIN perfiles PE
-    ON PE.idperfil = USU.idperfil
-WHERE PE.perfil = 'chofer'; */
+

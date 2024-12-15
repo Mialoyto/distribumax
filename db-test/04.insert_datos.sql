@@ -1,5 +1,7 @@
 USE distribumax;
 
+
+
 -- TIPOS DE DOCUMENTO
 CALL sp_registrar_tipo_documento('DNI');
 CALL sp_registrar_tipo_documento('RUC');
@@ -15,15 +17,15 @@ CALL sp_proovedor_registrar(20100055237, 'Proveedor Alicorp', 'María Gómez', '
 CALL sp_proovedor_registrar(20266352337, 'Proveedor Softys', 'Ricardo Morales', '0173088888', 'Av. José Larco 812, Miraflores', 'proveedor@softys.com.pe');
 
 -- REGISTRAR CATEGORÍAS
-CALL sp_registrar_categoria('Sazonadores');
-CALL sp_registrar_categoria('Comida Instantánea');
-CALL sp_registrar_categoria('Aceites');
-CALL sp_registrar_categoria('Dulces y Golosinas');
-CALL sp_registrar_categoria('Conservas');
-CALL sp_registrar_categoria('Higiene Personal');
-CALL sp_registrar_categoria('Pastas');
-CALL sp_registrar_categoria('Harina');
-CALL sp_registrar_categoria('Salsas');
+CALL sp_registrar_categoria('Sazonadores'); -- 1
+CALL sp_registrar_categoria('Comida Instantánea'); -- 2
+CALL sp_registrar_categoria('Aceites'); -- 3
+CALL sp_registrar_categoria('Dulces y Golosinas'); -- 4
+CALL sp_registrar_categoria('Conservas'); -- 5
+CALL sp_registrar_categoria('Higiene Personal'); -- 6
+CALL sp_registrar_categoria('Pastas'); -- 7
+CALL sp_registrar_categoria('Harina'); -- 8
+CALL sp_registrar_categoria('Salsas'); -- 9
 
 -- REGISTRAR SUBCATEGORÍAS
 CALL sp_registrar_subcategoria(1, 'Sazonadores en polvo');
@@ -51,11 +53,15 @@ CALL sp_registrar_marca(3, 'Ladysoft');
 CALL sp_registrar_detalle(1, 1); -- ajinomoto → Sazonadores
 CALL sp_registrar_detalle(2, 1); -- ajino-men → Sazonadores
 CALL sp_registrar_detalle(3, 1); -- ajino-mix → Sazonadores
+
 CALL sp_registrar_detalle(4, 3); -- primor → Aceites
+CALL sp_registrar_detalle(4, 5); -- primor → conservas
 CALL sp_registrar_detalle(5, 4); -- casino → Dulces y Golosinas
 CALL sp_registrar_detalle(6, 4); -- glacitas → Dulces y Golosinas
+
 CALL sp_registrar_detalle(7, 6); -- elite → Higiene Personal
 CALL sp_registrar_detalle(8, 6); -- babysec → Higiene Personal
+CALL sp_registrar_detalle(9, 6); -- ladysoft → Higiene Personal
 
 
 CALL sp_tipo_comprobantes_registrar('Factura');

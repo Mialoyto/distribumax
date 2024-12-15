@@ -148,7 +148,7 @@
             <!-- REVIEW FIN DEL MODAL -->
          </div>
          <div class="card-footer">
-            <a href="../Pedidos/" class="btn btn-primary">Registrar Pedidos</a>
+            <a href="../Pedidos/registrar-pedido.php" class="btn btn-primary">Registrar Pedidos</a>
          </div>
       </div>
    </div>

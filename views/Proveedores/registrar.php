@@ -87,7 +87,7 @@
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="email" class="form-control" id="email" name="email" minlength="3" maxlength="100" disabled required>
+                <input type="email" class="form-control" id="email" name="email" minlength="3" maxlength="100" disabled>
                 <label for="email">Correo Electrónico</label>
               </div>
             </div>

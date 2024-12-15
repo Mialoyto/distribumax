@@ -380,6 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(resultado.id);
       if (resultado.id != null && resultado.id > 0) {
         showToast("Producto registrado correctamente", "success", "SUCCESS");
+        cleanCampos();
       } else {
         showToast("Error al registrar producto", "error", "ERROR");
       }

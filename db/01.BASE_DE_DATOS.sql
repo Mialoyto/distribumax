@@ -1,11 +1,11 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
-DROP DATABASE IF EXISTS distribumax;
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
+drop DATABASE IF EXISTS distribumax;
 
 CREATE DATABASE distribumax;
 
 USE distribumax;
 -- -----------------------------------------------------------------------------------------------
-DROP TABLE IF EXISTS departamentos;
+--  IF EXISTS departamentos;
 
 CREATE TABLE departamentos (
     iddepartamento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -17,7 +17,7 @@ CREATE TABLE departamentos (
     CONSTRAINT fk_estado_depa CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS provincias;
+--  IF EXISTS provincias;
 
 CREATE TABLE provincias (
     idprovincia INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -30,7 +30,7 @@ CREATE TABLE provincias (
     CONSTRAINT fk_estado_prov CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS distritos;
+--  IF EXISTS distritos;
 
 CREATE TABLE distritos (
     iddistrito INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -43,7 +43,7 @@ CREATE TABLE distritos (
     CONSTRAINT fk_estado_dist CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS categorias;
+--  IF EXISTS categorias;
 
 CREATE TABLE categorias (
     idcategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -55,7 +55,7 @@ CREATE TABLE categorias (
     CONSTRAINT fk_estado_categ CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS subcategorias;
+--  IF EXISTS subcategorias;
 
 CREATE TABLE subcategorias (
     idsubcategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -69,7 +69,7 @@ CREATE TABLE subcategorias (
     CONSTRAINT fk_estado_subcat CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS tipo_comprobante_pago;
+--  IF EXISTS tipo_comprobante_pago;
 
 CREATE TABLE tipo_comprobante_pago (
     idtipocomprobante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -84,7 +84,7 @@ CREATE TABLE tipo_comprobante_pago (
 
 SELECT * FROM tipo_comprobante_pago;
 
-DROP TABLE IF EXISTS metodos_pago;
+--  IF EXISTS metodos_pago;
 
 CREATE TABLE metodos_pago (
     idmetodopago INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -96,7 +96,7 @@ CREATE TABLE metodos_pago (
     CONSTRAINT fk_estado_met_pag CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS accesos;
+--  IF EXISTS accesos;
 
 CREATE TABLE accesos (
     idacceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -108,7 +108,7 @@ CREATE TABLE accesos (
     CONSTRAINT fk_estado_acce CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS tipo_documento;
+--  IF EXISTS tipo_documento;
 
 CREATE TABLE tipo_documento (
     idtipodocumento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -121,7 +121,7 @@ CREATE TABLE tipo_documento (
     CONSTRAINT fk_estado_tip_doc CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLES IF EXISTS personas;
+-- S IF EXISTS personas;
 
 CREATE TABLE personas (
     idtipodocumento INT NOT NULL,
@@ -143,7 +143,7 @@ CREATE TABLE personas (
 ) ENGINE = INNODB;
 
 /* modificaciones en la base tabla tipo doc por defecto la empresas se registraran con ruc */
-DROP TABLES IF EXISTS empresas;
+-- S IF EXISTS empresas;
 
 CREATE TABLE empresas (
     idtipodocumento INT NOT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE perfiles (
     CONSTRAINT uk_nombrecorto_per UNIQUE (nombrecorto)
 ) ENGINE = INNODB;
 
-DROP TABLES IF EXISTS usuarios;
+-- S IF EXISTS usuarios;
 
 CREATE TABLE usuarios (
     idusuario INT PRIMARY KEY AUTO_INCREMENT,
@@ -191,7 +191,7 @@ CREATE TABLE usuarios (
     CONSTRAINT fk_idperfil_usu FOREIGN KEY (idperfil) REFERENCES perfiles (idperfil)
 ) ENGINE = INNODB;
 
-DROP TABLES IF EXISTS clientes;
+-- S IF EXISTS clientes;
 
 CREATE TABLE clientes (
     idcliente INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -211,7 +211,7 @@ CREATE TABLE clientes (
     CONSTRAINT fk_estado_cli CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLES IF EXISTS proveedores;
+-- S IF EXISTS proveedores;
 
 CREATE TABLE proveedores (
     idproveedor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -230,7 +230,7 @@ CREATE TABLE proveedores (
     CONSTRAINT fk_estado_proveedor CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS marcas;
+--  IF EXISTS marcas;
 
 CREATE TABLE marcas (
     idmarca INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -243,7 +243,7 @@ CREATE TABLE marcas (
     CONSTRAINT fk_estado_mar CHECK (estado IN ('0', '1'))
 ) ENGINE = INNODB;
 -- Integracion de la tabla detalle_cate_marca
-DROP TABLE IF EXISTS detalle_cate_marca;
+--  IF EXISTS detalle_cate_marca;
 
 CREATE TABLE detalle_cate_marca (
     iddetallecategoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -254,7 +254,8 @@ CREATE TABLE detalle_cate_marca (
 ) ENGINE = INNODB;
 -- BORRAR
 
-/* DROP TABLE IF EXISTS tipos_promociones;
+SELECT * FROM detalle_cate_marca;
+/* --  IF EXISTS tipos_promociones;
 CREATE TABLE tipos_promociones (
 idtipopromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 tipopromocion VARCHAR(150) NOT NULL,
@@ -268,7 +269,7 @@ CONSTRAINT fk_estado_tip_prom CHECK (estado IN ("0", "1"))
 
 -- BORRAR
 
-/* DROP TABLE IF EXISTS promociones;
+/* --  IF EXISTS promociones;
 CREATE TABLE promociones (
 idpromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 idtipopromocion INT NOT NULL,
@@ -285,7 +286,7 @@ CONSTRAINT fk_estado_prom CHECK (estado IN ("0", "1")),
 CONSTRAINT ck_fecha_fin_mayor_inicio CHECK (fechafin > fechainicio)
 ) ENGINE = INNODB; */
 
-DROP TABLE IF EXISTS unidades_medidas;
+--  IF EXISTS unidades_medidas;
 
 CREATE TABLE unidades_medidas (
     idunidadmedida INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -298,7 +299,7 @@ CREATE TABLE unidades_medidas (
 ) ENGINE = INNODB;
 
 -- TABLA PRODUCTOS
-DROP TABLE IF EXISTS productos;
+--  IF EXISTS productos;
 
 CREATE TABLE productos (
     idproducto INT PRIMARY KEY AUTO_INCREMENT,
@@ -338,7 +339,7 @@ CREATE TABLE productos (
 
 -- BORRAR
 
-/* DROP TABLE IF EXISTS detalle_promociones;
+/* --  IF EXISTS detalle_promociones;
 CREATE TABLE detalle_promociones (
 iddetallepromocion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 idpromocion INT NOT NULL,
@@ -352,7 +353,7 @@ CONSTRAINT id_producto_deta_prom FOREIGN KEY (idproducto) REFERENCES productos (
 CONSTRAINT fk_estado_deta_prom CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB; */
 
-DROP TABLE IF EXISTS precios_historicos;
+--  IF EXISTS precios_historicos;
 
 CREATE TABLE precios_historicos (
     id_precio_historico INT PRIMARY KEY AUTO_INCREMENT,
@@ -366,7 +367,7 @@ CREATE TABLE precios_historicos (
     CONSTRAINT fk_estado_prec_hist CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS pedidos;
+--  IF EXISTS pedidos;
 
 CREATE TABLE pedidos (
     idpedido CHAR(15) NOT NULL PRIMARY KEY,
@@ -388,7 +389,7 @@ CREATE TABLE pedidos (
     )
 ) ENGINE = INNODB;
 
--- DROP TABLE IF EXISTS kardex;
+-- --  IF EXISTS kardex;
 
 /* CREATE TABLE kardex (
 idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -419,7 +420,7 @@ estado IN (
 ) ENGINE = INNODB; */
 
 -- ------------------------------------------------------------------------------------------------------
-DROP TABLE IF EXISTS lotes;
+--  IF EXISTS lotes;
 
 CREATE TABLE lotes (
     idlote INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -445,7 +446,7 @@ CREATE TABLE lotes (
     )
 ) ENGINE = INNODB;
 
-DROP TABLES IF EXISTS detalle_pedidos;
+-- S IF EXISTS detalle_pedidos;
 
 CREATE TABLE detalle_pedidos (
     id_detalle_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -469,7 +470,7 @@ CREATE TABLE detalle_pedidos (
 ) ENGINE = INNODB;
 
 -- ------------------------------------------------------------------------------------------------------
-DROP TABLE IF EXISTS kardex;
+--  IF EXISTS kardex;
 
 CREATE TABLE kardex (
     idkardex INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -503,7 +504,7 @@ CREATE TABLE kardex (
 --
 -- CALL kardex('Ingreso', 1, 1, 1, 10, 'Ingreso de productos', 'Disponible');
 
-DROP TABLE IF EXISTS vehiculos;
+--  IF EXISTS vehiculos;
 
 CREATE TABLE vehiculos (
     idvehiculo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -530,7 +531,7 @@ CREATE TABLE vehiculos (
     )
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS ventas;
+--  IF EXISTS ventas;
 
 CREATE TABLE ventas (
     idventa INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -586,7 +587,7 @@ CREATE TABLE despachos (
 ) ENGINE = INNODB;
 
 --  TODO: DETALLE  DEL DESPACHO
-DROP TABLE IF EXISTS despacho_ventas;
+--  IF EXISTS despacho_ventas;
 
 CREATE TABLE despacho_ventas (
     iddetalledespacho INT AUTO_INCREMENT PRIMARY KEY,
@@ -599,7 +600,7 @@ CREATE TABLE despacho_ventas (
     CONSTRAINT fk_producto_det_desp FOREIGN KEY (idproducto) REFERENCES productos (idproducto)
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS detalle_meto_Pago;
+--  IF EXISTS detalle_meto_Pago;
 
 CREATE TABLE detalle_meto_Pago (
     iddetallemetodo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -614,7 +615,7 @@ CREATE TABLE detalle_meto_Pago (
     CONSTRAINT fk_estado_deta_me CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS comprobantes;
+--  IF EXISTS comprobantes;
 
 CREATE TABLE comprobantes (
     idcomprobante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -626,7 +627,7 @@ CREATE TABLE comprobantes (
     CONSTRAINT fk_estado_comp CHECK (estado IN ("0", "1"))
 ) ENGINE = INNODB;
 
-DROP PROCEDURE IF EXISTS compras;
+-- PROCEDURE IF EXISTS compras;
 
 CREATE TABLE compras (
     idcompra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -647,7 +648,7 @@ CREATE TABLE compras (
     -- CONSTRAINT ck_numero_comprobante_compra UNIQUE (idproveedor AND numcomprobante)
 ) ENGINE = INNODB;
 
-DROP PROCEDURE IF EXISTS detalles_compras;
+-- PROCEDURE IF EXISTS detalles_compras;
 
 CREATE TABLE detalles_compras (
     iddetallecompra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -669,7 +670,7 @@ CREATE TABLE detalles_compras (
     CONSTRAINT ck_estado_det_compra CHECK (estado IN ('0', '1'))
 ) ENGINE = INNODB;
 
-DROP TABLE IF EXISTS notificaciones;
+--  IF EXISTS notificaciones;
 
 CREATE TABLE notificaciones (
     idnotificacion INT AUTO_INCREMENT PRIMARY KEY,

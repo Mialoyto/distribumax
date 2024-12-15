@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // TODO: FUNCION PARA AGREGAR PRODUCTO A LA TABLA DE COMPRAS (OK)
   function addProductoTabla(id, producto, unidadMedida, lote, stock, idlote) {
     const tbody = document.querySelector("#table-productos tbody");
-    const existId = document.querySelector(`#table-productos tr td[lote="${lote}"]`);
+    const existId = document.querySelector(`#table-productos tr td[id-prod="${id}"]`);
     console.log("existe el ID en la tabla ?", existId);
     if (existId) {
       showToast('El producto con el mismo lote ya fue agregado', 'info', 'INFO');

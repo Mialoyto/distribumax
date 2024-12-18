@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
   formMarca.addEventListener("submit", async (event) => {
     event.preventDefault();
    
-      if (await showConfirm("Desea registrar", "Marcas")) {
+      if (await showConfirm("¿Desea registrar marca?", "","Sí, guardar", "No, cancelar")) {
         const data = await registrarMarca();
         console.log(data[0].idmarca);
 

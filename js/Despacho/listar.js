@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
           id = e.currentTarget.getAttribute("id-data");
           const status = e.currentTarget.getAttribute("estado-cat");
           console.log("ID:", id, "Status:", status);
-          if (await showConfirm("¿Estás seguro de cambiar el estado de la subcategoría?")) {
+          if (await showConfirm("¿Estás seguro de cambiar el estado?")) {
             const data = await updateEstado(status, id);
               console.log(data);
               dtdespacho.destroy();

@@ -572,6 +572,8 @@ BEGIN
         GROUP BY DATE(ve.fecha_venta);
     END IF;
 END ;
+CALL sp_VentasPorDia('2024-12-18');
+select * from ventas;
 
 DROP PROCEDURE IF EXISTS sp_contar_ventas;
 

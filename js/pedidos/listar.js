@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         inputnombres.value = data[0].nombres;
         inputrazon.value = data[0].razonsocial;
         inputdireccion.value = data[0].direccion_cliente;
-        $("#addProducto").removeAttribute("disabled");
+        // $("#addProducto").removeAttribute("disabled");
 
 
         detallePedidoTable.innerHTML = "";
@@ -130,8 +130,10 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(`../../controller/pedido.controller.php?operation=getAll`);
       const data = await response.json();
+
       if (data.length > 0) {
         data.forEach(element => {
+          console.log(data);
           let estadoClass;
           let editButtonClass = "btn-warning";
           let editButtonDisabled = "";
@@ -172,6 +174,17 @@ document.addEventListener("DOMContentLoaded", () => {
               estadoClass = "text-primary";
               editButtonClass = "btn-warning disabled";
               bgbtn = "btn-danger";
+              botonesHTML = `
+              <div class="d-flex align-items-center justify-content-star container-btn">
+                <div class="text-center">
+                <span class="badge text-bg-primary px-4 py-2"
+                data-bs-toggle="tooltip" 
+                data-bs-placement="top" 
+                data-bs-title="Pedido entregado"
+                >Entregado</span>
+                </div>
+              </div>
+              `;
 
               break;
             case "Pendiente":
@@ -194,6 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <i class="bi bi-pencil-square fs-5"></i>
                 </button>
               </div>
+
               <div data-bs-toggle="tooltip" 
                   data-bs-placement="top" 
                   data-bs-title="Cancelar pedido">
@@ -208,6 +222,14 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
           `;
 
+        const botones = function (){
+          if(element.estado === "Cancelado" || element.estado === "Entregado"){
+            return botonesHTML;
+          }else{
+            return botonesNormales;
+          }
+        }
+
           tableContent += `
       <tr>
         <td>${element.idpedido}</td>
@@ -218,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td><strong class="${estadoClass}">${element.estado}</strong></td>
         <td>
           <div class="botones" id="botones-${element.idpedido}">
-            ${element.estado === "Cancelado" ? botonesHTML : botonesNormales}
+            ${botones()}
           </div>
         </td>
       </tr>`;
@@ -338,14 +360,14 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 
-  $("#addProducto").addEventListener("input", async () => {
+/*   $("#addProducto").addEventListener("input", async () => {
     const producto = $("#addProducto").value;
     await mostraResultados(producto);
     if ($("#addProducto").value === "") {
       $("#datalistProducto").style.display = "none";
     }
   });
-
+ */
 
   // FIXME : //TODO:ESTA FUNCION SOLO CARGA LOS PRODUCTOS DEL PEDIDO QUE YA ESTAN REGISTRADOS
   function addProductoPedido(id, codigo, descripcion, cantidad, unidadmedida, precio_venta, subtotal, descuento, total, iddetallepedido, idpedido) {

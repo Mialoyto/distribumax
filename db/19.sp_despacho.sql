@@ -1,4 +1,4 @@
--- Active: 1728956418931@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 
 -- TODO: PROCEDIMIENTO PARA REGISTRAR UN DESPACHO;
@@ -85,7 +85,7 @@ BEGIN
         UPDATE pedidos
         SET estado = 'Entregado'
         WHERE idpedido = _idpedido
-          AND estado <> 'Entregado';
+        AND estado <> 'Entregado';
     END IF;
 END;
 

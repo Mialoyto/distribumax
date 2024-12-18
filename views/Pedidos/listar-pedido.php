@@ -7,13 +7,13 @@
 
       <div class="card mb-4">
          <div class="card-header">
-         <div class="d-flex justify-content-between align-items-center">
-					<div>
-						<i class="bi bi-clipboard-check fs-3 fw-bold"> Listado de Pedidos</i>
-					</div>
-					<div>
+            <div class="d-flex justify-content-between align-items-center">
+               <div>
+                  <i class="bi bi-clipboard-check fs-3 fw-bold"> Listado de Pedidos</i>
                </div>
-         </div>
+               <div>
+               </div>
+            </div>
          </div>
          <div class="card-body">
 
@@ -107,13 +107,13 @@
                               <hr class="my-3">
                               <!-- Sección de Detalle de Pedido -->
                               <h5 class="mb-3">Detalle del Pedido</h5>
-                              <div class="col-md-8 mb-3">
+                              <!--  <div class="col-md-8 mb-3">
                                  <div class="form-floating">
                                     <input type="search" class="form-control" id="addProducto" list="datalistProducto" placeholder="Agregar Producto" disabled>
                                     <label for="update-addProducto">Agregar producto</label>
                                     <ul id="datalistProducto" class="list-group position-absolute w-100 ListarDatos" style="z-index: 1000; display: none;"></ul>
                                  </div>
-                              </div>
+                              </div> -->
 
                               <div class="table-responsive">
                                  <table class="table table-striped table-hover" id="update-detalle-productos">

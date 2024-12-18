@@ -13,14 +13,14 @@
                         <i class="bi bi-clipboard-check fs-3 fw-bold">Listado de Personas</i>
                     </div>
                     <div>
-                    <a href="<?= $URL . 'reports/Proveedores/contenidoPDF.php' ?>" 
+                    <!-- <a href="<?= $URL . 'reports/Proveedores/contenidoPDF.php' ?>" 
 						   type="button" 
 						   class="me-2 btn btn-danger" 
 						   data-bs-toggle="tooltip" 
 						   data-bs-placement="bottom" 
                data-bs-title="Generar PDF">
                <i class="bi bi-file-earmark-pdf fs-3"></i>
-            </a>
+            </a> -->
                     </div>
                 </div>
             </div>

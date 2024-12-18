@@ -12,9 +12,9 @@
 						<i class="bi bi-clipboard-check fs-3 fw-bold"> Listado de Vehiculos</i>
 					</div>
 					<div>
-						<a href=<?= $URL . 'reports/Vehiculos/contenidoPDF.php' ?> type="button" class="me-2 btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Generar PDF">
+						<!-- <a href=<?= $URL . 'reports/Vehiculos/contenidoPDF.php' ?> type="button" class="me-2 btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Generar PDF">
 							<i class="bi bi-file-earmark-pdf fs-6"></i>
-						</a>
+						</a> -->
 					</div>
 				</div>
 			</div>

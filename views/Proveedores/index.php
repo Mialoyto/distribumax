@@ -1,9 +1,9 @@
 <?php require_once '../header.php'; ?>
 <?php require_once '../../app/config/App.php'; ?>
 <main>
-	<div class="container-fluid px-4 mt-4" >
-	
-			<!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
+	<div class="container-fluid px-4 mt-4">
+
+		<!-- Breadcrumbs pueden ser agregados aquí si es necesario -->
 		</ol>
 		<!-- TARJETA -->
 		<div class="card mb-4">
@@ -13,14 +13,14 @@
 						<i class="bi bi-clipboard-check fs-3 fw-bold"> Listado de Proveedores</i>
 					</div>
 					<div>
-						<a href="<?= $URL . 'reports/Proveedores/contenidoPDF.php' ?>" 
+						<!-- <a href="<?= $URL . 'reports/Proveedores/contenidoPDF.php' ?>" 
 						   type="button" 
 						   class="me-2 btn btn-danger" 
 						   data-bs-toggle="tooltip" 
 						   data-bs-placement="bottom" 
 						   data-bs-title="Generar PDF">
 							<i class="bi bi-file-earmark-pdf fs-6"></i>
-						</a>
+						</a> -->
 					</div>
 				</div>
 			</div>
@@ -104,4 +104,5 @@
 <script src="http://localhost/distribumax/js/proveedor/editar-proveedor.js"></script>
 <script src="http://localhost/distribumax/js/proveedor/disabled-proveedor.js"></script>
 </body>
+
 </html>

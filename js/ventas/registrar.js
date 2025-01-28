@@ -493,7 +493,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const validacion = verificarCampos();
     console.log("datos de la validacion", validacion);
 
-    if (await showConfirm("¿Desea registrar el vehiculo?", "Registro")) {
+    if (await showConfirm("¿Desea registrar la venta?", "","Sí, registrar venta", "Cancelar")) {
       if (validacion.length != 0) {
         const resultado = await RegistrarVenta();
         console.log("id venta", resultado)

@@ -1,5 +1,5 @@
+-- Active: 1732798376350@@127.0.0.1@3306@distribumax
 USE distribumax;
-
 -- TIPOS DE DOCUMENTO
 CALL sp_registrar_tipo_documento('DNI');
 CALL sp_registrar_tipo_documento('RUC');

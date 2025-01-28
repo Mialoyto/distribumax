@@ -171,6 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
             case "Entregado":
               estadoClass = "text-primary";
               editButtonClass = "btn-warning disabled";
+              estadoButtonDisabled = "disabled";
               bgbtn = "btn-danger";
 
               break;

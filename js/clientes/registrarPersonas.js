@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         $("#apellido-paterno").value = dataDB[0].appaterno;
         $("#apellido-materno").value = dataDB[0].apmaterno;
         $("#telefono-persona").value = dataDB[0].telefono;
-        $("#direccion-persona").value = dataDB[0].direccion;
+        $("#direccion-persona").value = dataDB[0].direccion_cliente;
         $("#iddistrito-persona").value = dataDB[0].distrito;
       } else {
         limpiarCampos();

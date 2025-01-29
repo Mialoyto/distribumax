@@ -1,4 +1,4 @@
--- Active: 1732798376350@@127.0.0.1@3306@distribumax
+-- Active: 1732807506399@@127.0.0.1@3306@distribumax
 USE distribumax;
 -- REGISTRAR  ✔️ 
 CREATE PROCEDURE spu_registrar_personas(
@@ -89,7 +89,6 @@ BEGIN
     SELECT v_mensaje AS mensaje, _idpersonanrodoc AS idpersonanrodoc, v_estado AS estado;
 END;
 
-CALL sp_actualizar_persona('26558000', 1, 'Pepe', 'Perez', 'Gomez', '987647389', 'Av. Los Pinos 123', 'San Juan de Lurigancho');
 
 -- OBTENER PERSONA PARA EDITAR EN EL MODAL
 DROP PROCEDURE IF EXISTS sp_getPersona;
@@ -114,11 +113,6 @@ BEGIN
     INNER JOIN distritos DIST ON PER.iddistrito = DIST.iddistrito
     WHERE PER.idpersonanrodoc = _idpersonanrodoc;
 END;
-
-
-
-
-CALL sp_getPersona('26558001');
 
 
 
@@ -159,8 +153,7 @@ BEGIN
     SELECT v_estado AS estado, v_mensaje AS mensaje;
 END;
 
-CALL sp_estado_persona('26558000','0');
-SELECT * FROM personas;
+
 
 -- BUSCAR PERSONA POR DOCUMENTO ✔️
 DROP PROCEDURE IF EXISTS sp_buscarpersonadoc;
@@ -266,4 +259,4 @@ BEGIN
     INNER JOIN distritos d ON p.iddistrito = d.iddistrito;
 END;
 
-call sp_listar_personas();
+

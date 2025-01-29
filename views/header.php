@@ -6,27 +6,27 @@ if (!isset($_SESSION['login']) || $_SESSION['login']['estado'] == false) {
   exit();
 } else {
   // // Validación de ruta
-  $url = $_SERVER['REQUEST_URI'];     //LINK - URL
-  $rutaCompleta = explode("/", $url); //NOTE -  URL > array()
-  $rutaCompleta = array_filter($rutaCompleta);
-  // $totalElementos = count($rutaCompleta);
-  $vistaActual = end($rutaCompleta);
-  $listaAccesos = $_SESSION['login']['accesos'];
+  // $url = $_SERVER['REQUEST_URI'];     //LINK - URL
+  // $rutaCompleta = explode("/", $url); //NOTE -  URL > array()
+  // $rutaCompleta = array_filter($rutaCompleta);
+  // // $totalElementos = count($rutaCompleta);
+  // $vistaActual = end($rutaCompleta);
+  // $listaAccesos = $_SESSION['login']['accesos'];
 
 
-  $encontrado = false;
-  $i = 0;
-  while (($i < count($listaAccesos)) && !$encontrado) {
-    if ($listaAccesos[$i]['ruta'] == $vistaActual) {
-      $encontrado = true;
-    }
-    $i++;
-  }
+  // $encontrado = false;
+  // $i = 0;
+  // while (($i < count($listaAccesos)) && !$encontrado) {
+  //   if ($listaAccesos[$i]['ruta'] == $vistaActual) {
+  //     $encontrado = true;
+  //   }
+  //   $i++;
+  // }
 
-  if (!$encontrado) {
-    header("Location: http://localhost/distribumax/views/home/");;
-    exit();
-  }
+  // if (!$encontrado) {
+  //   header("Location: http://localhost/distribumax/views/home/");;
+  //   exit();
+  // }
 }
 $host = "http://localhost/distribumax";
 ?>
@@ -120,22 +120,22 @@ $host = "http://localhost/distribumax";
             <div class="sb-sidenav-menu-heading">Modulos</div>
 
             <?php
-            foreach ($listaAccesos as $acceso) {
-              // var_dump($acceso);
-              if ($acceso['sidebaroption'] == 'S') {
-                echo "
-                  <a class='nav-link' href='$host/views/{$acceso['modulo']}/{$acceso['ruta']}'>
-                    <div class='sb-nav-link-icon'><i class='{$acceso['icono']} fs-5'></i></div>
-                    {$acceso['texto']}
-                  </a>";
-              }
-            }
+            // foreach ($listaAccesos as $acceso) {
+            //   // var_dump($acceso);
+            //   if ($acceso['sidebaroption'] == 'S') {
+            //     echo "
+            //       <a class='nav-link' href='$host/views/{$acceso['modulo']}/{$acceso['ruta']}'>
+            //         <div class='sb-nav-link-icon'><i class='{$acceso['icono']} fs-5'></i></div>
+            //         {$acceso['texto']}
+            //       </a>";
+            //   }
+            // }
 
             ?>
 
 
 
-            <!--
+            
             <a class="nav-link" href="<?= $host ?>/views/Pedidos/">
               <div class="sb-nav-link-icon"><i class="bi bi-clipboard-plus fs-4"></i></i></div>
               Pedidos
@@ -191,7 +191,7 @@ $host = "http://localhost/distribumax";
             <a class="nav-link" href="<?= $host ?>/views/Despacho/">
               <div class="sb-nav-link-icon"><i class="fa-solid fa-truck-ramp-box fa-lg"></i></div>
               Despacho
-            </a> -->
+            </a>
           </div>
         </div>
       </nav>

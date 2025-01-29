@@ -9,8 +9,8 @@ RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php [L]
 
 # Evitar acceder a carpetas que NO tengan un index.php/index.html
-Options All -Indexes
-Options All -Indexes
+#Options All -Indexes
+#Options All -Indexes
 
 # Manejo de excepciones en el servidor 404
 ErrorDocument 400 /distribumax/unauthorized.php

@@ -146,8 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const datalist = lista;
     datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
     const response = await buscarVehiculo(placa);
-    console.log(response.length);
-    console.log(response);
     if (response && response.length > 0) {
       lista.style.display = "block"; // Muestra la lista
 
@@ -170,14 +168,15 @@ document.addEventListener("DOMContentLoaded", () => {
           $("#marca_vehiculo").value = element.marca_vehiculo;
           // ? DESPUES DE SELECCIONAR UN VEHICULO CARGA LAS VENTAS DE LA PROVINCIA
           await renderSelect();
+
           // Oculta la lista después de seleccionar
           lista.style.display = "none";
-          lista.innerHTML = ""; // Limpia la lista después de seleccionar
+          datalist.innerHTML = ""; // Limpia la lista después de seleccionar
         });
-        lista.innerHTML = ""; // Limpia la lista antes de mostrar resultados
+        // lista.innerHTML = ""; // Limpia la lista antes de mostrar resultados
         datalist.appendChild(li); // Añade el ítem a la lista
-        // datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
       });
+      // datalist.innerHTML = ""; // Limpia la lista antes de mostrar resultados
     } else {
       const li = document.createElement("li");
       li.classList.add("list-group-item");

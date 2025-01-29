@@ -356,6 +356,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // LIMPAR CAMPOS
+  function limpiarCampos(){
+    $("#idproveedor").value = "";
+    $("#idmarca").value = "";
+    $("#idcategoria").value = "";
+    $("#idsubcategoria").value = "";
+    $("#nombreproducto").value = "";
+    $("#unidadmedida").value = "";
+    $("#cantidad").value = "";
+    $("#peso").value = "";
+    $("#unidad").value = "";
+    $("#codigo").value = "";
+    $("#preciocompra").value = "";
+    $("#precio-minorista").value = "";
+    $("#precio-mayorista").value = "";
+  }
 
 
   $("#formRegistrarProducto").addEventListener("submit", async (event) => {
@@ -380,6 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(resultado.id);
       if (resultado.id != null && resultado.id > 0) {
         showToast("Producto registrado correctamente", "success", "SUCCESS");
+        limpiarCampos();
       } else {
         showToast("Error al registrar producto", "error", "ERROR");
       }

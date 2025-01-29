@@ -46,8 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // FUNCIONES
   // registrar usuario
   async function registrarUsuario(idpersona) {
-    if ($("#rol").value.trim() == '') {
-      alert("Seleccione un rol de usuario")
+    if ($("#rol").value.trim() === '') {
+      showToast("Seleccione un rol de usuario", "info", "INFO");
+      // alert("Seleccione un rol de usuario")
     } else {
       const selectedOption = $("#rol").selectedOptions[0];
       const perfil = selectedOption.getAttribute('perfil');
@@ -77,8 +78,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // validar doc
   function validarDoc(response) {
+
     if (response.length == 0) {
-      alert("Este DNI no esta registrado porfavor registrar sus datos personales");
+      showToast("No se encontro ningun registro con este DNI", "info", "INFO");
+      // alert("Este DNI no esta registrado porfavor registrar sus datos personales");
     } else {
       $("#usuario").value = response[0].iduser;
       if (response[0].iduser == null) {
@@ -123,15 +126,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const response = await buscarDni();
     console.log("Soy los datos de buscar dni : \n", response)
     if (response.length != 0 && response[0].iduser == null) {
-      alert("persona registrada con datos personales pero no posee una cuenta de usuario")
+      showToast("Persona registrada con datos personales pero no posee una cuenta de usuario", "info", "INFO");
+      // alert("persona registrada con datos personales pero no posee una cuenta de usuario")
       idpersona = response[0].id;
       validarDoc(response);
     } if (response.length > 0 && response[0].iduser != null) {
       addUsuario(false);
-      alert("Este DNI ya esta registrado con un usuario");
+      showToast("Este DNI ya esta registrado con un usuario", "info", "INFO");
+      // alert("Este DNI ya esta registrado con un usuario");
     } if (response.length == 0) {
       addUsuario(false);
-      alert("Este DNI no esta registrado porfavor registrar sus datos personales");
+      showToast("No se encontro ningun registro con este DNI", "info", "INFO");
+      // alert("Este DNI no esta registrado porfavor registrar sus datos personales");
     }
   });
 
@@ -185,18 +191,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, false);
 
+  // limpiar campos
+  function limpiarCampos() {
+    $("#tipo_doc").value = '';
+    $("#numero_documento").value = '';
+    $("#usuario").value = '';
+    $("#password").value = '';
+    $("#rol").value = 'Seleccione un documento';
+  }
+  // funcion para validar el select del rol
+  // Validar el select del rol
+  function validarRol() {
+    const rolSelect = $("#rol").selectedOptions[0].getAttribute('value'); // Asegúrate de que el select tenga el id "rol"
+    const rolFeedback = $("#valida-rol"); // Un elemento para mostrar el feedback de validación
+
+    if (rolSelect === null) {
+      showToast("Seleccione un rol de usuario", "info", "INFO");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   // registrar usuario boton
   $("#form-user").addEventListener('submit', async (e) => {
     e.preventDefault();
     let response1;
-    if (confirm("¿Guardar usuario?")) {
-      response1 = await registrarUsuario(idpersona);
-      if (response1.idusuario == -1) {
-        alert("Error al guardar usuario");
+
+    if (!validarRol()) {
+      e.preventDefault(); // Evitar el envío del formulario si la validación falla
+    } else {
+
+      if (await showConfirm("¿Desea registrar este usuario?", "", "Guardar", "Cancelar")) {
+        response1 = await registrarUsuario(idpersona);
+        if (response1.idusuario == -1) {
+          showToast("Error al guardar usuario", "error", "ERROR");
+          // alert("Error al guardar usuario");
+        } else {
+          showToast("Usuario registrado correctamente", "success", "SUCCESS");
+          // console.log("Usuario registrado correctamente");
+          limpiarCampos();
+          // alert("Usuario registrado correctamente");
+        }
       }
     }
+
   });
-
-
   addUsuario(false);
 });  
